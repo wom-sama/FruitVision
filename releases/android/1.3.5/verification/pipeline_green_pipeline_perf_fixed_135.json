@@ -1,0 +1,20 @@
+{
+  "framesProcessed": 1073,
+  "lastTimestampMs": 35996,
+  "elapsedSeconds": 109.177372655,
+  "nativeProcessedFps": 9.828043796132327,
+  "pipelineP50Ms": 80.696707,
+  "pipelineP95Ms": 167.853334,
+  "modelP50Ms": 58.632413,
+  "modelP95Ms": 134.345926,
+  "decodeP50Ms": 9.215337,
+  "decodeP95Ms": 16.985511,
+  "modelSha256": "8a69c66a9444c18c98a7e3e58a44f4dddda9eb4583dd4448f430ff9e8db27c41",
+  "runtimeProvider": "CPU",
+  "previewCount": 305,
+  "detectionObservations": 7317,
+  "modelInferenceIncluded": true,
+  "flutterTrackingAndRenderingIncluded": false,
+  "framesSampledOrSkipped": 0,
+  "limitations": "Detection observations are not unique fruit counts or accuracy; no trajectory ground truth. Android emulator is not physical-phone evidence."
+}

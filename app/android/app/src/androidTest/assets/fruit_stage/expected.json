@@ -1,0 +1,192 @@
+{
+  "model_sha256": "8a69c66a9444c18c98a7e3e58a44f4dddda9eb4583dd4448f430ff9e8db27c41",
+  "source_export_receipt_sha256": "dce5847da343720c371b8a1f8bf77a27ed5603efad57df758b24a701bf5742b2",
+  "records": [
+    {
+      "file": "actual_source_0.png",
+      "sha256": "0eed2b8354e1fa4c082c39a546786ea7801a82f2d71ee84ab70a9fdb864aa2df",
+      "objects": [
+        {
+          "box": [
+            0.06273622512817383,
+            0.32849112616644965,
+            0.4193474769592285,
+            0.5969974941677517
+          ],
+          "detectionScore": 0.9337114691734314,
+          "species": "banana",
+          "gradeScheme": "source_two_stage",
+          "graded": true,
+          "classId": 0,
+          "probabilities": [
+            0.9999973773956299,
+            2.6007123778981622e-06
+          ],
+          "status": "OK"
+        }
+      ],
+      "ground_truth_count": 1,
+      "original_path": "C:\\Users\\ADMIN\\Documents\\Codex\\2026-08-23\\gi\\mobile_multifruit_work_20261009\\artifacts\\fruit_stage_mobile_20261014\\data\\data\\test\\images\\Raw_Banana1_0_1346.jpg",
+      "source_split": "test",
+      "source": "actual source photo, not collage"
+    },
+    {
+      "file": "actual_source_1.png",
+      "sha256": "8e2dae4b30cb5b15cc418e52a6379c17e3f3fda0c79776c2c9e3c0cdc3cdcd95",
+      "objects": [
+        {
+          "box": [
+            0.3807645479838053,
+            0.45905418395996095,
+            0.6060897827148437,
+            0.6664226955837673
+          ],
+          "detectionScore": 0.9533060789108276,
+          "species": "mango",
+          "gradeScheme": "source_two_stage",
+          "graded": true,
+          "classId": 0,
+          "probabilities": [
+            0.9999997615814209,
+            2.1760396862191556e-07
+          ],
+          "status": "OK"
+        }
+      ],
+      "ground_truth_count": 1,
+      "original_path": "C:\\Users\\ADMIN\\Documents\\Codex\\2026-08-23\\gi\\mobile_multifruit_work_20261009\\artifacts\\fruit_stage_mobile_20261014\\data\\data\\test\\images\\Raw_Mango_0_2739.jpg",
+      "source_split": "test",
+      "source": "actual source photo, not collage"
+    },
+    {
+      "file": "actual_source_2.png",
+      "sha256": "0267c98af0b68fbecc609476dbc4b5e624c99a8c56587a5b1d2e3d0d49336303",
+      "objects": [
+        {
+          "box": [
+            0.14113667805989583,
+            0.5241341908772786,
+            0.46659011840820314,
+            0.8149536980523003
+          ],
+          "detectionScore": 0.9044032096862793,
+          "species": "banana",
+          "gradeScheme": "source_two_stage",
+          "graded": true,
+          "classId": 1,
+          "probabilities": [
+            1.4725194432685385e-06,
+            0.9999985694885254
+          ],
+          "status": "OK"
+        }
+      ],
+      "ground_truth_count": 1,
+      "original_path": "C:\\Users\\ADMIN\\Documents\\Codex\\2026-08-23\\gi\\mobile_multifruit_work_20261009\\artifacts\\fruit_stage_mobile_20261014\\data\\data\\test\\images\\Ripe_Banana1_0_306.jpg",
+      "source_split": "test",
+      "source": "actual source photo, not collage"
+    },
+    {
+      "file": "actual_source_3.png",
+      "sha256": "135be11eba77746a823738b7a23499733d02efe3348a1e347052bfd211afa799",
+      "objects": [
+        {
+          "box": [
+            0.4342212677001953,
+            0.055465783013237846,
+            0.6497135162353516,
+            0.2518039279513889
+          ],
+          "detectionScore": 0.9556576013565063,
+          "species": "mango",
+          "gradeScheme": "source_two_stage",
+          "graded": true,
+          "classId": 1,
+          "probabilities": [
+            0.0,
+            1.0
+          ],
+          "status": "OK"
+        }
+      ],
+      "ground_truth_count": 1,
+      "original_path": "C:\\Users\\ADMIN\\Documents\\Codex\\2026-08-23\\gi\\mobile_multifruit_work_20261009\\artifacts\\fruit_stage_mobile_20261014\\data\\data\\test\\images\\Ripe_Mango_0_3142.jpg",
+      "source_split": "test",
+      "source": "actual source photo, not collage"
+    },
+    {
+      "file": "actual_source_4.png",
+      "sha256": "efd9b77733593c6ecbebc3304a0b64394e8019df394f82d13bb386f108b33dd2",
+      "objects": [
+        {
+          "box": [
+            0.33634799321492515,
+            0.5357550303141276,
+            0.454396915435791,
+            0.7062548319498698
+          ],
+          "detectionScore": 0.9437744617462158,
+          "species": "mango",
+          "gradeScheme": "source_two_stage",
+          "graded": true,
+          "classId": 0,
+          "probabilities": [
+            0.9999992251396179,
+            7.826276942068944e-07
+          ],
+          "status": "OK"
+        },
+        {
+          "box": [
+            0.36059996287027996,
+            0.3595401763916016,
+            0.593877665201823,
+            0.55557861328125
+          ],
+          "detectionScore": 0.9419609308242798,
+          "species": "mango",
+          "gradeScheme": "source_two_stage",
+          "graded": true,
+          "classId": 0,
+          "probabilities": [
+            0.9999992251396179,
+            7.19894728717918e-07
+          ],
+          "status": "OK"
+        },
+        {
+          "box": [
+            0.43795789082845055,
+            0.6569775051540798,
+            0.585538101196289,
+            0.8643139309353298
+          ],
+          "detectionScore": 0.9418624043464661,
+          "species": "mango",
+          "gradeScheme": "source_two_stage",
+          "graded": true,
+          "classId": 0,
+          "probabilities": [
+            1.0,
+            3.130874048906662e-08
+          ],
+          "status": "OK"
+        }
+      ],
+      "ground_truth_count": 3,
+      "original_path": "C:\\Users\\ADMIN\\Documents\\Codex\\2026-08-23\\gi\\mobile_multifruit_work_20261009\\artifacts\\fruit_stage_mobile_20261014\\data\\data\\test\\images\\Raw_Mango_0_2908.jpg",
+      "source_split": "test",
+      "source": "actual source photo, not collage"
+    },
+    {
+      "file": "actual_source_5.png",
+      "sha256": "e3c3cf7a5698193a8bd27736ccfcf8851eb66efa85a907101bed63a35b19e2bc",
+      "objects": [],
+      "ground_truth_count": 0,
+      "original_path": "C:\\Users\\ADMIN\\Documents\\Codex\\2026-08-23\\gi\\mobile_multifruit_work_20261009\\artifacts\\detector_v6\\cache\\c2d1d2b8bd39f273dedabb6fa84ee18daa995dbcc1e7a77e3f80265c42b97422.jpg",
+      "source_split": "train",
+      "source": "actual source photo, not collage"
+    }
+  ],
+  "scope": "Fresh CPU ORT wire parity goldens on the same six photos; no new quality or physical-device claim."
+}

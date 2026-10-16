@@ -1,0 +1,7 @@
+{
+  "firstAnalysisMs": 3456.717737,
+  "warmMedianMs": 64.347867,
+  "runtimeTuningMs": 3374.61906,
+  "runtimeProvider": "CPU",
+  "scope": "Android emulator startup latency, not throughput or phone field proof."
+}

@@ -1,0 +1,20 @@
+* text=auto eol=lf
+*.sh text eol=lf
+gradlew text eol=lf
+*.bat text eol=crlf
+*.apk binary
+*.pt binary
+*.pth binary
+*.onnx binary
+*.pdf binary
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.mp4 binary
+*.zip binary
+*.jar binary
+*.ipynb binary
+# Preserve exact metadata, license receipts and golden fixture bytes.
+app/android/app/src/main/assets/** -text
+app/android/app/src/androidTest/assets/** -text
+releases/** -text

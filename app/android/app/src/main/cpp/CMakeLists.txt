@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.22.1)
+project(fruit_preprocess LANGUAGES CXX)
+add_library(fruit_preprocess SHARED fruit_preprocess.cpp)
+target_compile_features(fruit_preprocess PRIVATE cxx_std_17)
+target_compile_options(fruit_preprocess PRIVATE -O3 -ffp-contract=off -Wall -Wextra)
+target_link_libraries(fruit_preprocess jnigraphics)

@@ -1,0 +1,9 @@
+{
+  "samples": 60,
+  "images": 6,
+  "all_floats_exact": true,
+  "kotlin_p50_ms": 19.002582,
+  "native_p50_ms": 3.536461,
+  "kotlin_p95_ms": 35.818373,
+  "native_p95_ms": 8.173936
+}

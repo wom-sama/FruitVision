@@ -1,0 +1,48 @@
+{
+  "schema": "android-release-ui-check-v1",
+  "status": "OBSERVED_RELEASE_UI_SMOKE_PASS_WITH_LIMITATIONS",
+  "version_name": "1.3.5",
+  "version_code": 5009,
+  "date_local": "2026-10-16",
+  "abi_tested": "x86_64",
+  "installed_base_apk_sha256": "db6e9cc09c3a77c715823b52fca4cc49ec20d01ed676fe3156c3643e7e37d555",
+  "avd": "Pixel_8_API_37",
+  "actual_allocated_ram_mib": 4096,
+  "guest_memtotal_kib": 4008504,
+  "offline": {"airplane_mode": true, "wifi_and_mobile_data_disabled": true, "manifest_no_internet_verified_by_package_receipt": true},
+  "sample_photo_result_observed": true,
+  "full_video": {
+    "frames_processed": 1073,
+    "displayed_processing_fps": 13.4,
+    "finished_ui_observed": true,
+    "line_mode": true,
+    "direction": "left_to_right",
+    "line_position_normalized": 0.5,
+    "displayed_line_crossings": 6,
+    "line_crossings_validated_against_ground_truth": false,
+    "screenshots": ["final_video_running_early.png", "final_video_progress.png", "final_video_finished_header.png", "final_video_metrics_card.png"]
+  },
+  "second_video_cancel": {
+    "reopened_after_full_video": true,
+    "stopped_frames_displayed": 795,
+    "source_buttons_reenabled": true,
+    "camera_opened_after_cancel": true,
+    "independently_measured_cancel_latency_ms": null,
+    "screenshots": ["final_cancel_before.png", "final_cancel_progress.png", "final_cancel_after.png", "final_camera_actual.png"]
+  },
+  "native_units_final": {"tests": 92, "suites": 11, "failures": 0, "errors": 0},
+  "release_camera": {
+    "opened_after_video_cancel": true,
+    "stop_state_observed": true,
+    "restarted_running_state_observed": true,
+    "emulator_test_pattern_only": true,
+    "fruit_quality_validated": false,
+    "screenshots": ["final_camera_actual.png", "final_camera_stopped.png", "final_camera_restarted.png"]
+  },
+  "host_load_caveat": "Owned idle Gradle daemon was stopped normally before the final UI run. Resource load differs from previous native/UI measurements. 13.4 FPS cannot establish a controlled throughput improvement over the historical 9.9 FPS UI or 9.83 FPS native runs.",
+  "physical_phone_tested": false,
+  "thirty_fps_achieved": false,
+  "all_phone_freezes_fixed": false,
+  "new_detection_or_ripeness_accuracy_claim": false,
+  "limitations": ["Emulator test, not physical-phone performance proof.", "No trajectory ground truth; line count is only algorithm output.", "Only startup latency and allocation/ownership changes are verified improvements.", "Full-video throughput remains below the requested 30 FPS."]
+}

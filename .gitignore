@@ -1,0 +1,38 @@
+# Local environments, IDE state and generated build products
+.venv/
+.demo-python/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.dart_tool/
+.flutter-plugins*
+.gradle/
+.kotlin/
+.cxx/
+.idea/
+build/
+coverage/
+node_modules/
+*.iml
+*.log
+*.hprof
+.DS_Store
+
+# Machine paths and credentials must never be published
+local.properties
+key.properties
+.env
+.env.*
+*.jks
+*.keystore
+*.p12
+*.pem
+id_rsa*
+id_ed25519*
+
+# Downloaded public models and generated results (not the supplied checkpoints)
+demos/desktop/models/pretrained/
+demos/desktop/models/V186/torch_hub/
+demos/desktop/output/*
+!demos/desktop/output/.gitkeep
+models/android/exports/

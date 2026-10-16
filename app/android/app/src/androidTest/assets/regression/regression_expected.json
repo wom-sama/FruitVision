@@ -1,0 +1,939 @@
+{
+  "model_sha256": "819d023fa5f2ee624c63c630ec37e190548f1f793848ea17a86d1000acaf6be9",
+  "temperature": 1.0,
+  "input_size": 224,
+  "mask_size": 56,
+  "purpose": "Android preprocessing and selected-runtime regression; no fitting, threshold tuning, or quality selection.",
+  "fixture_n": 25,
+  "per_class": 5,
+  "selection": "evenly spaced by sorted relative path within each validation class",
+  "maximum_original_edge": 1422,
+  "originals_above_1600px_available": false,
+  "fixtures": [
+    {
+      "source_sha256": "567790086d9a2cb622151a8634da3ac27b3ab9f208cd99b00670ec708f3c057f",
+      "image_width": 640,
+      "image_height": 852,
+      "model_sha256": "819d023fa5f2ee624c63c630ec37e190548f1f793848ea17a86d1000acaf6be9",
+      "temperature": 1.0,
+      "logits": [
+        6.965116500854492,
+        2.7284655570983887,
+        -2.3037283420562744,
+        -5.165555953979492,
+        -5.164033889770508
+      ],
+      "probabilities": [
+        0.9856479473779515,
+        0.014248452377766792,
+        9.296375403035587e-05,
+        5.314197771174533e-06,
+        5.32229248017219e-06
+      ],
+      "class_id": 0,
+      "box": [
+        0.23809523809523808,
+        0.16071428571428573,
+        0.7380952380952381,
+        0.7321428571428571
+      ],
+      "largest_component_pixels": 526,
+      "mask_logit_min": -16.7470645904541,
+      "mask_logit_max": 10.632325172424316,
+      "input_tensor_sha256": "1dc163d108deeada8217ca3521d3bd215af5a314c2b6690e4e43bb3178589284",
+      "filename": "class0_Image_1098.jpg",
+      "source_relative_path": "Xoai_Song_Chua_KhoDap/Image_1098.jpg",
+      "source_split": "validation",
+      "true_label": 0,
+      "exif_orientation": 1
+    },
+    {
+      "source_sha256": "4fd2582ac3da9071cabbebfc73a989b0303d70fa5adb3e515c03d69beb9a8ba7",
+      "image_width": 640,
+      "image_height": 480,
+      "model_sha256": "819d023fa5f2ee624c63c630ec37e190548f1f793848ea17a86d1000acaf6be9",
+      "temperature": 1.0,
+      "logits": [
+        7.298654556274414,
+        2.5990309715270996,
+        -3.6395933628082275,
+        -4.515366077423096,
+        -4.546004772186279
+      ],
+      "probabilities": [
+        0.9909515777602724,
+        0.009016372455530757,
+        1.7604825331643797e-05,
+        7.333114449308054e-06,
+        7.11184441566639e-06
+      ],
+      "class_id": 0,
+      "box": [
+        0.07142857142857142,
+        0.23809523809523808,
+        0.5892857142857143,
+        0.7142857142857143
+      ],
+      "largest_component_pixels": 407,
+      "mask_logit_min": -20.915666580200195,
+      "mask_logit_max": 13.079527854919434,
+      "input_tensor_sha256": "0663bd8091ac80ddbafdff3434b8f61a9464f994cfdd3c798694f2d0fdd6a6cf",
+      "filename": "class0_Image_1726.jpg",
+      "source_relative_path": "Xoai_Song_Chua_KhoDap/Image_1726.jpg",
+      "source_split": "validation",
+      "true_label": 0,
+      "exif_orientation": 1
+    },
+    {
+      "source_sha256": "660760c71955b02f98ab8c81f49caf97d5588640f4fa26d20e8cf7c06f2e9cc0",
+      "image_width": 640,
+      "image_height": 852,
+      "model_sha256": "819d023fa5f2ee624c63c630ec37e190548f1f793848ea17a86d1000acaf6be9",
+      "temperature": 1.0,
+      "logits": [
+        6.268508434295654,
+        3.151620864868164,
+        -2.5482988357543945,
+        -4.7999420166015625,
+        -4.276162147521973
+      ],
+      "probabilities": [
+        0.9574096603283007,
+        0.04240828727123958,
+        0.0001419080589913786,
+        1.4932442503081232e-05,
+        2.5211898965398466e-05
+      ],
+      "class_id": 0,
+      "box": [
+        0.2619047619047619,
+        0.19642857142857142,
+        0.7380952380952381,
+        0.7321428571428571
+      ],
+      "largest_component_pixels": 468,
+      "mask_logit_min": -16.06367301940918,
+      "mask_logit_max": 12.164490699768066,
+      "input_tensor_sha256": "0f4d358b3efb51e8cbd5cf06a401cd91d81505f2227300e86b854dfb089b9149",
+      "filename": "class0_Image_2543.jpg",
+      "source_relative_path": "Xoai_Song_Chua_KhoDap/Image_2543.jpg",
+      "source_split": "validation",
+      "true_label": 0,
+      "exif_orientation": 1
+    },
+    {
+      "source_sha256": "23c9a511ffb3d2699d2f9d32a6dcf66c40ffceea979fbd9c9bc34fe757fee1bc",
+      "image_width": 640,
+      "image_height": 852,
+      "model_sha256": "819d023fa5f2ee624c63c630ec37e190548f1f793848ea17a86d1000acaf6be9",
+      "temperature": 1.0,
+      "logits": [
+        6.3280720710754395,
+        2.2243599891662598,
+        -5.469742774963379,
+        -3.0324361324310303,
+        -1.5937286615371704
+      ],
+      "probabilities": [
+        0.9833154996964802,
+        0.016235788019517576,
+        7.395490758688406e-06,
+        8.46205462055138e-05,
+        0.000356696247037824
+      ],
+      "class_id": 0,
+      "box": [
+        0.23809523809523808,
+        0.5714285714285714,
+        0.6904761904761905,
+        1.0
+      ],
+      "largest_component_pixels": 373,
+      "mask_logit_min": -17.190155029296875,
+      "mask_logit_max": 10.953332901000977,
+      "input_tensor_sha256": "693bbb69b9a7e5dcda2b94212c39594b04aa9da87a6f0241ebabf9d7991f6945",
+      "filename": "class0_Image_422.jpg",
+      "source_relative_path": "Xoai_Song_Chua_KhoDap/Image_422.jpg",
+      "source_split": "validation",
+      "true_label": 0,
+      "exif_orientation": 1
+    },
+    {
+      "source_sha256": "77151754f2233fbc2c7d5e60931d03b50566c53cf9a34ce4927bc53a70890502",
+      "image_width": 640,
+      "image_height": 852,
+      "model_sha256": "819d023fa5f2ee624c63c630ec37e190548f1f793848ea17a86d1000acaf6be9",
+      "temperature": 1.0,
+      "logits": [
+        7.456508636474609,
+        3.4448773860931396,
+        -4.21248197555542,
+        -4.855598449707031,
+        -4.137138843536377
+      ],
+      "probabilities": [
+        0.9821965909080591,
+        0.017781529185910194,
+        8.402725770314929e-06,
+        4.416906991820394e-06,
+        9.060273268596658e-06
+      ],
+      "class_id": 0,
+      "box": [
+        0.30952380952380953,
+        0.30357142857142855,
+        0.6666666666666666,
+        0.75
+      ],
+      "largest_component_pixels": 270,
+      "mask_logit_min": -16.810897827148438,
+      "mask_logit_max": 12.890386581420898,
+      "input_tensor_sha256": "c33f755752ad93547ee4e8d5bee7355c759ced705f70f52caba6e327fb970dc2",
+      "filename": "class0_Image_914.jpg",
+      "source_relative_path": "Xoai_Song_Chua_KhoDap/Image_914.jpg",
+      "source_split": "validation",
+      "true_label": 0,
+      "exif_orientation": 1
+    },
+    {
+      "source_sha256": "212daa41a67fbf329d334187f4b6bc1a882c9e7d1ffebe351bd0b32e8ce5a2fe",
+      "image_width": 640,
+      "image_height": 640,
+      "model_sha256": "819d023fa5f2ee624c63c630ec37e190548f1f793848ea17a86d1000acaf6be9",
+      "temperature": 1.0,
+      "logits": [
+        2.8439581394195557,
+        4.4503302574157715,
+        -2.321204900741577,
+        -2.943297863006592,
+        -4.86831521987915
+      ],
+      "probabilities": [
+        0.1668357179283068,
+        0.8316250858201668,
+        0.0009529875524035427,
+        0.0005115825087527649,
+        7.462619037020032e-05
+      ],
+      "class_id": 1,
+      "box": [
+        0.07142857142857142,
+        0.39285714285714285,
+        0.7678571428571429,
+        0.9464285714285714
+      ],
+      "largest_component_pixels": 870,
+      "mask_logit_min": -16.7303466796875,
+      "mask_logit_max": 9.927501678466797,
+      "input_tensor_sha256": "45f414f31b301de453df94d93867f0b311d2132569bc58c4168eef18f7428635",
+      "filename": "class1_Image_10407.jpg",
+      "source_relative_path": "Xoai_Song_ChuaNhe_CoNguyCo/Image_10407.jpg",
+      "source_split": "validation",
+      "true_label": 1,
+      "exif_orientation": 1
+    },
+    {
+      "source_sha256": "174fe4b9c9b9d4e155dbdd71f6a2ea490fba4b5f45a2eeff1eddec05865eabfe",
+      "image_width": 640,
+      "image_height": 480,
+      "model_sha256": "819d023fa5f2ee624c63c630ec37e190548f1f793848ea17a86d1000acaf6be9",
+      "temperature": 1.0,
+      "logits": [
+        5.615777015686035,
+        2.8603081703186035,
+        -1.7024990320205688,
+        -4.245280742645264,
+        -4.339854717254639
+      ],
+      "probabilities": [
+        0.9395475071402333,
+        0.059735682496964614,
+        0.0006232063072533963,
+        4.901350658080248e-05,
+        4.459054896803964e-05
+      ],
+      "class_id": 0,
+      "box": [
+        0.05357142857142857,
+        0.2619047619047619,
+        0.625,
+        0.7619047619047619
+      ],
+      "largest_component_pixels": 491,
+      "mask_logit_min": -16.032766342163086,
+      "mask_logit_max": 11.407651901245117,
+      "input_tensor_sha256": "e071de6cedc87670be12c5aa23d392f0a247a67e6e17b1a1568b7b2f1b9ea30a",
+      "filename": "class1_Image_1600.jpg",
+      "source_relative_path": "Xoai_Song_ChuaNhe_CoNguyCo/Image_1600.jpg",
+      "source_split": "validation",
+      "true_label": 1,
+      "exif_orientation": 1
+    },
+    {
+      "source_sha256": "10274c39c6b9dd72372bbee0621b89f450162ed05a5430dd4d59a4f09bedc0b1",
+      "image_width": 640,
+      "image_height": 852,
+      "model_sha256": "819d023fa5f2ee624c63c630ec37e190548f1f793848ea17a86d1000acaf6be9",
+      "temperature": 1.0,
+      "logits": [
+        0.7649602890014648,
+        3.894897937774658,
+        0.4731058180332184,
+        -3.7029917240142822,
+        -3.4744668006896973
+      ],
+      "probabilities": [
+        0.04057565951041547,
+        0.9280689375214188,
+        0.03030503579036716,
+        0.00046543461889106457,
+        0.0005849325589073667
+      ],
+      "class_id": 1,
+      "box": [
+        0.35714285714285715,
+        0.30357142857142855,
+        0.7142857142857143,
+        0.7678571428571429
+      ],
+      "largest_component_pixels": 302,
+      "mask_logit_min": -18.19386863708496,
+      "mask_logit_max": 14.690641403198242,
+      "input_tensor_sha256": "bf4cb04846a14dc2bd1f00fbb52041447e2ab4e75a28233f85dd368b9dd4c713",
+      "filename": "class1_Image_2636.jpg",
+      "source_relative_path": "Xoai_Song_ChuaNhe_CoNguyCo/Image_2636.jpg",
+      "source_split": "validation",
+      "true_label": 1,
+      "exif_orientation": 1
+    },
+    {
+      "source_sha256": "41a81bfdbf621351a3693e94be61913385575a811d7ecd3dc6e31b2f19c52322",
+      "image_width": 640,
+      "image_height": 640,
+      "model_sha256": "819d023fa5f2ee624c63c630ec37e190548f1f793848ea17a86d1000acaf6be9",
+      "temperature": 1.0,
+      "logits": [
+        0.14810097217559814,
+        5.723001003265381,
+        -0.11913824081420898,
+        -3.672269582748413,
+        -5.232258319854736
+      ],
+      "probabilities": [
+        0.0037662626376501933,
+        0.9932507979290709,
+        0.00288303613952589,
+        8.255526030710936e-05,
+        1.7348033445848285e-05
+      ],
+      "class_id": 1,
+      "box": [
+        0.26785714285714285,
+        0.23214285714285715,
+        0.6785714285714286,
+        0.7321428571428571
+      ],
+      "largest_component_pixels": 452,
+      "mask_logit_min": -15.376368522644043,
+      "mask_logit_max": 14.37319278717041,
+      "input_tensor_sha256": "2d32d4da9364307f06230caa01f9c19e2050ae3c50f1f325037979fd4c6c4e3e",
+      "filename": "class1_Image_8676.jpg",
+      "source_relative_path": "Xoai_Song_ChuaNhe_CoNguyCo/Image_8676.jpg",
+      "source_split": "validation",
+      "true_label": 1,
+      "exif_orientation": 1
+    },
+    {
+      "source_sha256": "bae5a13d58988ca4d8d203f1f6243ee4734fbfa73a0f9d6c9bbc9b38b6e60b32",
+      "image_width": 640,
+      "image_height": 852,
+      "model_sha256": "819d023fa5f2ee624c63c630ec37e190548f1f793848ea17a86d1000acaf6be9",
+      "temperature": 1.0,
+      "logits": [
+        3.540853977203369,
+        3.6746766567230225,
+        -1.1695337295532227,
+        -3.767216205596924,
+        -4.919212341308594
+      ],
+      "probabilities": [
+        0.46445238333248157,
+        0.5309573622068715,
+        0.004180669221584823,
+        0.00031123371885710975,
+        9.83515202048665e-05
+      ],
+      "class_id": 1,
+      "box": [
+        0.23809523809523808,
+        0.16071428571428573,
+        0.7142857142857143,
+        0.6964285714285714
+      ],
+      "largest_component_pixels": 442,
+      "mask_logit_min": -15.473968505859375,
+      "mask_logit_max": 12.290451049804688,
+      "input_tensor_sha256": "44d61f79754f9b4910b4097be021d61d237241250c772f45958b4b76b65535fb",
+      "filename": "class1_Image_920.jpg",
+      "source_relative_path": "Xoai_Song_ChuaNhe_CoNguyCo/Image_920.jpg",
+      "source_split": "validation",
+      "true_label": 1,
+      "exif_orientation": 1
+    },
+    {
+      "source_sha256": "38bc030dece96539e89d31786648c80a4b12b97a5c78c9011d367267d4e42504",
+      "image_width": 640,
+      "image_height": 852,
+      "model_sha256": "819d023fa5f2ee624c63c630ec37e190548f1f793848ea17a86d1000acaf6be9",
+      "temperature": 1.0,
+      "logits": [
+        -3.944584369659424,
+        1.8465608358383179,
+        5.7838826179504395,
+        -0.9539127945899963,
+        -4.545062065124512
+      ],
+      "probabilities": [
+        5.835112393396861e-05,
+        0.01910344235833878,
+        0.9796450665871662,
+        0.0011611314487260094,
+        3.200848183487309e-05
+      ],
+      "class_id": 2,
+      "box": [
+        0.11904761904761904,
+        0.25,
+        1.0,
+        0.6428571428571429
+      ],
+      "largest_component_pixels": 619,
+      "mask_logit_min": -15.043845176696777,
+      "mask_logit_max": 11.343636512756348,
+      "input_tensor_sha256": "d4eff354f2140f4b2ecc0e7c09966ca4793a84c78ca3bc505561a1a23dba4620",
+      "filename": "class2_Image_1010.jpg",
+      "source_relative_path": "Xoai_Chin_NgotThanh_DeDap/Image_1010.jpg",
+      "source_split": "validation",
+      "true_label": 2,
+      "exif_orientation": 1
+    },
+    {
+      "source_sha256": "708e0e18e5536c612b2fe6554b508ecb52f2710113d87df2d8c518f377a59b6e",
+      "image_width": 640,
+      "image_height": 852,
+      "model_sha256": "819d023fa5f2ee624c63c630ec37e190548f1f793848ea17a86d1000acaf6be9",
+      "temperature": 1.0,
+      "logits": [
+        -1.3171058893203735,
+        1.027596354484558,
+        2.176208734512329,
+        -0.07787438482046127,
+        -2.6212072372436523
+      ],
+      "probabilities": [
+        0.0208119391331579,
+        0.21707199281112788,
+        0.6846045981704898,
+        0.07186276965527186,
+        0.005648700229952547
+      ],
+      "class_id": 2,
+      "box": [
+        0.3333333333333333,
+        0.30357142857142855,
+        0.8333333333333334,
+        0.8392857142857143
+      ],
+      "largest_component_pixels": 480,
+      "mask_logit_min": -15.617172241210938,
+      "mask_logit_max": 12.772087097167969,
+      "input_tensor_sha256": "090d49f9603a44f995eaca76a44f914bdbfd272d624f7d47d65835358e61188c",
+      "filename": "class2_Image_2492.jpg",
+      "source_relative_path": "Xoai_Chin_NgotThanh_DeDap/Image_2492.jpg",
+      "source_split": "validation",
+      "true_label": 2,
+      "exif_orientation": 1
+    },
+    {
+      "source_sha256": "83ed9d85a7d49a7ea78d0f7c11db810dd1ac3e0f26d08e91112722796cd97e87",
+      "image_width": 640,
+      "image_height": 853,
+      "model_sha256": "819d023fa5f2ee624c63c630ec37e190548f1f793848ea17a86d1000acaf6be9",
+      "temperature": 1.0,
+      "logits": [
+        -4.989975452423096,
+        0.8745993375778198,
+        5.879651069641113,
+        0.339439332485199,
+        -3.139627456665039
+      ],
+      "probabilities": [
+        1.8824737810503378e-05,
+        0.006632563339676478,
+        0.98934498114276,
+        0.003883867174742368,
+        0.00011976360501070564
+      ],
+      "class_id": 2,
+      "box": [
+        0.6190476190476191,
+        0.5178571428571429,
+        0.8809523809523809,
+        0.75
+      ],
+      "largest_component_pixels": 102,
+      "mask_logit_min": -22.57735824584961,
+      "mask_logit_max": 17.196029663085938,
+      "input_tensor_sha256": "15f6460ff5e35bdcf28f0374b0bb65e6fb3b9394c710f129561928f4b4f9e353",
+      "filename": "class2_Image_3425.jpg",
+      "source_relative_path": "Xoai_Chin_NgotThanh_DeDap/Image_3425.jpg",
+      "source_split": "validation",
+      "true_label": 2,
+      "exif_orientation": 1
+    },
+    {
+      "source_sha256": "1529071126ac6e3636416374897de949cecf1804f9a632e3cc53cc6670ba5fa0",
+      "image_width": 640,
+      "image_height": 852,
+      "model_sha256": "819d023fa5f2ee624c63c630ec37e190548f1f793848ea17a86d1000acaf6be9",
+      "temperature": 1.0,
+      "logits": [
+        -5.684459686279297,
+        0.4076196253299713,
+        5.027981758117676,
+        1.2570207118988037,
+        -2.3307535648345947
+      ],
+      "probabilities": [
+        2.1543644217729276e-05,
+        0.009529620295368095,
+        0.9675499065506965,
+        0.02228259678046331,
+        0.0006163327292545849
+      ],
+      "class_id": 2,
+      "box": [
+        0.2857142857142857,
+        0.25,
+        0.6666666666666666,
+        0.7142857142857143
+      ],
+      "largest_component_pixels": 302,
+      "mask_logit_min": -17.439210891723633,
+      "mask_logit_max": 15.99333667755127,
+      "input_tensor_sha256": "d17a3fff9dfed75bae19eec5c76f6b0f381f0775e3a9783defc588ecb5ae02ef",
+      "filename": "class2_Image_407.jpg",
+      "source_relative_path": "Xoai_Chin_NgotThanh_DeDap/Image_407.jpg",
+      "source_split": "validation",
+      "true_label": 2,
+      "exif_orientation": 1
+    },
+    {
+      "source_sha256": "d75f928e33545bab127585fdf37c3cfc93526240de46f97afe3195608531685f",
+      "image_width": 640,
+      "image_height": 640,
+      "model_sha256": "819d023fa5f2ee624c63c630ec37e190548f1f793848ea17a86d1000acaf6be9",
+      "temperature": 1.0,
+      "logits": [
+        -5.319181442260742,
+        0.6376976370811462,
+        5.509507179260254,
+        0.6036657691001892,
+        -3.689966917037964
+      ],
+      "probabilities": [
+        1.9526107863132403e-05,
+        0.0075449331742717726,
+        0.9850434751481671,
+        0.0072924850101688254,
+        9.958055952906626e-05
+      ],
+      "class_id": 2,
+      "box": [
+        0.125,
+        0.125,
+        0.9285714285714286,
+        0.6428571428571429
+      ],
+      "largest_component_pixels": 949,
+      "mask_logit_min": -15.945084571838379,
+      "mask_logit_max": 11.558704376220703,
+      "input_tensor_sha256": "606c7572328dfe640fe5eacd922f68505c1b8295fd2336d747296951553efd65",
+      "filename": "class2_Image_8838.jpg",
+      "source_relative_path": "Xoai_Chin_NgotThanh_DeDap/Image_8838.jpg",
+      "source_split": "validation",
+      "true_label": 2,
+      "exif_orientation": 1
+    },
+    {
+      "source_sha256": "d5db506e546fbfd53cadfccea992ec8f77c3d34386b5c14d84970eb33829f53e",
+      "image_width": 640,
+      "image_height": 640,
+      "model_sha256": "819d023fa5f2ee624c63c630ec37e190548f1f793848ea17a86d1000acaf6be9",
+      "temperature": 1.0,
+      "logits": [
+        -5.984470367431641,
+        -0.0019999779760837555,
+        4.598299980163574,
+        2.033081293106079,
+        -2.0488228797912598
+      ],
+      "probabilities": [
+        2.3292862790556766e-05,
+        0.009233720971513011,
+        0.9188859976797676,
+        0.07066450367765872,
+        0.0011924848082701372
+      ],
+      "class_id": 2,
+      "box": [
+        0.375,
+        0.3392857142857143,
+        0.8571428571428571,
+        0.7857142857142857
+      ],
+      "largest_component_pixels": 421,
+      "mask_logit_min": -15.74329948425293,
+      "mask_logit_max": 12.443037986755371,
+      "input_tensor_sha256": "6ab55fc031173ae2da7419b5258c461f08ae1e9a62c062cee48c4df76f6af178",
+      "filename": "class3_Image_10000.jpg",
+      "source_relative_path": "Xoai_ChinGia_NgotGat_KhongVanChuyen/Image_10000.jpg",
+      "source_split": "validation",
+      "true_label": 3,
+      "exif_orientation": 1
+    },
+    {
+      "source_sha256": "b359bcb5a709af09fea89fef7b41c81064348263355beaa0bbd2758564c84b8c",
+      "image_width": 640,
+      "image_height": 640,
+      "model_sha256": "819d023fa5f2ee624c63c630ec37e190548f1f793848ea17a86d1000acaf6be9",
+      "temperature": 1.0,
+      "logits": [
+        -6.253444194793701,
+        -2.796783208847046,
+        1.120921015739441,
+        5.6818695068359375,
+        1.244626760482788
+      ],
+      "probabilities": [
+        6.410588504653359e-06,
+        0.00020328563582328168,
+        0.010222191647139093,
+        0.977999833475256,
+        0.011568278653276984
+      ],
+      "class_id": 3,
+      "box": [
+        0.26785714285714285,
+        0.125,
+        0.6785714285714286,
+        0.7321428571428571
+      ],
+      "largest_component_pixels": 584,
+      "mask_logit_min": -17.149490356445312,
+      "mask_logit_max": 11.08902359008789,
+      "input_tensor_sha256": "093341768bbd97b393af8044c435a3ffb2c6c59a2386d89e00fe2ccd00770bca",
+      "filename": "class3_Image_13171.jpg",
+      "source_relative_path": "Xoai_ChinGia_NgotGat_KhongVanChuyen/Image_13171.jpg",
+      "source_split": "validation",
+      "true_label": 3,
+      "exif_orientation": 1
+    },
+    {
+      "source_sha256": "065e24a343fadebd2b657ce023dfd729ed25575208724a7d33cdfeaa4b22c49b",
+      "image_width": 640,
+      "image_height": 640,
+      "model_sha256": "819d023fa5f2ee624c63c630ec37e190548f1f793848ea17a86d1000acaf6be9",
+      "temperature": 1.0,
+      "logits": [
+        -6.577878475189209,
+        -2.9306116104125977,
+        0.16817568242549896,
+        6.595919609069824,
+        1.3744968175888062
+      ],
+      "probabilities": [
+        1.8863560792246391e-06,
+        7.237882848975689e-05,
+        0.0016047144794106882,
+        0.9929593959756904,
+        0.005361624360330064
+      ],
+      "class_id": 3,
+      "box": [
+        0.10714285714285714,
+        0.39285714285714285,
+        0.7857142857142857,
+        0.7321428571428571
+      ],
+      "largest_component_pixels": 542,
+      "mask_logit_min": -14.891389846801758,
+      "mask_logit_max": 13.13068675994873,
+      "input_tensor_sha256": "8cdedb078ca51eed9ca2ce63844401685ba709d4af881207914c818a709fa8a2",
+      "filename": "class3_Image_14031.jpg",
+      "source_relative_path": "Xoai_ChinGia_NgotGat_KhongVanChuyen/Image_14031.jpg",
+      "source_split": "validation",
+      "true_label": 3,
+      "exif_orientation": 1
+    },
+    {
+      "source_sha256": "9fa3b42808b1f1143dee0d65fff24be1857ec15b616e58eb9bf2babdd2819ef4",
+      "image_width": 640,
+      "image_height": 640,
+      "model_sha256": "819d023fa5f2ee624c63c630ec37e190548f1f793848ea17a86d1000acaf6be9",
+      "temperature": 1.0,
+      "logits": [
+        -6.258330345153809,
+        -1.8228813409805298,
+        2.4753122329711914,
+        4.364675521850586,
+        -0.12007148563861847
+      ],
+      "probabilities": [
+        2.090920995542894e-05,
+        0.0017645283922457869,
+        0.12981067317915262,
+        0.858717775250745,
+        0.009686113967901073
+      ],
+      "class_id": 3,
+      "box": [
+        0.08928571428571429,
+        0.26785714285714285,
+        0.8392857142857143,
+        0.7857142857142857
+      ],
+      "largest_component_pixels": 900,
+      "mask_logit_min": -16.52857208251953,
+      "mask_logit_max": 12.980978012084961,
+      "input_tensor_sha256": "da8900921289c86513db81b1f96b09158c7af1a96ae61ec73edaa7827c9cbefe",
+      "filename": "class3_Image_7909.jpg",
+      "source_relative_path": "Xoai_ChinGia_NgotGat_KhongVanChuyen/Image_7909.jpg",
+      "source_split": "validation",
+      "true_label": 3,
+      "exif_orientation": 1
+    },
+    {
+      "source_sha256": "14064c008795fb9874a58f60e2a63ff0cc1e60de000f93d5addf7c6b7491c53c",
+      "image_width": 640,
+      "image_height": 640,
+      "model_sha256": "819d023fa5f2ee624c63c630ec37e190548f1f793848ea17a86d1000acaf6be9",
+      "temperature": 1.0,
+      "logits": [
+        -5.994049072265625,
+        -1.823708176612854,
+        1.8166669607162476,
+        5.118450164794922,
+        -0.3559890687465668
+      ],
+      "probabilities": [
+        1.4323161025821801e-05,
+        0.0009272458816118551,
+        0.03533375124981496,
+        0.9597010572579772,
+        0.0040236224495702405
+      ],
+      "class_id": 3,
+      "box": [
+        0.23214285714285715,
+        0.017857142857142856,
+        0.7857142857142857,
+        0.8392857142857143
+      ],
+      "largest_component_pixels": 1106,
+      "mask_logit_min": -16.644649505615234,
+      "mask_logit_max": 12.235759735107422,
+      "input_tensor_sha256": "42e81db432177445891af59c220a430b539ca273e36d6710a14905f5e0eacb46",
+      "filename": "class3_Image_9906.jpg",
+      "source_relative_path": "Xoai_ChinGia_NgotGat_KhongVanChuyen/Image_9906.jpg",
+      "source_split": "validation",
+      "true_label": 3,
+      "exif_orientation": 1
+    },
+    {
+      "source_sha256": "955283c714f6de897817d7f55a216ca29eafffd2d481ab9865a37f10cdfd63ec",
+      "image_width": 640,
+      "image_height": 852,
+      "model_sha256": "819d023fa5f2ee624c63c630ec37e190548f1f793848ea17a86d1000acaf6be9",
+      "temperature": 1.0,
+      "logits": [
+        -4.525203227996826,
+        -3.2895586490631104,
+        -1.9886698722839355,
+        2.9073777198791504,
+        6.920779705047607
+      ],
+      "probabilities": [
+        1.0500657131349816e-05,
+        3.6128514109062115e-05,
+        0.0001326841105932067,
+        0.017747834492160473,
+        0.9820728522260058
+      ],
+      "class_id": 4,
+      "box": [
+        0.35714285714285715,
+        0.30357142857142855,
+        0.7619047619047619,
+        0.5892857142857143
+      ],
+      "largest_component_pixels": 205,
+      "mask_logit_min": -25.307384490966797,
+      "mask_logit_max": 15.340264320373535,
+      "input_tensor_sha256": "8930d5b1aa3681b8519288f5172adb981b75de948303414cc6c9224708204175",
+      "filename": "class4_Image_2748.jpg",
+      "source_relative_path": "Xoai_Hu_KhongAnDuoc/Image_2748.jpg",
+      "source_split": "validation",
+      "true_label": 4,
+      "exif_orientation": 1
+    },
+    {
+      "source_sha256": "cbdc061c5d67c49df4096719fa313939550062acdcc87ee9b36c2d5ab30cc5e3",
+      "image_width": 640,
+      "image_height": 640,
+      "model_sha256": "819d023fa5f2ee624c63c630ec37e190548f1f793848ea17a86d1000acaf6be9",
+      "temperature": 1.0,
+      "logits": [
+        -4.504294395446777,
+        -3.193666696548462,
+        -3.4341237545013428,
+        3.4549269676208496,
+        7.729934215545654
+      ],
+      "probabilities": [
+        4.794307744809833e-06,
+        1.777969412455483e-05,
+        1.3979611806455081e-05,
+        0.01372055964313201,
+        0.9862428867431922
+      ],
+      "class_id": 4,
+      "box": [
+        0.125,
+        0.48214285714285715,
+        0.48214285714285715,
+        0.9821428571428571
+      ],
+      "largest_component_pixels": 400,
+      "mask_logit_min": -18.13469886779785,
+      "mask_logit_max": 14.410898208618164,
+      "input_tensor_sha256": "a5555e1dc79b2506ecf6bace4da1f8bbf46251d7138310ec273eef735440f842",
+      "filename": "class4_Image_4430.jpg",
+      "source_relative_path": "Xoai_Hu_KhongAnDuoc/Image_4430.jpg",
+      "source_split": "validation",
+      "true_label": 4,
+      "exif_orientation": 1
+    },
+    {
+      "source_sha256": "4794e326d65cf445fa0b15571d7c1e3c851da7b722aa4b49f6801cf59041fdd1",
+      "image_width": 640,
+      "image_height": 1422,
+      "model_sha256": "819d023fa5f2ee624c63c630ec37e190548f1f793848ea17a86d1000acaf6be9",
+      "temperature": 1.0,
+      "logits": [
+        -1.5085563659667969,
+        -2.5179474353790283,
+        -0.07884475588798523,
+        1.0737078189849854,
+        4.328920364379883
+      ],
+      "probabilities": [
+        0.0027648599370645732,
+        0.0010076278535824709,
+        0.01155018654705123,
+        0.03657094830197653,
+        0.9481063773603252
+      ],
+      "class_id": 4,
+      "box": [
+        0.06930693069306931,
+        0.26785714285714285,
+        0.5841584158415841,
+        0.5892857142857143
+      ],
+      "largest_component_pixels": 172,
+      "mask_logit_min": -23.229352951049805,
+      "mask_logit_max": 16.844884872436523,
+      "input_tensor_sha256": "7b6f8ea76cf301f37ff36f281372ce23a277d51fc591f7d40705aa460bee111f",
+      "filename": "class4_Image_4762.jpg",
+      "source_relative_path": "Xoai_Hu_KhongAnDuoc/Image_4762.jpg",
+      "source_split": "validation",
+      "true_label": 4,
+      "exif_orientation": 1
+    },
+    {
+      "source_sha256": "1b7faffd58b7673d19b533ae8d50e22891129ad2bdb88e1ebd1dcce6ca684ed6",
+      "image_width": 640,
+      "image_height": 480,
+      "model_sha256": "819d023fa5f2ee624c63c630ec37e190548f1f793848ea17a86d1000acaf6be9",
+      "temperature": 1.0,
+      "logits": [
+        -2.7739694118499756,
+        -3.142714738845825,
+        -2.079235076904297,
+        2.635272979736328,
+        6.648650169372559
+      ],
+      "probabilities": [
+        7.941494831667307e-05,
+        5.492349898725898e-05,
+        0.00015908218435719637,
+        0.017746241181799363,
+        0.9819603381865395
+      ],
+      "class_id": 4,
+      "box": [
+        0.42857142857142855,
+        0.16666666666666666,
+        0.6071428571428571,
+        0.42857142857142855
+      ],
+      "largest_component_pixels": 64,
+      "mask_logit_min": -22.758180618286133,
+      "mask_logit_max": 3.8362159729003906,
+      "input_tensor_sha256": "825cc5d058159c64b2ef90b8592e5ad5b3d237cf2a62a8b1d3d7601825d227f3",
+      "filename": "class4_Image_6371.jpg",
+      "source_relative_path": "Xoai_Hu_KhongAnDuoc/Image_6371.jpg",
+      "source_split": "validation",
+      "true_label": 4,
+      "exif_orientation": 1
+    },
+    {
+      "source_sha256": "c6c1e434e07c8dedbb44405e1ca3fea9789ccdb95ebf8fe77d245ca4da5fcb62",
+      "image_width": 640,
+      "image_height": 480,
+      "model_sha256": "819d023fa5f2ee624c63c630ec37e190548f1f793848ea17a86d1000acaf6be9",
+      "temperature": 1.0,
+      "logits": [
+        -3.220102071762085,
+        -3.0903337001800537,
+        -3.095258951187134,
+        3.259840488433838,
+        7.215503215789795
+      ],
+      "probabilities": [
+        2.8813556939825435e-05,
+        3.280609676320057e-05,
+        3.264491575636595e-05,
+        0.01878452297318825,
+        0.9811212124573524
+      ],
+      "class_id": 4,
+      "box": [
+        0.17857142857142858,
+        0.11904761904761904,
+        0.5178571428571429,
+        0.7619047619047619
+      ],
+      "largest_component_pixels": 403,
+      "mask_logit_min": -18.22406768798828,
+      "mask_logit_max": 11.529797554016113,
+      "input_tensor_sha256": "c2ecb0086c67ede1f515bbb2e6aa6d12a542068e9629fae628581bc3dcad47aa",
+      "filename": "class4_Image_7533.jpg",
+      "source_relative_path": "Xoai_Hu_KhongAnDuoc/Image_7533.jpg",
+      "source_split": "validation",
+      "true_label": 4,
+      "exif_orientation": 1
+    }
+  ]
+}

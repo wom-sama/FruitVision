@@ -1,0 +1,28 @@
+{
+  "source_path": "E:\\OneDrive\\Desktop\\Demo\\mobile\\app\\android\\app\\src\\main\\assets\\parity_fixture.png",
+  "source_sha256": "2d859c4c39a44f576db18da3ddf422bf70b91aef13fce40c7ae069fe4e7f6737",
+  "image_width": 224,
+  "image_height": 224,
+  "model_sha256": "819d023fa5f2ee624c63c630ec37e190548f1f793848ea17a86d1000acaf6be9",
+  "temperature": 1.0,
+  "logits": [
+    -2.18774151802063,
+    -0.1369282603263855,
+    4.425459861755371,
+    0.15625323355197906,
+    -3.1386067867279053
+  ],
+  "probabilities": [
+    0.0013081347935497418,
+    0.010169728958179795,
+    0.9743822502168258,
+    0.013634414200803526,
+    0.0005054718306409834
+  ],
+  "class_id": 2,
+  "box": null,
+  "largest_component_pixels": 0,
+  "mask_logit_min": -27.07643699645996,
+  "mask_logit_max": -8.71864128112793,
+  "input_tensor_sha256": "4acb4e8cbab1d1975bcc781867cf0fb9966fe70484a8c811e44989d44c3aa882"
+}

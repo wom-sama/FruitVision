@@ -1,0 +1,625 @@
+{
+  "sourceSha256": "935f8c96e076420b9bc1efefa7c03e6a5814993db6e52d1a33477fce609eacb1",
+  "videoInfo": {
+    "durationMs": 13760,
+    "width": 1920,
+    "height": 1080
+  },
+  "records": [
+    {
+      "timestampMs": 0,
+      "objects": [
+        {
+          "box": [
+            0.20518703531598512,
+            0.3519875526428223,
+            0.7624869080724326,
+            0.9379861195882161
+          ],
+          "detectionScore": 0.5209152698516846,
+          "species": "banana",
+          "classId": 1,
+          "probabilities": [
+            0.00007383696356555447,
+            0.9999261498451233
+          ],
+          "graded": true,
+          "gradeScheme": "source_two_stage",
+          "status": "OK"
+        }
+      ],
+      "elapsedMs": 289.280349
+    },
+    {
+      "timestampMs": 500,
+      "objects": [
+        {
+          "box": [
+            0.2567640113121515,
+            0.29464362462361654,
+            0.7527604227172398,
+            0.8806421915690105
+          ],
+          "detectionScore": 0.8184540271759033,
+          "species": "banana",
+          "classId": 1,
+          "probabilities": [
+            0.000021619627659674734,
+            0.9999783635139465
+          ],
+          "graded": true,
+          "gradeScheme": "source_two_stage",
+          "status": "OK"
+        }
+      ],
+      "elapsedMs": 433.546462
+    },
+    {
+      "timestampMs": 1000,
+      "objects": [
+        {
+          "box": [
+            0.21933425846596188,
+            0.3277348518371582,
+            0.7153305564228044,
+            0.9002334594726562
+          ],
+          "detectionScore": 0.7136030197143555,
+          "species": "banana",
+          "classId": 1,
+          "probabilities": [
+            0.00005173358294996433,
+            0.9999482035636902
+          ],
+          "graded": true,
+          "gradeScheme": "source_two_stage",
+          "status": "OK"
+        }
+      ],
+      "elapsedMs": 598.028114
+    },
+    {
+      "timestampMs": 1500,
+      "objects": [
+        {
+          "box": [
+            0.2862053059290776,
+            0.2544011116027832,
+            0.8838667745483852,
+            0.8542180379231771
+          ],
+          "detectionScore": 0.8081523180007935,
+          "species": "banana",
+          "classId": 1,
+          "probabilities": [
+            0.000009067794962902553,
+            0.9999909400939941
+          ],
+          "graded": true,
+          "gradeScheme": "source_two_stage",
+          "status": "OK"
+        }
+      ],
+      "elapsedMs": 413.941614
+    },
+    {
+      "timestampMs": 2000,
+      "objects": [
+        {
+          "box": [
+            0.0782553520344447,
+            0.2733283042907715,
+            0.610173448754066,
+            0.8197530110677084
+          ],
+          "detectionScore": 0.8379254937171936,
+          "species": "banana",
+          "classId": 1,
+          "probabilities": [
+            0.000050295730034122244,
+            0.9999497532844543
+          ],
+          "graded": true,
+          "gradeScheme": "source_two_stage",
+          "status": "OK"
+        }
+      ],
+      "elapsedMs": 666.89064
+    },
+    {
+      "timestampMs": 2500,
+      "objects": [
+        {
+          "box": [
+            0.16671611119380228,
+            0.2066616376241048,
+            0.6986342646375465,
+            0.7530863444010417
+          ],
+          "detectionScore": 0.8759790062904358,
+          "species": "banana",
+          "classId": 1,
+          "probabilities": [
+            0.0001093428218155168,
+            0.9998906850814819
+          ],
+          "graded": true,
+          "gradeScheme": "source_two_stage",
+          "status": "OK"
+        }
+      ],
+      "elapsedMs": 404.409178
+    },
+    {
+      "timestampMs": 3000,
+      "objects": [
+        {
+          "box": [
+            0.07614277552494772,
+            0.2570995807647705,
+            0.6206038804745585,
+            0.7786377588907878
+          ],
+          "detectionScore": 0.9268264770507812,
+          "species": "banana",
+          "classId": 1,
+          "probabilities": [
+            0.000034685006539803,
+            0.9999653100967407
+          ],
+          "graded": true,
+          "gradeScheme": "source_two_stage",
+          "status": "OK"
+        }
+      ],
+      "elapsedMs": 578.842729
+    },
+    {
+      "timestampMs": 3500,
+      "objects": [
+        {
+          "box": [
+            0.14445206312441913,
+            0.239388370513916,
+            0.7017519358808666,
+            0.811886978149414
+          ],
+          "detectionScore": 0.8303529620170593,
+          "species": "banana",
+          "classId": 1,
+          "probabilities": [
+            0.000024177939849323593,
+            0.999975860118866
+          ],
+          "graded": true,
+          "gradeScheme": "source_two_stage",
+          "status": "OK"
+        }
+      ],
+      "elapsedMs": 362.016522
+    },
+    {
+      "timestampMs": 4000,
+      "objects": [
+        {
+          "box": [
+            0.08183458746587477,
+            0.26139326095581056,
+            0.722780816173908,
+            0.8612102508544922
+          ],
+          "detectionScore": 0.586169958114624,
+          "species": "banana",
+          "classId": 1,
+          "probabilities": [
+            0.000025091780116781592,
+            0.9999749660491943
+          ],
+          "graded": true,
+          "gradeScheme": "source_two_stage",
+          "status": "OK"
+        }
+      ],
+      "elapsedMs": 614.398252
+    },
+    {
+      "timestampMs": 4500,
+      "objects": [
+        {
+          "box": [
+            0.10331578591499187,
+            0.25996697743733727,
+            0.587885633277184,
+            0.8192767461140951
+          ],
+          "detectionScore": 0.6726261377334595,
+          "species": "banana",
+          "classId": 1,
+          "probabilities": [
+            0.00001946643169503659,
+            0.9999805092811584
+          ],
+          "graded": true,
+          "gradeScheme": "source_two_stage",
+          "status": "OK"
+        }
+      ],
+      "elapsedMs": 401.285204
+    },
+    {
+      "timestampMs": 5000,
+      "objects": [],
+      "elapsedMs": 647.548785
+    },
+    {
+      "timestampMs": 5500,
+      "objects": [
+        {
+          "box": [
+            0.0020036094693889404,
+            0.12197068532307943,
+            0.40414576193657065,
+            0.3370736757914225
+          ],
+          "detectionScore": 0.9444950819015503,
+          "species": "mango",
+          "classId": 1,
+          "probabilities": [
+            2.468285913437285e-7,
+            0.9999997615814209
+          ],
+          "graded": true,
+          "gradeScheme": "source_two_stage",
+          "status": "OK"
+        }
+      ],
+      "elapsedMs": 411.900814
+    },
+    {
+      "timestampMs": 6000,
+      "objects": [
+        {
+          "box": [
+            0.6659933891438197,
+            0.09762619336446127,
+            0.9630179139318076,
+            0.3691871643066406
+          ],
+          "detectionScore": 0.8876335024833679,
+          "species": "mango",
+          "classId": 1,
+          "probabilities": [
+            0.000054323692893376574,
+            0.9999457001686096
+          ],
+          "graded": true,
+          "gradeScheme": "source_two_stage",
+          "status": "OK"
+        }
+      ],
+      "elapsedMs": 562.301011
+    },
+    {
+      "timestampMs": 6500,
+      "objects": [],
+      "elapsedMs": 381.509926
+    },
+    {
+      "timestampMs": 7000,
+      "objects": [],
+      "elapsedMs": 630.98403
+    },
+    {
+      "timestampMs": 7500,
+      "objects": [
+        {
+          "box": [
+            0,
+            0.24016526540120442,
+            0.6129432876757086,
+            0.8126639048258464
+          ],
+          "detectionScore": 0.5019663572311401,
+          "species": "banana",
+          "classId": 1,
+          "probabilities": [
+            0.000024755829144851305,
+            0.9999752640724182
+          ],
+          "graded": true,
+          "gradeScheme": "source_two_stage",
+          "status": "OK"
+        }
+      ],
+      "elapsedMs": 384.658535
+    },
+    {
+      "timestampMs": 8000,
+      "objects": [
+        {
+          "box": [
+            0.19736767169711314,
+            0.23179114659627278,
+            0.8091224188255112,
+            0.8457520802815756
+          ],
+          "detectionScore": 0.8081523180007935,
+          "species": "banana",
+          "classId": 1,
+          "probabilities": [
+            0.000056376869906671345,
+            0.9999436736106873
+          ],
+          "graded": true,
+          "gradeScheme": "source_two_stage",
+          "status": "OK"
+        }
+      ],
+      "elapsedMs": 540.453719
+    },
+    {
+      "timestampMs": 8500,
+      "objects": [
+        {
+          "box": [
+            0.22079683325104554,
+            0.2514535903930664,
+            0.7912383239065405,
+            0.7609767913818359
+          ],
+          "detectionScore": 0.8131406307220459,
+          "species": "banana",
+          "classId": 1,
+          "probabilities": [
+            0.000048337817133869976,
+            0.9999516010284424
+          ],
+          "graded": true,
+          "gradeScheme": "source_two_stage",
+          "status": "OK"
+        }
+      ],
+      "elapsedMs": 379.597187
+    },
+    {
+      "timestampMs": 9000,
+      "objects": [
+        {
+          "box": [
+            0.2635645529594563,
+            0.34397862752278646,
+            0.7595609643645446,
+            0.8081470489501953
+          ],
+          "detectionScore": 0.8767134547233582,
+          "species": "mango",
+          "classId": 1,
+          "probabilities": [
+            0.00002698172647797037,
+            0.9999729990959167
+          ],
+          "graded": true,
+          "gradeScheme": "source_two_stage",
+          "status": "OK"
+        }
+      ],
+      "elapsedMs": 566.17169
+    },
+    {
+      "timestampMs": 9500,
+      "objects": [
+        {
+          "box": [
+            0.15110319343198186,
+            0.3240925153096517,
+            0.6587955517396608,
+            0.9100911458333333
+          ],
+          "detectionScore": 0.7507786750793457,
+          "species": "banana",
+          "classId": 1,
+          "probabilities": [
+            0.00006152877176646143,
+            0.9999384880065918
+          ],
+          "graded": true,
+          "gradeScheme": "source_two_stage",
+          "status": "OK"
+        }
+      ],
+      "elapsedMs": 369.48143
+    },
+    {
+      "timestampMs": 10000,
+      "objects": [
+        {
+          "box": [
+            0.17649007463986988,
+            0.2902985572814941,
+            0.6724864860449582,
+            0.7998217264811198
+          ],
+          "detectionScore": 0.7878174781799316,
+          "species": "mango",
+          "classId": 1,
+          "probabilities": [
+            0.000001234833462149254,
+            0.9999987483024597
+          ],
+          "graded": true,
+          "gradeScheme": "source_two_stage",
+          "status": "OK"
+        }
+      ],
+      "elapsedMs": 593.871782
+    },
+    {
+      "timestampMs": 10500,
+      "objects": [
+        {
+          "box": [
+            0.24149643001060062,
+            0.30043773651123046,
+            0.7039968497691101,
+            0.7755516688028972
+          ],
+          "detectionScore": 0.8048807382583618,
+          "species": "banana",
+          "classId": 1,
+          "probabilities": [
+            0.0002994667156599462,
+            0.9997005462646484
+          ],
+          "graded": true,
+          "gradeScheme": "source_two_stage",
+          "status": "OK"
+        }
+      ],
+      "elapsedMs": 390.155925
+    },
+    {
+      "timestampMs": 11000,
+      "objects": [
+        {
+          "box": [
+            0.2199452907179368,
+            0.33194522857666015,
+            0.6512119902997212,
+            0.7749734878540039
+          ],
+          "detectionScore": 0.7216113209724426,
+          "species": "mango",
+          "classId": 1,
+          "probabilities": [
+            0.00012159793550381437,
+            0.9998784065246582
+          ],
+          "graded": true,
+          "gradeScheme": "source_two_stage",
+          "status": "OK"
+        }
+      ],
+      "elapsedMs": 578.756962
+    },
+    {
+      "timestampMs": 11500,
+      "objects": [
+        {
+          "box": [
+            0.3035308384097642,
+            0.342317008972168,
+            0.7553765392657993,
+            0.8174309412638346
+          ],
+          "detectionScore": 0.8583815693855286,
+          "species": "banana",
+          "classId": 1,
+          "probabilities": [
+            0.00016964675160124898,
+            0.9998303651809692
+          ],
+          "graded": true,
+          "gradeScheme": "source_two_stage",
+          "status": "OK"
+        }
+      ],
+      "elapsedMs": 361.245592
+    },
+    {
+      "timestampMs": 12000,
+      "objects": [
+        {
+          "box": [
+            0.1308550639666589,
+            0.2998305638631185,
+            0.5933555404492914,
+            0.7326525370279948
+          ],
+          "detectionScore": 0.43610069155693054,
+          "species": "banana",
+          "classId": 1,
+          "probabilities": [
+            0.0005465557333081961,
+            0.9994534254074097
+          ],
+          "graded": true,
+          "gradeScheme": "source_two_stage",
+          "status": "OK"
+        }
+      ],
+      "elapsedMs": 579.021408
+    },
+    {
+      "timestampMs": 12500,
+      "objects": [
+        {
+          "box": [
+            0.12189032685800999,
+            0.23703959782918294,
+            0.6663514318076208,
+            0.7708760579427083
+          ],
+          "detectionScore": 0.45817476511001587,
+          "species": "mango",
+          "classId": 1,
+          "probabilities": [
+            3.625375768478989e-7,
+            0.9999997019767761
+          ],
+          "graded": true,
+          "gradeScheme": "source_two_stage",
+          "status": "OK"
+        }
+      ],
+      "elapsedMs": 393.591445
+    },
+    {
+      "timestampMs": 13000,
+      "objects": [
+        {
+          "box": [
+            0.2171516276646724,
+            0.34679218928019206,
+            0.7616126758901604,
+            0.8563153584798177
+          ],
+          "detectionScore": 0.8212526440620422,
+          "species": "banana",
+          "classId": 1,
+          "probabilities": [
+            0.00004750192601932213,
+            0.9999525547027588
+          ],
+          "graded": true,
+          "gradeScheme": "source_two_stage",
+          "status": "OK"
+        }
+      ],
+      "elapsedMs": 591.016583
+    },
+    {
+      "timestampMs": 13500,
+      "objects": [
+        {
+          "box": [
+            0.2073694959449059,
+            0.3119278271993001,
+            0.7270335371166357,
+            0.7982452392578125
+          ],
+          "detectionScore": 0.650305449962616,
+          "species": "banana",
+          "classId": 1,
+          "probabilities": [
+            0.000048283804062521085,
+            0.9999517202377319
+          ],
+          "graded": true,
+          "gradeScheme": "source_two_stage",
+          "status": "OK"
+        }
+      ],
+      "elapsedMs": 364.011177
+    }
+  ]
+}

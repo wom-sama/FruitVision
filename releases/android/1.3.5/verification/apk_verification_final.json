@@ -1,0 +1,158 @@
+{
+  "status": "APK_PACKAGE_VERIFIED",
+  "versionName": "1.3.5",
+  "actualVersionCode": 5009,
+  "model_sha256": "8a69c66a9444c18c98a7e3e58a44f4dddda9eb4583dd4448f430ff9e8db27c41",
+  "checkpoint_sha256": "eb1716e3d9f4ecfaca124849a0ec0385638aaa381d770a7136969d35502a97ee",
+  "source_export_receipt": "C:\\Users\\ADMIN\\Documents\\Codex\\2026-08-23\\gi\\mobile_multifruit_work_20261009\\artifacts\\partial_visibility_context_training_20261015\\release\\release_receipt.json",
+  "source_export_receipt_sha256": "dce5847da343720c371b8a1f8bf77a27ed5603efad57df758b24a701bf5742b2",
+  "source_export_file_sha256": {
+    "mango_detector.onnx": "8a69c66a9444c18c98a7e3e58a44f4dddda9eb4583dd4448f430ff9e8db27c41",
+    "detector_metadata.json": "81156cf75cf52d694ed0e4028cdb862dc15718c8e8698cf56f39d6d874d0b3b0",
+    "model_metadata.json": "81156cf75cf52d694ed0e4028cdb862dc15718c8e8698cf56f39d6d874d0b3b0",
+    "SOURCE_ATTRIBUTION.json": "84b4b8dee229ed4fd025cc6d956856c73b5655d212b5d995905298da008307d0",
+    "YOLOX_LICENSE.txt": "0ec3668d3274bcf29e8a29e9576d5a2cd96fc78d3c5bec4387355a796e5d9088",
+    "parity.json": "d3977787c2b38bb5438c225090a4fa814d87192d101b032c6169931cde8c8faa",
+    "val_metrics.json": "3177038c525ef737a62fc51dceb084296ab3a172328727345dee70c2d9d5b26b",
+    "test_metrics.json": "caf41ce1831ccc811aad49dddb3a0bf7fd6c4834e191f1bf14110e5ba89fd40f",
+    "release_receipt.json": "dce5847da343720c371b8a1f8bf77a27ed5603efad57df758b24a701bf5742b2"
+  },
+  "stage_directory": "C:\\Users\\ADMIN\\Documents\\Codex\\2026-08-23\\gi\\mobile_multifruit_work_20261009\\artifacts\\apk_1_3_4_partial_visibility_stage_20261015\\assets",
+  "packaged_asset_sha256": {
+    "mango_detector.onnx": "8a69c66a9444c18c98a7e3e58a44f4dddda9eb4583dd4448f430ff9e8db27c41",
+    "mango_student.onnx": "819d023fa5f2ee624c63c630ec37e190548f1f793848ea17a86d1000acaf6be9",
+    "detector_metadata.json": "11bf1182976dd70f2354340359ac43b51b78ff202bf9ac4f41e45b1c6b074538",
+    "model_metadata.json": "c4a6e216da65b64db57d09feaee2d9725b363c4fe2938c3370a5c41c65092417",
+    "demo_mango.jpg": "0104a1e5e313f5c4082607b4cac73b2497f9a916d130e500c96616e05684b9f5",
+    "demo_multi_mango.png": "efd9b77733593c6ecbebc3304a0b64394e8019df394f82d13bb386f108b33dd2",
+    "SOURCE_ATTRIBUTION.json": "84b4b8dee229ed4fd025cc6d956856c73b5655d212b5d995905298da008307d0",
+    "YOLOX_LICENSE.txt": "0ec3668d3274bcf29e8a29e9576d5a2cd96fc78d3c5bec4387355a796e5d9088"
+  },
+  "apks": [
+    {
+      "abi": "armeabi-v7a",
+      "versionName": "1.3.5",
+      "versionCode": 5009,
+      "bytes": 63964793,
+      "sha256": "aa3eb87e4b0805b3f4c8ed058c3ebc9d8ac4c3960f17560e63c640770a554543",
+      "nativeAbis": [
+        "armeabi-v7a"
+      ],
+      "offlineManifestVerified": true,
+      "minSdk": 26,
+      "targetSdk": 36,
+      "signatureV2Verified": true,
+      "models": {
+        "mango_detector.onnx": "8a69c66a9444c18c98a7e3e58a44f4dddda9eb4583dd4448f430ff9e8db27c41",
+        "mango_student.onnx": "819d023fa5f2ee624c63c630ec37e190548f1f793848ea17a86d1000acaf6be9"
+      },
+      "metadata": {
+        "detector_metadata.json": "11bf1182976dd70f2354340359ac43b51b78ff202bf9ac4f41e45b1c6b074538",
+        "model_metadata.json": "c4a6e216da65b64db57d09feaee2d9725b363c4fe2938c3370a5c41c65092417"
+      },
+      "path": "C:\\Users\\ADMIN\\Documents\\Codex\\2026-08-23\\gi\\mobile_multifruit_work_20261009\\app\\build\\app\\outputs\\apk\\release\\app-armeabi-v7a-release.apk",
+      "running_encoders": 1,
+      "native_preprocessing": {
+        "bytes": 161256,
+        "sha256": "d14080e3b2b35d92ec6f40c16a5ab4494d747ea21c8f0139e02324881ce7d3e0",
+        "elf_machine": 40,
+        "jni_class_present": true
+      }
+    },
+    {
+      "abi": "arm64-v8a",
+      "versionName": "1.3.5",
+      "versionCode": 5009,
+      "bytes": 76729351,
+      "sha256": "0572a16dee928aa90c6132c973d2e15563034ceced9853fabb42f587a4ed8e0c",
+      "nativeAbis": [
+        "arm64-v8a"
+      ],
+      "offlineManifestVerified": true,
+      "minSdk": 26,
+      "targetSdk": 36,
+      "signatureV2Verified": true,
+      "models": {
+        "mango_detector.onnx": "8a69c66a9444c18c98a7e3e58a44f4dddda9eb4583dd4448f430ff9e8db27c41",
+        "mango_student.onnx": "819d023fa5f2ee624c63c630ec37e190548f1f793848ea17a86d1000acaf6be9"
+      },
+      "metadata": {
+        "detector_metadata.json": "11bf1182976dd70f2354340359ac43b51b78ff202bf9ac4f41e45b1c6b074538",
+        "model_metadata.json": "c4a6e216da65b64db57d09feaee2d9725b363c4fe2938c3370a5c41c65092417"
+      },
+      "path": "C:\\Users\\ADMIN\\Documents\\Codex\\2026-08-23\\gi\\mobile_multifruit_work_20261009\\app\\build\\app\\outputs\\apk\\release\\app-arm64-v8a-release.apk",
+      "running_encoders": 1,
+      "native_preprocessing": {
+        "bytes": 272576,
+        "sha256": "44a2405160ac5af4145b028036e3dea2f09a54a02989d6c6e4ba01cdf885dc94",
+        "elf_machine": 183,
+        "jni_class_present": true
+      }
+    },
+    {
+      "abi": "x86_64",
+      "versionName": "1.3.5",
+      "versionCode": 5009,
+      "bytes": 84872194,
+      "sha256": "db6e9cc09c3a77c715823b52fca4cc49ec20d01ed676fe3156c3643e7e37d555",
+      "nativeAbis": [
+        "x86_64"
+      ],
+      "offlineManifestVerified": true,
+      "minSdk": 26,
+      "targetSdk": 36,
+      "signatureV2Verified": true,
+      "models": {
+        "mango_detector.onnx": "8a69c66a9444c18c98a7e3e58a44f4dddda9eb4583dd4448f430ff9e8db27c41",
+        "mango_student.onnx": "819d023fa5f2ee624c63c630ec37e190548f1f793848ea17a86d1000acaf6be9"
+      },
+      "metadata": {
+        "detector_metadata.json": "11bf1182976dd70f2354340359ac43b51b78ff202bf9ac4f41e45b1c6b074538",
+        "model_metadata.json": "c4a6e216da65b64db57d09feaee2d9725b363c4fe2938c3370a5c41c65092417"
+      },
+      "path": "C:\\Users\\ADMIN\\Documents\\Codex\\2026-08-23\\gi\\mobile_multifruit_work_20261009\\app\\build\\app\\outputs\\apk\\release\\app-x86_64-release.apk",
+      "running_encoders": 1,
+      "native_preprocessing": {
+        "bytes": 269872,
+        "sha256": "f43cfcdf915b6adb19c36e82687400237de4d8ddf097dd00b34258d3eabcf1eb",
+        "elf_machine": 62,
+        "jni_class_present": true
+      }
+    }
+  ],
+  "performance_source_sha256": {
+    "app/android/app/src/main/kotlin/vn/mangodemo/mango_offline/NativeDetector.kt": "42e79d750ddc37c325407762e0eebb76b63bb22a54534d837a9bfba4d54f784c",
+    "app/android/app/src/main/kotlin/vn/mangodemo/mango_offline/NativeInferenceEngine.kt": "93064a0e4fb96839598ff7a3af5fa3de4118b0497f8e3fb009803f97846b4d9a",
+    "app/android/app/src/main/kotlin/vn/mangodemo/mango_offline/RuntimeAccelerationPolicy.kt": "fee7b2f3651227324bde47aeb673be4c8ae633d7ced1475021fcc560290c2b99",
+    "app/android/app/src/main/kotlin/vn/mangodemo/mango_offline/NativeVideoDecoder.kt": "eb8273eab6751b1d6c6b8e1c28fb83ab189dd10ee0eb6ba26f7bef15b3eb3bec",
+    "app/android/app/src/main/kotlin/vn/mangodemo/mango_offline/NativeYuvConverter.kt": "1776ade4a9bff5d13d0543f0295bbafd7d5118690244385c1501107c098f1245",
+    "app/lib/fruit_tracking.dart": "fd1f3671383524445d5115e595b41ce91538111b2aa5b7f5b49630652f05986b"
+  },
+  "generic_unknown_contract": {
+    "species_id": 2,
+    "species": "fruit",
+    "stage_id": 0,
+    "probabilities": [
+      0.5,
+      0.5
+    ],
+    "graded": false
+  },
+  "new_quality_evaluation_performed": false,
+  "scientific_video_pass": false,
+  "physical_device_30fps_verified": false,
+  "startup_runtime_benchmark_verified_by_package": false,
+  "noncommercial_demo_only": true,
+  "performance_changes": [
+    "Single serving session without first-inference multi-provider search.",
+    "Decoder-owned pixel storage reused across sequential frames.",
+    "Current tracking assignment excludes expired historical identities."
+  ],
+  "scope": "Actual APK payload, unchanged qualified source export, ABI, SDK, offline manifest, v2 signature and native preprocessing. Current source hashes are recorded, not binary attestation.",
+  "limitations": [
+    "Startup and buffer fixes need their separate actual Android test/benchmark receipts; this package receipt does not measure improvement.",
+    "No new independent field quality or physical-device 30 FPS claim.",
+    "Generic fruit is geometry only and ungraded; source-stage accuracy is not field ripeness accuracy.",
+    "Existing Android debug signing key and noncommercial demo-only dataset restrictions remain."
+  ]
+}

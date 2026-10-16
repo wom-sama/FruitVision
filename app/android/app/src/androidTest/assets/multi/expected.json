@@ -1,0 +1,192 @@
+{
+  "detector_sha256": "84e7efd5ebd595eb65d035e56f90113eeb3241a311bde8f73a782d553e5a9c66",
+  "grader_sha256": "819d023fa5f2ee624c63c630ec37e190548f1f793848ea17a86d1000acaf6be9",
+  "confidence_threshold": 0.55,
+  "note": "Synthetic host/mobile parity fixtures, not a real multi-fruit benchmark. 8-grid currently missed at320 resolution.",
+  "fixtures": [
+    {
+      "filename": "scene_0.png",
+      "image_sha256": "dec6ca47ae5494515c51cf1748522067664e038f44379acf78c5ef899dbbb372",
+      "width": 640,
+      "height": 640,
+      "synthetic": true,
+      "syntheticGroundTruthCount": 0,
+      "actualDetectedCount": 0,
+      "detectionLimitReached": false,
+      "objects": []
+    },
+    {
+      "filename": "scene_1.png",
+      "image_sha256": "38c0f5cbb687a7961490496317737eb3e66a9b242062da6cb6f04c7972f88ab6",
+      "width": 320,
+      "height": 320,
+      "synthetic": true,
+      "syntheticGroundTruthCount": 1,
+      "actualDetectedCount": 1,
+      "detectionLimitReached": false,
+      "objects": [
+        {
+          "box": [
+            0.3107931137084961,
+            0.3598780632019043,
+            0.7405085563659668,
+            0.8941664695739746
+          ],
+          "detectionScore": 0.979265570640564,
+          "classId": 3,
+          "probabilities": [
+            0.0007764166581210331,
+            0.003525539448762066,
+            0.14368856855249199,
+            0.6163527181810358,
+            0.23565675715958911
+          ],
+          "status": "OK"
+        }
+      ]
+    },
+    {
+      "filename": "scene_2.png",
+      "image_sha256": "a0b11ee8ef3384cd1cfefbea55f3518b0297126b0a494504271e40e124515c08",
+      "width": 640,
+      "height": 320,
+      "synthetic": true,
+      "syntheticGroundTruthCount": 2,
+      "actualDetectedCount": 2,
+      "detectionLimitReached": false,
+      "objects": [
+        {
+          "box": [
+            0.6503026962280274,
+            0.2789137363433838,
+            0.8778825759887695,
+            0.9133880615234375
+          ],
+          "detectionScore": 0.999458372592926,
+          "classId": 2,
+          "probabilities": [
+            1.7575644099582545e-05,
+            0.008797515283018517,
+            0.9874754056424516,
+            0.0035919889146236606,
+            0.00011751451580658008
+          ],
+          "status": "OK"
+        },
+        {
+          "box": [
+            0.1708000421524048,
+            0.3432596206665039,
+            0.36414759159088134,
+            0.9033407211303711
+          ],
+          "detectionScore": 0.998594343662262,
+          "classId": 3,
+          "probabilities": [
+            0.000404446653939704,
+            0.0027543698774379895,
+            0.129303512108731,
+            0.6373681864605282,
+            0.23016948489936298
+          ],
+          "status": "OK"
+        }
+      ]
+    },
+    {
+      "filename": "scene_4.png",
+      "image_sha256": "64bdcc10de33e1d55e750a541bf6cf5998ffe0f3493e03324e8c3b71ffa55bb4",
+      "width": 640,
+      "height": 640,
+      "synthetic": true,
+      "syntheticGroundTruthCount": 4,
+      "actualDetectedCount": 4,
+      "detectionLimitReached": false,
+      "objects": [
+        {
+          "box": [
+            0.6504687309265137,
+            0.13617690801620483,
+            0.8778223991394043,
+            0.4517242431640625
+          ],
+          "detectionScore": 0.9992563128471375,
+          "classId": 2,
+          "probabilities": [
+            1.6406920457498062e-05,
+            0.008616082799619996,
+            0.9879681313712775,
+            0.0033040681048724448,
+            9.531080377255353e-05
+          ],
+          "status": "OK"
+        },
+        {
+          "box": [
+            0.17104876041412354,
+            0.16980183124542236,
+            0.36732485294342043,
+            0.4568826675415039
+          ],
+          "detectionScore": 0.9986414313316345,
+          "classId": 3,
+          "probabilities": [
+            0.0003225315916311064,
+            0.002322022091293338,
+            0.0863324377343056,
+            0.7353972842738592,
+            0.1756257243089107
+          ],
+          "status": "OK"
+        },
+        {
+          "box": [
+            0.6185613632202148,
+            0.6374425411224365,
+            0.8981599807739258,
+            0.7967456340789795
+          ],
+          "detectionScore": 0.9977772831916809,
+          "classId": 2,
+          "probabilities": [
+            4.001142999522725e-05,
+            0.005439192112270655,
+            0.9633352925180392,
+            0.029947976831752595,
+            0.0012375271079422853
+          ],
+          "status": "OK"
+        },
+        {
+          "box": [
+            0.07760740518569946,
+            0.683369779586792,
+            0.33921160697937014,
+            0.8245519638061524
+          ],
+          "detectionScore": 0.9873190522193909,
+          "classId": 2,
+          "probabilities": [
+            4.2469206056779586e-05,
+            0.003915790805921436,
+            0.9912949688933219,
+            0.00461923598149357,
+            0.00012753511320618986
+          ],
+          "status": "OK"
+        }
+      ]
+    },
+    {
+      "filename": "scene_8.png",
+      "image_sha256": "0699652b03f92ece1511785703ced5dd25df0c87f93397b198e84d0220e8f456",
+      "width": 1280,
+      "height": 640,
+      "synthetic": true,
+      "syntheticGroundTruthCount": 8,
+      "actualDetectedCount": 0,
+      "detectionLimitReached": false,
+      "objects": []
+    }
+  ]
+}

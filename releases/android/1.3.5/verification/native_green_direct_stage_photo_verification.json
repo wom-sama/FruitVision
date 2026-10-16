@@ -1,0 +1,76 @@
+{
+  "records": [
+    {
+      "file": "actual_source_0.png",
+      "count": 1,
+      "maxBoxError": 0,
+      "maxStageScoreError": 0,
+      "elapsedMs": 154.103849,
+      "modelMs": 69.309567,
+      "nativePssMb": 151.111328125,
+      "runtimeProvider": "CPU",
+      "runtimeSelection": "CPU: reused session; no blocking provider search during analysis",
+      "runtimeTuningMs": 0
+    },
+    {
+      "file": "actual_source_1.png",
+      "count": 1,
+      "maxBoxError": 0,
+      "maxStageScoreError": 0,
+      "elapsedMs": 92.515861,
+      "modelMs": 71.992004,
+      "nativePssMb": 150.673828125,
+      "runtimeProvider": "CPU",
+      "runtimeSelection": "CPU: reused session; no blocking provider search during analysis",
+      "runtimeTuningMs": 0
+    },
+    {
+      "file": "actual_source_2.png",
+      "count": 1,
+      "maxBoxError": 0,
+      "maxStageScoreError": 0,
+      "elapsedMs": 77.550216,
+      "modelMs": 62.089693,
+      "nativePssMb": 151.138671875,
+      "runtimeProvider": "CPU",
+      "runtimeSelection": "CPU: reused session; no blocking provider search during analysis",
+      "runtimeTuningMs": 0
+    },
+    {
+      "file": "actual_source_3.png",
+      "count": 1,
+      "maxBoxError": 0,
+      "maxStageScoreError": 0,
+      "elapsedMs": 72.121787,
+      "modelMs": 55.64124,
+      "nativePssMb": 151.599609375,
+      "runtimeProvider": "CPU",
+      "runtimeSelection": "CPU: reused session; no blocking provider search during analysis",
+      "runtimeTuningMs": 0
+    },
+    {
+      "file": "actual_source_4.png",
+      "count": 3,
+      "maxBoxError": 0,
+      "maxStageScoreError": 0,
+      "elapsedMs": 72.209338,
+      "modelMs": 58.524328,
+      "nativePssMb": 152.076171875,
+      "runtimeProvider": "CPU",
+      "runtimeSelection": "CPU: reused session; no blocking provider search during analysis",
+      "runtimeTuningMs": 0
+    },
+    {
+      "file": "actual_source_5.png",
+      "count": 0,
+      "maxBoxError": 0,
+      "maxStageScoreError": 0,
+      "elapsedMs": 94.880745,
+      "modelMs": 55.342909,
+      "nativePssMb": 162.806640625,
+      "runtimeProvider": "CPU",
+      "runtimeSelection": "CPU: reused session; no blocking provider search during analysis",
+      "runtimeTuningMs": 0
+    }
+  ]
+}

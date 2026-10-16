@@ -1,0 +1,21 @@
+{
+  "passed": false,
+  "expected_failure": true,
+  "tests": null,
+  "elapsed_seconds": 5.1859639999993306,
+  "command": [
+    "C:\\Users\\ADMIN\\AppData\\Local\\Android\\Sdk\\platform-tools\\adb.exe",
+    "-s",
+    "emulator-5554",
+    "shell",
+    "am",
+    "instrument",
+    "-w",
+    "-r",
+    "-e",
+    "class",
+    "vn.mangodemo.mango_offline.VideoPresentationCostDeviceTest#firstAnalysisDoesNotBlockOnMultiSessionProviderSearch,vn.mangodemo.mango_offline.NativeVideoDecoderDeviceTest#sequentialDecoderBorrowsOnePixelBufferUntilDecoderClose",
+    "vn.mangodemo.mango_offline.test/androidx.test.runner.AndroidJUnitRunner"
+  ],
+  "physical_phone": false
+}

@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "expected_failure": false,
+  "tests": 17,
+  "elapsed_seconds": 7.608526699999857,
+  "command": [
+    "C:\\Users\\ADMIN\\AppData\\Local\\Android\\Sdk\\platform-tools\\adb.exe",
+    "-s",
+    "emulator-5554",
+    "shell",
+    "am",
+    "instrument",
+    "-w",
+    "-r",
+    "-e",
+    "class",
+    "vn.mangodemo.mango_offline.VideoPresentationCostDeviceTest,vn.mangodemo.mango_offline.NativeVideoDecoderDeviceTest,vn.mangodemo.mango_offline.NativeYuvConverterDeviceTest,vn.mangodemo.mango_offline.DirectStageDeviceTest",
+    "vn.mangodemo.mango_offline.test/androidx.test.runner.AndroidJUnitRunner"
+  ],
+  "physical_phone": false
+}

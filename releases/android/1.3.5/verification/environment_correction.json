@@ -1,0 +1,22 @@
+{
+  "schema": "android-emulator-environment-correction-v1",
+  "observed_date_local": "2026-10-16",
+  "avd": "Pixel_8_API_37",
+  "api": 37,
+  "architecture": "x86_64",
+  "graphics": "SwiftShader software graphics",
+  "requested_memory_mib": 2048,
+  "actual_allocated_memory_mib": 4096,
+  "guest_memtotal_kib": 4008504,
+  "guest_memtotal_gib_approx": 3.82,
+  "evidence": [
+    "verification/performance_fix_20261016/emulator_startup.log",
+    "verification/performance_fix_20261016/release_emulator_start.log",
+    "verification/performance_fix_20261016/final_emulator_start.log",
+    "adb -s emulator-5554 shell head -n 3 /proc/meminfo"
+  ],
+  "startup_log_actual_message": "Increasing RAM size to 4096MB",
+  "correction": "The API 37 image overrides the requested 2048 MiB. These emulator checks are not validation on a 2 GiB device. Prior immutable receipts are not rewritten; comparisons must not treat their requested memory as verified actual memory.",
+  "physical_phone_tested": false,
+  "emulator_result_is_phone_performance_proof": false
+}

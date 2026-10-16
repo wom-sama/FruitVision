@@ -1,0 +1,10 @@
+# Optional PyTorch reconstruction/export tools, not needed to install/build the app.
+# Python 3.11; install torch/torchvision CPU wheels as described in README.md first.
+torch==2.10.0
+torchvision==0.25.0
+onnx==1.19.1
+onnxruntime==1.23.2
+numpy==2.0.2
+opencv-python-headless==4.13.0.92
+loguru==0.7.3
+tabulate==0.9.0

@@ -1,0 +1,317 @@
+{
+  "command_fingerprints": {
+    "03f2c1a9591e58703b861aed7721e78c85bc27b09033589564247045019cd369": 2,
+    "0e9114d7b1c83a2d91349c324717bca013ca69bb57faffafea3ce1a1bf982fd2": 1,
+    "1dbafe49f6ae357eb59ab918291b48a21fa910b590c3fd7c46732e4ba9f059b0": 1,
+    "592ce7666feccc74cfe9db372064bbf8c7fb6f94bf295e0280d15311f8d0be88": 1,
+    "6e59826909da16fc106e58a8e33725d5a852855dcaf43ed79c369f4801d126ea": 1,
+    "8cfd40c6c835e9c1161f5e94b32071ce84bad9383326a3108436bf43c4aaa3a1": 1,
+    "aec96975319d0a01370f5789ec79153b0a6edd14a2951e122b9871bad361e87b": 1,
+    "f3ef66b804a71f6c697851d2bdf3816386839b0a4386907559a986a90f19c7bb": 1
+  },
+  "failure_fingerprints": {
+    "2267ec72b3330b8d198dc7846349b42155b52492fc1bd56fac50701bbc5b2580": {
+      "excerpt": "e: file:///C:/Users/ADMIN/Documents/Codex/2026-08-23/gi/mobile_multifruit_work_20261009/app/android/app/src/test/kotlin/vn/mangodemo/mango_offline/RuntimeAccelerationPolicyTest.kt:11:51 Unresolved reference 'workerThreads'.",
+      "occurrences": 1
+    },
+    "432bbf77fea5bcec81b8078d7d97769e49d8e64c4d3291ad65d493c634c7a182": {
+      "excerpt": "e: file:///C:/Users/ADMIN/Documents/Codex/2026-08-23/gi/mobile_multifruit_work_20261009/app/android/app/src/test/kotlin/vn/mangodemo/mango_offline/RuntimeAccelerationPolicyTest.kt:7:51 Unresolved reference 'workerThreads'.",
+      "occurrences": 1
+    },
+    "766d2f79c2d4190571b58d3e62c75b0341078305ff81a7094986ab062597f659": {
+      "excerpt": "e: file:///C:/Users/ADMIN/Documents/Codex/2026-08-23/gi/mobile_multifruit_work_20261009/app/android/app/src/test/kotlin/vn/mangodemo/mango_offline/RuntimeAccelerationPolicyTest.kt:10:51 Unresolved reference 'workerThreads'.",
+      "occurrences": 1
+    },
+    "91ae42eab35bd5a35851f2b8c5d227a5df48dbd1cfb703dc47e40b31e2859af3": {
+      "excerpt": "* What went wrong: Execution failed for task ':app:compileDebugUnitTestKotlin'. > A failure occurred while executing org.jetbrains.kotlin.compilerRunner.btapi.BuildToolsApiCompilationWork > Compilation error. See log for more details",
+      "occurrences": 1
+    },
+    "9ef8a3edfb2f6ac3a72529cfc605c6b3f07c7ec6ddbeacfd1b1ec29691124afb": {
+      "excerpt": "e: file:///C:/Users/ADMIN/Documents/Codex/2026-08-23/gi/mobile_multifruit_work_20261009/app/android/app/src/test/kotlin/vn/mangodemo/mango_offline/RuntimeAccelerationPolicyTest.kt:12:51 Unresolved reference 'workerThreads'.",
+      "occurrences": 1
+    },
+    "b3f9fc5d0ef1c9bafcd0c55ba6aca7872b662444381df47a3b496bcacaea48e9": {
+      "excerpt": "* What went wrong: Execution failed for task ':app:testDebugUnitTest'. > There were failing tests. See the report at: file:///C:/Users/ADMIN/Documents/Codex/2026-08-23/gi/mobile_multifruit_work_20261009/app/build/app/reports/tests/testDebugUnitTest/inde...",
+      "occurrences": 1
+    },
+    "be7151e87a56873fcfa1c4ce2073089b0fa3461f5bf25e1a1f1edb6506e43069": {
+      "excerpt": "e: file:///C:/Users/ADMIN/Documents/Codex/2026-08-23/gi/mobile_multifruit_work_20261009/app/android/app/src/test/kotlin/vn/mangodemo/mango_offline/RuntimeAccelerationPolicyTest.kt:8:51 Unresolved reference 'workerThreads'.",
+      "occurrences": 1
+    },
+    "fa668b3947761b1cab3b48b7a172080e4426bab8ef4f2e693c8c6c872d34cf03": {
+      "excerpt": "e: file:///C:/Users/ADMIN/Documents/Codex/2026-08-23/gi/mobile_multifruit_work_20261009/app/android/app/src/test/kotlin/vn/mangodemo/mango_offline/RuntimeAccelerationPolicyTest.kt:9:51 Unresolved reference 'workerThreads'.",
+      "occurrences": 1
+    }
+  },
+  "failure_fingerprints_truncated_occurrences": 0,
+  "run_count": 9,
+  "runs": [
+    {
+      "command": ".\\gradlew.bat :app:assembleDebug :app:assembleDebugAndroidTest -Ptarget=lib/main.dart --console=plain --no-scan",
+      "elapsed_seconds": 58.484,
+      "exit_status": 0,
+      "failure_fingerprints": [],
+      "log": "0001.log",
+      "question": "Can the unchanged 1.3.4 native app and presentation-cost instrumentation build for an Android baseline?",
+      "scope": "targeted",
+      "sequence": 1,
+      "warning_fingerprints": [
+        "836127176da906c7b0372fd75c9f5c638f863e7b7283fe8dc434053b8a0cc044",
+        "456fbad4e234627793d72e0cce000fb0f3eee76b5347e5d26b777c344074ea34",
+        "aa97cb1fd7c5b6b775441442a69d1b3380716195c50388c89872d56f56fc2503",
+        "8bd7caea53305bbf2f02979a923ba7aa44891ffef75c7212e92e4b0207b3bfc9",
+        "fe5c498970f59d8c2ffc259b6913ed8b7f62ba345c13d907440d213f6504b66c",
+        "12a0c936f3ca0542864dfdc026d4744c2ae3e495d4cf82f381336cc2ad12adc2",
+        "7660d203379ceeabfa89a9580d86b9c67a150b04ee096a305bed27b8752f0de8",
+        "e489e021c3e070b4c8202de540affb16942f3831035b4b7361e376f80459c2ea"
+      ]
+    },
+    {
+      "command": ".\\gradlew.bat :app:assembleDebugAndroidTest -Ptarget=lib/main.dart --console=plain --no-scan",
+      "elapsed_seconds": 9.562,
+      "exit_status": 0,
+      "failure_fingerprints": [],
+      "log": "0002.log",
+      "question": "Do startup-stall and video pixel-reuse regressions reproduce before the native performance fix?",
+      "scope": "targeted",
+      "sequence": 2,
+      "warning_fingerprints": [
+        "836127176da906c7b0372fd75c9f5c638f863e7b7283fe8dc434053b8a0cc044",
+        "456fbad4e234627793d72e0cce000fb0f3eee76b5347e5d26b777c344074ea34",
+        "aa97cb1fd7c5b6b775441442a69d1b3380716195c50388c89872d56f56fc2503",
+        "8bd7caea53305bbf2f02979a923ba7aa44891ffef75c7212e92e4b0207b3bfc9",
+        "fe5c498970f59d8c2ffc259b6913ed8b7f62ba345c13d907440d213f6504b66c",
+        "12a0c936f3ca0542864dfdc026d4744c2ae3e495d4cf82f381336cc2ad12adc2",
+        "7660d203379ceeabfa89a9580d86b9c67a150b04ee096a305bed27b8752f0de8",
+        "a6bdaa502c43571d99a7c803f05b68e273bfe8b67fc81c8a06fe4d6fa9e24d5d"
+      ]
+    },
+    {
+      "command": ".\\gradlew.bat :app:testDebugUnitTest :app:assembleDebug :app:assembleDebugAndroidTest -Ptarget=lib/main.dart --console=plain --no-scan",
+      "elapsed_seconds": 17.313,
+      "exit_status": 0,
+      "failure_fingerprints": [],
+      "log": "0003.log",
+      "question": "Do reused native buffers, first-analysis stall fix, and unchanged detection contracts compile and pass JVM tests?",
+      "scope": "targeted",
+      "sequence": 3,
+      "warning_fingerprints": [
+        "836127176da906c7b0372fd75c9f5c638f863e7b7283fe8dc434053b8a0cc044",
+        "456fbad4e234627793d72e0cce000fb0f3eee76b5347e5d26b777c344074ea34",
+        "aa97cb1fd7c5b6b775441442a69d1b3380716195c50388c89872d56f56fc2503",
+        "8bd7caea53305bbf2f02979a923ba7aa44891ffef75c7212e92e4b0207b3bfc9",
+        "fe5c498970f59d8c2ffc259b6913ed8b7f62ba345c13d907440d213f6504b66c",
+        "12a0c936f3ca0542864dfdc026d4744c2ae3e495d4cf82f381336cc2ad12adc2",
+        "7660d203379ceeabfa89a9580d86b9c67a150b04ee096a305bed27b8752f0de8",
+        "62ca00e9184f8ff57840df8e286d834431d7ca8d5c3de4bc76fd62ce9e3dae5c"
+      ]
+    },
+    {
+      "command": ".\\gradlew.bat --offline --no-daemon --max-workers=2 -Ptarget-platform=android-arm,android-arm64,android-x64 -Ptarget=lib/main.dart -Psplit-per-abi=true -Pforce-version-code-ignoring-abi=true assembleRelease --console=plain --no-scan",
+      "elapsed_seconds": 105.203,
+      "exit_status": 0,
+      "failure_fingerprints": [],
+      "log": "0004.log",
+      "question": "Does the startup and buffer performance fix build signed APK 1.3.5 versionCode 5009 for all three Android ABIs?",
+      "scope": "targeted",
+      "sequence": 4,
+      "warning_fingerprints": [
+        "836127176da906c7b0372fd75c9f5c638f863e7b7283fe8dc434053b8a0cc044",
+        "456fbad4e234627793d72e0cce000fb0f3eee76b5347e5d26b777c344074ea34",
+        "aa97cb1fd7c5b6b775441442a69d1b3380716195c50388c89872d56f56fc2503",
+        "8bd7caea53305bbf2f02979a923ba7aa44891ffef75c7212e92e4b0207b3bfc9",
+        "fe5c498970f59d8c2ffc259b6913ed8b7f62ba345c13d907440d213f6504b66c",
+        "12a0c936f3ca0542864dfdc026d4744c2ae3e495d4cf82f381336cc2ad12adc2",
+        "7660d203379ceeabfa89a9580d86b9c67a150b04ee096a305bed27b8752f0de8",
+        "e489e021c3e070b4c8202de540affb16942f3831035b4b7361e376f80459c2ea"
+      ]
+    },
+    {
+      "command": ".\\gradlew.bat :app:testDebugUnitTest --tests vn.mangodemo.mango_offline.RuntimeAccelerationPolicyTest -Ptarget=lib/main.dart --console=plain --no-scan",
+      "elapsed_seconds": 52.891,
+      "exit_status": 1,
+      "failure_fingerprints": [
+        "432bbf77fea5bcec81b8078d7d97769e49d8e64c4d3291ad65d493c634c7a182",
+        "be7151e87a56873fcfa1c4ce2073089b0fa3461f5bf25e1a1f1edb6506e43069",
+        "fa668b3947761b1cab3b48b7a172080e4426bab8ef4f2e693c8c6c872d34cf03",
+        "766d2f79c2d4190571b58d3e62c75b0341078305ff81a7094986ab062597f659",
+        "2267ec72b3330b8d198dc7846349b42155b52492fc1bd56fac50701bbc5b2580",
+        "9ef8a3edfb2f6ac3a72529cfc605c6b3f07c7ec6ddbeacfd1b1ec29691124afb",
+        "91ae42eab35bd5a35851f2b8c5d227a5df48dbd1cfb703dc47e40b31e2859af3"
+      ],
+      "log": "0005.log",
+      "question": "Does the core-count based bounded CPU thread policy fail before its implementation?",
+      "scope": "targeted",
+      "sequence": 5,
+      "warning_fingerprints": [
+        "836127176da906c7b0372fd75c9f5c638f863e7b7283fe8dc434053b8a0cc044",
+        "456fbad4e234627793d72e0cce000fb0f3eee76b5347e5d26b777c344074ea34",
+        "aa97cb1fd7c5b6b775441442a69d1b3380716195c50388c89872d56f56fc2503",
+        "8bd7caea53305bbf2f02979a923ba7aa44891ffef75c7212e92e4b0207b3bfc9",
+        "fe5c498970f59d8c2ffc259b6913ed8b7f62ba345c13d907440d213f6504b66c",
+        "12a0c936f3ca0542864dfdc026d4744c2ae3e495d4cf82f381336cc2ad12adc2",
+        "7660d203379ceeabfa89a9580d86b9c67a150b04ee096a305bed27b8752f0de8",
+        "63c0bf182d7ff74957dbadfc9e325e4478424c3ce798b38fd2d47ccf3a4852a2"
+      ]
+    },
+    {
+      "command": ".\\gradlew.bat :app:testDebugUnitTest :app:assembleDebug :app:assembleDebugAndroidTest -Ptarget=lib/main.dart --console=plain --no-scan",
+      "elapsed_seconds": 18.375,
+      "exit_status": 0,
+      "failure_fingerprints": [],
+      "log": "0006.log",
+      "question": "Does bounded core-count CPU selection pass the policy and native tests and build Android instrumentation?",
+      "scope": "targeted",
+      "sequence": 6,
+      "warning_fingerprints": [
+        "836127176da906c7b0372fd75c9f5c638f863e7b7283fe8dc434053b8a0cc044",
+        "456fbad4e234627793d72e0cce000fb0f3eee76b5347e5d26b777c344074ea34",
+        "aa97cb1fd7c5b6b775441442a69d1b3380716195c50388c89872d56f56fc2503",
+        "8bd7caea53305bbf2f02979a923ba7aa44891ffef75c7212e92e4b0207b3bfc9",
+        "fe5c498970f59d8c2ffc259b6913ed8b7f62ba345c13d907440d213f6504b66c",
+        "12a0c936f3ca0542864dfdc026d4744c2ae3e495d4cf82f381336cc2ad12adc2",
+        "7660d203379ceeabfa89a9580d86b9c67a150b04ee096a305bed27b8752f0de8",
+        "62ca00e9184f8ff57840df8e286d834431d7ca8d5c3de4bc76fd62ce9e3dae5c"
+      ]
+    },
+    {
+      "command": ".\\gradlew.bat --no-daemon :app:testDebugUnitTest --tests vn.mangodemo.mango_offline.RuntimeAccelerationPolicyTest -Ptarget=lib/main.dart --console=plain --no-scan",
+      "elapsed_seconds": 41.906,
+      "exit_status": 1,
+      "failure_fingerprints": [
+        "b3f9fc5d0ef1c9bafcd0c55ba6aca7872b662444381df47a3b496bcacaea48e9"
+      ],
+      "log": "0007.log",
+      "question": "Does the thread policy reproduce oversubscription beyond the measured two-thread safety cap?",
+      "scope": "targeted",
+      "sequence": 7,
+      "warning_fingerprints": [
+        "836127176da906c7b0372fd75c9f5c638f863e7b7283fe8dc434053b8a0cc044",
+        "456fbad4e234627793d72e0cce000fb0f3eee76b5347e5d26b777c344074ea34",
+        "aa97cb1fd7c5b6b775441442a69d1b3380716195c50388c89872d56f56fc2503",
+        "8bd7caea53305bbf2f02979a923ba7aa44891ffef75c7212e92e4b0207b3bfc9",
+        "fe5c498970f59d8c2ffc259b6913ed8b7f62ba345c13d907440d213f6504b66c",
+        "12a0c936f3ca0542864dfdc026d4744c2ae3e495d4cf82f381336cc2ad12adc2",
+        "7660d203379ceeabfa89a9580d86b9c67a150b04ee096a305bed27b8752f0de8",
+        "e489e021c3e070b4c8202de540affb16942f3831035b4b7361e376f80459c2ea"
+      ]
+    },
+    {
+      "command": ".\\gradlew.bat --offline --no-daemon --max-workers=2 :app:testDebugUnitTest -Ptarget-platform=android-arm,android-arm64,android-x64 -Ptarget=lib/main.dart -Psplit-per-abi=true -Pforce-version-code-ignoring-abi=true assembleRelease --console=plain --no-scan",
+      "elapsed_seconds": 83.672,
+      "exit_status": 0,
+      "failure_fingerprints": [],
+      "log": "0008.log",
+      "question": "Does final APK 1.3.5 pass all native tests and build three signed ABI packages with the measured two-thread cap?",
+      "scope": "targeted",
+      "sequence": 8,
+      "warning_fingerprints": [
+        "836127176da906c7b0372fd75c9f5c638f863e7b7283fe8dc434053b8a0cc044",
+        "456fbad4e234627793d72e0cce000fb0f3eee76b5347e5d26b777c344074ea34",
+        "aa97cb1fd7c5b6b775441442a69d1b3380716195c50388c89872d56f56fc2503",
+        "8bd7caea53305bbf2f02979a923ba7aa44891ffef75c7212e92e4b0207b3bfc9",
+        "fe5c498970f59d8c2ffc259b6913ed8b7f62ba345c13d907440d213f6504b66c",
+        "12a0c936f3ca0542864dfdc026d4744c2ae3e495d4cf82f381336cc2ad12adc2",
+        "7660d203379ceeabfa89a9580d86b9c67a150b04ee096a305bed27b8752f0de8",
+        "e489e021c3e070b4c8202de540affb16942f3831035b4b7361e376f80459c2ea"
+      ]
+    },
+    {
+      "command": ".\\gradlew.bat --stop --console=plain --no-scan",
+      "elapsed_seconds": 1.094,
+      "exit_status": 0,
+      "failure_fingerprints": [],
+      "log": "0009.log",
+      "question": "Can the single idle Gradle daemon started by this workflow stop normally before Android performance verification?",
+      "scope": "targeted",
+      "sequence": 9,
+      "warning_fingerprints": [
+        "836127176da906c7b0372fd75c9f5c638f863e7b7283fe8dc434053b8a0cc044",
+        "456fbad4e234627793d72e0cce000fb0f3eee76b5347e5d26b777c344074ea34",
+        "aa97cb1fd7c5b6b775441442a69d1b3380716195c50388c89872d56f56fc2503",
+        "8bd7caea53305bbf2f02979a923ba7aa44891ffef75c7212e92e4b0207b3bfc9"
+      ]
+    }
+  ],
+  "version": 1,
+  "warning_fingerprints": {
+    "12a0c936f3ca0542864dfdc026d4744c2ae3e495d4cf82f381336cc2ad12adc2": {
+      "excerpt": "WARNING: The option setting 'android.newDsl=false' is deprecated.",
+      "occurrences": 8
+    },
+    "28f5e7b06d7f38f1d93a70833d82bc3e3809b49d7107b1db4350e58125bd7ba4": {
+      "excerpt": "You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.",
+      "occurrences": 4
+    },
+    "3babcc7bca4a601da13d6c6c0f0156f3d680e02357e0d75d147478b8dcbe8dbc": {
+      "excerpt": "w: file:///C:/Users/ADMIN/Documents/Codex/2026-08-23/gi/mobile_multifruit_work_20261009/app/android/app/src/androidTest/kotlin/vn/mangodemo/mango_offline/LiveCameraDeviceTest.kt:70:41 Unnecessary non-null assertion (!!) on a non-null receiver of type 'L...",
+      "occurrences": 4
+    },
+    "43b64962e835fa4e7bb4f03ab97a7d73f49fc836e66971c7ddf6f785094f58ac": {
+      "excerpt": "w: file:///C:/Users/ADMIN/Documents/Codex/2026-08-23/gi/mobile_multifruit_work_20261009/app/android/app/src/androidTest/kotlin/vn/mangodemo/mango_offline/LiveCameraDeviceTest.kt:70:57 Unnecessary non-null assertion (!!) on a non-null receiver of type 'L...",
+      "occurrences": 4
+    },
+    "456fbad4e234627793d72e0cce000fb0f3eee76b5347e5d26b777c344074ea34": {
+      "excerpt": "WARNING: java.lang.System::load has been called by net.rubygrapefruit.platform.internal.NativeLibraryLoader in an unnamed module (file:/C:/Users/ADMIN/.gradle/wrapper/dists/gradle-9.3.1-all/9ot9r568e8zfvvd4mn8rbu1j0/gradle-9.3.1/lib/native-platform-0.22...",
+      "occurrences": 9
+    },
+    "559cad239ff7fbcfe280efd7a8c8769200cd7eca6186a254f933f3634e7aa622": {
+      "excerpt": "w: file:///C:/Users/ADMIN/Documents/Codex/2026-08-23/gi/mobile_multifruit_work_20261009/app/android/app/src/main/kotlin/vn/mangodemo/mango_offline/NativeDetector.kt:57:13 'lateinit' is unnecessary: definitely initialized in constructors.",
+      "occurrences": 1
+    },
+    "62ca00e9184f8ff57840df8e286d834431d7ca8d5c3de4bc76fd62ce9e3dae5c": {
+      "excerpt": "w: file:///C:/Users/ADMIN/Documents/Codex/2026-08-23/gi/mobile_multifruit_work_20261009/app/android/app/src/main/kotlin/vn/mangodemo/mango_offline/DetectionMath.kt:22:108 Unnecessary non-null assertion (!!) on a non-null receiver of type 'FloatArray'.",
+      "occurrences": 6
+    },
+    "63c0bf182d7ff74957dbadfc9e325e4478424c3ce798b38fd2d47ccf3a4852a2": {
+      "excerpt": "Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.",
+      "occurrences": 4
+    },
+    "6b2db1684f205ecd9ff2e8f9abd4544bbd169c98e8f789875e4c484d3e56722d": {
+      "excerpt": "w: file:///C:/Users/ADMIN/Documents/Codex/2026-08-23/gi/mobile_multifruit_work_20261009/app/android/app/src/androidTest/kotlin/vn/mangodemo/mango_offline/LiveCameraDeviceTest.kt:70:24 Unnecessary non-null assertion (!!) on a non-null receiver of type 'L...",
+      "occurrences": 4
+    },
+    "74db3acd884274f2f08ac667dc938f105632e7660b7b672b853feddca25a0424": {
+      "excerpt": "w: file:///C:/Users/ADMIN/Documents/Codex/2026-08-23/gi/mobile_multifruit_work_20261009/app/android/app/src/androidTest/kotlin/vn/mangodemo/mango_offline/LiveCameraDeviceTest.kt:92:44 Unnecessary non-null assertion (!!) on a non-null receiver of type 'L...",
+      "occurrences": 4
+    },
+    "7660d203379ceeabfa89a9580d86b9c67a150b04ee096a305bed27b8752f0de8": {
+      "excerpt": "w: Deprecated 'org.jetbrains.kotlin.android' plugin usage",
+      "occurrences": 24
+    },
+    "836127176da906c7b0372fd75c9f5c638f863e7b7283fe8dc434053b8a0cc044": {
+      "excerpt": "WARNING: A restricted method in java.lang.System has been called",
+      "occurrences": 9
+    },
+    "8bd7caea53305bbf2f02979a923ba7aa44891ffef75c7212e92e4b0207b3bfc9": {
+      "excerpt": "WARNING: Restricted methods will be blocked in a future release unless native access is enabled",
+      "occurrences": 9
+    },
+    "8c978a7bbaa5d8132d5fb35c5c2b200b53fc50be2b219522012a8e9a3cbd69b5": {
+      "excerpt": "w: file:///C:/Users/ADMIN/Documents/Codex/2026-08-23/gi/mobile_multifruit_work_20261009/app/android/app/src/androidTest/kotlin/vn/mangodemo/mango_offline/LiveCameraDeviceTest.kt:95:43 Unnecessary non-null assertion (!!) on a non-null receiver of type 'L...",
+      "occurrences": 4
+    },
+    "a6bdaa502c43571d99a7c803f05b68e273bfe8b67fc81c8a06fe4d6fa9e24d5d": {
+      "excerpt": "w: file:///C:/Users/ADMIN/Documents/Codex/2026-08-23/gi/mobile_multifruit_work_20261009/app/android/app/src/androidTest/kotlin/vn/mangodemo/mango_offline/LiveCameraDeviceTest.kt:34:28 Unnecessary non-null assertion (!!) on a non-null receiver of type 'L...",
+      "occurrences": 4
+    },
+    "aa97cb1fd7c5b6b775441442a69d1b3380716195c50388c89872d56f56fc2503": {
+      "excerpt": "WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module",
+      "occurrences": 9
+    },
+    "c67ebfb0dc6549557889c3b5fc645c184bbcbedf7bb76dd479677d3b7361f95f": {
+      "excerpt": "w: file:///C:/Users/ADMIN/Documents/Codex/2026-08-23/gi/mobile_multifruit_work_20261009/app/android/app/src/androidTest/kotlin/vn/mangodemo/mango_offline/LiveCameraDeviceTest.kt:96:41 Unnecessary non-null assertion (!!) on a non-null receiver of type 'L...",
+      "occurrences": 4
+    },
+    "e489e021c3e070b4c8202de540affb16942f3831035b4b7361e376f80459c2ea": {
+      "excerpt": "Warning: SDK processing. This version only understands SDK XML versions up to 3 but an SDK XML file of version 4 was encountered. This can happen if you use versions of Android Studio and the command-line tools that were released at different times.",
+      "occurrences": 4
+    },
+    "fe5c498970f59d8c2ffc259b6913ed8b7f62ba345c13d907440d213f6504b66c": {
+      "excerpt": "WARNING: The option setting 'android.builtInKotlin=false' is deprecated.",
+      "occurrences": 8
+    }
+  },
+  "warning_fingerprints_truncated_occurrences": 0,
+  "workflow": "673bd939c6641619e68151eb167225c4"
+}
