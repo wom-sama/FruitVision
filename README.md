@@ -15,7 +15,7 @@ Bản Android bàn giao: **1.3.5+5009**, Android **8.0 / API 26** trở lên; AP
 | Tìm hiểu các thành phần | [Kiến trúc](docs/ARCHITECTURE.md) · [Mô hình Android](models/android/model-card.md) |
 | Xem tối ưu và phạm vi kiểm chứng | [Tối ưu đã áp dụng](docs/optimizations/README.md) · [Bằng chứng bản 1.3.5](releases/android/1.3.5/) |
 | Xem kiểm tra gói mã nguồn nộp bài | [Kiểm tra submission](docs/SUBMISSION_CHECKS.md) |
-| Xem slide thuyết trình | [PDF HUTECH từ bản Canva được chọn](docs/presentation/AI_phan_loai_xoai_HUTECH_da_trinh_bay.pdf) |
+| Xem slide thuyết trình | [PDF HUTECH đầy đủ 23 trang](docs/presentation/AI_phan_loai_xoai_HUTECH_da_trinh_bay.pdf) |
 
 Phần lớn điện thoại Android hiện nay dùng APK **ARM64**. Mở tệp APK trên GitHub rồi chọn tải tệp gốc; hướng dẫn Android giải thích cách xác định ABI, cấp quyền cài đặt và xử lý lỗi cập nhật.
 
@@ -79,6 +79,6 @@ Thay đổi 1.3.5 giảm độ trễ phân tích đầu và cấp phát bộ nh�
 
 ## Tài liệu và nguồn gốc
 
-PDF trong `docs/presentation/` được xuất trực tiếp từ **bản Canva người dùng chọn**, cập nhật ngày 16/10/2026 (12 trang). Để xác định hành vi và model của ứng dụng bàn giao, đọc model card, hướng dẫn cài và tài liệu bản 1.3.5; các pipeline/số liệu trong bài trình bày không tự động áp dụng cho bản Android hiện tại.
+PDF trong `docs/presentation/` là **bản phục dựng đầy đủ 23 trang**, cập nhật ngày 16/10/2026: giữ nguyên 12 trang đã chỉnh sửa và bổ sung nội dung của 11 trang thiếu; bỏ slide thành viên riêng vì thông tin đã có trên bìa. Đây là bản phục dựng từ các PDF đã xuất, không phải khôi phục lịch sử Canva. Xem [nguồn gốc và phạm vi slide](docs/presentation/README.md). Để xác định hành vi và model của ứng dụng bàn giao, đọc model card, hướng dẫn cài và tài liệu bản 1.3.5; các pipeline/số liệu trong bài trình bày không tự động áp dụng cho bản Android hiện tại.
 
 Nguồn và điều kiện sử dụng model/dữ liệu được ghi tại [LICENSE.md](LICENSE.md), [`SOURCE_ATTRIBUTION.json`](app/android/app/src/main/assets/SOURCE_ATTRIBUTION.json) và [`YOLOX_LICENSE.txt`](app/android/app/src/main/assets/YOLOX_LICENSE.txt). Các thành phần bên thứ ba giữ giấy phép của chúng; việc có mã nguồn công khai không thay thế điều kiện sử dụng của model và dữ liệu kết hợp. [Các repository tham khảo](docs/REFERENCES.md) chỉ là tham khảo cách tổ chức bài nộp.
