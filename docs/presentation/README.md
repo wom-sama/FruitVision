@@ -2,7 +2,7 @@
 
 [Mở PDF đầy đủ 23 trang](AI_phan_loai_xoai_HUTECH_da_trinh_bay.pdf).
 
-Đây là bản phục dựng ngày 16/10/2026 của bài **“AI phân loại xoài trên điện thoại · HUTECH · 20 phút”**, dựa trên hai PDF đã xuất từ thiết kế Canva `DAHXZIHg2Ag`, theo yêu cầu người dùng. Không phải bản khôi phục lịch sử Canva.
+Đây là bản phục dựng ngày 16/10/2026 của bài **“AI phân loại xoài trên điện thoại”**, dựa trên hai PDF đã xuất từ thiết kế Canva `DAHXZIHg2Ag`, theo yêu cầu người dùng. Không phải bản khôi phục lịch sử Canva.
 
 Giữ nguyên 12 trang mới đã chỉnh sửa, gồm bìa có tên thành viên/giảng viên và trang cảm ơn; bổ sung nội dung của 11 trang thiếu từ bản cũ 24 trang. Không dùng lại toàn bộ bản cũ; slide thành viên riêng đã bỏ vì thông tin nằm trên bìa. Các trang bổ sung được chỉnh đề mục, số trang, thuật ngữ Q/K/V và ghi rõ phạm vi đề xuất/desktop.
 
