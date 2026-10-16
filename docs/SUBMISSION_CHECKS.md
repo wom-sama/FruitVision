@@ -20,7 +20,7 @@ Các test Python mới chạy trong môi trường Python 3.11 đã cài sẵn t
 
 [Thư mục 1.3.5](../releases/android/1.3.5/verification/) giữ receipt đóng gói, golden ảnh, decoder/camera, benchmark và UI offline. 92 tests JVM/29 tests Android trong tài liệu phát hành là bằng chứng **của bản phát hành trước khi đóng gói repo**, không phải một lượt mới trên clone. Các APK được kiểm hash để bảo đảm không bị thay đổi.
 
-PDF là [bộ HUTECH cũ 24 trang đã trình bày](presentation/README.md), không phải bộ 12 slide mới. Dữ liệu huấn luyện đầy đủ, cache, môi trường Python/Flutter/Android SDK, khóa ký cá nhân và tệp đường dẫn riêng không được commit. Gradle wrapper được giữ để clone có thể build theo [hướng dẫn Android](INSTALL_ANDROID.md).
+PDF hiện tại là [bản HUTECH 12 trang xuất trực tiếp từ Canva](presentation/README.md), thay bản 24 trang theo yêu cầu cập nhật ngày 16/10/2026. Lần thay slide này không đổi APK, model hoặc mã nguồn ứng dụng. Dữ liệu huấn luyện đầy đủ, cache, môi trường Python/Flutter/Android SDK, khóa ký cá nhân và tệp đường dẫn riêng không được commit. Gradle wrapper được giữ để clone có thể build theo [hướng dẫn Android](INSTALL_ANDROID.md).
 
 ## Không nâng phạm vi kết luận
 
