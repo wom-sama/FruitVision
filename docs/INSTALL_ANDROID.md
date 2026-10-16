@@ -138,4 +138,14 @@ Kiểm thử instrumentation nằm tại `app/android/app/src/androidTest/` và 
 | Camera không mở | Kiểm tra quyền camera, đóng ứng dụng khác đang dùng camera, dừng rồi mở lại phiên |
 | Video xử lý chậm / máy nóng | Thử clip ngắn và quan sát FPS/nhiệt; chưa có cam kết 30 FPS hoặc hiệu năng điện thoại thật |
 
+### Git báo `detected dubious ownership` trên ổ exFAT
+
+Ổ exFAT không ghi nhận quyền sở hữu như NTFS, nên Git có thể từ chối thao tác dù clone đã đủ tệp. Có thể clone vào một thư mục NTFS do bạn sở hữu. Nếu giữ trên exFAT và đã xác minh đây là repo chính bạn vừa clone, chỉ tin cậy **đúng thư mục đó** cho một lệnh, ví dụ:
+
+```powershell
+git -c safe.directory="E:/OneDrive/Desktop/Demo/fruit-offline-mobile-demo" -C "E:/OneDrive/Desktop/Demo/fruit-offline-mobile-demo" status
+```
+
+Thay đường dẫn bằng thư mục clone thực tế. Không dùng `safe.directory=*` để bỏ kiểm tra cho toàn bộ máy. Kiểm tra này của Git không có nghĩa model/APK bị thiếu và không đòi format hay repair ổ đĩa.
+
 Xem thêm [kiến trúc](ARCHITECTURE.md), [model card](../models/android/model-card.md) và [các tối ưu đã áp dụng](optimizations/README.md).
