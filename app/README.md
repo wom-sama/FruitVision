@@ -1,4 +1,4 @@
-# Mango Offline — Flutter project
+# FruitVision — Flutter project
 
 Mở thư mục này bằng Android Studio với plugin Flutter. Model ONNX đã nằm trong `android/app/src/main/assets`; không cần môi trường Python, dữ liệu training hay server để chạy app.
 

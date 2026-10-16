@@ -1,6 +1,6 @@
 # Repository tham khảo cách tổ chức bài nộp
 
-Các repository dưới đây do người dùng cung cấp để tham khảo cách giới thiệu dự án, mã nguồn và hướng dẫn cài đặt. **Không sao chép mã nguồn, tài nguyên hoặc nhận thành tích của các dự án này.** Chức năng của Fruit Offline được đối chiếu với mã và APK của chính repository này.
+Các repository dưới đây do người dùng cung cấp để tham khảo cách giới thiệu dự án, mã nguồn và hướng dẫn cài đặt. **Không sao chép mã nguồn, tài nguyên hoặc nhận thành tích của các dự án này.** Chức năng của FruitVision được đối chiếu với mã và APK của chính repository này.
 
 - [hoangcongduc-laptrinhdidong](https://github.com/duc19742-dotcom/hoangcongduc-laptrinhdidong)
 - [KhoaBaoMat](https://github.com/nguyenchitu2005-jpg/KhoaBaoMat)

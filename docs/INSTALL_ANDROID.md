@@ -1,4 +1,4 @@
-# Cài và chạy Fruit Offline trên Android
+# Cài và chạy FruitVision trên Android
 
 Bản bàn giao là **1.3.5+5009**, package `vn.mangodemo.mango_offline`, yêu cầu **Android 8.0 / API 26 trở lên**. Có hai cách dùng: cài APK có sẵn hoặc biên dịch từ mã nguồn. Chỉ cách thứ hai cần Android Studio/Flutter.
 
@@ -73,8 +73,8 @@ Tải đúng Flutter từ [SDK archive chính thức](https://docs.flutter.dev/i
 ### 1. Clone và kiểm tra công cụ
 
 ```powershell
-git clone https://github.com/wom-sama/fruit-offline-mobile-demo.git
-cd fruit-offline-mobile-demo\app
+git clone https://github.com/wom-sama/FruitVision.git
+cd FruitVision\app
 flutter --version
 java -version
 flutter doctor -v
@@ -85,7 +85,7 @@ Chấp nhận giấy phép SDK và xử lý các lỗi thuộc Android toolchain
 
 ### 2. Mở dự án
 
-Trong Android Studio, chọn **Open** và mở thư mục **`fruit-offline-mobile-demo/app`** có `pubspec.yaml`. Chọn Flutter SDK 3.47.5 đã cài khi IDE yêu cầu. Không dùng đường dẫn SDK của máy phát triển cũ; `android/local.properties` là cấu hình cục bộ được Flutter tạo trên máy bạn.
+Trong Android Studio, chọn **Open** và mở thư mục **`FruitVision/app`** có `pubspec.yaml`. Chọn Flutter SDK 3.47.5 đã cài khi IDE yêu cầu. Không dùng đường dẫn SDK của máy phát triển cũ; `android/local.properties` là cấu hình cục bộ được Flutter tạo trên máy bạn.
 
 Chạy trong thư mục `app`:
 
@@ -143,7 +143,7 @@ Kiểm thử instrumentation nằm tại `app/android/app/src/androidTest/` và 
 Ổ exFAT không ghi nhận quyền sở hữu như NTFS, nên Git có thể từ chối thao tác dù clone đã đủ tệp. Có thể clone vào một thư mục NTFS do bạn sở hữu. Nếu giữ trên exFAT và đã xác minh đây là repo chính bạn vừa clone, chỉ tin cậy **đúng thư mục đó** cho một lệnh, ví dụ:
 
 ```powershell
-git -c safe.directory="E:/OneDrive/Desktop/Demo/fruit-offline-mobile-demo" -C "E:/OneDrive/Desktop/Demo/fruit-offline-mobile-demo" status
+git -c safe.directory="E:/OneDrive/Desktop/Demo/FruitVision" -C "E:/OneDrive/Desktop/Demo/FruitVision" status
 ```
 
 Thay đường dẫn bằng thư mục clone thực tế. Không dùng `safe.directory=*` để bỏ kiểm tra cho toàn bộ máy. Kiểm tra này của Git không có nghĩa model/APK bị thiếu và không đòi format hay repair ổ đĩa.

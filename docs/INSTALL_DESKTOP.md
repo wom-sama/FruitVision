@@ -21,8 +21,8 @@ Nếu dùng NVIDIA, có thể kiểm tra driver bằng `nvidia-smi`. Nếu chưa
 ## 1. Clone repository
 
 ```powershell
-git clone https://github.com/wom-sama/fruit-offline-mobile-demo.git
-cd fruit-offline-mobile-demo\demos\desktop
+git clone https://github.com/wom-sama/FruitVision.git
+cd FruitVision\demos\desktop
 ```
 
 Các lệnh còn lại được chạy trong **`demos/desktop`**, nơi có `demo.py`, `setup.py`, `prepare_models.py` và `requirements.txt`. Nếu đã clone để build Android, chỉ cần chuyển vào thư mục này.

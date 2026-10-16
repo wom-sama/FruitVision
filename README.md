@@ -1,8 +1,8 @@
-# Fruit Offline — Demo AI nhận diện trái cây
+# FruitVision
 
 Ứng dụng Android xử lý ảnh, video và camera trực tiếp ngay trên thiết bị: phát hiện nhiều quả, hiển thị mức chín quan sát được cho loài được hỗ trợ và thống kê số đếm theo phiên. Repository cũng giữ demo desktop V18.6 để tham khảo pipeline phân loại xoài bằng Python.
 
-Bản Android bàn giao: **1.3.5+5009**, Android **8.0 / API 26** trở lên. Mô hình đã đóng gói trong APK; khi sử dụng không cần Python, máy chủ, tài khoản hay kết nối Internet. Đây là demo nghiên cứu/học thuật phi thương mại.
+Bản Android bàn giao: **1.3.5+5009**, Android **8.0 / API 26** trở lên; APK hiện có vẫn hiển thị tên **Fruit Offline**. Mô hình đã đóng gói trong APK; khi sử dụng không cần Python, máy chủ, tài khoản hay kết nối Internet. Đây là demo nghiên cứu/học thuật phi thương mại.
 
 ## Bắt đầu
 
@@ -45,7 +45,7 @@ Không dùng accuracy/F1 của desktop để đại diện cho Android. Script d
 ## Cấu trúc repository
 
 ```text
-fruit-offline-mobile-demo/
+FruitVision/
 ├── README.md
 ├── app/                           # Mã nguồn Flutter + Android bản 1.3.5
 │   ├── lib/                       # Giao diện, tracking và bộ đếm
