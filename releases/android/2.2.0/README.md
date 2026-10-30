@@ -22,12 +22,12 @@ Các client cũ chưa có updater cần cài bộ này một lần. Về sau kh�
 - Producer tạo tin125kg/giá22.000–26.000; Admin công bố; Trader liên hệ từ tin và gửi/nhận chat với phiên Producer độc lập. Tên/vai trò người gửi đúng trên app.
 - Consumer xem tham khảo24.000đ/kg từ đúng một mẫu tin, tham gia/chat/rời nhóm. API chặn lịch sử sau rời (`404`). Consumer tạo và đóng nhóm khác; composer nhóm đóng bị khóa.
 
-Đây là bốn vai trò tuần tự trên **một máy ảo API30**, RAM guest997.976KiB,2cores. Bằng chứng bốn HTTPS/WSS client đồng thời nằm riêng trong `server/docs/verticals-https-e2e.json`; không gọi đó là bốn điện thoại.
+Đây là bốn vai trò tuần tự trên **một máy ảo API 30**, RAM guest 997.976 KiB, 2 core. Bằng chứng bốn HTTPS/WSS client đồng thời nằm riêng trong `server/docs/verticals-https-e2e.json`; không gọi đó là bốn điện thoại.
 
-Kiểm tự động: backend60/60, Flutter64/64 + analyzer sạch, native policy22/22; ba APK đúng package/version/ABI, v2 signature, hash, không trọng số/runtime AI, không cleartext/backup. Xem [APK](apk-verification.json), [Android](native-acceptance.json), [HTTP tải gói](public-downloads.json), [build](BUILD_CHECKS.md) và `screenshots/`.
+Kiểm tự động: backend 60/60, Flutter 64/64 + analyzer sạch, native policy 22/22; ba APK đúng package/version/ABI, v2 signature, hash, không trọng số/runtime AI, không cleartext/backup. Xem [APK](apk-verification.json), [Android](native-acceptance.json), [HTTP tải gói](public-downloads.json), [build](BUILD_CHECKS.md) và `screenshots/`.
 
 ## Giới hạn
 
 Đây là đồ án phi thương mại, dùng khóa ký debug hiện có để giữ đường nâng cấp; chưa phải phát hành Play Store. UI nhóm đóng còn câu gợi ý gửi lời chào ở vùng trống, nhưng khóa và ô nhập bị vô hiệu đúng. Một lần UiAutomator lỗi kết nối và framework Android khởi động lại; các thao tác cuối được thực hiện bằng input/screenshot thật trên lần boot ổn định.
 
-Không kiểm điện thoại vật lý trong đợt này. Tác vụ AI ảnh/video không được gửi lại trên chính6006; giữ bằng chứng API2.2 ảnh thật và mobile2.1 ảnh/video1073khung của pipeline không đổi, không biến chúng thành nghiệm thu mới. Chưa có camera streaming liên tục, đơn hàng/tồn kho/thanh toán/IoT, dự đoán giá AI hoặc bảo đảm mức chín/sản lượng thực địa. Snapshot PSS105.154KiB là một thời điểm, không phải benchmark CPU/FPS hay điện thoại.
+Không kiểm điện thoại vật lý trong đợt này. Tác vụ AI ảnh/video không được gửi lại trên chính6006; giữ bằng chứng API2.2 ảnh thật và mobile2.1 ảnh/video 1.073 khung của pipeline không đổi, không biến chúng thành nghiệm thu mới. Chưa có camera streaming liên tục, đơn hàng/tồn kho/thanh toán/IoT, dự đoán giá AI hoặc bảo đảm mức chín/sản lượng thực địa. Snapshot PSS 105.154 KiB là một thời điểm, không phải benchmark CPU/FPS hay điện thoại.
