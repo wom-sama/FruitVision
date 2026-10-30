@@ -14,6 +14,7 @@ namespace FruitVision.Tests;
 [Collection("Api")]
 public sealed class PostWorkflowTests(ApiFixture fixture)
 {
+    private readonly Dictionary<HttpClient,Guid?> branches = [];
     [Fact]
     public async Task Admin_can_list_submissions_and_publish_pause_republish_with_private_reasons()
     {
@@ -168,14 +169,14 @@ public sealed class PostWorkflowTests(ApiFixture fixture)
     }
 
     [Fact]
-    public async Task Optional_post_fields_keep_old_clients_compatible_and_validate_prices_purpose_and_dates()
+    public async Task Approved_branch_posts_validate_prices_purpose_and_dates()
     {
         using var producer = fixture.CreateClient(); using var trader = fixture.CreateClient();
         await NewAccount(producer, "Producer"); await NewAccount(trader, "Trader");
         var supply = await Submit(producer); var demand = await Submit(trader);
         Assert.Equal("Supply", supply.GetProperty("purpose").GetString()); Assert.Equal("Demand", demand.GetProperty("purpose").GetString());
         Assert.Equal("Đồng Tháp", demand.GetProperty("region").GetString()); Assert.Equal(JsonValueKind.Null, demand.GetProperty("priceMinVndPerKg").ValueKind);
-        var body = new Dictionary<string, object?> { ["title"] = "Local mango information", ["body"] = "Estimated availability for discussion only.", ["productCode"] = "mango", ["estimatedQuantityKg"] = 20 };
+        var body = new Dictionary<string, object?> { ["title"] = "Local mango information", ["body"] = "Estimated availability for discussion only.", ["productCode"] = "mango", ["estimatedQuantityKg"] = 20, ["branchId"] = branches[producer] };
         foreach (var extra in new Dictionary<string, object?>[] {
             new() { ["purpose"] = "Demand" }, new() { ["priceMinVndPerKg"] = 10000 },
             new() { ["priceMinVndPerKg"] = 20000, ["priceMaxVndPerKg"] = 10000 },
@@ -185,7 +186,7 @@ public sealed class PostWorkflowTests(ApiFixture fixture)
             Assert.Equal(HttpStatusCode.BadRequest, invalid.StatusCode);
         }
         body["purpose"] = "Supply"; body["priceMinVndPerKg"] = 10000; body["priceMaxVndPerKg"] = 15000;
-        body["region"] = "Tiền Giang"; body["availableOn"] = DateOnly.FromDateTime(DateTime.UtcNow).AddDays(1);
+        body["branchId"] = branches[trader]; body["availableOn"] = DateOnly.FromDateTime(DateTime.UtcNow).AddDays(1);
         using var valid = await trader.PostAsJsonAsync("/api/v1/posts", body); Assert.Equal(HttpStatusCode.Created, valid.StatusCode);
         Assert.Equal(15000m, (await valid.Content.ReadFromJsonAsync<JsonElement>()).GetProperty("priceMaxVndPerKg").GetDecimal());
     }
@@ -335,20 +336,18 @@ public sealed class PostWorkflowTests(ApiFixture fixture)
 
     private async Task<Guid> NewAccount(HttpClient client, string role, bool approve = true, string displayName = "Workflow test")
     {
-        var email = $"workflow-{Guid.NewGuid():N}@example.test";
-        using var registration = await client.PostAsJsonAsync("/api/v1/auth/register", new { displayName, email, password = fixture.Password, role, region = "Đồng Tháp" });
-        Assert.Equal(HttpStatusCode.Created, registration.StatusCode); var id = (await registration.Content.ReadFromJsonAsync<JsonElement>()).GetProperty("id").GetGuid();
-        if (approve) { using var admin = fixture.CreateClient(); await Login(admin, "admin@fruitvision.test"); using var response = await admin.PostAsJsonAsync($"/api/v1/admin/applications/{id}/review", new { status = "Approved", reason = "Workflow integration test" }); Assert.Equal(HttpStatusCode.OK, response.StatusCode); }
-        await Login(client, email); return id;
+        var account = await TestAccounts.CreateAsync(fixture.Services,fixture.Password,role,approve,displayName);
+        branches[client] = account.BranchId;
+        await Login(client, account.Email); return account.Id;
     }
     private async Task Login(HttpClient client, string email)
     {
         using var response = await client.PostAsJsonAsync("/api/v1/auth/login", new { email, password = fixture.Password }); Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (await response.Content.ReadFromJsonAsync<JsonElement>()).GetProperty("accessToken").GetString());
     }
-    private static async Task<JsonElement> Submit(HttpClient client)
+    private async Task<JsonElement> Submit(HttpClient client)
     {
-        using var response = await client.PostAsJsonAsync("/api/v1/posts", new { title = "Fresh mango forecast", body = "A future survey estimate, without any stock commitment.", productCode = "mango", estimatedQuantityKg = 20 }); Assert.Equal(HttpStatusCode.Created, response.StatusCode); return await response.Content.ReadFromJsonAsync<JsonElement>();
+        using var response = await client.PostAsJsonAsync("/api/v1/posts", new { title = "Fresh mango forecast", body = "A future survey estimate, without any stock commitment.", productCode = "mango", estimatedQuantityKg = 20, branchId = branches[client] }); Assert.Equal(HttpStatusCode.Created, response.StatusCode); return await response.Content.ReadFromJsonAsync<JsonElement>();
     }
     private static async Task<JsonElement> Review(HttpClient client, Guid id, string status, int revision)
     {

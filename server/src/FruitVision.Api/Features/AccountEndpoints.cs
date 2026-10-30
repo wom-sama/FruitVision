@@ -12,11 +12,13 @@ public static class AccountEndpoints
 {
     public static void MapAccounts(this WebApplication app)
     {
-        app.MapPost("/api/v1/applications/resubmit",async(ProfileRequest r,HttpContext http,AppDbContext db)=> {
+        app.MapPost("/api/v1/applications/resubmit",async(ProfileRequest r,HttpContext http,AppDbContext db,LocationDirectory locations)=> {
             var u=await db.Users.SingleAsync(x=>x.Id==http.User.UserId());
-            if(u.Role==AccountRole.Admin||u.ApprovalStatus is not (ApprovalState.NeedsInformation or ApprovalState.Rejected))return Results.Conflict();
-            if(!Input.Safe(r.DisplayName)||!Input.Safe(r.Region))return Input.Invalid("Thông tin chứa ký tự điều khiển.");
-            u.DisplayName=Input.Text(r.DisplayName);u.Region=Input.Text(r.Region);u.ApprovalStatus=ApprovalState.Pending;u.ReviewReason=null;
+            if(u.Role is not (AccountRole.Producer or AccountRole.Trader)||u.ApprovalStatus is not (ApprovalState.NeedsInformation or ApprovalState.Rejected))return Results.Conflict();
+            if(!Input.Safe(r.DisplayName))return Input.Invalid("Thông tin chứa ký tự điều khiển.");
+            var location=await locations.ValidateAsync(r.CountryCode,r.ProvinceCode,http.RequestAborted);
+            if(location.Region.Length>120)return Input.Invalid("Tên khu vực vượt giới hạn.");
+            u.DisplayName=Input.Text(r.DisplayName);u.Region=location.Region;u.CountryCode=location.CountryCode;u.ProvinceCode=location.ProvinceCode;u.ApprovalStatus=ApprovalState.Pending;u.ReviewReason=null;
             db.AuditEntries.Add(SessionTokens.Audit(u.Id,u.Id,"ApplicationResubmitted"));await db.SaveChangesAsync();return Results.Ok(SessionTokens.Profile(u));
         }).RequireAuthorization().AddEndpointFilter<InputFilter>();
         var admin=app.MapGroup("/api/v1/admin").RequireAuthorization("Admin").AddEndpointFilter<InputFilter>().WithTags("Quản trị");

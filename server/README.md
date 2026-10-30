@@ -1,6 +1,6 @@
-# FruitVision 2.2 — backend trên PC
+# FruitVision 2.4 — backend trên PC
 
-Backend phục vụ client Android **2.2.0+6006**: tài khoản/xét duyệt, tin Supply–Demand có kiểm duyệt, liên hệ riêng, cộng đồng, tham khảo cung/cầu, AI ảnh/video trên PC và đăng ký bản cập nhật APK. PostgreSQL giữ dữ liệu, SignalR phát sự kiện, CPU worker chạy model ONNX đã ghim. **APK 6006 đã nâng cấp qua trình cài Android và chạy nghiệp vụ bốn vai trò tuần tự trên máy ảo API 30**; xem [biên nhận cuối](../releases/android/2.2.0/native-acceptance.json). Không phải bốn điện thoại thật.
+Backend 2.4 có đăng ký Consumer/Email OTP, hồ sơ nâng vai trò, chi nhánh, bài Community/Professional có kiểm duyệt, ảnh thường, Direct/nhóm, secret Direct dành cho Seller, học liệu và AI xoài trên PC. PostgreSQL giữ dữ liệu, SignalR phát sự kiện, worker chạy model ONNX đã ghim. **APK 2.4.0+6010 đã phát hành; đã thử các luồng chính trên máy ảo, không phải bốn điện thoại thật.** Tin Supply/Demand cũ chỉ được giữ tương thích, không có giao dịch mua bán. Xem [luồng người dùng](docs/USER_WORKFLOWS_2_4.md) và [báo cáo kỹ thuật](docs/TECHNICAL_REPORT_2_4.md).
 
 ## Chạy từ bản clone
 
@@ -26,24 +26,30 @@ Tài khoản demo/mật khẩu ngẫu nhiên của **máy hiện tại** nằm t
 
 Dừng đúng tiến trình dự án bằng `Stop-Server.ps1`, thêm `-StopDatabase` khi cần; dừng riêng tunnel bằng `Stop-Public.ps1`. Script không xóa dữ liệu hoặc quét/kill tiến trình dự án khác.
 
-## Bốn vai trò và luồng 2.2
+## Bốn vai trò và luồng 2.4
 
 | Vai trò | Luồng hiện có sau khi Approved |
 |---|---|
-| Admin | Duyệt hồ sơ/tin, khóa/mở tài khoản, audit/thống kê; tham gia cộng đồng; AI riêng |
-| Producer | Đăng Supply, theo dõi xét duyệt; liên hệ bài Published của người khác; Direct/Group; AI riêng |
-| Trader | Đăng Demand mặc định hoặc Supply; tìm nguồn cung, liên hệ Direct/Group; AI riêng |
-| Consumer | Đọc tin/thị trường, liên hệ bài Published, Direct/Group; AI riêng; không đăng Supply/Demand |
+| Admin | Duyệt hồ sơ nâng vai trò/chi nhánh/tin/bài, khóa/mở tài khoản, audit/thống kê; không có quyền AI hoặc secret |
+| Producer | Chi nhánh; tin Supply; bài Professional; liên hệ Direct/Group, ảnh thường; AI xoài riêng; secret với Seller khác |
+| Trader | Như Producer, tin Demand mặc định hoặc Supply; tìm nguồn cung và trao đổi với Seller kể cả cùng vai trò |
+| Consumer | Đọc tin/thị trường/học liệu xoài; bài Community có ảnh; liên hệ Direct/Group và ảnh thường; xin nâng vai trò; không AI/secret/Supply–Demand |
 
-Đăng ký nghiệp vụ bắt đầu Pending; có NeedsInformation/Rejected, lý do và gửi lại hồ sơ. Không đăng ký Admin công khai. Bài mới AwaitingReview; Admin Published/Rejected, Published có thể Paused rồi Published lại. Review kiểm `expectedRevision`, tranh chấp trả `409`.
+Đăng ký công khai luôn tạo Consumer và cần xác minh email OTP; không nhận trường chọn vai trò. Consumer hoạt động/Approved/đã xác minh email xin nâng Producer hoặc Trader qua hồ sơ `Draft → Submitted → Approved/NeedsInformation/Rejected`. Submitted đóng băng thông tin/minh chứng; chỉ Approved đổi vai trò. Minh chứng JPEG/PNG/PDF tối đa 5 MiB/tệp, 4 tệp, chủ/Admin đọc riêng; không có tuyên bố AV scan hoặc chứng nhận pháp lý.
 
-Liên hệ bài công khai tạo Direct riêng đúng hai người, dùng lại khi cùng người liên hệ cùng bài. Người khác cùng vai trò vẫn được liên hệ; tự liên hệ `409`, Admin liên hệ nghiệp vụ `403`. Chỉ thành viên đọc/gửi tin; không nhận danh sách participant tùy ý từ client.
+Seller tạo chi nhánh Pending để Admin duyệt. Tin và bài Professional cần chi nhánh thuộc mình đã Approved; Consumer viết lane Community. Tin/bài mới AwaitingReview; Admin Published/Rejected, Published có thể Paused rồi Published lại; tác giả được rút bài viết Published. Review kiểm `expectedRevision`, tranh chấp trả `409`. Ảnh bài/ảnh chat thường JPEG/PNG tối đa 5 MiB, máy chủ chuẩn hóa JPEG/bỏ EXIF/cạnh tối đa 2048. Ảnh bài Published công khai; ảnh chat chỉ thành viên.
+
+Liên hệ tin hoặc bài viết công khai tạo Direct riêng đúng hai người, dùng lại khi cùng người liên hệ cùng nội dung kể cả yêu cầu đồng thời. Người khác cùng vai trò vẫn được liên hệ; tự liên hệ `409`, Admin liên hệ nghiệp vụ `403`. Chỉ thành viên đọc/gửi tin/ảnh; không nhận danh sách participant tùy ý từ client. Chat thường được máy chủ đọc/xử lý, không gọi là E2EE.
+
+Secret là luồng riêng cho Direct đúng hai Producer/Trader hoạt động/Approved. Client dùng libsodium sealed box X25519/chữ ký Ed25519; server giữ ciphertext và metadata, không giữ private key. Đăng ký/thu hồi khóa cần phiên mật khẩu + email OTP/TOTP mới trong 15 phút, mỗi tài khoản một thiết bị hoạt động. Hai bên đối chiếu đầy đủ fingerprint qua kênh tin cậy ngoài chat và pin trước gửi; đổi khóa phải xác minh lại. Không tự chuyển lịch sử thường sang secret, không có group secret/multi-device/khôi phục khóa/ratchet. Ảnh secret là ciphertext riêng, tối đa 5 MiB + 64 KiB phụ trội; server không giải mã để chuẩn hóa hoặc quét ảnh. Nghiệm thu crypto/native riêng vẫn cần biên bản.
+
+Quota chung ảnh thường + blob secret mặc định 100 MiB/người, 2 GiB toàn máy và chừa ít nhất 1 GiB ổ lưu. Đầy quota trả lỗi, không tự xóa lịch sử; liên hệ Admin để xử lý lưu trữ.
 
 Nhóm công khai cho Approved tự tạo/join/leave; tối đa 10 nhóm mở/chủ, 50 thành viên/nhóm. Chủ cần đóng trước khi rời; chủ/Admin được đóng. Nhóm đóng giữ lịch sử cho thành viên hiện tại, chặn join/tin mới; người đã leave không nhận tin mới. Tin nhắn lưu DB/outbox, dispatcher tra membership hiện tại và gửi tới user group.
 
 Thị trường chỉ tổng hợp bài Published của tác giả hoạt động/Approved. Supply/Demand là **kg dự kiến, không phải tồn kho**. Giá tham khảo là trung vị điểm giữa khoảng **chào bán Supply**, kèm min/max/số mẫu, `source=published-user-asking-prices`, VND/kg, `asOf`/`lastUpdated`; Demand bid bị loại, thiếu giá trả null. Đây **không phải dự báo AI hoặc giá thị trường chính thức**. Nhiều bài có thể trùng một lô.
 
-Xem [playbook bốn vai trò 6–8 phút](docs/DEMO_4_ROLES_2_2.md) và [ghi chú hợp đồng 2.2](docs/RELEASE_2_2_INTERACTIONS.md).
+Luồng demo hiện tại xem [USER_WORKFLOWS_2_4](docs/USER_WORKFLOWS_2_4.md). [Playbook 2.2](docs/DEMO_4_ROLES_2_2.md), [hợp đồng 2.2](docs/RELEASE_2_2_INTERACTIONS.md) và [luồng 2.3](docs/USER_WORKFLOWS_2_3.md) được giữ làm tài liệu lịch sử.
 
 ## API chính
 
@@ -51,23 +57,30 @@ Prefix `/api/v1`; JSON camelCase, từ chối thuộc tính lạ. List mặc đ�
 
 | Route | Quyền/ý nghĩa |
 |---|---|
-| `/auth/register`, `/auth/login`, `/auth/refresh`, `/auth/mfa/login` | Đăng ký/đăng nhập, session opaque và TOTP |
+| `/auth/register`, `/auth/login`, `/auth/otp/verify`, `/auth/otp/resend`, `/auth/refresh`, `/auth/mfa/login` | Consumer mới, email OTP/TOTP, session opaque; challenge chưa phải đăng nhập thành công |
 | `/auth/me`, `/auth/sessions`, `/auth/logout`, `/applications/resubmit` | Hồ sơ/phiên của mình |
+| `/locations/countries`, `/locations/provinces?country=VN` | Danh mục API có source/asOf/stale; Việt Nam hiện có 34 tỉnh/thành |
+| `/role-applications`, `/admin/role-applications`, các route evidence/review | Consumer đã xác minh xin nâng vai trò, minh chứng riêng và Admin xét duyệt |
 | `/admin/applications`, `/admin/posts`, các route `/review`, `/admin/users/{id}/status` | Admin, có lý do và kiểm phiên bản khi xét tin |
 | `/catalog/products`, `/posts`, `/posts/{id}`, `/market/summary` | Public read, lọc nội dung theo quyền bản ghi |
-| `POST /posts` | Producer/Trader đã duyệt; tạo bài dự kiến |
+| `POST /posts`, `/branches/mine`, `/branches` | Seller; tin dự kiến cần chi nhánh thuộc mình đã duyệt |
+| `/articles`, `/articles/images`, `/articles/{id}/image`, `/admin/articles`, `/admin/branches` | Community/Professional, ảnh thường và kiểm duyệt theo quyền |
 | `GET /me/posts`, `/history` | Phiên hợp lệ; chỉ dữ liệu của mình |
-| `POST /posts/{id}/conversations` | Người khác đã duyệt, không phải Admin |
-| `/conversations`, `/conversations/{id}/messages` | Chỉ thành viên; message key idempotent |
+| `POST /posts/{id}/conversations`, `/articles/{id}/conversations` | Người khác đã duyệt, không phải Admin; tạo/dùng lại Direct |
+| `/conversations`, `/conversations/{id}/messages`, `/{id}/images` | Chỉ thành viên; message/image key idempotent |
 | `/community/groups`, `/{id}/join`, `/{id}/leave`, `/{id}/close` | Approved, membership/chủ/Admin theo thao tác |
-| `/ai/capabilities`, `/ai/jobs`, `/{id}`, `/{id}/preview`, `/{id}/cancel` | Approved; job/preview chỉ chính chủ, kể cả Admin |
+| `/secret/devices`, `/secret/conversations`, `/{id}/messages`, `/{id}/attachments` | Seller đúng hai thành viên/thiết bị; server opaque, không phải chat thường |
+| `/learning/mango` | Học liệu xoài cho Approved, không tạo tác vụ AI |
+| `/ai/capabilities`, `/ai/jobs`, `/{id}`, `/{id}/preview`, `/{id}/cancel`, `/ai/stats`, `/ai/guide` | Chỉ Seller; job/preview/thống kê chỉ chính chủ; Admin/Consumer bị từ chối |
 | `/mobile/update?versionCode=6002&abi=arm64-v8a`, `/mobile/releases/{versionCode}/{abi}.apk` | Bản APK operator đã đăng ký, public download có kiểm size/SHA |
 
-Session access 15 phút, refresh tối đa 7 ngày, xoay khóa/chống replay; DB chỉ giữ hash. Identity PBKDF2, TOTP thật, khóa sau nhiều lần sai; role/approval/membership được kiểm phía server. Rate mặc định 120/phút theo người đã đăng nhập hoặc IP ẩn danh, auth 30/IP/phút; quá giới hạn trả `429`/Retry-After. Token không phải JWT; không log password/token/body bí mật.
+Session access 15 phút, refresh tối đa 7 ngày, xoay khóa/chống replay; DB chỉ giữ hash. Identity PBKDF2, email OTP/TOTP, khóa sau nhiều lần sai; role/approval/membership được kiểm phía server. Relay FruitVision riêng đang gửi mail qua Gmail của người vận hành, tiêu đề “Mã xác thực FruitVision”; không công bố địa chỉ hoặc khóa relay. Rate mặc định 120/phút theo người đã đăng nhập hoặc IP ẩn danh, auth 30/IP/phút; quá giới hạn trả `429`/Retry-After. Token không phải JWT; không log password/token/body bí mật.
 
-Hub `/hubs/fruitvision` phát MessageCreated, ConversationCreated, PostChanged/PublishedPostChanged, CommunityChanged, AiJobChanged. Client phải khôi phục REST sau reconnect và dedup ID/revision. Không phải push nền Android; dispatcher hiện dành cho một API instance, chưa có backplane/lease vận hành nhiều instance hoàn chỉnh.
+Hub `/hubs/fruitvision` phát MessageCreated, ConversationCreated, PostChanged/PublishedPostChanged, CommunityChanged, ArticleChanged/PublishedArticleChanged, AiJobChanged và thông báo secret chỉ chứa metadata. Client phải khôi phục REST sau reconnect và dedup ID/revision. Không phải push nền Android; dispatcher hiện dành cho một API instance, chưa có backplane/lease vận hành nhiều instance hoàn chỉnh.
 
-## AI riêng tư trên PC
+App gọi một API riêng cho mọi chức năng và WSS cùng máy chủ. Backend gọi nguồn địa điểm HTTPS và relay mail; AI chạy tiến trình Python tại PC. Địa điểm cache tươi 24 giờ, có thể dùng snapshot tối đa 7 ngày khi nguồn lỗi với cờ stale; không có dữ liệu hợp lệ thì 503. Web portal có phạm vi giới hạn, không thay toàn bộ app mobile.
+
+## AI xoài riêng tư của Seller trên PC
 
 Cài CPython 3.11 x64, rồi từ `server` (đổi đường dẫn Python theo máy):
 
@@ -89,7 +102,9 @@ Installer tạo `.tools/ai-venv`, cài bảy gói đã ghim trong [requirements-
 
 Upload 90 giây, worker 165 giây, API 180 giây; một worker tuần tự, tối đa 4 Queued/Running toàn hệ thống và 1/người. Chủ có thể hủy Queued/Running. Tệp gốc xóa khi kết thúc; kết quả/preview riêng tư còn giữ, chưa có lịch tự xóa theo hạn.
 
-Kết quả tách `maxVisibleCount`, `confirmedTrackCount`, `lineCrossingCount`, `gradeCounts`; ảnh đơn có confirmedTrackCount=0. Không cộng các số thành số quả vật lý duy nhất, kg hoặc tồn kho. Giai đoạn nguồn không bảo đảm độ chín thực địa; yếu/không biết là Chưa xác định. Camera ở client là **chụp một ảnh qua app máy ảnh**, chưa có truyền camera liên tục.
+Bản phục vụ 2.4 lọc chỉ đối tượng **được dự đoán là xoài**; graph/trọng số/SHA, ngưỡng và nhãn loài tổng quát lưu trữ từ nguồn được giữ nguyên. Hai nhãn giai đoạn nguồn là **Xanh / chưa chín** và **Chín**; yếu/không biết ghi **Chưa xác định**, không gọi là xoài hư. Xem [phạm vi xoài](docs/mango-ai-scope-24.md).
+
+Kết quả tách `maxVisibleCount`, `confirmedTrackCount`, `lineCrossingCount`, `gradeCounts`; ảnh đơn có confirmedTrackCount=0. Không cộng các số thành số quả vật lý duy nhất, kg hoặc tồn kho. Nhãn không bảo đảm độ chín bên trong hoặc an toàn thực phẩm. Camera ở client là **chụp một ảnh qua app máy ảnh**, chưa có truyền camera liên tục. Không có AI offline hay cam kết FPS trên điện thoại; Consumer đọc học liệu xoài, Admin không có quyền AI.
 
 Model SHA `8a69c66a9444c18c98a7e3e58a44f4dddda9eb4583dd4448f430ff9e8db27c41` giữ nguyên; metadata vẫn ghi video-quality FAIL. Chỉ dùng demo phi thương mại; chuyển worker sang PC không mở rộng giấy phép dữ liệu/model. Giữ [nguồn/giấy phép](ai/README.md), [SOURCE_ATTRIBUTION](../app/android/app/src/main/assets/SOURCE_ATTRIBUTION.json), [YOLOX license](../app/android/app/src/main/assets/YOLOX_LICENSE.txt). Xem [AI API](docs/AI_API_USAGE.md).
 
@@ -101,9 +116,11 @@ Client cũ chưa có updater cần một lần bootstrap thủ công bằng APK 
 
 ## Bằng chứng và phần còn giới hạn
 
-[HTTPS/WSS bốn vai trò](docs/verticals-https-e2e.json): PASS **49,281 giây, 80 HTTP, 4 WSS đồng thời**, có moderation/contact races, Direct riêng, Group join/leave/close, Supply-only price và bản ghi demo thực. Đây là bốn client trên PC, không phải bốn điện thoại. [AI HTTPS E2E](docs/ai-https-e2e.json) giữ bằng chứng ảnh/video và tính nhất quán pipeline; không phải ground truth mô hình. Các receipt 2.1 là lịch sử, không thay thế biên nhận native 6006.
+[HTTPS 2.4](docs/media-https-acceptance-24.json): **PASS 88 kiểm tra/49 HTTP, 23,922 giây**, bốn phiên thực đã hoàn thành OTP; Community/Professional có ảnh chuẩn hóa, kiểm duyệt, article Direct/ảnh riêng, idempotency và quyền đọc metadata secret. Receipt không chạy WSS, native hoặc crypto E2EE, không đăng ký khóa giả cho tài khoản demo. Full suite backend nguồn 2.4 đạt **157/157, không skip** theo đợt kiểm người phát hành ghi nhận. APK 2.4.0+6010 đã phát hành. Đã thử luồng Email OTP/ảnh AI và tạo khóa trên máy ảo; crypto API thật có biên nhận riêng, không có kiểm định mật mã độc lập hoặc kiểm thử bốn điện thoại.
 
-Lệnh kiểm backend: `dotnet test FruitVision.slnx`; integration dùng PostgreSQL/DB thử riêng. Worker: `python -B -m unittest discover -s ai -v` trong môi trường đã cài. Bộ kiểm hiện tại: backend 60/60, Flutter 64/64 và analyzer sạch, native policy 22/22. Ba APK 6006 đã kiểm package/chữ ký/hash; biên nhận Android lưu riêng cùng bản phát hành, không suy từ unit tests thành nghiệm thu điện thoại.
+Bằng chứng lịch sử: [HTTPS/WSS bốn vai trò](docs/verticals-https-e2e.json) PASS 80 HTTP/4 WSS trên PC; [AI HTTPS E2E](docs/ai-https-e2e.json) giữ bằng chứng pipeline ảnh/video, không phải ground truth mô hình. Các receipt cũ không thay cho kiểm thử native, cảm biến hoặc secret crypto của bản mới.
+
+Lệnh kiểm backend: `dotnet test FruitVision.slnx`; integration dùng PostgreSQL/DB thử riêng. Worker: `python -B -m unittest discover -s ai -v` trong môi trường đã cài. Số kiểm thử Flutter/native và package/chữ ký/hash phải lấy từ receipt của đúng bản phát hành; không dùng số liệu 6006 hoặc unit tests để suy thành nghiệm thu APK 6010/điện thoại.
 
 Chưa triển khai đơn mua bán, giữ hàng/chống vượt tồn, thanh toán/giao nhận/tranh chấp, IoT, chuyển Forecast thành tồn kho hoặc camera streaming. Chưa bảo đảm production 24×7, mô hình chính xác ngoài thực địa hay APK cuối đã chạy trên điện thoại thật. Duyệt hồ sơ không phải chứng nhận nông sản.
 

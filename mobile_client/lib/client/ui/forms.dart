@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../session.dart';
 import '../models.dart';
 import 'components.dart';
+import 'publishing.dart';
 
 class ForecastForm extends StatefulWidget {
   const ForecastForm({super.key, required this.controller});
@@ -16,9 +17,6 @@ class _ForecastFormState extends State<ForecastForm> {
   final _title = TextEditingController(),
       _body = TextEditingController(),
       _quantity = TextEditingController();
-  late final _region = TextEditingController(
-    text: widget.controller.user!.region,
-  );
   final _priceMin = TextEditingController(),
       _priceMax = TextEditingController();
   late String _purpose = widget.controller.user!.role == UserRole.trader
@@ -26,6 +24,8 @@ class _ForecastFormState extends State<ForecastForm> {
       : 'Supply';
   DateTime? _available;
   List<Json> _products = [];
+  List<Json> _branches = [];
+  String? _branch;
   String? _product, _error;
   bool _loading = true, _busy = false;
   @override
@@ -39,7 +39,6 @@ class _ForecastFormState extends State<ForecastForm> {
     _title.dispose();
     _body.dispose();
     _quantity.dispose();
-    _region.dispose();
     _priceMin.dispose();
     _priceMax.dispose();
     super.dispose();
@@ -51,10 +50,21 @@ class _ForecastFormState extends State<ForecastForm> {
       _error = null;
     });
     try {
-      final data = await widget.controller.api.get('/catalog/products');
+      final data = await Future.wait([
+        widget.controller.api.get('/catalog/products'),
+        widget.controller.api.get('/branches/mine?limit=50'),
+      ]);
       if (!mounted) return;
       setState(() {
-        _products = rows(data);
+        _products = rows(data[0]);
+        _branches = rows(data[1])
+            .where((branch) => branch['status'] == 'Approved')
+            .toList();
+        if (!_branches.any((branch) => branch['id'] == _branch)) {
+          _branch = _branches.length == 1
+              ? value(_branches.single, 'id')
+              : null;
+        }
         _loading = false;
       });
     } catch (e) {
@@ -82,7 +92,7 @@ class _ForecastFormState extends State<ForecastForm> {
         'estimatedQuantityKg': double.parse(
           _quantity.text.trim().replaceAll(',', '.'),
         ),
-        'region': _region.text.trim(),
+        'branchId': _branch,
         'purpose': _purpose,
         if (_available != null)
           'availableOn':
@@ -208,15 +218,47 @@ class _ForecastFormState extends State<ForecastForm> {
                 ),
                 const SizedBox(height: 16),
               ],
-              TextFormField(
-                controller: _region,
-                enabled: !_busy,
-                maxLength: 120,
+              DropdownButtonFormField<String>(
+                key: ValueKey('branch:$_branch'),
+                initialValue: _branch,
+                isExpanded: true,
                 decoration: const InputDecoration(
-                  labelText: 'Khu vực nông sản / nhu cầu',
+                  labelText: 'Chi nhánh đã được duyệt',
                 ),
-                validator: requiredText,
+                items: _branches
+                    .map(
+                      (branch) => DropdownMenuItem(
+                        value: value(branch, 'id'),
+                        child: Text(
+                          '${value(branch, 'name')} · ${value(branch, 'region')}',
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    )
+                    .toList(),
+                onChanged: _busy ? null : (v) => setState(() => _branch = v),
+                validator: (v) =>
+                    v == null ? 'Chọn chi nhánh đã được quản trị duyệt.' : null,
               ),
+              if (!_loading && _branches.isEmpty)
+                MessageBox(
+                  'Bạn cần chi nhánh được duyệt trước khi đăng tin kinh doanh.',
+                  child: OutlinedButton.icon(
+                    onPressed: _busy
+                        ? null
+                        : () async {
+                            await Navigator.of(context).push(
+                              MaterialPageRoute<void>(
+                                builder: (_) =>
+                                    BranchesPage(controller: widget.controller),
+                              ),
+                            );
+                            if (mounted) _loadProducts();
+                          },
+                    icon: const Icon(Icons.storefront_outlined),
+                    label: const Text('Quản lý chi nhánh'),
+                  ),
+                ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: _title,
@@ -321,102 +363,6 @@ class _ForecastFormState extends State<ForecastForm> {
                     ? null
                     : _submit,
                 child: Text(_busy ? 'Đang gửi…' : 'Gửi kiểm duyệt'),
-              ),
-            ],
-          ),
-        ),
-      ),
-    ),
-  );
-}
-
-class ResubmitForm extends StatefulWidget {
-  const ResubmitForm({super.key, required this.controller});
-  final SessionController controller;
-  @override
-  State<ResubmitForm> createState() => _ResubmitFormState();
-}
-
-class _ResubmitFormState extends State<ResubmitForm> {
-  final _form = GlobalKey<FormState>();
-  late final _name = TextEditingController(
-    text: widget.controller.user!.displayName,
-  );
-  late final _region = TextEditingController(
-    text: widget.controller.user!.region,
-  );
-  bool _busy = false;
-  String? _error;
-  @override
-  void dispose() {
-    _name.dispose();
-    _region.dispose();
-    super.dispose();
-  }
-
-  Future<void> _submit() async {
-    if (_busy || !_form.currentState!.validate()) return;
-    setState(() {
-      _busy = true;
-      _error = null;
-    });
-    final ok = await widget.controller.resubmit(
-      displayName: _name.text.trim(),
-      region: _region.text.trim(),
-    );
-    if (!mounted) return;
-    if (ok) {
-      Navigator.of(context).pop();
-      return;
-    }
-    setState(() {
-      _busy = false;
-      _error = widget.controller.error;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('Bổ sung hồ sơ')),
-    body: SafeArea(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
-        child: Form(
-          key: _form,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              SectionTitle(
-                'Cập nhật thông tin',
-                subtitle:
-                    widget.controller.user!.reviewReason ??
-                    'Kiểm tra thông tin và gửi lại để quản trị xét duyệt.',
-              ),
-              if (_error != null) ...[
-                MessageBox(_error!, error: true),
-                const SizedBox(height: 16),
-              ],
-              TextFormField(
-                controller: _name,
-                enabled: !_busy,
-                maxLength: 100,
-                decoration: const InputDecoration(labelText: 'Tên hiển thị'),
-                validator: requiredText,
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _region,
-                enabled: !_busy,
-                maxLength: 120,
-                decoration: const InputDecoration(
-                  labelText: 'Khu vực / tỉnh thành',
-                ),
-                validator: requiredText,
-              ),
-              const SizedBox(height: 24),
-              FilledButton(
-                onPressed: _busy ? null : _submit,
-                child: Text(_busy ? 'Đang gửi…' : 'Gửi lại hồ sơ'),
               ),
             ],
           ),

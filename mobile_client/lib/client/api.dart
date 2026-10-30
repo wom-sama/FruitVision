@@ -351,10 +351,266 @@ class ApiClient {
   Future<Map<String, dynamic>> get(String path) => _request('GET', path, null);
   Future<Map<String, dynamic>> post(String path, Map<String, dynamic>? body) =>
       _request('POST', path, body);
+  Future<Map<String, dynamic>> put(String path, Map<String, dynamic> body) =>
+      _request('PUT', path, body);
+  Future<Map<String, dynamic>> delete(String path) =>
+      _request('DELETE', path, null);
+
+  Future<Map<String, dynamic>> uploadSecretCipher({
+    required String conversationId,
+    required String senderDeviceId,
+    required String recipientDeviceId,
+    required File ciphertext,
+    UploadCancellation? cancellation,
+  }) async {
+    final length = await ciphertext.length();
+    if (length < 17 || length > 5 * 1024 * 1024 + 16) {
+      throw const ApiException('Ảnh mã hóa vượt giới hạn.');
+    }
+    final generation = _generation,
+        cancel = cancellation ?? UploadCancellation();
+    final token = await authenticatedToken();
+    _uploads.add(cancel);
+    try {
+      final result = await _mediaTransport.upload(
+        Uri.parse(
+          '$_baseUrl/api/v1/secret/conversations/${Uri.encodeComponent(conversationId)}/attachments',
+        ).replace(
+          queryParameters: {
+            'senderDeviceId': senderDeviceId,
+            'recipientDeviceId': recipientDeviceId,
+          },
+        ),
+        {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/octet-stream',
+          'Accept': 'application/json',
+        },
+        ciphertext,
+        cancel,
+        null,
+      );
+      if (generation != _generation) {
+        throw const ApiException('Phiên đã thay đổi.', status: 401);
+      }
+      return _decode(result);
+    } finally {
+      _uploads.remove(cancel);
+    }
+  }
+
+  Future<Uint8List> secretCipherBytes(
+    String conversationId,
+    String attachmentId,
+    String deviceId,
+  ) => _privateBytes(
+    '/secret/conversations/${Uri.encodeComponent(conversationId)}/attachments/${Uri.encodeComponent(attachmentId)}?deviceId=${Uri.encodeQueryComponent(deviceId)}',
+    5 * 1024 * 1024 + 65536,
+  );
+
+  Future<Map<String, dynamic>> uploadArticleImage(
+    File file,
+    String contentType, {
+    UploadCancellation? cancellation,
+  }) => _uploadPlainImage('/articles/images', file, contentType, cancellation);
+  Future<Map<String, dynamic>> sendChatImage(
+    String conversationId,
+    String clientMessageId,
+    File file,
+    String contentType, {
+    UploadCancellation? cancellation,
+  }) {
+    if (!RegExp(r'^[A-Za-z0-9_-]{8,64}$').hasMatch(clientMessageId)) {
+      throw const ApiException('Mã yêu cầu gửi ảnh không hợp lệ.');
+    }
+    return _uploadPlainImage(
+      '/conversations/${Uri.encodeComponent(conversationId)}/images?clientMessageId=${Uri.encodeQueryComponent(clientMessageId)}',
+      file,
+      contentType,
+      cancellation,
+    );
+  }
+
+  Future<Map<String, dynamic>> _uploadPlainImage(
+    String path,
+    File file,
+    String contentType,
+    UploadCancellation? cancellation,
+  ) async {
+    if (!{'image/jpeg', 'image/png'}.contains(contentType)) {
+      throw const ApiException('Ảnh cần là JPEG hoặc PNG.');
+    }
+    final length = await file.length();
+    if (length < 3 || length > 5 * 1024 * 1024) {
+      throw const ApiException('Ảnh tối đa 5 MiB.');
+    }
+    final generation = _generation,
+        cancel = cancellation ?? UploadCancellation(),
+        token = await authenticatedToken();
+    _uploads.add(cancel);
+    try {
+      final response = await _mediaTransport.upload(
+        Uri.parse('$_baseUrl/api/v1$path'),
+        {
+          'Authorization': 'Bearer $token',
+          'Content-Type': contentType,
+          'Accept': 'application/json',
+        },
+        file,
+        cancel,
+        null,
+      );
+      if (generation != _generation) {
+        throw const ApiException('Phiên đã thay đổi.', status: 401);
+      }
+      return _decode(response);
+    } finally {
+      _uploads.remove(cancel);
+    }
+  }
+
+  Future<Uint8List> articleImageBytes(String articleId) => _privateBytes(
+    '/articles/${Uri.encodeComponent(articleId)}/image',
+    5 * 1024 * 1024,
+  );
+  Future<Uint8List> chatImageBytes(
+    String conversationId,
+    String imageId,
+  ) => _privateBytes(
+    '/conversations/${Uri.encodeComponent(conversationId)}/images/${Uri.encodeComponent(imageId)}',
+    5 * 1024 * 1024,
+  );
+
+  Future<Uint8List> _privateBytes(String path, int limit) async {
+    if (!path.startsWith('/') ||
+        path.startsWith('//') ||
+        path.contains('://')) {
+      throw const ApiException('Đường dẫn tải xuống không hợp lệ.');
+    }
+    final generation = _generation, uri = Uri.parse('$_baseUrl/api/v1$path');
+    var token = await authenticatedToken();
+    var response = await _mediaTransport.download(uri, {
+      'Authorization': 'Bearer $token',
+    }, limit);
+    if (response.status == 401 && generation == _generation) {
+      await _refresh(generation);
+      token = await authenticatedToken();
+      response = await _mediaTransport.download(uri, {
+        'Authorization': 'Bearer $token',
+      }, limit);
+    }
+    if (generation != _generation) {
+      throw const ApiException('Phiên đã thay đổi.', status: 401);
+    }
+    if (response.status != 200) {
+      _decode(
+        ApiReply(
+          response.status,
+          utf8.decode(response.bytes, allowMalformed: true),
+        ),
+      );
+      throw const ApiException('Không tải được dữ liệu.');
+    }
+    if (response.bytes.length > limit) {
+      throw const ApiException('Dữ liệu vượt giới hạn.');
+    }
+    return response.bytes;
+  }
+
+  Future<Map<String, dynamic>> uploadEvidence({
+    required String applicationId,
+    required String category,
+    required int expectedRevision,
+    required File file,
+    required String contentType,
+    UploadCancellation? cancellation,
+  }) async {
+    if (!{'ProductionEvidence', 'BusinessEvidence'}.contains(category) ||
+        expectedRevision < 1 ||
+        !{'image/jpeg', 'image/png', 'application/pdf'}.contains(contentType)) {
+      throw const ApiException('Chứng từ không hợp lệ.');
+    }
+    final length = await file.length();
+    if (length < 1 || length > 5 * 1024 * 1024) {
+      throw const ApiException('Chứng từ tối đa 5 MiB.');
+    }
+    final generation = _generation,
+        cancel = cancellation ?? UploadCancellation();
+    final token = await authenticatedToken();
+    _uploads.add(cancel);
+    try {
+      final response = await _mediaTransport.upload(
+        Uri.parse(
+          '$_baseUrl/api/v1/role-applications/${Uri.encodeComponent(applicationId)}/evidence',
+        ).replace(
+          queryParameters: {
+            'category': category,
+            'expectedRevision': '$expectedRevision',
+          },
+        ),
+        {
+          'Authorization': 'Bearer $token',
+          'Content-Type': contentType,
+          'Accept': 'application/json',
+        },
+        file,
+        cancel,
+        null,
+      );
+      if (generation != _generation) {
+        throw const ApiException('Phiên đã thay đổi.', status: 401);
+      }
+      return _decode(response);
+    } finally {
+      _uploads.remove(cancel);
+    }
+  }
+
+  Future<Uint8List> evidenceBytes(
+    String applicationId,
+    String evidenceId, {
+    bool admin = false,
+  }) async {
+    final generation = _generation;
+    final uri = Uri.parse(
+      '$_baseUrl/api/v1/${admin ? 'admin/' : ''}role-applications/${Uri.encodeComponent(applicationId)}/evidence/${Uri.encodeComponent(evidenceId)}',
+    );
+    var token = await authenticatedToken();
+    var response = await _mediaTransport.download(uri, {
+      'Authorization': 'Bearer $token',
+    }, 5 * 1024 * 1024);
+    if (response.status == 401 && generation == _generation) {
+      await _refresh(generation);
+      token = await authenticatedToken();
+      response = await _mediaTransport.download(uri, {
+        'Authorization': 'Bearer $token',
+      }, 5 * 1024 * 1024);
+    }
+    if (generation != _generation) {
+      throw const ApiException('Phiên đã thay đổi.', status: 401);
+    }
+    if (response.status != 200) {
+      _decode(
+        ApiReply(
+          response.status,
+          utf8.decode(response.bytes, allowMalformed: true),
+        ),
+      );
+      throw const ApiException('Không tải được chứng từ.');
+    }
+    return response.bytes;
+  }
+
   static const _publicPaths = {
     '/auth/login',
     '/auth/register',
     '/auth/mfa/login',
+    '/auth/methods',
+    '/auth/otp/verify',
+    '/auth/otp/resend',
+    '/auth/biometric/challenge',
+    '/auth/biometric/login',
+    '/auth/face/login',
     '/auth/refresh',
   };
   Future<ApiReply> _send(

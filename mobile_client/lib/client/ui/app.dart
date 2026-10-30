@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import '../session.dart';
 import '../realtime.dart';
 import '../updates.dart';
+import '../secret_messaging.dart';
 import 'auth.dart';
 import 'workspace.dart';
 import 'realtime_scope.dart';
 import 'update_page.dart';
+import 'secret_scope.dart';
 
 class FruitVisionApp extends StatefulWidget {
   const FruitVisionApp({
@@ -14,10 +16,12 @@ class FruitVisionApp extends StatefulWidget {
     required this.controller,
     this.realtimeConnector,
     this.updates,
+    this.secrets,
   });
   final SessionController controller;
   final HubConnector? realtimeConnector;
   final UpdateController? updates;
+  final SecretMessaging? secrets;
   @override
   State<FruitVisionApp> createState() => _FruitVisionAppState();
 }
@@ -26,16 +30,20 @@ class _FruitVisionAppState extends State<FruitVisionApp>
     with WidgetsBindingObserver {
   late final RealtimeClient _hub;
   late final UpdateController _updates;
+  late final SecretMessaging _secrets;
   bool _resumed = true;
+  HubConnectionState? _lastHubState;
   SessionController get controller => widget.controller;
   @override
   void initState() {
     super.initState();
     _updates = widget.updates ?? createUpdateController();
+    _secrets = widget.secrets ?? SecretMessaging(session: controller);
     _hub = RealtimeClient(
       api: controller.api,
       connector: widget.realtimeConnector,
     );
+    _hub.addListener(_onHubState);
     WidgetsBinding.instance.addObserver(this);
     controller.addListener(_syncRealtime);
     _syncRealtime();
@@ -54,9 +62,19 @@ class _FruitVisionAppState extends State<FruitVisionApp>
     }
   }
 
+  void _onHubState() {
+    final state = _hub.state, previous = _lastHubState;
+    _lastHubState = state;
+    if (previous == HubConnectionState.connected &&
+        state != HubConnectionState.connected) {
+      _secrets.lockMemory();
+    }
+  }
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     _resumed = state == AppLifecycleState.resumed;
+    if (!_resumed) _secrets.lockMemory();
     _syncRealtime();
   }
 
@@ -64,8 +82,10 @@ class _FruitVisionAppState extends State<FruitVisionApp>
   void dispose() {
     controller.removeListener(_syncRealtime);
     WidgetsBinding.instance.removeObserver(this);
+    _hub.removeListener(_onHubState);
     _hub.dispose();
     if (widget.updates == null) _updates.dispose();
+    if (widget.secrets == null) _secrets.dispose();
     super.dispose();
   }
 
@@ -76,88 +96,93 @@ class _FruitVisionAppState extends State<FruitVisionApp>
       client: _hub,
       child: UpdateScope(
         updater: _updates,
-        child: MaterialApp(
-          key: ValueKey(
-            '${controller.api.baseUrl}:${controller.user?.id ?? 'signed-out'}',
-          ),
-          title: 'FruitVision',
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            useMaterial3: true,
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: const Color(0xFF146347),
-              primary: const Color(0xFF146347),
-              secondary: const Color(0xFF2C5F83),
-              surface: Colors.white,
+        child: SecretScope(
+          messaging: _secrets,
+          child: MaterialApp(
+            key: ValueKey(
+              '${controller.api.baseUrl}:${controller.user?.id ?? 'signed-out'}',
             ),
-            scaffoldBackgroundColor: const Color(0xFFF5F8F5),
-            cardTheme: CardThemeData(
-              color: Colors.white,
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-                side: const BorderSide(color: Color(0xFFE0E8E5)),
+            title: 'FruitVision',
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              useMaterial3: true,
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: const Color(0xFF146347),
+                primary: const Color(0xFF146347),
+                secondary: const Color(0xFF2C5F83),
+                surface: Colors.white,
               ),
-            ),
-            appBarTheme: const AppBarTheme(
-              backgroundColor: Color(0xFFF5F8F5),
-              foregroundColor: Color(0xFF17352A),
-              centerTitle: false,
-              titleTextStyle: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.w700,
-                color: Color(0xFF17352A),
-              ),
-            ),
-            inputDecorationTheme: InputDecorationTheme(
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              filled: true,
-              fillColor: Colors.white,
-            ),
-            filledButtonTheme: FilledButtonThemeData(
-              style: FilledButton.styleFrom(
-                minimumSize: const Size(48, 52),
+              scaffoldBackgroundColor: const Color(0xFFF5F8F5),
+              cardTheme: CardThemeData(
+                color: Colors.white,
+                elevation: 0,
                 shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  side: const BorderSide(color: Color(0xFFE0E8E5)),
+                ),
+              ),
+              appBarTheme: const AppBarTheme(
+                backgroundColor: Color(0xFFF5F8F5),
+                foregroundColor: Color(0xFF17352A),
+                centerTitle: false,
+                titleTextStyle: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xFF17352A),
+                ),
+              ),
+              inputDecorationTheme: InputDecorationTheme(
+                border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
+                filled: true,
+                fillColor: Colors.white,
+              ),
+              filledButtonTheme: FilledButtonThemeData(
+                style: FilledButton.styleFrom(
+                  minimumSize: const Size(48, 52),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+              ),
+              outlinedButtonTheme: OutlinedButtonThemeData(
+                style: OutlinedButton.styleFrom(
+                  minimumSize: const Size(48, 48),
+                ),
+              ),
+              textButtonTheme: TextButtonThemeData(
+                style: TextButton.styleFrom(minimumSize: const Size(48, 48)),
               ),
             ),
-            outlinedButtonTheme: OutlinedButtonThemeData(
-              style: OutlinedButton.styleFrom(minimumSize: const Size(48, 48)),
-            ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(minimumSize: const Size(48, 48)),
-            ),
-          ),
-          home: controller.loading
-              ? const Scaffold(
-                  body: SafeArea(
-                    child: Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          CircularProgressIndicator(),
-                          SizedBox(height: 16),
-                          Text('Đang mở phiên làm việc…'),
-                        ],
+            home: controller.loading
+                ? const Scaffold(
+                    body: SafeArea(
+                      child: Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            CircularProgressIndicator(),
+                            SizedBox(height: 16),
+                            Text('Đang mở phiên làm việc…'),
+                          ],
+                        ),
                       ),
                     ),
+                  )
+                : UpdateStartupGate(
+                    updater: _updates,
+                    baseUrl: controller.api.baseUrl,
+                    child: controller.signedIn
+                        ? Workspace(
+                            key: ValueKey(
+                              '${controller.api.baseUrl}:${controller.user?.id}',
+                            ),
+                            controller: controller,
+                          )
+                        : AuthPage(controller: controller),
                   ),
-                )
-              : UpdateStartupGate(
-                  updater: _updates,
-                  baseUrl: controller.api.baseUrl,
-                  child: controller.signedIn
-                      ? Workspace(
-                          key: ValueKey(
-                            '${controller.api.baseUrl}:${controller.user?.id}',
-                          ),
-                          controller: controller,
-                        )
-                      : AuthPage(controller: controller),
-                ),
+          ),
         ),
       ),
     ),

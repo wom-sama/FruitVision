@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../session.dart';
 import 'components.dart';
 import 'event_refresh.dart';
+import 'location_picker.dart';
 import 'posts.dart';
 import 'visuals.dart';
 
@@ -45,10 +46,9 @@ class MarketPage extends StatefulWidget {
 }
 
 class _MarketPageState extends State<MarketPage> {
-  late final _region = TextEditingController(
-    text: widget.controller.user!.region,
-  );
-  late String _queryRegion = widget.controller.user!.region;
+  LocationSelection? _location;
+  String _queryRegion = '';
+  int _pickerGeneration = 0;
   String? _product, _queryProduct, _error;
   List<Json> _products = [];
   Json? _summary;
@@ -61,12 +61,6 @@ class _MarketPageState extends State<MarketPage> {
     _load();
   }
 
-  @override
-  void dispose() {
-    _region.dispose();
-    super.dispose();
-  }
-
   Future<void> _catalog() async {
     try {
       final response = await widget.controller.api.get('/catalog/products');
@@ -77,7 +71,7 @@ class _MarketPageState extends State<MarketPage> {
   }
 
   Future<void> _search() async {
-    _queryRegion = _region.text.trim();
+    _queryRegion = _location?.region ?? '';
     _queryProduct = _product;
     await _load();
   }
@@ -132,15 +126,24 @@ class _MarketPageState extends State<MarketPage> {
                 subtitle: 'Xem khối lượng dự kiến và giá chào trong khu vực bạn quan tâm.',
               ),
               ...[
-                TextField(
-                  controller: _region,
-                  maxLength: 120,
-                  textInputAction: TextInputAction.search,
-                  decoration: const InputDecoration(
-                    labelText: 'Khu vực',
-                    hintText: 'Để trống để xem tất cả khu vực',
-                  ),
-                  onSubmitted: (_) => _search(),
+                const Text(
+                  'Chọn cả quốc gia và tỉnh để lọc, hoặc xem tất cả khu vực.',
+                ),
+                const SizedBox(height: 8),
+                CountryProvincePicker(
+                  key: ValueKey(_pickerGeneration),
+                  api: widget.controller.api,
+                  onChanged: (location) => _location = location,
+                ),
+                TextButton(
+                  onPressed: () {
+                    setState(() {
+                      _location = null;
+                      _pickerGeneration++;
+                    });
+                    _search();
+                  },
+                  child: const Text('Tất cả khu vực'),
                 ),
                 const SizedBox(height: 12),
                 DropdownButtonFormField<String>(

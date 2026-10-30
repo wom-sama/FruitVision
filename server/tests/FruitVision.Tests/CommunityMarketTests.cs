@@ -166,11 +166,8 @@ public sealed class CommunityMarketTests(ApiFixture fixture)
     private static Post Post(AppUser user, string purpose, decimal quantity, decimal? min, decimal? max) => new() { AuthorId = user.Id, Author = user, Title = "Published market estimate", Body = "An estimate without a stock or delivery commitment.", ProductCode = "mango", Status = "Published", Purpose = purpose, Region = "", EstimatedQuantityKg = quantity, PriceMinVndPerKg = min, PriceMaxVndPerKg = max };
     private async Task<Guid> NewAccount(HttpClient client, bool approve = true)
     {
-        var email = $"community-{Guid.NewGuid():N}@example.test";
-        using var registration = await client.PostAsJsonAsync("/api/v1/auth/register", new { displayName = "Community test", email, password = fixture.Password, role = "Consumer", region = "Đồng Tháp" });
-        Assert.Equal(HttpStatusCode.Created, registration.StatusCode); var id = (await registration.Content.ReadFromJsonAsync<JsonElement>()).GetProperty("id").GetGuid();
-        if (approve) { using var admin = fixture.CreateClient(); await Login(admin, "admin@fruitvision.test"); using var review = await admin.PostAsJsonAsync($"/api/v1/admin/applications/{id}/review", new { status = "Approved", reason = "Community integration test" }); Assert.Equal(HttpStatusCode.OK, review.StatusCode); }
-        await Login(client, email); return id;
+        var account = await TestAccounts.CreateAsync(fixture.Services,fixture.Password,"Consumer",approve,"Community test");
+        await Login(client, account.Email); return account.Id;
     }
     private async Task Login(HttpClient client, string email)
     {

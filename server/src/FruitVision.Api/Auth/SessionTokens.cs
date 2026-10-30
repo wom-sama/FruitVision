@@ -17,12 +17,12 @@ public static class SessionTokens
     public static string Hash(string value) => Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(value)));
     public static Guid UserId(this ClaimsPrincipal user) => Guid.Parse(user.FindFirstValue(ClaimTypes.NameIdentifier)!);
     public static Guid SessionId(this ClaimsPrincipal user) => Guid.Parse(user.FindFirstValue("session_id")!);
-    public static object Profile(AppUser u) => new {u.Id,u.DisplayName,u.Email,role=u.Role.ToString(),approvalStatus=u.ApprovalStatus.ToString(),u.Region,u.IsActive,u.ReviewReason,twoFactorEnabled=u.TwoFactorEnabled};
-    public static (AuthSession Session,string Access,string Refresh) Create(AppUser user)
+    public static object Profile(AppUser u) => new {u.Id,u.DisplayName,u.Email,role=u.Role.ToString(),approvalStatus=u.ApprovalStatus.ToString(),u.Region,u.CountryCode,u.ProvinceCode,u.EmailConfirmed,u.IsActive,u.ReviewReason,twoFactorEnabled=u.TwoFactorEnabled};
+    public static (AuthSession Session,string Access,string Refresh) Create(AppUser user,string authMethod="password")
     {
         var access=New();var refresh=New();
         return (new AuthSession {UserId=user.Id,AccessHash=Hash(access),RefreshHash=Hash(refresh),
-            SecurityStamp=user.SecurityStamp ?? "",AccessExpiresAt=DateTimeOffset.UtcNow.AddMinutes(15),
+            SecurityStamp=user.SecurityStamp ?? "",AuthMethod=authMethod,AccessExpiresAt=DateTimeOffset.UtcNow.AddMinutes(15),
             RefreshExpiresAt=DateTimeOffset.UtcNow.AddDays(7)}, access,refresh);
     }
     public static object Response(AppUser user,AuthSession s,string access,string refresh) => new {

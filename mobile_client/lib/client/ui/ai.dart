@@ -12,6 +12,7 @@ import '../session.dart';
 import 'components.dart';
 import 'realtime_scope.dart';
 import 'visuals.dart';
+import 'ai_usage.dart';
 
 bool activeJob(Json job) => {'Queued', 'Running'}.contains(job['status']);
 String jobStatus(Json job) => switch (job['status']) {
@@ -93,7 +94,7 @@ class _AiPageState extends State<AiPage> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    if (widget.controller.user!.isApproved) _reload();
+    if (widget.controller.user!.canSell) _reload();
   }
 
   @override
@@ -150,7 +151,7 @@ class _AiPageState extends State<AiPage> with WidgetsBindingObserver {
   Future<void> _reload({bool capabilities = true}) async {
     if (!mounted ||
         widget.controller.endingSession ||
-        widget.controller.user?.isApproved != true) {
+        widget.controller.user?.canSell != true) {
       return;
     }
     if (_loading) {
@@ -374,7 +375,7 @@ class _AiPageState extends State<AiPage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    final approved = widget.controller.user!.isApproved;
+    final approved = widget.controller.user!.canSell;
     final ready =
         _capabilities?['aiReady'] == true && !widget.controller.endingSession;
     return Column(
@@ -388,15 +389,25 @@ class _AiPageState extends State<AiPage> with WidgetsBindingObserver {
               children: [
                 widget.header,
                 const SectionTitle(
-                  'Phân tích AI',
-                  subtitle:
-                      'Nhận diện, đếm và xem giai đoạn từ ảnh hoặc video.',
+                  'Phân tích xoài',
+                  subtitle: 'Nhận diện xoài dự đoán, đếm và xem hai giai đoạn theo dữ liệu nguồn từ ảnh hoặc video.',
                 ),
                 if (!approved)
                   const MessageBox(
                     'Tài khoản cần được duyệt và đang hoạt động để dùng phân tích AI.',
                   )
                 else ...[
+                  OutlinedButton.icon(
+                    onPressed: () => Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) =>
+                            AiUsagePage(controller: widget.controller),
+                      ),
+                    ),
+                    icon: const Icon(Icons.insights_outlined),
+                    label: const Text('Thống kê & hướng dẫn AI'),
+                  ),
+                  const SizedBox(height: 12),
                   if (_error != null) ...[
                     MessageBox(_error!, error: true),
                     const SizedBox(height: 12),
@@ -1101,6 +1112,7 @@ class AiResultCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final video = mediaType == 'video';
+    final mango = result['scope'] == 'predicted-mango-only';
     final grades = result['gradeCounts'] is Map
         ? Map<String, dynamic>.from(result['gradeCounts'] as Map)
         : <String, dynamic>{};
@@ -1112,8 +1124,24 @@ class AiResultCard extends StatelessWidget {
     );
     return DataCard(
       children: [
+        if (!mango)
+          const MessageBox(
+            'Kết quả lưu trước bộ lọc xoài; số đếm có thể gồm loại quả khác. Giữ nguyên nhãn và số liệu đã ghi nhận.',
+          ),
+        if (mango && result['maxVisibleCount'] == 0)
+          MessageBox(
+            value(
+              result,
+              'summary',
+              'Không phát hiện xoài đạt ngưỡng. Kết quả này không chứng minh ảnh không có xoài.',
+            ),
+          ),
         CountMetric(
-          label: video ? 'Tối đa thấy đồng thời' : 'Quả nhận diện trong ảnh',
+          label: video
+              ? 'Tối đa thấy đồng thời'
+              : mango
+              ? 'Xoài dự đoán trong ảnh'
+              : 'Quả nhận diện trong ảnh',
           value: '${result['maxVisibleCount'] ?? 0}',
           icon: Icons.filter_center_focus,
           primary: true,

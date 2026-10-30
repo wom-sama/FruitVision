@@ -139,7 +139,7 @@ void main() {
           ),
         ),
       );
-      await tester.ensureVisible(find.text('Kiểm tra cập nhật'));
+      await tester.scrollUntilVisible(find.text('Kiểm tra cập nhật'), 180);
       await tester.tap(find.text('Kiểm tra cập nhật'));
       await tester.pumpAndSettle();
       expect(client.requests, hasLength(1));

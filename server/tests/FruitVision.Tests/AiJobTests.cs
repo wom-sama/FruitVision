@@ -59,13 +59,14 @@ public sealed class AiJobTests(ApiFixture fixture)
     [InlineData("Trader")]
     [InlineData("Consumer")]
     [InlineData("Admin")]
-    public async Task Every_approved_role_can_queue_and_cancel_a_private_image(string role)
+    public async Task Only_approved_seller_roles_can_queue_and_cancel_a_private_image(string role)
     {
         using var app = CreateApp();
         using var client = app.CreateClient();
         if (role == "Admin") await LoginAsync(client, "admin@fruitvision.test");
         else await LoginNewAsync(client, app, role: role);
         using var created = await UploadAsync(client);
+        if(role is "Admin" or "Consumer") { Assert.Equal(HttpStatusCode.Forbidden,created.StatusCode); return; }
         Assert.Equal(HttpStatusCode.Accepted, created.StatusCode);
         var job = await created.Content.ReadFromJsonAsync<JsonElement>();
         var id = job.GetProperty("id").GetGuid();
@@ -262,20 +263,8 @@ public sealed class AiJobTests(ApiFixture fixture)
     private async Task LoginNewAsync(HttpClient client, WebApplicationFactory<Program> app,
         bool approve = true, string role = "Producer")
     {
-        var email = $"ai-{Guid.NewGuid():N}@example.test";
-        using var registered = await client.PostAsJsonAsync("/api/v1/auth/register", new
-        { displayName = "AI test account", email, password = fixture.Password, role, region = "Đồng Tháp" });
-        Assert.Equal(HttpStatusCode.Created, registered.StatusCode);
-        var id = (await registered.Content.ReadFromJsonAsync<JsonElement>()).GetProperty("id").GetGuid();
-        if (approve)
-        {
-            using var admin = app.CreateClient();
-            await LoginAsync(admin, "admin@fruitvision.test");
-            using var reviewed = await admin.PostAsJsonAsync($"/api/v1/admin/applications/{id}/review",
-                new { status = "Approved", reason = "AI integration test" });
-            Assert.Equal(HttpStatusCode.OK, reviewed.StatusCode);
-        }
-        await LoginAsync(client, email);
+        var account = await TestAccounts.CreateAsync(app.Services,fixture.Password,role,approve,"AI test account");
+        await LoginAsync(client, account.Email);
     }
 
     private async Task LoginAsync(HttpClient client, string email)

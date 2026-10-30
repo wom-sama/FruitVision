@@ -24,14 +24,18 @@ MODEL_NAME = 'YOLOX-Tiny reviewed partial-visibility fruit geometry and source s
 ASSETS = Path(__file__).resolve().parents[2] / 'app/android/app/src/main/assets'
 STAGE_LABELS = ('Xanh / chưa chín', 'Chín')
 UNKNOWN_LABEL = 'Chưa xác định'
+FRUIT_LABEL = 'Xoài (dự đoán)'
+EMPTY_RESULT_MESSAGE = 'Không phát hiện xoài đạt ngưỡng'
 MAX_IMAGE_PIXELS = 24_000_000
 MAX_FRAMES = 3600
 MAX_SECONDS = 120
 JOB_SECONDS = 165
 LIMITATIONS = [
     'Chỉ dùng cho bản trình diễn phi thương mại; giấy phép nguồn dữ liệu/model còn hạn chế.',
-    'Hai nhãn giai đoạn từ dữ liệu nguồn không xác nhận độ chín ngoài thực tế; quả chưa biết hoặc độ tin cậy thấp không được phân hạng.',
-    'Nhận dạng loài chỉ là chẩn đoán nội bộ; nhãn hiển thị chung là Quả.',
+    'Chỉ giữ đối tượng được mô hình dự đoán là xoài; bộ lọc có thể bỏ sót hoặc nhận nhầm loài khác.',
+    'Hai nhãn giai đoạn từ dữ liệu nguồn không xác nhận độ chín ngoài thực tế; độ tin cậy thấp được ghi Chưa xác định.',
+    'Không phát hiện xoài đạt ngưỡng không chứng minh ảnh hoặc video không có xoài.',
+    'Màu vỏ bên ngoài không xác nhận giống xoài, chất lượng bên trong, hư hỏng hoặc an toàn thực phẩm.',
     'Video chưa đạt tiêu chí chất lượng khoa học; có thể bỏ sót, trùng khung hoặc sai giai đoạn.',
     'Theo dõi bằng hình học không tái nhận dạng vật thể: che khuất lâu, quay lại và camera chuyển động có thể làm sai số đếm.',
     'Số qua vạch y=0.5 đếm mỗi ID một lần theo cả hai hướng; không phải bảo đảm số quả vật lý duy nhất.',
@@ -65,10 +69,10 @@ class Detection:
     stage_confidence: float
 
     def as_object(self, track=None):
-        stage = (track.stage if track is not None else self.stage) if self.species in (0, 1) else -1
+        stage = (track.stage if track is not None else self.stage) if self.species == 1 else -1
         return {'trackId': track.id if track is not None else None,
                 'box': list(self.box), 'score': round(self.score, 7),
-                'fruitLabel': 'Quả', 'stageCode': stage,
+                'fruitLabel': FRUIT_LABEL, 'stageCode': stage,
                 'stageLabel': STAGE_LABELS[stage] if stage in (0, 1) else UNKNOWN_LABEL}
 
 
@@ -80,7 +84,7 @@ def iou(a, b):
 
 
 def select_outputs(boxes, scores, species, stages, stage_scores, transform, limit=64):
-    """Port DetectionMath: stable confidence order, clip before class-agnostic NMS."""
+    """Mango scope first, then stable confidence order and clipped-box NMS."""
     import numpy as np
     boxes = np.asarray(boxes).reshape(-1, 4)
     scores = np.asarray(scores).reshape(-1)
@@ -99,13 +103,14 @@ def select_outputs(boxes, scores, species, stages, stage_scores, transform, limi
         raise WorkerError('Đầu ra mô hình không hợp lệ.')
     selected = []
     for index in sorted(range(n), key=lambda k: -float(scores[k])):
-        if scores[index] < .35 or species[index] == -1:
+        # Filter before NMS so a higher-scoring banana/generic box cannot remove a mango.
+        # This changes serving scope only; graph classes and pinned thresholds stay intact.
+        if scores[index] < .35 or species[index] != 1:
             continue
         stage = int(stages[index])
         distribution = stage_scores[index]
         if (abs(float(sum(distribution)) - 1.) >= .001
-                or distribution[stage] < distribution[1 - stage]
-                or (species[index] == 2 and not (distribution == .5).all())):
+                or distribution[stage] < distribution[1 - stage]):
             raise WorkerError('Phân phối giai đoạn của mô hình không hợp lệ.')
         box = transform.original(boxes[index])
         if box[0] >= box[2] or box[1] >= box[3]:
@@ -114,7 +119,7 @@ def select_outputs(boxes, scores, species, stages, stage_scores, transform, limi
             continue
         confidence = float(distribution[stage])
         selected.append(Detection(box, float(scores[index]), int(species[index]),
-            stage if species[index] in (0, 1) and confidence >= .6 else -1, confidence))
+            stage if confidence >= .6 else -1, confidence))
         if len(selected) > limit:
             return selected[:limit], True
     return selected, False
@@ -275,7 +280,7 @@ class Tracker:
                 track.vy = ((detection.box[1] + detection.box[3]) - (track.box[1] + track.box[3])) / (2 * elapsed)
                 track.box, track.last_seen = detection.box, timestamp
                 track.observations += 1
-            if detection.stage in (0, 1) and detection.species in (0, 1) and detection.stage_confidence >= .6:
+            if detection.stage in (0, 1) and detection.species == 1 and detection.stage_confidence >= .6:
                 track.votes[detection.stage] = track.votes.get(detection.stage, 0.) + detection.stage_confidence
             center = (detection.box[1] + detection.box[3]) / 2
             side = -1 if center <= .48 else (1 if center >= .52 else 0)
@@ -343,6 +348,9 @@ def save_preview(image, objects, output, video=False):
     font = ImageFont.truetype(str(font_path), 18) if font_path.is_file() else ImageFont.load_default()
     if video:
         draw.line((0, preview.height // 2, preview.width, preview.height // 2), fill=(60, 200, 255), width=2)
+    if not objects:
+        draw.text((4, 4), EMPTY_RESULT_MESSAGE, font=font, fill=(255, 255, 255),
+                  stroke_width=2, stroke_fill=(18, 28, 36))
     for obj in objects:
         box = tuple(round(v * (preview.width if i % 2 == 0 else preview.height)) for i, v in enumerate(obj['box']))
         color = (40, 210, 120) if obj['stageCode'] == 0 else ((255, 180, 35) if obj['stageCode'] == 1 else (100, 190, 255))
@@ -447,6 +455,8 @@ def process_job(job, detector_factory=Detector):
     if media_type == 'image':
         limitations.append('Ảnh đơn không theo dõi ID; xem số quả đang thấy (maxVisibleCount).')
     result = {'schema': 'fruitvision-ai-v1', 'modelName': MODEL_NAME, 'modelSha256': MODEL_SHA256,
+              'scope': 'predicted-mango-only',
+              'summary': EMPTY_RESULT_MESSAGE if maximum == 0 else 'Phát hiện xoài dự đoán đạt ngưỡng',
               'framesProcessed': frames, 'maxVisibleCount': maximum,
               'confirmedTrackCount': tracker.confirmed_count, 'lineCrossingCount': tracker.line_crossing_count,
               'gradeCounts': counts, 'objects': objects, 'limitations': limitations,

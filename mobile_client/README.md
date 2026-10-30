@@ -1,80 +1,115 @@
-# FruitVision Android 2.2 — client máy chủ
+# FruitVision Android 2.4 — xoài, kiến thức và cộng đồng
 
-README cho bản phát hành **2.2.0+6006**. Flutter gọi HTTPS/SignalR WSS; PC chạy PostgreSQL và CPU AI. APK không chứa model/runtime AI hoặc truy cập DB trực tiếp; ứng dụng offline lịch sử ở `../app/`. **APK 6006 đã nâng cấp qua trình cài Android và chạy nghiệp vụ bốn vai trò tuần tự trên máy ảo API 30**; xem [biên nhận cuối](../releases/android/2.2.0/native-acceptance.json). Không phải bốn điện thoại thật.
+Bản phát hành **2.4.0+6010** đã build, kiểm ba ABI và công bố qua updater; bộ bàn giao có tên `APK_2.4.0_6010`. Đây là Flutter client gọi **một API FruitVision qua HTTPS**, dùng SignalR WSS cùng máy chủ. PostgreSQL, xử lý ảnh và ONNX Runtime CPU chạy trên PC. **APK không chứa trọng số hoặc runtime AI**; thư viện native libsodium trong APK phục vụ mã hóa. Ứng dụng offline cũ giữ riêng ở `../app/`, không phải luồng AI hiện tại.
 
-## Cài APK và chọn máy chủ
+## Cài và kết nối
 
-Ba APK mục tiêu, tính từ `mobile_client/`; chỉ cài bộ có receipt version/SHA/chữ ký tương ứng:
+Android tối thiểu **API 26**. Chọn APK đúng ABI trong bộ đã kiểm; đường dẫn build tính từ `mobile_client/`:
 
-| Kiến trúc Android | APK |
-|---|---|
-| ARM 64 bit | `build/app/outputs/apk/release/app-arm64-v8a-release.apk` |
-| ARM 32 bit | `build/app/outputs/apk/release/app-armeabi-v7a-release.apk` |
-| x86 64 bit | `build/app/outputs/apk/release/app-x86_64-release.apk` |
-
-Android tối thiểu API 26. Chọn đúng ABI, cài từ bộ bàn giao tin cậy; không dùng đường dẫn ổ riêng của người phát triển. Giữ package `vn.mangodemo.mango_offline` và chứng thư ký đồ án để cập nhật đè bản trước. Release hiện giữ course/debug signer, chưa phải cấu hình ký Play Store; không đưa keystore/mật khẩu lên Git.
-
-PC/API/tunnel cần hoạt động và điện thoại cần mạng. Mở **Máy chủ** ở đăng nhập hoặc **Tài khoản → Cài đặt máy chủ** để chọn base HTTPS; đổi máy chủ kết thúc phiên hiện tại. Lấy URL hiện hành từ **tệp được sinh local `server/PUBLIC_URL.txt`** trên PC vận hành; tệp không có trong clone/Git. Tunnel có thể đổi tên khi khởi động lại, `localhost` trên điện thoại không trỏ về PC.
-
-Tài khoản/mật khẩu demo riêng ở `server/.local/demo-accounts.json` trên PC được cấp quyền; không đưa nội dung vào APK, README hoặc ảnh chụp. Đăng ký chỉ Producer/Trader/Consumer, bắt đầu Pending. Có đăng nhập email/mật khẩu và mã TOTP nếu bật; hồ sơ NeedsInformation/Rejected có lý do và luồng bổ sung/gửi lại. Bấm cập nhật hồ sơ sau khi Admin duyệt.
-
-## Vai trò, tin dự kiến và liên hệ
-
-Bốn tab chính là không gian nghiệp vụ, **AI**, **Trao đổi**, **Tài khoản**; lịch sử cá nhân ở Tài khoản.
-
-| Vai trò | Không gian nghiệp vụ |
-|---|---|
-| Admin | Duyệt hồ sơ và tin; quản lý hoạt động tài khoản/audit. Không có luồng đăng tin Seller hoặc liên hệ bài để mở Direct |
-| Producer | Sau duyệt đăng Supply, theo dõi AwaitingReview/Published/Rejected/Paused; liên hệ bài Published của người khác |
-| Trader | Sau duyệt đăng Demand mặc định hoặc Supply; tìm nguồn cung và liên hệ bài Published |
-| Consumer | Đọc tin và giá/nguồn cung, liên hệ bài Published; không đăng Supply/Demand |
-
-Tin có khu vực, ngày dự kiến, lượng kg **dự kiến** và khoảng giá tùy chọn. Admin công bố/paused theo revision; phiên bản cũ có thể `409` và cần tải lại. Consumer/Trader không thấy bản chưa công bố; duyệt hồ sơ/tin không chứng nhận chất lượng hoặc tồn kho.
-
-**Liên hệ từ bài** mở Direct riêng đúng hai người và dùng lại khi cùng người liên hệ cùng bài. Khác tài khoản cùng vai trò vẫn có thể liên hệ; tự liên hệ `409`, Admin dùng endpoint liên hệ `403`. Consumer liên hệ Producer sẽ có Direct khác với Trader liên hệ cùng Producer. Người ngoài không đọc/gửi bằng cách đoán ID.
-
-**Trao đổi → nhóm cộng đồng:** Approved có thể xem nhóm mở, tạo và tự join/leave. Tối đa 10 nhóm mở/chủ, 50 thành viên. Chủ cần đóng trước khi rời; chủ/Admin được đóng. Đã đóng: thành viên hiện tại đọc lịch sử, không join hoặc gửi tin mới. Đã leave: mất quyền đọc/gửi/nhận tin mới. Admin cũng cần membership để đọc tin; không có nút tự thêm người bất kỳ vào Direct.
-
-**Giá & nguồn cung:** lọc nông sản/khu vực; chỉ tổng hợp bài Published từ tác giả hoạt động/Approved. Supply/Demand là lượng tự khai, chưa là tồn kho. Giá VND/kg là trung vị điểm giữa khoảng **chào bán Supply**, có min/max/số mẫu/nguồn/thời điểm; **không gồm giá hỏi mua Demand, không phải dự báo AI hoặc giá thị trường chính thức**. Thiếu giá hiện chưa có dữ liệu, không dựng giá mẫu.
-
-Xem [ma trận tương tác và demo bốn vai trò 6–8 phút](../server/docs/DEMO_4_ROLES_2_2.md).
-
-## AI ảnh và MP4 trên PC
-
-Cả bốn vai trò đang hoạt động/Approved được dùng AI, nhưng chỉ xem/hủy/tải preview tác vụ của mình, kể cả Admin. Có chọn ảnh, chọn video hoặc **chụp một JPEG qua ứng dụng máy ảnh bên ngoài**; chưa truyền camera liên tục/suy luận live stream.
-
-| Giới hạn | Ảnh | Video |
+| ABI | APK | Dung lượng bản 6010 |
 |---|---|---|
-| Định dạng/dung lượng | JPEG/PNG thực, tối đa 12 MiB | MP4 thực, tối đa 80 MiB |
-| Nội dung | Tối đa 24 triệu pixel | Tối đa 120 giây/3600 khung/1920×1080, cho phép quay dọc |
-| Xử lý | Một ảnh | Suy luận mỗi khung đã decode trên PC |
+| ARM 64 bit | `build/app/outputs/apk/release/app-arm64-v8a-release.apk` | 18,81 MiB |
+| ARM 32 bit | `build/app/outputs/apk/release/app-armeabi-v7a-release.apk` | 16,56 MiB |
+| x86 64 bit | `build/app/outputs/apk/release/app-x86_64-release.apk` | 20,41 MiB |
 
-Tệp qua trình chọn Android, cache riêng có giới hạn rồi stream; không đọc cả video vào RAM hoặc xin toàn bộ kho ảnh. Một worker tuần tự, tối đa 4 Queued/Running toàn hệ thống và 1/người. Upload có hạn 90 giây, worker/API có hạn xử lý; video hợp lệ vẫn có thể cần cắt ngắn. Có hủy Queued/Running và đọc lại trạng thái sau mất mạng; không tự gửi POST trùng khi response chưa rõ.
+[Biên nhận APK cuối](../releases/android/2.4.0/apk-verification.json) ghi version, SHA256, chữ ký, ABI libsodium và giấy phép được đóng gói. Package vẫn là `vn.mangodemo.mango_offline` để giữ đường nâng cấp. Release đồ án dùng course/debug signer, chưa phải cấu hình ký Play Store. Bản build từ clone có thể dùng debug keystore khác; muốn cập nhật đè bộ đã phát hành phải dùng đúng chứng thư được quản lý riêng, không đưa keystore/mật khẩu vào Git.
 
-Kết quả/ảnh chú thích tách **maxVisibleCount**, **confirmedTrackCount**, **lineCrossingCount**; ảnh đơn có confirmedTrackCount=0. Không cộng thành unique fruit, kg, sản lượng hay tồn kho. Giai đoạn nguồn không xác nhận độ chín thực địa; yếu/không biết là Chưa xác định. Model SHA `8a69c66a9444c18c98a7e3e58a44f4dddda9eb4583dd4448f430ff9e8db27c41` giữ nguyên, chỉ demo phi thương mại và metadata vẫn ghi video-quality FAIL. Xem [worker/nguồn/giấy phép](../server/ai/README.md), [AI API](../server/docs/AI_API_USAGE.md).
+Mở **Máy chủ** ở đăng nhập hoặc **Tài khoản → Cài đặt máy chủ**, nhập base HTTPS do người vận hành cung cấp. Đổi máy chủ kết thúc phiên hiện tại. Trên PC vận hành, URL tunnel hiện hành nằm ở tệp local `../server/PUBLIC_URL.txt`; tệp này không có trong clone. Tunnel có thể đổi, và `localhost` trên điện thoại không trỏ về PC. API, DB, worker/tunnel cần tiếp tục chạy. Flutter không gọi trực tiếp nhà cung cấp email/địa lý hoặc truy cập DB.
 
-## Realtime, khôi phục và cập nhật APK
+Updater kiểm bản mới, tải theo ABI, xác minh size/SHA/package/version/chữ ký rồi mở trình cài Android; người dùng vẫn phải cho phép và xác nhận cài. Không cài im lặng. [Receipt công bố 6010](../releases/android/2.4.0/public-release.json) xác nhận ba ABI và hash tải công khai. Xem [quy trình phát hành](../server/docs/MOBILE_RELEASES.md).
 
-Foreground WSS nhận tin, moderation/community và tiến độ AI; sau reconnect tải REST, dedup ID/revision. Đăng xuất/đổi máy chủ hoặc app tạm dừng thì kết nối dừng; đây không phải background push khi đóng app. Chat mở ở tin mới nhất, giữ vị trí khi đọc lịch sử, có nút tin mới. Gửi lại cùng message key/nội dung dùng lại tin; đổi nội dung với key cũ `409`.
+## Tài khoản và bốn vai trò
 
-Bản 6006 hỗ trợ luồng cập nhật từ manifest/APK **đã đăng ký** trên PC: đúng ABI, size/SHA và kiểm package/version/signer ở native trước khi mở installer. Có kiểm tra/tải/hủy; hủy không được tính là đã nâng cấp. Tính sẵn sàng thực tế phụ thuộc server đã công bố bộ APK và receipt nghiệm thu native cuối.
+Đăng ký mới **cố định Consumer**, chọn quốc gia/tỉnh từ API và hoàn thành **mật khẩu + mã email**; phản hồi yêu cầu OTP chưa phải phiên đăng nhập. Tiêu đề thư hiện tại là **“Mã xác thực FruitVision”**; giao diện luôn hiển thị tiêu đề do API trả về. Tài khoản cũ đã bật TOTP tiếp tục dùng mã đã đăng ký; người mới không cần cài Authenticator.
 
-Android yêu cầu người dùng xác nhận cài; lần đầu có thể cần quyền cài từ nguồn này. Không có cập nhật im lặng hoặc bỏ kiểm chữ ký. Client cũ chưa có updater cần **một lần bootstrap cài thủ công APK tin cậy** có updater, rồi mới dùng cập nhật trong app. Giữ cùng course signer để nâng cấp; không gỡ app để né lỗi signer. Quy trình operator ở [MOBILE_RELEASES.md](../server/docs/MOBILE_RELEASES.md).
+Tài khoản/mật khẩu demo riêng nằm ở `../server/.local/demo-accounts.json` trên PC được cấp quyền; không có trong clone hoặc APK và không công bố nội dung tệp.
 
-## Build và bằng chứng
+| Vai trò | Tab và luồng chính |
+|---|---|
+| Consumer | **Học về xoài → Cộng đồng → Tài khoản**. Đọc học liệu, viết bài Community có ảnh để kiểm duyệt, liên hệ tác giả, chat/nhóm; không AI hoặc secret |
+| Producer | **AI xoài → Kiến thức → Trao đổi → Tài khoản**. AI riêng, bài Professional có ảnh và chi nhánh đã duyệt; chat/nhóm, secret với Seller đủ điều kiện |
+| Trader | Cùng nhóm chức năng Seller như Producer; tài khoản vẫn có một vai trò hiện hành |
+| Admin | **Xét duyệt → Trao đổi → Tài khoản**. Duyệt hồ sơ nâng vai trò, chi nhánh, bài Community/Professional; không AI hoặc secret và không tự đọc mọi Direct |
 
-Dùng Flutter đáp ứng `pubspec.yaml`, Android SDK và JDK 17. Từ `mobile_client`, các lệnh dành cho người build:
+Consumer đã xác minh email, đang hoạt động/Approved có thể xin nâng Producer hoặc Trader bằng hồ sơ và minh chứng riêng. Producer khai diện tích; Trader khai mã số thuế hoặc đăng ký kinh doanh. Hồ sơ `Draft → Submitted → Approved / NeedsInformation / Rejected`; bị trả về thì sửa/gửi lại, chỉ Approved mới đổi vai trò. Minh chứng JPEG/PNG/PDF tối đa 5 MiB/tệp, 4 tệp/hồ sơ, chỉ chủ/Admin có quyền đọc. Địa điểm mới dùng mã quốc gia/tỉnh từ API; hồ sơ vùng cũ được giữ như dữ liệu lịch sử.
+
+Sinh trắc học mạnh Android và đối chiếu ảnh mặt là lựa chọn có điều kiện readiness/thiết bị. Ảnh mặt 2D vẫn cần email OTP, chưa có liveness; không gọi là Face ID hoặc chứng minh người thật. Đăng ký khóa/ảnh bảo mật yêu cầu phiên mật khẩu + OTP/TOTP mới trong 15 phút; phiên face/biometric không tự có quyền đăng ký khóa mới.
+
+Tin Supply/Demand, Market và giá chào cũ được giữ cho tương thích/công cụ nâng cao, **không phải luồng chính hay hệ thống mua bán hoàn chỉnh**. Không có đặt hàng, tồn kho xác thực, thanh toán, giao nhận, IoT hoặc dự báo giá. Xem [luồng và quyền API 2.4](../server/docs/USER_WORKFLOWS_2_4.md).
+
+## AI xoài trên PC
+
+Chỉ Producer/Trader đang hoạt động/Approved dùng AI; tab AI mở đầu không gian Seller. Consumer học từ nội dung chỉ đọc, Admin không được cấp quyền AI. Có chọn ảnh, MP4 hoặc **chụp một ảnh qua ứng dụng máy ảnh bên ngoài**; chưa có camera streaming liên tục.
+
+- Ảnh JPEG/PNG: tối đa **12 MiB, 24 triệu pixel**.
+- Video MP4: tối đa **80 MiB, 120 giây, 3600 khung**, cạnh dài 1920/cạnh ngắn 1080; stream tệp lên API, không đọc cả video vào RAM.
+- Một worker tuần tự, tối đa một tác vụ đang chờ/chạy/người và bốn toàn hệ thống; có tiến độ, hủy, lịch sử riêng và timeout. Không tự POST lại khi kết quả upload chưa rõ.
+
+Serving 2.4 lọc đối tượng **được dự đoán là xoài** trước đếm/theo dõi, giữ nguyên graph/trọng số SHA `8a69c66a9444c18c98a7e3e58a44f4dddda9eb4583dd4448f430ff9e8db27c41`. Hai giai đoạn nguồn là **Xanh / chưa chín**, **Chín**; thiếu tin cậy là **Chưa xác định**, không đổi thành xoài hư. Kết quả không chứng nhận độ chín thực địa, vị ngọt, hư hỏng hoặc an toàn thực phẩm; model/dữ liệu chỉ dành cho demo phi thương mại.
+
+Preview chú thích hiển thị trước thông tin kỹ thuật. **maxVisibleCount**, **confirmedTrackCount**, **lineCrossingCount** lần lượt là tối đa thấy đồng thời, track xác nhận và lượt qua vạch; ảnh đơn có track bằng 0. Không cộng thành số quả vật lý duy nhất, kg, sản lượng hoặc tồn kho. Kết quả cũ thiếu `scope=predicted-mango-only` có cảnh báo và giữ nguyên nhãn/số đã lưu. Xem [phạm vi xoài](../server/docs/mango-ai-scope-24.md), [worker và giấy phép model](../server/ai/README.md).
+
+## Chat thường, ảnh và phòng secret
+
+Liên hệ từ bài công bố tạo hoặc dùng lại Direct đúng hai người. Chat thường/nhóm có ảnh tối đa 5 MiB: **máy chủ đọc và chuẩn hóa ảnh thường**, chỉ thành viên phù hợp được tải ảnh chat. Bài Community/Professional và ảnh phải được duyệt; bài Professional cần chi nhánh thuộc tác giả đã Approved. Nhóm đóng chỉ cho thành viên hiện tại đọc lịch sử; rời nhóm mất quyền đọc/gửi.
+
+**Secret Direct là thao tác riêng**, chỉ đúng hai Seller đủ điều kiện; chat thường trước đó không tự trở thành secret. Client dùng libsodium X25519 sealed box + chữ ký Ed25519, niêm phong riêng cho người nhận và chính người gửi; ảnh dùng secretbox, khóa ảnh nằm trong gói tin đã ký/mã hóa. Keybag riêng được mã hóa AES-GCM bằng khóa Android Keystore; private key không gửi lên API. Máy chủ giữ ciphertext và metadata hai bên/thời gian/dung lượng; server không giải mã nội dung secret bằng các dữ liệu/khóa mà hệ thống lưu.
+
+Mỗi tài khoản chỉ có **một thiết bị secret hoạt động**. Trước gửi lần đầu, hai người phải so sánh **toàn bộ fingerprint 64 ký tự hex qua kênh tin cậy khác** rồi xác nhận; khóa đổi thì khóa luồng gửi để xác minh lại. Đổi thiết bị phải thu hồi rõ ràng; không có khôi phục khóa, nhiều thiết bị, Signal ratchet hoặc cam kết forward secrecy. Ảnh giải mã được kiểm hash/MAC/kích thước trước hiển thị, giữ trong bộ nhớ và đóng khi khóa phiên. Quota ảnh có thể từ chối upload; ứng dụng không tự xóa lịch sử hoặc đổi khóa để né lỗi.
+
+Foreground WSS báo tin/ảnh, phòng mới, moderation và tiến độ AI; client lấy REST có quyền, dedup và tải lại sau reconnect. Chat mở ở tin mới nhất, giữ vị trí khi đọc cũ và có nút tin mới. Pause/đăng xuất/đổi máy chủ dừng kết nối; **không có Android background push**.
+
+## Build từ clone trên Windows
+
+Dùng **Flutter 3.47.5 / Dart 3.13.4**, JDK 17, Android SDK/compile-target **36**, minSdk **26**, NDK **28.2.13676358**. Cài Git for Windows có **Git Bash** và GNU make của NDK. Sodium hook trên Windows cần `Git\bin` có `bash.exe` trong PATH; chỉ thêm `Git\cmd` là chưa đủ. Hook biên dịch libsodium từ nguồn đã ghim; không sửa pub cache hoặc bỏ kiểm nguồn.
+
+Chạy các test Sodium thật trên host Windows còn cần Visual Studio/Build Tools có MSVC C++ và Developer Command Prompt mà hook tìm được; đây là phụ thuộc build/test trên PC, không phải runtime AI trong APK.
+
+Ví dụ PowerShell 7, thay các đường dẫn SDK/JDK theo máy nhận. Từ `mobile_client/`; PATH chỉ áp dụng phiên shell hiện tại:
 
 ```powershell
-flutter pub get
-flutter analyze
-flutter test
-flutter build apk --release --split-per-abi --build-name=2.2.0 --build-number=6006
+$env:FLUTTER_ROOT = 'C:\SDKs\flutter_3.47.5'
+$env:JAVA_HOME = 'C:\SDKs\jdk-17'
+$env:ANDROID_SDK_ROOT = Join-Path $env:LOCALAPPDATA 'Android\Sdk'
+$env:ANDROID_NDK_HOME = Join-Path $env:ANDROID_SDK_ROOT 'ndk\28.2.13676358'
+$gitBashBin = 'C:\Program Files\Git\bin'
+$ndkMakeBin = Join-Path $env:ANDROID_NDK_HOME 'prebuilt\windows-x86_64\bin'
+$env:Path = "$env:FLUTTER_ROOT\bin;$env:JAVA_HOME\bin;$gitBashBin;$ndkMakeBin;$env:Path"
+
+@(
+  "sdk.dir=$($env:ANDROID_SDK_ROOT.Replace('\','/'))"
+  "flutter.sdk=$($env:FLUTTER_ROOT.Replace('\','/'))"
+  'flutter.buildMode=release'
+  'flutter.versionName=2.4.0'
+  'flutter.versionCode=6010'
+) | Set-Content -LiteralPath android/local.properties -Encoding utf8NoBOM
+
+& "$env:FLUTTER_ROOT\bin\flutter.bat" pub get
+& "$env:FLUTTER_ROOT\bin\flutter.bat" analyze --no-pub
+& "$env:FLUTTER_ROOT\bin\flutter.bat" test --no-pub
+
+Push-Location android
+try {
+  & .\gradlew.bat :app:assembleRelease `
+    '-Ptarget=lib/main.dart' `
+    '-Ptarget-platform=android-arm,android-arm64,android-x64' `
+    '-Psplit-per-abi=true' `
+    '-Pforce-version-code-ignoring-abi=true' `
+    --max-workers=1 --no-daemon --console=plain --no-scan
+} finally { Pop-Location }
 ```
 
-Kiểm ba APK bằng `tool/verify_apks.py` với version name/code đúng; Android/Gradle/build do người phụ trách chạy theo giới hạn tài nguyên, không suy thành PASS từ việc có file APK.
+Dùng wrapper **`android/gradlew.bat` trong repo**; không phụ thuộc wrapper, PATH, `.local` hoặc ổ riêng của máy phát triển. `force-version-code-ignoring-abi` giữ **cả ba APK cùng versionCode 6010**; kiểm lại package/version/SHA/chữ ký từng APK bằng `tool/verify_apks.py` trước phát hành. `android/local.properties`, keystore, `server/.local`, token và tài khoản demo riêng không thuộc Git. Máy clone phải cấu hình backend/HTTPS của mình theo [server README](../server/README.md); không sao chép secret/DB riêng của người phát triển.
 
-[HTTPS/WSS bốn vai trò](../server/docs/verticals-https-e2e.json) đã PASS **49,281 giây, 80 HTTP, 4 WSS đồng thời** trên PC; không phải bốn điện thoại. [AI HTTPS E2E](../server/docs/ai-https-e2e.json) giữ bằng chứng ảnh/video 1073 khung và nhất quán API/worker, không chứng minh ground truth. Receipt 2.1 trong `verification/` là lịch sử. Flutter 64/64 và analyzer sạch; native policy 22/22, package/signature ba ABI đã kiểm. [Biên nhận6006](../releases/android/2.2.0/native-acceptance.json) ghi nâng cấp thực và nghiệp vụ bốn vai trò trên máy ảo. Không chạy lại tác vụ AI ảnh/video mới trên chính6006; bằng chứng AI nêu trên là các lượt giữ nguyên pipeline. Camera emulator trước đây chưa xác nhận chụp JPEG thành công.
+Các giấy phép sodium **4.1.2+1** (BSD-3-Clause), libsodium **1.0.22-stable** (ISC), crypto **3.0.7** (BSD-3-Clause) được đóng gói từ [assets/legal](assets/legal/NOTICE.txt); giữ nguyên các license và mục `flutter.assets: assets/legal/` khi build lại.
 
-Chưa triển khai đơn hàng, giữ hàng/chống vượt tồn, thanh toán/giao nhận/tranh chấp, IoT hoặc chuyển Forecast thành tồn kho. Không gọi toàn bộ nghiệp vụ kinh doanh, camera live hoặc APK chạy trên điện thoại thật đã hoàn tất.
+## Bằng chứng và giới hạn nghiệm thu
 
+Các receipt trong `verification/` là bằng chứng local/bộ bàn giao; chúng không tự xuất hiện từ một bản clone Git.
+
+- Flutter full suite **110/110 PASS**, analyzer sạch; delta sự kiện phòng mới có kiểm tra tập trung riêng. Đây là kiểm thử client, không thay cho thiết bị thật.
+- [Host API + Sodium thật](../releases/android/2.4.0/secret-api-acceptance.json) PASS: hai khóa độc lập, niêm phong/ký, retry, sai thiết bị, tamper và ảnh ciphertext → giải mã. Receipt ghi rõ không kiểm Keystore Android hoặc đối chiếu fingerprint ngoài băng bởi hai người.
+- **AVD dùng chung** đã chạy Consumer học liệu, Producer mật khẩu + OTP FruitVision, gửi ảnh xoài qua HTTPS và xem preview; đã chạy Sodium Android keygen → Keystore keybag → đăng ký thiết bị. [Bốn native instrumentation tests](../releases/android/2.4.0/keystore-photo-instrumentation.txt) PASS. Không suy thành nghiệm thu hai điện thoại vật lý, OOB giữa hai người, camera streaming hoặc cảm biến sinh trắc học thật.
+- [API 2.4 ảnh/bài/chat/quyền](../server/docs/media-https-acceptance-24.json) và [AI ảnh HTTPS](../server/docs/mango-image-https-smoke-24.json) là các phạm vi riêng. Chất lượng video/ground truth chưa được xác nhận chỉ bằng PASS kỹ thuật. Receipt cũ 2.1–2.3 được giữ làm lịch sử.
+
+Lượt demo ngắn: **Consumer học về xoài → bài/ảnh cộng đồng → Seller AI ảnh xoài → xem preview và ba số đếm đúng nghĩa → Admin kiểm duyệt → liên hệ/chat ảnh**. Chỉ trình diễn secret sau khi đủ hai thiết bị/khóa và hoàn thành đối chiếu fingerprint thật; không bỏ qua bước này để làm nhanh demo.

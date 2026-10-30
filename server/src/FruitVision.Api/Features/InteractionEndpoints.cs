@@ -18,7 +18,7 @@ public static class InteractionEndpoints
         app.MapGet("/api/v1/conversations",async(HttpContext http,int? limit,AppDbContext db)=> {
             if(!Input.Page(limit,out var size))return Input.Invalid("limit phải từ 1 đến 50.");
             var uid=http.User.UserId();return Results.Ok(new{items=await db.Conversations.AsNoTracking().Where(c=>db.Participants.Any(p=>p.ConversationId==c.Id&&p.UserId==uid))
-                .OrderByDescending(c=>c.CreatedAt).ThenByDescending(c=>c.Id).Take(size).Select(c=>new{c.Id,c.Title,c.PostId,c.Kind,c.Region,c.ProductCode,c.IsOpen,c.OwnerId}).ToListAsync()});
+                .OrderByDescending(c=>c.CreatedAt).ThenByDescending(c=>c.Id).Take(size).Select(c=>new{c.Id,c.Title,c.PostId,c.ArticleId,c.Kind,c.Region,c.ProductCode,c.IsOpen,c.OwnerId}).ToListAsync()});
         }).RequireAuthorization("Approved");
         app.MapGet("/api/v1/conversations/{id:guid}/messages",async(Guid id,HttpContext http,int? limit,Guid? before,AppDbContext db)=> {
             if(!Input.Page(limit,out var size))return Input.Invalid("limit phải từ 1 đến 50.");
@@ -29,9 +29,12 @@ public static class InteractionEndpoints
             var rows=await q.Join(db.Users.AsNoTracking(),message=>message.SenderId,user=>user.Id,
                     (message,user)=>new{Message=message,SenderDisplayName=user.DisplayName,SenderRole=user.Role})
                 .OrderByDescending(row=>row.Message.CreatedAt).ThenByDescending(row=>row.Message.Id).Take(size+1)
-                .Select(row=>new{row.Message.Id,row.Message.ConversationId,row.Message.SenderId,row.Message.Text,row.Message.ClientMessageId,row.Message.CreatedAt,row.SenderDisplayName,row.SenderRole}).ToListAsync();
+                .Select(row=>new{row.Message.Id,row.Message.ConversationId,row.Message.SenderId,row.Message.Text,row.Message.ClientMessageId,row.Message.CreatedAt,row.Message.NormalImageId,row.SenderDisplayName,row.SenderRole}).ToListAsync();
+            var imageIds=rows.Where(row=>row.NormalImageId.HasValue).Select(row=>row.NormalImageId!.Value).ToArray();
+            var images=await db.Set<NormalImage>().AsNoTracking().Where(image=>imageIds.Contains(image.Id)).ToDictionaryAsync(image=>image.Id);
             return Results.Ok(new{items=rows.Take(size).Select(row=>new{row.Id,row.ConversationId,row.SenderId,row.Text,row.ClientMessageId,row.CreatedAt,
-                sender=new MessageSenderView(row.SenderId,row.SenderDisplayName,row.SenderRole.ToString())}),next=rows.Count>size?rows[size-1].Id:(Guid?)null});
+                sender=new MessageSenderView(row.SenderId,row.SenderDisplayName,row.SenderRole.ToString()),
+                image=row.NormalImageId.HasValue&&images.TryGetValue(row.NormalImageId.Value,out var image)?NormalMediaEndpoints.ImageView(image,$"/api/v1/conversations/{id}/images/{image.Id}"):null}),next=rows.Count>size?rows[size-1].Id:(Guid?)null});
         }).RequireAuthorization("Approved");
         app.MapPost("/api/v1/conversations/{id:guid}/messages",async(Guid id,SendMessageRequest r,HttpContext http,AppDbContext db)=> {
             if(!Input.Safe(r.Text,true))return Input.Invalid("Tin nhắn chứa ký tự điều khiển.");
@@ -44,14 +47,14 @@ public static class InteractionEndpoints
             var sender=new MessageSenderView(uid,senderData.DisplayName,senderData.Role.ToString());
             var text=Input.Text(r.Text);
             var old=await db.Messages.AsNoTracking().SingleOrDefaultAsync(x=>x.ConversationId==id&&x.SenderId==uid&&x.ClientMessageId==r.ClientMessageId);
-            if(old is not null)return old.Text==text?Results.Ok(MessageView(old,sender)):Results.Conflict(new{message="Khóa tin nhắn đã được dùng với nội dung khác."});
+            if(old is not null)return old.NormalImageId is null&&old.Text==text?Results.Ok(MessageView(old,sender)):Results.Conflict(new{message="Khóa tin nhắn đã được dùng với nội dung khác."});
             if(conversation.Kind=="Group"&&!conversation.IsOpen)return Results.Conflict(new{message="Nhóm đã đóng, không nhận tin nhắn mới."});
             var m=new Message{ConversationId=id,SenderId=uid,ClientMessageId=r.ClientMessageId,Text=text};
             db.Messages.Add(m);db.OutboxEvents.Add(new OutboxEvent{ConversationId=id,MessageId=m.Id});
             try{await db.SaveChangesAsync();await transaction.CommitAsync();}
             catch(DbUpdateException e) when(e.InnerException is PostgresException{SqlState:PostgresErrorCodes.UniqueViolation}) {
                 await transaction.RollbackAsync();db.ChangeTracker.Clear();old=await db.Messages.AsNoTracking().SingleAsync(x=>x.ConversationId==id&&x.SenderId==uid&&x.ClientMessageId==r.ClientMessageId);
-                return old.Text==text?Results.Ok(MessageView(old,sender)):Results.Conflict();
+                return old.NormalImageId is null&&old.Text==text?Results.Ok(MessageView(old,sender)):Results.Conflict();
             }
             return Results.Created($"/api/v1/conversations/{id}/messages",MessageView(m,sender));
         }).RequireAuthorization("Approved").AddEndpointFilter<InputFilter>();
@@ -63,5 +66,5 @@ public static class InteractionEndpoints
             return Results.Ok(new{items=items.Take(size),next=items.Count>size?items[size-1].Id:(Guid?)null});
         }).RequireAuthorization();
     }
-    private static object MessageView(Message m,MessageSenderView sender)=>new{m.Id,m.ConversationId,m.SenderId,m.ClientMessageId,m.Text,m.CreatedAt,sender};
+    private static object MessageView(Message m,MessageSenderView sender)=>new{m.Id,m.ConversationId,m.SenderId,m.ClientMessageId,m.Text,m.CreatedAt,sender,image=(object?)null};
 }

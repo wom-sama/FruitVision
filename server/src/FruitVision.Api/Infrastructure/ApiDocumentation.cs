@@ -23,7 +23,8 @@ public static class ApiDocumentation
                 document.Info.Title = "FruitVision API";
                 document.Info.Version = "v1";
                 document.Info.Description = "API tài khoản, tương tác và phân tích ảnh/video trên máy chủ FruitVision. Các thao tác ghi thay đổi dữ liệu demo. " +
-                    "Đăng nhập, hoàn tất MFA nếu tài khoản đã bật, rồi nhập accessToken vào Authorize. " +
+                    "Đăng ký mặc định Consumer; hoàn tất mã email trước khi có phiên. Đăng nhập bằng mật khẩu và mã email hoặc TOTP đã bật, rồi nhập accessToken vào Authorize. " +
+                    "Hồ sơ nâng quyền, chi nhánh và bài đăng có quy trình duyệt riêng. AI chỉ dành cho Producer/Trader được duyệt. " +
                     "Máy chủ kiểm tra vai trò, trạng thái xét duyệt và quyền thành viên trên từng yêu cầu.";
                 document.Servers = [new OpenApiServer { Url = "/", Description = "Máy chủ đang mở tài liệu" }];
                 document.Components ??= new OpenApiComponents();

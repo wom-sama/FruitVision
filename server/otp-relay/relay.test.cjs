@@ -1,0 +1,21 @@
+const fs=require('node:fs'),vm=require('node:vm'),crypto=require('node:crypto'),assert=require('node:assert/strict');
+const source=fs.readFileSync(__dirname+'/Code.gs','utf8');let checks=0;
+function fixture(){const props=new Map([['OTP_RELAY_SECRET','unit-test-secret-not-for-deployment-123456789']]),sent=[];let quota=100;
+const c={Date,Number,Object,JSON,Math,ContentService:{MimeType:{JSON:'json'},createTextOutput:s=>({body:JSON.parse(s),setMimeType(){return this;}})},Utilities:{Charset:{UTF_8:'utf8'},newBlob:s=>({getBytes:()=>Buffer.from(s)}),computeHmacSha256Signature:(s,k)=>[...crypto.createHmac('sha256',k).update(s).digest()]},PropertiesService:{getScriptProperties:()=>({getProperty:k=>props.get(k)??null,setProperty:(k,v)=>props.set(k,v),deleteProperty:k=>props.delete(k),getProperties:()=>Object.fromEntries(props)})},LockService:{getScriptLock:()=>({tryLock:()=>true,releaseLock(){}})},MailApp:{getRemainingDailyQuota:()=>quota,sendEmail:m=>sent.push(m)}};
+vm.createContext(c);vm.runInContext(source,c);return{c,props,sent,setQuota:v=>quota=v};}
+const payload=()=>({to:'fixture@example.test',code:'123456',purpose:'login',issuedAt:Date.now(),nonce:crypto.randomUUID(),ttlMinutes:10});
+function event(p,secret='unit-test-secret-not-for-deployment-123456789'){const text=JSON.stringify(p);return{postData:{type:'application/json',contents:JSON.stringify({payload:text,signature:crypto.createHmac('sha256',secret).update(text).digest('hex')})}};}
+function check(name,fn){fn();checks++;console.log('PASS '+name);}
+check('signed send and FruitVision branding',()=>{const f=fixture();assert.equal(f.c.doPost(event(payload())).body.ok,true);assert.equal(f.sent[0].subject,'Mã xác thực FruitVision');assert.equal(f.sent[0].name,'FruitVision');assert.match(f.sent[0].body,/đăng nhập/);assert.doesNotMatch(f.sent[0].body,/Chấm công|Nguyễn Hoài Nam/);});
+check('register and face templates',()=>{for(const purpose of ['register','face_login']){const f=fixture();assert.equal(f.c.doPost(event({...payload(),purpose})).body.ok,true);assert.match(f.sent[0].body,/FruitVision/);}});
+check('nonce replay denied',()=>{const f=fixture(),e=event(payload());assert.equal(f.c.doPost(e).body.ok,true);assert.equal(f.c.doPost(e).body.ok,false);assert.equal(f.sent.length,1);});
+check('invalid signature denied',()=>{const f=fixture();assert.equal(f.c.doPost(event(payload(),'wrong-secret')).body.ok,false);assert.equal(f.sent.length,0);});
+check('stale and future timestamp denied',()=>{for(const delta of [-120001,120001]){const f=fixture();assert.equal(f.c.doPost(event({...payload(),issuedAt:Date.now()+delta})).body.ok,false);}});
+check('strict exact keys',()=>{const f=fixture();assert.equal(f.c.doPost(event({...payload(),extra:true})).body.ok,false);});
+check('code purpose recipient ttl validation',()=>{for(const change of [{code:'12345'},{purpose:'password_reset'},{to:'victim@example.test\nBcc:evil@example.test'},{ttlMinutes:11}]){const f=fixture();assert.equal(f.c.doPost(event({...payload(),...change})).body.ok,false);}});
+check('GET does not send',()=>{const f=fixture();assert.equal(f.c.doGet().body.ok,false);assert.equal(f.sent.length,0);});
+check('quota failure consumes nonce without send',()=>{const f=fixture(),e=event(payload());f.setQuota(0);assert.equal(f.c.doPost(e).body.ok,false);f.setQuota(100);assert.equal(f.c.doPost(e).body.ok,false);assert.equal(f.sent.length,0);});
+check('20 per minute cap',()=>{const f=fixture();for(let i=0;i<20;i++)assert.equal(f.c.doPost(event(payload())).body.ok,true);assert.equal(f.c.doPost(event(payload())).body.ok,false);assert.equal(f.sent.length,20);});
+check('oversized envelope denied',()=>{const f=fixture();assert.equal(f.c.doPost({postData:{type:'application/json',contents:'x'.repeat(4097)}}).body.ok,false);});
+check('query and wrong MIME denied',()=>{const f=fixture();const e=event(payload());e.queryString='x=1';assert.equal(f.c.doPost(e).body.ok,false);const other=event(payload());other.postData.type='text/plain';assert.equal(f.c.doPost(other).body.ok,false);});
+console.log(checks+' checks passed; no real email sent.');

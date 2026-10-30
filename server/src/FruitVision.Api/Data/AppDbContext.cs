@@ -24,9 +24,18 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityUser
     {
         base.OnModelCreating(b);
         AiJob.ConfigureModel(b);
+        RoleApplication.ConfigureModel(b);
+        AuthSecurityModels.ConfigureModel(b);
+        PublishingModels.ConfigureModel(b);
+        BiometricModels.ConfigureModel(b);
+        FaceIdentity.ConfigureModel(b);
+        SecretMessagingModels.ConfigureModel(b);
+        NormalMediaModels.ConfigureModel(b);
         b.Entity<AppUser>(e => {
             e.Property(x => x.DisplayName).HasMaxLength(100);
             e.Property(x => x.Region).HasMaxLength(120);
+            e.Property(x => x.CountryCode).HasMaxLength(2);
+            e.Property(x => x.ProvinceCode).HasMaxLength(128);
             e.Property(x => x.ReviewReason).HasMaxLength(1000);
             e.Property(x => x.Role).HasConversion<string>().HasMaxLength(16);
             e.Property(x => x.ApprovalStatus).HasConversion<string>().HasMaxLength(24);
@@ -43,6 +52,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityUser
             e.Property(x => x.AccessHash).HasMaxLength(64);
             e.Property(x => x.RefreshHash).HasMaxLength(64);
             e.Property(x => x.SecurityStamp).HasMaxLength(128);
+            e.Property(x => x.AuthMethod).HasMaxLength(40).HasDefaultValue("password");
         });
         b.Entity<ConsumedRefresh>().HasKey(x => x.Hash);
         b.Entity<ConsumedRefresh>().Property(x => x.Hash).HasMaxLength(64);
@@ -77,6 +87,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityUser
                 t.HasCheckConstraint("CK_Post_Prices", "(\"PriceMinVndPerKg\" IS NULL AND \"PriceMaxVndPerKg\" IS NULL) OR (\"PriceMinVndPerKg\" IS NOT NULL AND \"PriceMaxVndPerKg\" IS NOT NULL AND \"PriceMinVndPerKg\" > 0 AND \"PriceMaxVndPerKg\" >= \"PriceMinVndPerKg\")");
             });
             e.HasOne<Product>().WithMany().HasForeignKey(x => x.ProductCode);
+            e.HasOne<SellerBranch>().WithMany().HasForeignKey(x => x.BranchId).OnDelete(DeleteBehavior.Restrict);
         });
         b.Entity<Conversation>(e => {
             e.Property(x => x.Kind).HasMaxLength(16).HasDefaultValue("Direct");

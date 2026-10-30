@@ -2,6 +2,7 @@ using System.Collections.Concurrent;
 using FruitVision.Api.Auth;
 using FruitVision.Api.Data;
 using FruitVision.Api.Contracts;
+using FruitVision.Api.Features;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
@@ -58,16 +59,20 @@ public class OutboxDispatcher(IServiceScopeFactory scopes,IHubContext<FruitHub> 
             try {
                 using var scope=scopes.CreateScope();var db=scope.ServiceProvider.GetRequiredService<AppDbContext>();
                 var rows=await db.OutboxEvents.Where(x=>x.SentAt==null).OrderBy(x=>x.CreatedAt).Take(50).ToListAsync(stoppingToken);
+                var messageIds=rows.Select(item=>item.MessageId).ToArray();
+                var images=await db.Set<NormalImage>().AsNoTracking().Where(image=>db.Messages.Any(message=>message.NormalImageId==image.Id&&messageIds.Contains(message.Id)))
+                    .ToDictionaryAsync(image=>image.Id,stoppingToken);
                 foreach(var item in rows) {
                     var m=await db.Messages.AsNoTracking().Where(message=>message.Id==item.MessageId)
                         .Join(db.Users.AsNoTracking(),message=>message.SenderId,user=>user.Id,
-                            (message,user)=>new{message.Id,message.ConversationId,message.SenderId,message.Text,message.CreatedAt,
+                            (message,user)=>new{message.Id,message.ConversationId,message.SenderId,message.Text,message.CreatedAt,message.NormalImageId,
                                 SenderDisplayName=user.DisplayName,SenderRole=user.Role}).SingleAsync(stoppingToken);
                     // Refresh membership at dispatch; a departed group member must not receive future messages.
                     var recipients=await db.Participants.Where(p=>p.ConversationId==item.ConversationId).Select(p=>p.UserId).ToListAsync(stoppingToken);
                     await hub.Clients.Groups(recipients.Select(uid=>$"user:{uid}").ToArray()).SendAsync("MessageCreated",
                         new{schemaVersion=1,eventId=item.Id,m.Id,m.ConversationId,m.SenderId,m.Text,m.CreatedAt,
-                            sender=new MessageSenderView(m.SenderId,m.SenderDisplayName,m.SenderRole.ToString())},stoppingToken);
+                            sender=new MessageSenderView(m.SenderId,m.SenderDisplayName,m.SenderRole.ToString()),
+                            image=m.NormalImageId.HasValue&&images.TryGetValue(m.NormalImageId.Value,out var image)?NormalMediaEndpoints.ImageView(image,$"/api/v1/conversations/{m.ConversationId}/images/{image.Id}"):null},stoppingToken);
                     item.SentAt=DateTimeOffset.UtcNow;
                 }
                 await db.SaveChangesAsync(stoppingToken);

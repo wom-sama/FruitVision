@@ -20,8 +20,8 @@ class WorkerTests(unittest.TestCase):
         # Original is 480x240 with 120px vertical padding. First two become identical.
         result, limited = worker.select_outputs(
             [[0, 0, 100, 200], [0, 100, 100, 200], [200, 140, 300, 200]],
-            [.95, .9, .8], [1, 0, 2], [0, 1, 0],
-            [[.9, .1], [.2, .8], [.5, .5]], worker.Transform(480, 240, 0, 120), limit=2)
+            [.95, .9, .8], [1, 1, 1], [0, 1, 0],
+            [[.9, .1], [.2, .8], [.55, .45]], worker.Transform(480, 240, 0, 120), limit=2)
         self.assertEqual(len(result), 2)
         self.assertEqual(result[0].box, (0., 0., 100 / 480, 80 / 240))
         self.assertEqual(result[1].stage, -1)
@@ -34,11 +34,49 @@ class WorkerTests(unittest.TestCase):
                 worker.select_outputs([box], [.9], [1], [0], [stages],
                                       worker.Transform(480, 480, 0, 0))
 
-    def test_unknown_species_and_weak_stage_are_ungraded(self):
-        objects, _ = worker.select_outputs([[0, 0, 100, 100], [200, 200, 300, 300]],
-            [.9, .9], [2, 1], [0, 0], [[.5, .5], [.55, .45]],
+    def test_non_mango_is_excluded_and_weak_mango_stage_is_ungraded(self):
+        objects, _ = worker.select_outputs(
+            [[0, 0, 100, 100], [200, 200, 300, 300], [350, 350, 450, 450]],
+            [.9, .9, .95], [2, 1, 0], [0, 0, 1], [[.5, .5], [.55, .45], [.1, .9]],
             worker.Transform(480, 480, 0, 0))
-        self.assertEqual([x.as_object()['stageCode'] for x in objects], [-1, -1])
+        self.assertEqual([x.species for x in objects], [1])
+        self.assertEqual([x.as_object()['stageCode'] for x in objects], [-1])
+        self.assertEqual(objects[0].as_object()['fruitLabel'], 'Xoài (dự đoán)')
+
+    def test_higher_score_non_mango_cannot_suppress_mango_before_nms(self):
+        objects, limited = worker.select_outputs([[0, 0, 100, 100]] * 3,
+            [.99, .98, .8], [0, 2, 1], [0, 0, 1], [[.9, .1], [.5, .5], [.2, .8]],
+            worker.Transform(480, 480, 0, 0), limit=1)
+        self.assertEqual(len(objects), 1)
+        self.assertEqual(objects[0].species, 1)
+        self.assertEqual(objects[0].stage, 1)
+        self.assertAlmostEqual(objects[0].score, .8)
+        self.assertFalse(limited)
+
+    def test_non_mango_image_has_zero_counts_and_no_absence_claim(self):
+        from PIL import Image
+
+        class NonMangoDetector:
+            def detect(self, image):
+                return worker.select_outputs([[0, 0, 100, 100], [200, 200, 300, 300]],
+                    [.99, .98], [0, 2], [0, 0], [[.9, .1], [.5, .5]],
+                    worker.Transform(480, 480, 0, 0))
+
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            path = root / 'non-mango.png'
+            Image.new('RGB', (32, 24), 'white').save(path, 'PNG')
+            with contextlib.redirect_stdout(io.StringIO()):
+                result, preview = worker.process_job({'id': 'non-mango', 'mediaType': 'image',
+                    'inputPath': str(path), 'outputDirectory': str(root / 'out')}, NonMangoDetector)
+            self.assertEqual(result['objects'], [])
+            self.assertEqual(result['maxVisibleCount'], 0)
+            self.assertEqual(result['confirmedTrackCount'], 0)
+            self.assertEqual(sum(result['gradeCounts'].values()), 0)
+            self.assertEqual(result['scope'], 'predicted-mango-only')
+            self.assertEqual(result['summary'], 'Không phát hiện xoài đạt ngưỡng')
+            self.assertTrue(any('không chứng minh' in text for text in result['limitations']))
+            self.assertTrue(Path(preview).is_file())
 
     def test_tracker_confirms_identity_votes_and_crosses_only_once(self):
         tracker = worker.Tracker()

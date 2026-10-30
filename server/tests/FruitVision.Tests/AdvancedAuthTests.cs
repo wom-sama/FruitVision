@@ -15,8 +15,8 @@ public class AdvancedAuthTests(ApiFixture fixture)
     [Fact]
     public async Task Mfa_requires_totp_consumes_challenge_once_and_revokes_pre_mfa_sessions()
     {
-        using var c=fixture.CreateClient();var email=$"mfa-{Guid.NewGuid():N}@example.test";
-        (await c.PostAsJsonAsync("/api/v1/auth/register",new{displayName="MFA test",email,password=fixture.Password,role="Consumer",region="Đồng Tháp"})).EnsureSuccessStatusCode();
+        using var c=fixture.CreateClient();
+        var account=await TestAccounts.CreateAsync(fixture.Services,fixture.Password,"Consumer",displayName:"MFA test");var email=account.Email;
         var login=await (await c.PostAsJsonAsync("/api/v1/auth/login",new{email,password=fixture.Password})).Content.ReadFromJsonAsync<JsonElement>();
         c.DefaultRequestHeaders.Authorization=new AuthenticationHeaderValue("Bearer",login.GetProperty("accessToken").GetString());
         var setup=await (await c.PostAsJsonAsync("/api/v1/auth/mfa/setup",new{password=fixture.Password})).Content.ReadFromJsonAsync<JsonElement>();
@@ -37,8 +37,8 @@ public class AdvancedAuthTests(ApiFixture fixture)
     [Fact]
     public async Task Five_bad_passwords_lock_account_and_do_not_leak_password_or_tokens()
     {
-        using var c=fixture.CreateClient();var email=$"lock-{Guid.NewGuid():N}@example.test";
-        (await c.PostAsJsonAsync("/api/v1/auth/register",new{displayName="Lockout test",email,password=fixture.Password,role="Consumer",region="Đồng Tháp"})).EnsureSuccessStatusCode();
+        using var c=fixture.CreateClient();
+        var account=await TestAccounts.CreateAsync(fixture.Services,fixture.Password,"Consumer",displayName:"Lockout test");var email=account.Email;
         for(var i=0;i<5;i++){
             var response=await c.PostAsJsonAsync("/api/v1/auth/login",new{email,password="Wrong-password-123!"});
             Assert.Equal(HttpStatusCode.Unauthorized,response.StatusCode);

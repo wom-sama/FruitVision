@@ -88,7 +88,7 @@ SessionController aiController(ApiClient api) =>
         id: 'approved',
         displayName: 'Minh',
         email: 'm@example.test',
-        role: UserRole.consumer,
+        role: UserRole.producer,
         approvalStatus: ApprovalStatus.approved,
         region: 'Đồng Tháp',
         isActive: true,
@@ -533,6 +533,10 @@ void main() {
       );
       await tester.pumpAndSettle();
       await tester.scrollUntilVisible(find.text('Chọn ảnh'), 150);
+      await tester.pumpAndSettle();
+      await tester.ensureVisible(find.text('Chọn ảnh'));
+      await tester.pumpAndSettle();
+      expect(find.text('Chọn ảnh').hitTestable(), findsOneWidget);
       await tester.tap(find.text('Chọn ảnh'));
       await tester.pumpAndSettle();
       final action = find.widgetWithText(FilledButton, 'Gửi phân tích');

@@ -25,6 +25,7 @@ public sealed class ApiFixture : WebApplicationFactory<Program>,IAsyncLifetime
         builder.UseEnvironment("Testing").ConfigureAppConfiguration((_,config)=>config.AddInMemoryCollection(new Dictionary<string,string?>{
             ["ConnectionStrings:Database"]=c.ConnectionString,["Database:AutoMigrate"]="true",
             ["Demo:Enabled"]="true",["Demo:Password"]=Password,
+            ["EmailOtp:RequireOnPasswordLogin"]="false",
             ["Limits:AuthPerMinute"]="500",["Limits:RequestsPerMinute"]="1000"
         }));
     }

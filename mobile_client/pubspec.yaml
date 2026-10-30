@@ -1,18 +1,22 @@
 name: fruitvision_client
-description: FruitVision client gọi API máy chủ cho nền tảng nông sản.
+description: FruitVision client gọi API máy chủ cho nhận diện xoài, kiến thức và cộng đồng theo vai trò.
 publish_to: none
-version: 2.2.0+6006
+version: 2.4.0+6010
 environment:
   sdk: ^3.13.4
 dependencies:
   flutter:
     sdk: flutter
+  sodium: 4.1.2+1
+  crypto: 3.0.7
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
 flutter:
   uses-material-design: true
+  assets:
+    - assets/legal/
 
 
 

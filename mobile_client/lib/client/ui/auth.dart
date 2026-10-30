@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+
+import 'dart:async';
+
 import 'package:flutter/services.dart';
 
-import '../models.dart';
 import '../session.dart';
 import 'components.dart';
+import 'location_picker.dart';
+import 'face_photo.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key, required this.controller});
@@ -16,12 +20,26 @@ class _AuthPageState extends State<AuthPage> {
   final _form = GlobalKey<FormState>();
   final _email = TextEditingController(), _password = TextEditingController();
   final _confirm = TextEditingController(), _name = TextEditingController();
-  final _region = TextEditingController(), _code = TextEditingController();
+  final _code = TextEditingController();
+  LocationSelection? _location;
   bool _register = false, _obscure = true;
-  UserRole _role = UserRole.producer;
+  Timer? _clock;
+  @override
+  void initState() {
+    super.initState();
+    _clock = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (mounted &&
+          widget.controller.mfaChallenge != null &&
+          widget.controller.mfaMethod == 'email') {
+        setState(() {});
+      }
+    });
+  }
+
   @override
   void dispose() {
-    for (final field in [_email, _password, _confirm, _name, _region, _code]) {
+    _clock?.cancel();
+    for (final field in [_email, _password, _confirm, _name, _code]) {
       field.dispose();
     }
     super.dispose();
@@ -38,8 +56,8 @@ class _AuthPageState extends State<AuthPage> {
         displayName: _name.text.trim(),
         email: _email.text.trim(),
         password: _password.text,
-        region: _region.text.trim(),
-        role: _role,
+        countryCode: _location!.countryCode,
+        provinceCode: _location!.provinceCode,
       );
       if (success && mounted) {
         setState(() {
@@ -57,6 +75,7 @@ class _AuthPageState extends State<AuthPage> {
   Widget build(BuildContext context) {
     final c = widget.controller;
     final mfa = c.mfaChallenge != null;
+    final emailOtp = mfa && c.mfaMethod == 'email';
     return Scaffold(
       appBar: AppBar(
         title: const Text('FruitVision'),
@@ -89,15 +108,19 @@ class _AuthPageState extends State<AuthPage> {
                       const SizedBox(height: 16),
                       SectionTitle(
                         mfa
-                            ? 'Xác thực hai bước'
+                            ? emailOtp
+                                  ? 'Xác thực email'
+                                  : 'Xác thực hai bước'
                             : _register
                             ? 'Tạo tài khoản'
                             : 'Chào mừng trở lại',
                         subtitle: mfa
-                            ? 'Nhập mã 6 chữ số từ ứng dụng xác thực của bạn.'
+                            ? emailOtp
+                                  ? 'Nhập mã 6 chữ số gửi đến ${c.mfaEmailHint ?? 'email của bạn'}.'
+                                  : 'Nhập mã 6 chữ số từ ứng dụng xác thực của bạn.'
                             : _register
-                            ? 'Chọn vai trò của bạn. Hồ sơ mới cần được quản trị xét duyệt.'
-                            : 'Đăng nhập để theo dõi hồ sơ, tin dự kiến và trao đổi.',
+                            ? 'Bắt đầu với tài khoản Người tiêu dùng. Bạn có thể gửi hồ sơ nâng vai trò sau khi xác minh email.'
+                            : 'Đăng nhập để học về xoài, chia sẻ cùng cộng đồng và dùng chức năng theo vai trò.',
                       ),
                       if (c.error != null) ...[
                         MessageBox(c.error!, error: true),
@@ -106,6 +129,12 @@ class _AuthPageState extends State<AuthPage> {
                       if (c.notice != null) ...[
                         MessageBox(c.notice!),
                         const SizedBox(height: 16),
+                      ],
+                      if (emailOtp && c.mfaMailSubject != null) ...[
+                        MessageBox(
+                          'Tìm email có tiêu đề “${c.mfaMailSubject}”. Mã này dùng để xác thực FruitVision.',
+                        ),
+                        const SizedBox(height: 12),
                       ],
                       if (mfa)
                         TextFormField(
@@ -219,40 +248,10 @@ class _AuthPageState extends State<AuthPage> {
                             textInputAction: TextInputAction.next,
                           ),
                           const SizedBox(height: 12),
-                          DropdownButtonFormField<UserRole>(
-                            initialValue: _role,
-                            isExpanded: true,
-                            decoration: const InputDecoration(
-                              labelText: 'Vai trò',
-                            ),
-                            items:
-                                [
-                                      UserRole.producer,
-                                      UserRole.trader,
-                                      UserRole.consumer,
-                                    ]
-                                    .map(
-                                      (role) => DropdownMenuItem(
-                                        value: role,
-                                        child: Text(role.label),
-                                      ),
-                                    )
-                                    .toList(),
-                            onChanged: c.busy
-                                ? null
-                                : (role) => setState(() => _role = role!),
-                          ),
-                          const SizedBox(height: 16),
-                          TextFormField(
-                            controller: _region,
+                          CountryProvincePicker(
+                            api: c.api,
                             enabled: !c.busy,
-                            maxLength: 120,
-                            textCapitalization: TextCapitalization.words,
-                            decoration: const InputDecoration(
-                              labelText: 'Khu vực / tỉnh thành',
-                            ),
-                            validator: requiredText,
-                            onFieldSubmitted: (_) => _submit(),
+                            onChanged: (location) => _location = location,
                           ),
                         ],
                       ],
@@ -270,6 +269,57 @@ class _AuthPageState extends State<AuthPage> {
                         ),
                       ),
                       const SizedBox(height: 8),
+                      if (!mfa && !_register)
+                        OutlinedButton.icon(
+                          onPressed: c.busy
+                              ? null
+                              : () {
+                                  final email = _email.text.trim();
+                                  if (!RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$')
+                                      .hasMatch(email)) {
+                                    _form.currentState!.validate();
+                                    return;
+                                  }
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute<void>(
+                                      builder: (_) => FacePhotoPage(
+                                        controller: c,
+                                        enroll: false,
+                                        email: email,
+                                      ),
+                                    ),
+                                  );
+                                },
+                          icon: const Icon(Icons.face_outlined),
+                          label: const Text('Đối chiếu ảnh + mã email'),
+                        ),
+                      if (!mfa && !_register && c.biometrics.supported)
+                        OutlinedButton.icon(
+                          onPressed: c.busy
+                              ? null
+                              : () => c.loginBiometric(_email.text),
+                          icon: const Icon(Icons.fingerprint),
+                          label: const Text('Đăng nhập bằng sinh trắc học'),
+                        ),
+                      if (emailOtp) ...[
+                        TextButton.icon(
+                          onPressed: c.busy || c.mfaResendSeconds > 0
+                              ? null
+                              : () async {
+                                  final sent = await c.resendEmailOtp();
+                                  if (sent) _code.clear();
+                                },
+                          icon: const Icon(Icons.mark_email_unread_outlined),
+                          label: Text(
+                            c.mfaResendSeconds > 0
+                                ? 'Gửi lại sau ${c.mfaResendSeconds} giây'
+                                : 'Gửi lại mã email',
+                          ),
+                        ),
+                        const Text(
+                          'Mã hết hạn sau 10 phút, tối đa 5 lần nhập sai. Gửi lại không đặt lại số lần nhập sai.',
+                        ),
+                      ],
                       TextButton(
                         onPressed: c.busy
                             ? null
@@ -294,7 +344,7 @@ class _AuthPageState extends State<AuthPage> {
                       ),
                       const SizedBox(height: 24),
                       const Text(
-                        'Tin dự kiến chưa phải tồn kho sẵn bán. Phân tích ảnh/video chạy tại máy chủ khi dịch vụ AI sẵn sàng.',
+                        'Nhận diện xoài từ ảnh/video chạy trên máy chủ. Kết quả chỉ để tham khảo, không thay thế kiểm tra chất lượng thực tế.',
                         textAlign: TextAlign.center,
                       ),
                     ],

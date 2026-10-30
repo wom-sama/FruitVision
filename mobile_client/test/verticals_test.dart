@@ -7,6 +7,8 @@ import 'package:fruitvision_client/client/api.dart';
 import 'package:fruitvision_client/client/app.dart';
 import 'package:fruitvision_client/client/session.dart';
 import 'package:fruitvision_client/client/vault.dart';
+import 'package:fruitvision_client/client/ui/market.dart';
+import 'package:fruitvision_client/client/ui/workspace.dart';
 
 class FlowVault implements SessionVault {
   @override
@@ -74,6 +76,33 @@ class FlowTransport implements ApiTransport {
     final json = body == null ? null : jsonDecode(body) as Map<String, dynamic>;
     calls.add((method, path, json));
     Object result = {'items': <Object>[]};
+    if (path == '/locations/countries') {
+      result = {
+        'items': [
+          {'code': 'VN', 'name': 'Việt Nam'},
+        ],
+      };
+    }
+    if (path == '/locations/provinces') {
+      result = {
+        'items': [
+          {'code': '82', 'name': 'Đồng Tháp'},
+        ],
+        'countryCode': 'VN',
+      };
+    }
+    if (path == '/branches/mine') {
+      result = {
+        'items': [
+          {
+            'id': 'branch-approved',
+            'name': 'Vườn Đồng Tháp',
+            'region': 'Đồng Tháp',
+            'status': 'Approved',
+          },
+        ],
+      };
+    }
     if (path == '/catalog/products') {
       result = {
         'items': [
@@ -180,6 +209,7 @@ Future<FlowTransport> showFlow(
   UserRole role, {
   bool conflict = false,
   FlowTransport? source,
+  Widget Function(SessionController)? legacyPage,
 }) async {
   tester.view.physicalSize = const Size(320, 720);
   tester.view.devicePixelRatio = 1;
@@ -209,7 +239,11 @@ Future<FlowTransport> showFlow(
     tester.view.resetDevicePixelRatio();
     tester.platformDispatcher.clearTextScaleFactorTestValue();
   });
-  await tester.pumpWidget(FruitVisionApp(controller: c));
+  await tester.pumpWidget(
+    legacyPage == null
+        ? FruitVisionApp(controller: c)
+        : MaterialApp(home: legacyPage(c)),
+  );
   await tester.pumpAndSettle();
   return transport;
 }
@@ -247,6 +281,7 @@ void main() {
     'Admin reviews real post with revision and reloads a conflicting server snapshot',
     (tester) async {
       final transport = await showFlow(tester, UserRole.admin, conflict: true);
+      await press(tester, 'Nghiệp vụ trước đây');
       await press(tester, 'Duyệt tin nông sản');
       await press(tester, 'Xoài Đồng Tháp vụ mới');
       await tester.enterText(
@@ -269,7 +304,11 @@ void main() {
   testWidgets(
     'Consumer contact derives conversation on server and opens actual chat',
     (tester) async {
-      final transport = await showFlow(tester, UserRole.consumer);
+      final transport = await showFlow(
+        tester,
+        UserRole.consumer,
+        legacyPage: (c) => ExplorePage(controller: c),
+      );
       await press(tester, 'Xoài Đồng Tháp vụ mới');
       await press(tester, 'Liên hệ người đăng');
       final call = transport.calls
@@ -284,8 +323,18 @@ void main() {
   testWidgets(
     'Consumer market route uses actual asking samples and never turns absent price into zero',
     (tester) async {
-      await showFlow(tester, UserRole.consumer);
+      await showFlow(
+        tester,
+        UserRole.consumer,
+        legacyPage: (c) => ExplorePage(controller: c),
+      );
       await press(tester, 'Giá & nguồn cung');
+      await tester.scrollUntilVisible(
+        find.textContaining('không phải giá thị trường chính thức'),
+        160,
+        scrollable: find.byType(Scrollable).first,
+      );
+      await tester.pumpAndSettle();
       expect(
         find.textContaining('không phải giá thị trường chính thức'),
         findsWidgets,
@@ -300,8 +349,14 @@ void main() {
     'Community join calls group endpoint before opening group messages',
     (tester) async {
       final transport = await showFlow(tester, UserRole.consumer);
-      await tester.tap(find.byType(NavigationDestination).at(2));
+      await tester.tap(
+        find.byWidgetPredicate(
+          (widget) =>
+              widget is NavigationDestination && widget.label == 'Cộng đồng',
+        ),
+      );
       await tester.pumpAndSettle();
+      await press(tester, 'Hội thoại & nhóm');
       await press(tester, 'Nhóm cộng đồng');
       await press(tester, 'Nhóm xoài Đồng Tháp');
       await press(tester, 'Tham gia và trò chuyện');
@@ -334,14 +389,39 @@ void main() {
     'Community owner creates and closes a real group; closed chat is read only',
     (tester) async {
       final transport = await showFlow(tester, UserRole.consumer);
-      await tester.tap(find.byType(NavigationDestination).at(2));
+      await tester.tap(
+        find.byWidgetPredicate(
+          (widget) =>
+              widget is NavigationDestination && widget.label == 'Cộng đồng',
+        ),
+      );
       await tester.pumpAndSettle();
+      await press(tester, 'Hội thoại & nhóm');
       await press(tester, 'Nhóm cộng đồng');
       await press(tester, 'Tạo nhóm');
       await tester.enterText(
         find.byType(TextFormField).first,
         'Nhóm trao đổi do tôi tạo',
       );
+      Future<void> selectLocation(String label, String name) async {
+        final field = find.widgetWithText(
+          DropdownButtonFormField<String>,
+          label,
+        );
+        await tester.scrollUntilVisible(
+          field,
+          160,
+          scrollable: find.byType(Scrollable).first,
+        );
+        await tester.pumpAndSettle();
+        await tester.tap(field);
+        await tester.pumpAndSettle();
+        await tester.tap(find.text(name).last);
+        await tester.pumpAndSettle();
+      }
+
+      await selectLocation('Quốc gia', 'Việt Nam');
+      await selectLocation('Tỉnh / thành phố', 'Đồng Tháp');
       await press(tester, 'Tạo nhóm cộng đồng');
       expect(
         transport.calls
@@ -351,6 +431,15 @@ void main() {
             .single
             .$3!['title'],
         'Nhóm trao đổi do tôi tạo',
+      );
+      expect(
+        transport.calls
+            .where(
+              (call) => call.$1 == 'POST' && call.$2 == '/community/groups',
+            )
+            .single
+            .$3!['region'],
+        'Đồng Tháp, Việt Nam',
       );
       expect(
         tester
@@ -378,13 +467,32 @@ void main() {
     'market latest search wins when an older request completes afterward; failed query can retry',
     (tester) async {
       final source = MarketRaceTransport();
-      await showFlow(tester, UserRole.consumer, source: source);
+      await showFlow(
+        tester,
+        UserRole.consumer,
+        source: source,
+        legacyPage: (c) => ExplorePage(controller: c),
+      );
       await press(tester, 'Giá & nguồn cung');
-      await tester.enterText(find.byType(TextField).first, 'Đợt cũ');
-      await tester.testTextInput.receiveAction(TextInputAction.search);
-      await tester.pump();
-      await tester.enterText(find.byType(TextField).first, 'Đợt mới');
-      await tester.testTextInput.receiveAction(TextInputAction.search);
+      Future<void> selectProduct(String name, {double delta = 160}) async {
+        final field = find.widgetWithText(
+          DropdownButtonFormField<String>,
+          'Nông sản',
+        );
+        await tester.scrollUntilVisible(
+          field,
+          delta,
+          scrollable: find.byType(Scrollable).first,
+        );
+        await tester.pump(const Duration(milliseconds: 300));
+        await tester.tap(field);
+        await tester.pump(const Duration(milliseconds: 300));
+        await tester.tap(find.text(name).last);
+        await tester.pump(const Duration(milliseconds: 300));
+      }
+
+      await selectProduct('Đợt cũ');
+      await selectProduct('Đợt mới');
       await tester.pumpAndSettle();
       source.old.complete(
         ApiReply(200, jsonEncode(marketSnapshot('Đợt cũ', 'Xoài dữ liệu cũ'))),
@@ -393,22 +501,7 @@ void main() {
       await reveal(tester, 'Xoài dữ liệu mới');
       expect(find.text('Xoài dữ liệu mới'), findsOneWidget);
       expect(find.text('Xoài dữ liệu cũ'), findsNothing);
-      await tester.scrollUntilVisible(
-        find.byType(TextField),
-        -180,
-        maxScrolls: 20,
-        scrollable: find
-            .byWidgetPredicate(
-              (widget) =>
-                  widget is Scrollable &&
-                  widget.axisDirection == AxisDirection.down,
-            )
-            .first,
-      );
-      await tester.ensureVisible(find.byType(TextField).first);
-      await tester.pumpAndSettle();
-      await tester.enterText(find.byType(TextField).first, 'Đợt lỗi');
-      await tester.testTextInput.receiveAction(TextInputAction.search);
+      await selectProduct('Đợt lỗi', delta: -180);
       await tester.pumpAndSettle();
       expect(find.text('Thử lại'), findsOneWidget);
       await press(tester, 'Thử lại');
@@ -421,8 +514,11 @@ void main() {
     testWidgets(
       '${role.wire} submits intended purpose with paired asking prices',
       (tester) async {
-        final transport = await showFlow(tester, role);
-        if (role == UserRole.trader) await press(tester, 'Tin dự kiến của tôi');
+        final transport = await showFlow(
+          tester,
+          role,
+          legacyPage: (c) => OwnPostsPage(controller: c),
+        );
         await press(tester, 'Tạo tin dự kiến');
         if (role == UserRole.trader) {
           expect(find.text('Nhu cầu thu mua'), findsOneWidget);
@@ -473,7 +569,8 @@ void main() {
         expect(body['purpose'], role == UserRole.trader ? 'Demand' : 'Supply');
         expect(body['priceMinVndPerKg'], 20000);
         expect(body['priceMaxVndPerKg'], 25000);
-        expect(body['region'], 'Đồng Tháp');
+        expect(body['branchId'], 'branch-approved');
+        expect(body.containsKey('region'), isFalse);
         expect(body.containsKey('authorId'), isFalse);
         expect(tester.takeException(), isNull);
       },
@@ -517,16 +614,28 @@ class MarketRaceTransport extends FlowTransport {
     Map<String, String> headers,
     String? body,
   ) async {
+    if (uri.path.endsWith('/catalog/products')) {
+      return ApiReply(
+        200,
+        jsonEncode({
+          'items': [
+            {'code': 'old', 'name': 'Đợt cũ'},
+            {'code': 'new', 'name': 'Đợt mới'},
+            {'code': 'error', 'name': 'Đợt lỗi'},
+          ],
+        }),
+      );
+    }
     if (uri.path.endsWith('/market/summary')) {
-      final region = uri.queryParameters['region'];
-      if (region == 'Đợt cũ') return old.future;
-      if (region == 'Đợt mới') {
+      final product = uri.queryParameters['productCode'];
+      if (product == 'old') return old.future;
+      if (product == 'new') {
         return ApiReply(
           200,
           jsonEncode(marketSnapshot('Đợt mới', 'Xoài dữ liệu mới')),
         );
       }
-      if (region == 'Đợt lỗi') {
+      if (product == 'error') {
         if (fail) {
           fail = false;
           return const ApiReply(503, '{}');

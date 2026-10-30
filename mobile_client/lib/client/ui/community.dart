@@ -5,6 +5,7 @@ import '../session.dart';
 import 'chat.dart';
 import 'components.dart';
 import 'event_refresh.dart';
+import 'location_picker.dart';
 import 'posts.dart';
 import 'visuals.dart';
 
@@ -17,22 +18,15 @@ class CommunityPage extends StatefulWidget {
 
 class _CommunityPageState extends State<CommunityPage> {
   final _list = GlobalKey<ApiListState>();
-  late final _region = TextEditingController(
-    text: widget.controller.user!.region,
-  );
-  late String _regionQuery = widget.controller.user!.region;
+  LocationSelection? _location;
+  String _regionQuery = '';
+  int _pickerGeneration = 0;
   String? _product, _catalogError;
   List<Json> _products = [];
   @override
   void initState() {
     super.initState();
     _catalog();
-  }
-
-  @override
-  void dispose() {
-    _region.dispose();
-    super.dispose();
   }
 
   Future<void> _catalog() async {
@@ -99,16 +93,22 @@ class _CommunityPageState extends State<CommunityPage> {
                 label: const Text('Tạo nhóm'),
               ),
               const SizedBox(height: 16),
-              TextField(
-                controller: _region,
-                maxLength: 120,
-                textInputAction: TextInputAction.search,
-                decoration: const InputDecoration(
-                  labelText: 'Khu vực',
-                  hintText: 'Để trống để xem tất cả',
-                ),
-                onSubmitted: (_) =>
-                    setState(() => _regionQuery = _region.text.trim()),
+              const Text(
+                'Chọn quốc gia và tỉnh cho phạm vi nhóm. Đây là phạm vi do nhóm khai báo, không phải xác minh địa chỉ kinh doanh.',
+              ),
+              const SizedBox(height: 8),
+              CountryProvincePicker(
+                key: ValueKey(_pickerGeneration),
+                api: widget.controller.api,
+                onChanged: (location) => _location = location,
+              ),
+              TextButton(
+                onPressed: () => setState(() {
+                  _location = null;
+                  _regionQuery = '';
+                  _pickerGeneration++;
+                }),
+                child: const Text('Tất cả phạm vi nhóm'),
               ),
               DropdownButtonFormField<String>(
                 initialValue: _product ?? 'all',
@@ -128,13 +128,13 @@ class _CommunityPageState extends State<CommunityPage> {
                 ],
                 onChanged: (product) => setState(() {
                   _product = product == 'all' ? null : product;
-                  _regionQuery = _region.text.trim();
+                  _regionQuery = _location?.region ?? '';
                 }),
               ),
               const SizedBox(height: 8),
               OutlinedButton.icon(
                 onPressed: () =>
-                    setState(() => _regionQuery = _region.text.trim()),
+                    setState(() => _regionQuery = _location?.region ?? ''),
                 icon: const Icon(Icons.search),
                 label: const Text('Lọc nhóm'),
               ),
@@ -445,9 +445,7 @@ class GroupCreatePage extends StatefulWidget {
 class _GroupCreatePageState extends State<GroupCreatePage> {
   final _form = GlobalKey<FormState>();
   final _title = TextEditingController();
-  late final _region = TextEditingController(
-    text: widget.controller.user!.region,
-  );
+  LocationSelection? _location;
   String? _product, _error, _catalogError;
   List<Json> _products = [];
   bool _busy = false;
@@ -460,7 +458,6 @@ class _GroupCreatePageState extends State<GroupCreatePage> {
   @override
   void dispose() {
     _title.dispose();
-    _region.dispose();
     super.dispose();
   }
 
@@ -479,7 +476,7 @@ class _GroupCreatePageState extends State<GroupCreatePage> {
   }
 
   Future<void> _create() async {
-    if (_busy || !_form.currentState!.validate()) return;
+    if (_busy || !_form.currentState!.validate() || _location == null) return;
     setState(() {
       _busy = true;
       _error = null;
@@ -487,7 +484,7 @@ class _GroupCreatePageState extends State<GroupCreatePage> {
     try {
       final group = await widget.controller.api.post('/community/groups', {
         'title': _title.text.trim(),
-        'region': _region.text.trim(),
+        'region': _location!.region,
         if (_product != null) 'productCode': _product,
       });
       final id = value(group, 'id');
@@ -551,12 +548,14 @@ class _GroupCreatePageState extends State<GroupCreatePage> {
                 validator: (value) => requiredText(value, min: 5),
               ),
               const SizedBox(height: 16),
-              TextFormField(
-                controller: _region,
+              const SectionTitle(
+                'Phạm vi nhóm',
+                subtitle: 'Phạm vi do người tạo khai báo, không phải địa chỉ chi nhánh đã được xác minh.',
+              ),
+              CountryProvincePicker(
+                api: widget.controller.api,
                 enabled: !_busy,
-                maxLength: 120,
-                decoration: const InputDecoration(labelText: 'Khu vực'),
-                validator: requiredText,
+                onChanged: (location) => _location = location,
               ),
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(

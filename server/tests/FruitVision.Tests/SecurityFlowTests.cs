@@ -10,24 +10,32 @@ namespace FruitVision.Tests;
 public sealed class SecurityFlowTests(ApiFixture fixture)
 {
     [Fact]
-    public async Task Business_registration_starts_pending_and_only_allows_public_reads_and_own_profile()
+    public async Task Public_registration_rejects_all_client_role_payloads()
     {
         using var client = fixture.CreateClient();
         using var publicPosts = await client.GetAsync("/api/v1/posts");
         Assert.Equal(HttpStatusCode.OK, publicPosts.StatusCode);
-
+        foreach (var role in new[] { "Admin", "Producer", "Trader", "Consumer" })
+        {
+            using var response = await client.PostAsJsonAsync("/api/v1/auth/register", RegistrationBody(role));
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            var body = await response.Content.ReadFromJsonAsync<JsonElement>();
+            Assert.False(body.TryGetProperty("accessToken", out _));
+        }
+    }
+    [Fact]
+    public async Task Pending_accounts_can_read_own_profile_but_cannot_publish_or_review()
+    {
+        using var client = fixture.CreateClient();
         foreach (var role in new[] { "Producer", "Trader", "Consumer" })
         {
-            var account = await RegisterAsync(client, role);
-            var session = await LoginAsync(client, account.Email);
-            Authorize(client, session);
-
+            var account = await TestAccounts.CreateAsync(fixture.Services, fixture.Password, role, approve: false);
+            Authorize(client, await LoginAsync(client, account.Email));
             var me = await GetJsonAsync(client, "/api/v1/auth/me");
             Assert.Equal(account.Id, me.GetProperty("id").GetGuid());
             Assert.Equal(role, me.GetProperty("role").GetString());
             Assert.Equal("Pending", me.GetProperty("approvalStatus").GetString());
-
-            using var publish = await client.PostAsJsonAsync("/api/v1/posts", PostBody());
+            using var publish = await client.PostAsJsonAsync("/api/v1/posts", PostBody(account.BranchId));
             Assert.Equal(HttpStatusCode.Forbidden, publish.StatusCode);
             using var applications = await client.GetAsync("/api/v1/admin/applications");
             Assert.Equal(HttpStatusCode.Forbidden, applications.StatusCode);
@@ -43,11 +51,13 @@ public sealed class SecurityFlowTests(ApiFixture fixture)
         Assert.Equal(HttpStatusCode.BadRequest, adminRole.StatusCode);
 
         var forgedApproval = RegistrationBody("Producer");
+        forgedApproval.Remove("role");
         forgedApproval["approvalStatus"] = "Approved";
         using var approval = await client.PostAsJsonAsync("/api/v1/auth/register", forgedApproval);
         Assert.Equal(HttpStatusCode.BadRequest, approval.StatusCode);
 
         var forgedAdmin = RegistrationBody("Consumer");
+        forgedAdmin.Remove("role");
         forgedAdmin["isAdmin"] = true;
         using var privilege = await client.PostAsJsonAsync("/api/v1/auth/register", forgedAdmin);
         Assert.Equal(HttpStatusCode.BadRequest, privilege.StatusCode);
@@ -58,7 +68,7 @@ public sealed class SecurityFlowTests(ApiFixture fixture)
     {
         using var client = fixture.CreateClient();
         using var admin = fixture.CreateClient();
-        var applicant = await RegisterAsync(client, "Producer");
+        var applicant = await CreatePendingAccountAsync("Producer");
         Authorize(client, await LoginAsync(client, applicant.Email));
 
         using var selfApprove = await client.PostAsJsonAsync(
@@ -88,11 +98,11 @@ public sealed class SecurityFlowTests(ApiFixture fixture)
 
         foreach (var role in new[] { "Producer", "Trader", "Consumer" })
         {
-            var account = await RegisterAsync(client, role);
+            var account = await CreatePendingAccountAsync(role);
             await ApproveAsync(admin, account.Id);
             Authorize(client, await LoginAsync(client, account.Email));
 
-            using var publish = await client.PostAsJsonAsync("/api/v1/posts", PostBody());
+            using var publish = await client.PostAsJsonAsync("/api/v1/posts", PostBody(account.BranchId));
             Assert.Equal(role == "Consumer" ? HttpStatusCode.Forbidden : HttpStatusCode.Created,
                 publish.StatusCode);
             client.DefaultRequestHeaders.Authorization = null;
@@ -103,7 +113,7 @@ public sealed class SecurityFlowTests(ApiFixture fixture)
     public async Task Invalid_credentials_do_not_issue_a_session()
     {
         using var client = fixture.CreateClient();
-        var account = await RegisterAsync(client, "Consumer");
+        var account = await CreatePendingAccountAsync("Consumer");
 
         using var wrongPassword = await client.PostAsJsonAsync("/api/v1/auth/login", new
         {
@@ -126,7 +136,7 @@ public sealed class SecurityFlowTests(ApiFixture fixture)
     public async Task Logout_revokes_the_current_access_and_refresh_tokens()
     {
         using var client = fixture.CreateClient();
-        var account = await RegisterAsync(client, "Consumer");
+        var account = await CreatePendingAccountAsync("Consumer");
         var session = await LoginAsync(client, account.Email);
         Authorize(client, session);
         using var logout = await client.PostAsync("/api/v1/auth/logout", null);
@@ -143,7 +153,7 @@ public sealed class SecurityFlowTests(ApiFixture fixture)
     public async Task Refresh_rotates_tokens_and_replay_revokes_the_entire_session_family()
     {
         using var client = fixture.CreateClient();
-        var account = await RegisterAsync(client, "Consumer");
+        var account = await CreatePendingAccountAsync("Consumer");
         var original = await LoginAsync(client, account.Email);
 
         using var refresh = await client.PostAsJsonAsync("/api/v1/auth/refresh",
@@ -175,7 +185,7 @@ public sealed class SecurityFlowTests(ApiFixture fixture)
     {
         using var client = fixture.CreateClient();
         using var admin = fixture.CreateClient();
-        var account = await RegisterAsync(client, "Producer");
+        var account = await CreatePendingAccountAsync("Producer");
         Authorize(admin, await LoginAsync(admin, "admin@fruitvision.test"));
         await ApproveAsync(admin, account.Id);
         var first = await LoginAsync(client, account.Email);
@@ -212,7 +222,7 @@ public sealed class SecurityFlowTests(ApiFixture fixture)
         using var memberMessages = await member.GetAsync($"/api/v1/conversations/{conversationId}/messages");
         Assert.Equal(HttpStatusCode.OK, memberMessages.StatusCode);
 
-        var account = await RegisterAsync(outsider, "Consumer");
+        var account = await CreatePendingAccountAsync("Consumer");
         Authorize(admin, await LoginAsync(admin, "admin@fruitvision.test"));
         await ApproveAsync(admin, account.Id);
         Authorize(outsider, await LoginAsync(outsider, account.Email));
@@ -258,12 +268,14 @@ public sealed class SecurityFlowTests(ApiFixture fixture)
     {
         using var client = fixture.CreateClient();
         var wrongCase = RegistrationBody("Consumer");
+        wrongCase.Remove("role");
         wrongCase["DisplayName"] = wrongCase["displayName"];
         wrongCase.Remove("displayName");
         using var casing = await client.PostAsJsonAsync("/api/v1/auth/register", wrongCase);
         Assert.Equal(HttpStatusCode.BadRequest, casing.StatusCode);
 
         var nulName = RegistrationBody("Producer");
+        nulName.Remove("role");
         nulName["displayName"] = "Unsafe\0name";
         using var nul = await client.PostAsJsonAsync("/api/v1/auth/register", nulName);
         Assert.Equal(HttpStatusCode.BadRequest, nul.StatusCode);
@@ -306,7 +318,7 @@ public sealed class SecurityFlowTests(ApiFixture fixture)
         var producerIds = producerHistory.Select(item => item.GetProperty("id").GetGuid()).ToHashSet();
         Assert.All(traderHistory, item => Assert.DoesNotContain(item.GetProperty("id").GetGuid(), producerIds));
 
-        var account = await RegisterAsync(outsider, "Consumer");
+        var account = await CreatePendingAccountAsync("Consumer");
         Authorize(outsider, await LoginAsync(outsider, account.Email));
         var ownHistory = Items(await GetJsonAsync(outsider, "/api/v1/history"));
         var queriedHistory = Items(await GetJsonAsync(outsider,
@@ -322,20 +334,12 @@ public sealed class SecurityFlowTests(ApiFixture fixture)
         ["email"] = $"security-{Guid.NewGuid():N}@example.test",
         ["password"] = fixture.Password,
         ["role"] = role,
-        ["region"] = "Đồng Tháp"
+        ["countryCode"] = "VN",
+        ["provinceCode"] = "79"
     };
 
-    private async Task<Account> RegisterAsync(HttpClient client, string role)
-    {
-        var request = RegistrationBody(role);
-        using var response = await client.PostAsJsonAsync("/api/v1/auth/register", request);
-        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-        var profile = await response.Content.ReadFromJsonAsync<JsonElement>();
-        Assert.Equal(role, profile.GetProperty("role").GetString());
-        Assert.Equal("Pending", profile.GetProperty("approvalStatus").GetString());
-        return new Account(profile.GetProperty("id").GetGuid(), (string)request["email"]);
-    }
-
+    private Task<TestAccount> CreatePendingAccountAsync(string role) =>
+        TestAccounts.CreateAsync(fixture.Services, fixture.Password, role, approve: false);
     private async Task<Session> LoginAsync(HttpClient client, string email)
     {
         using var response = await client.PostAsJsonAsync("/api/v1/auth/login",
@@ -365,12 +369,13 @@ public sealed class SecurityFlowTests(ApiFixture fixture)
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
-    private static object PostBody() => new
+    private static object PostBody(Guid? branchId) => new
     {
         title = "Mango estimate for integration test",
         body = "Estimated mango quantity for a future survey, without a stock commitment.",
         productCode = "mango",
-        estimatedQuantityKg = 20
+        estimatedQuantityKg = 20,
+        branchId
     };
 
     private static async Task<JsonElement> GetJsonAsync(HttpClient client, string path)
@@ -389,6 +394,5 @@ public sealed class SecurityFlowTests(ApiFixture fixture)
         return conversations[0].GetProperty("id").GetGuid();
     }
 
-    private sealed record Account(Guid Id, string Email);
     private sealed record Session(string AccessToken, string RefreshToken, Guid UserId);
 }

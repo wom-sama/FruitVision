@@ -8,8 +8,8 @@ public record RegisterRequest(
     [property:Required,StringLength(100,MinimumLength=2)] string DisplayName,
     [property:Required,EmailAddress,StringLength(254)] string Email,
     [property:Required,StringLength(128,MinimumLength=12)] string Password,
-    [property:JsonRequired] BusinessRole Role,
-    [property:Required,StringLength(120,MinimumLength=2)] string Region);
+    [property:Required,RegularExpression("^[A-Za-z]{2}$")] string CountryCode,
+    [property:Required,StringLength(128)] string ProvinceCode);
 public record LoginRequest(
     [property:Required,EmailAddress,StringLength(254)] string Email,
     [property:Required,StringLength(128)] string Password);
@@ -23,13 +23,14 @@ public record ReviewRequest(ApprovalState Status, [property:Required,StringLengt
 public record AccountStatusRequest(bool IsActive,[property:Required,StringLength(1000,MinimumLength=3)] string Reason);
 public record ProfileRequest(
     [property:Required,StringLength(100,MinimumLength=2)] string DisplayName,
-    [property:Required,StringLength(120,MinimumLength=2)] string Region);
+    [property:Required,RegularExpression("^[A-Za-z]{2}$")] string CountryCode,
+    [property:Required,StringLength(128)] string ProvinceCode);
 public record CreatePostRequest(
     [property:Required,StringLength(160,MinimumLength=5)] string Title,
     [property:Required,StringLength(5000,MinimumLength=10)] string Body,
     [property:Required,StringLength(40)] string ProductCode,
     [property:Range(typeof(decimal),"0.001","1000000",ParseLimitsInInvariantCulture=true,ConvertValueInInvariantCulture=true)] decimal EstimatedQuantityKg,
-    [property:StringLength(120,MinimumLength=2)] string? Region = null,
+    Guid? BranchId = null,
     string? Purpose = null, DateOnly? AvailableOn = null,
     decimal? PriceMinVndPerKg = null, decimal? PriceMaxVndPerKg = null);
 public record PostReviewRequest(

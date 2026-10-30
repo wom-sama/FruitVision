@@ -1,0 +1,89 @@
+{
+  "allPassed": true,
+  "artifacts": [
+    {
+      "abi": "arm64-v8a",
+      "path": "releases/android/2.4.0/app-arm64-v8a-release.apk",
+      "bytes": 19727752,
+      "sha256": "4e98b24d0307df9d615ee47781fb97014a3a5375119d8e09f01ebd3287bb84d6",
+      "version": "2.4.0+6010",
+      "v2Signature": true,
+      "signerSha256": "b254a31dc9fd217c68e076f8ac880dd151086904851fafd9f6c4c18f2905d971",
+      "platformPermissions": [
+        "INTERNET",
+        "USE_BIOMETRIC",
+        "USE_FINGERPRINT",
+        "REQUEST_INSTALL_PACKAGES"
+      ],
+      "appSignatureOnlyReceiverPermission": true,
+      "noAiRuntimeOrWeights": true,
+      "cleartextDisabled": true,
+      "backupDisabled": true,
+      "e2eeLibrary": {
+        "name": "libsodium.so",
+        "upstreamVersion": "1.0.22-stable",
+        "sha256": "703e66eb449f8f5b16dfb3da9a8cfad80413a452dadb71e8e588f28c09a70354",
+        "elfAbiVerified": true,
+        "nativeAssetBindingVerified": true
+      },
+      "cryptoLicenseHashesVerified": true,
+      "signingNote": "Existing debug signer retained for course demo upgrades; not Play Store release signing."
+    },
+    {
+      "abi": "armeabi-v7a",
+      "path": "releases/android/2.4.0/app-armeabi-v7a-release.apk",
+      "bytes": 17367486,
+      "sha256": "29620c6a10b50fd753fe327997650063b910cde26481c6605e280faab9887156",
+      "version": "2.4.0+6010",
+      "v2Signature": true,
+      "signerSha256": "b254a31dc9fd217c68e076f8ac880dd151086904851fafd9f6c4c18f2905d971",
+      "platformPermissions": [
+        "INTERNET",
+        "USE_BIOMETRIC",
+        "USE_FINGERPRINT",
+        "REQUEST_INSTALL_PACKAGES"
+      ],
+      "appSignatureOnlyReceiverPermission": true,
+      "noAiRuntimeOrWeights": true,
+      "cleartextDisabled": true,
+      "backupDisabled": true,
+      "e2eeLibrary": {
+        "name": "libsodium.so",
+        "upstreamVersion": "1.0.22-stable",
+        "sha256": "e789ff79afbcfb3fac6a43e80808062c528f2273478580fc66539725d15a5b8e",
+        "elfAbiVerified": true,
+        "nativeAssetBindingVerified": true
+      },
+      "cryptoLicenseHashesVerified": true,
+      "signingNote": "Existing debug signer retained for course demo upgrades; not Play Store release signing."
+    },
+    {
+      "abi": "x86_64",
+      "path": "releases/android/2.4.0/app-x86_64-release.apk",
+      "bytes": 21402463,
+      "sha256": "73f1565e61ac7e7f42f634472a15209216860913a84e1bedb5a40ebca963df87",
+      "version": "2.4.0+6010",
+      "v2Signature": true,
+      "signerSha256": "b254a31dc9fd217c68e076f8ac880dd151086904851fafd9f6c4c18f2905d971",
+      "platformPermissions": [
+        "INTERNET",
+        "USE_BIOMETRIC",
+        "USE_FINGERPRINT",
+        "REQUEST_INSTALL_PACKAGES"
+      ],
+      "appSignatureOnlyReceiverPermission": true,
+      "noAiRuntimeOrWeights": true,
+      "cleartextDisabled": true,
+      "backupDisabled": true,
+      "e2eeLibrary": {
+        "name": "libsodium.so",
+        "upstreamVersion": "1.0.22-stable",
+        "sha256": "5fea4d10ee319ebd5bf1dcf59f3d8fc7ad78f072415542abc9259f80794f89ad",
+        "elfAbiVerified": true,
+        "nativeAssetBindingVerified": true
+      },
+      "cryptoLicenseHashesVerified": true,
+      "signingNote": "Existing debug signer retained for course demo upgrades; not Play Store release signing."
+    }
+  ]
+}

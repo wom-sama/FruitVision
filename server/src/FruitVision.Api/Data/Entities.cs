@@ -10,6 +10,8 @@ public class AppUser : IdentityUser<Guid>
 {
     public string DisplayName { get; set; } = "";
     public string Region { get; set; } = "";
+    public string? CountryCode { get; set; }
+    public string? ProvinceCode { get; set; }
     public AccountRole Role { get; set; }
     public ApprovalState ApprovalStatus { get; set; } = ApprovalState.Pending;
     public string? ReviewReason { get; set; }
@@ -25,6 +27,8 @@ public class AuthSession
     public string AccessHash { get; set; } = "";
     public string RefreshHash { get; set; } = "";
     public string SecurityStamp { get; set; } = "";
+    public string AuthMethod { get; set; } = "password";
+    public Guid? BiometricDeviceId { get; set; }
     public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
     public DateTimeOffset AccessExpiresAt { get; set; }
     public DateTimeOffset RefreshExpiresAt { get; set; }
@@ -69,6 +73,7 @@ public class Post
 {
     public Guid Id { get; set; } = Guid.NewGuid();
     public Guid AuthorId { get; set; }
+    public Guid? BranchId { get; set; }
     public AppUser Author { get; set; } = null!;
     public string Title { get; set; } = "";
     public string Body { get; set; } = "";
@@ -93,6 +98,7 @@ public class Conversation
     public Guid Id { get; set; } = Guid.NewGuid();
     public string Title { get; set; } = "";
     public Guid? PostId { get; set; }
+    public Guid? ArticleId { get; set; }
     public Guid? InitiatorId { get; set; }
     public string Kind { get; set; } = "Direct";
     public Guid? OwnerId { get; set; }
@@ -113,6 +119,7 @@ public class Message
     public Guid Id { get; set; } = Guid.NewGuid();
     public Guid ConversationId { get; set; }
     public Guid SenderId { get; set; }
+    public Guid? NormalImageId { get; set; }
     public string ClientMessageId { get; set; } = "";
     public string Text { get; set; } = "";
     public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;

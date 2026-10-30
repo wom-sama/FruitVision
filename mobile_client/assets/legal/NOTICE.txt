@@ -1,0 +1,28 @@
+FruitVision - third-party cryptography notices
+
+These files retain the exact license text from the installed, pinned sources.
+They do not imply endorsement of FruitVision by the upstream authors.
+
+sodium 4.1.2+1 - Dart bindings maintained by Felix Brandtner (Skycoder42)
+License: BSD 3-Clause; its original LICENSE also includes the libsodium ISC text.
+License file: sodium-4.1.2+1-LICENSE.txt
+Package: https://pub.dev/packages/sodium/versions/4.1.2%2B1
+Upstream: https://github.com/Skycoder42/libsodium_dart_bindings
+Source: the LICENSE in the installed sodium-4.1.2+1 package.
+
+libsodium 1.0.22-stable - Frank Denis and contributors
+License: ISC
+License file: libsodium-1.0.22-LICENSE.txt
+Upstream: https://github.com/jedisct1/libsodium
+Source: libsodium-stable/LICENSE extracted without modification from
+3rdparty/libsodium-1.0.22-stable.tar.gz bundled in sodium 4.1.2+1.
+
+crypto 3.0.7 - the Dart project authors
+License: BSD 3-Clause
+License file: crypto-3.0.7-LICENSE.txt
+Package: https://pub.dev/packages/crypto/versions/3.0.7
+Upstream: https://github.com/dart-lang/core/tree/main/pkgs/crypto
+Source: the LICENSE in the installed crypto-3.0.7 package.
+
+The three LICENSE files are reproduced byte-for-byte. NOTICE.txt is the
+FruitVision provenance summary; the original license terms remain unchanged.

@@ -63,6 +63,7 @@ public static class PostWorkflowEndpoints
             ["id"] = post.Id, ["title"] = post.Title, ["body"] = post.Body, ["productCode"] = post.ProductCode,
             ["status"] = post.Status, ["sourceType"] = post.SourceType, ["estimatedQuantityKg"] = post.EstimatedQuantityKg,
             ["createdAt"] = post.CreatedAt, ["revision"] = post.Revision, ["reviewedAt"] = post.ReviewedAt,
+            ["branchId"] = post.BranchId, ["branchApprovalAtSubmission"] = post.BranchId.HasValue ? "Approved" : "LegacyUnrecorded",
             ["region"] = string.IsNullOrWhiteSpace(post.Region) ? post.Author.Region : post.Region,
             ["purpose"] = post.Purpose, ["availableOn"] = post.AvailableOn,
             ["priceMinVndPerKg"] = post.PriceMinVndPerKg, ["priceMaxVndPerKg"] = post.PriceMaxVndPerKg,
@@ -77,6 +78,7 @@ public static class PostWorkflowEndpoints
         IHubContext<FruitHub> hub, ILoggerFactory loggerFactory, CancellationToken cancellationToken)
     {
         if (!Input.Safe(request.Title) || !Input.Safe(request.Body, true)) return Input.Invalid("Nội dung chứa ký tự điều khiển.");
+        if (request.BranchId is null || request.BranchId == Guid.Empty) return Input.Invalid("Hãy chọn chi nhánh đã được duyệt trước khi gửi tin kinh doanh.");
         if (!await db.Products.AnyAsync(product => product.Code == request.ProductCode, cancellationToken)) return Input.Invalid("Nông sản không tồn tại.");
         if (request.PriceMinVndPerKg.HasValue != request.PriceMaxVndPerKg.HasValue ||
             (request.PriceMinVndPerKg.HasValue && (request.PriceMinVndPerKg <= 0 || request.PriceMaxVndPerKg < request.PriceMinVndPerKg ||
@@ -91,9 +93,11 @@ public static class PostWorkflowEndpoints
         if (!author.IsActive || author.ApprovalStatus != ApprovalState.Approved || author.Role is not (AccountRole.Producer or AccountRole.Trader)) return Results.Forbid();
         var purpose = request.Purpose ?? (author.Role == AccountRole.Trader ? "Demand" : "Supply");
         if (purpose is not ("Supply" or "Demand") || (author.Role == AccountRole.Producer && purpose != "Supply")) return Input.Invalid("Producer chỉ gửi Supply; Trader có thể gửi Supply hoặc Demand.");
-        var region = request.Region is null ? author.Region : Input.Text(request.Region);
-        if (region.Length is < 2 or > 120 || !Input.Safe(region)) return Input.Invalid("Khu vực cần 2–120 ký tự hợp lệ.");
+        var branch = await PublishingEndpoints.ValidateOwnedApprovedBranch(db, userId, request.BranchId, cancellationToken);
+        if (branch is null) return Results.Problem(statusCode:409,title:"Chi nhánh chưa được duyệt hoặc không thuộc tài khoản. Vui lòng tải lại danh sách.");
+        var region = branch.Region;
         var post = new Post { AuthorId = userId, Author = author, Title = Input.Text(request.Title), Body = Input.Text(request.Body),
+            BranchId = branch.Id,
             ProductCode = request.ProductCode, EstimatedQuantityKg = request.EstimatedQuantityKg, Purpose = purpose, Region = region,
             AvailableOn = request.AvailableOn, PriceMinVndPerKg = request.PriceMinVndPerKg, PriceMaxVndPerKg = request.PriceMaxVndPerKg };
         db.Posts.Add(post); db.AuditEntries.Add(SessionTokens.Audit(userId, userId, "ForecastPostSubmitted", post.Id.ToString()));

@@ -9,7 +9,7 @@ public static class AiEndpoints
 {
     public static void MapFruitVisionAi(this WebApplication app)
     {
-        var group = app.MapGroup("/api/v1/ai").RequireAuthorization("Approved").WithTags("AI ảnh/video và đếm quả");
+        var group = app.MapGroup("/api/v1/ai").RequireAuthorization("Seller").WithTags("AI ảnh/video và đếm quả");
         group.MapGet("/capabilities", (AiRuntimeStatus runtime) => Results.Ok(new
         {
             aiReady = runtime.IsReady, message = runtime.Message, modelName = runtime.ModelName,

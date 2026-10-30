@@ -36,3 +36,7 @@ demos/desktop/models/V186/torch_hub/
 demos/desktop/output/*
 !demos/desktop/output/.gitkeep
 models/android/exports/
+
+# Package/IDE caches are never submission source
+.cache/
+.vs/

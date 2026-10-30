@@ -12,19 +12,22 @@ public static class AuthEndpoints
     public static void MapAuth(this WebApplication app)
     {
         var group=app.MapGroup("/api/v1/auth").AddEndpointFilter<InputFilter>().WithTags("Tài khoản");
-        group.MapPost("/register",async(RegisterRequest r,UserManager<AppUser> users,AppDbContext db)=> {
-            if(!Input.Safe(r.DisplayName)||!Input.Safe(r.Region)||!Input.Safe(r.Email)) return Input.Invalid("Thông tin chứa ký tự điều khiển.");
+        group.MapPost("/register",async(RegisterRequest r,UserManager<AppUser> users,AppDbContext db,LocationDirectory locations,EmailOtpService otp,HttpContext http)=> {
+            if(!Input.Safe(r.DisplayName)||!Input.Safe(r.Email)) return Input.Invalid("Thông tin chứa ký tự điều khiển.");
+            if(!otp.IsReady) return EmailOtpService.Unavailable();
+            var location=await locations.ValidateAsync(r.CountryCode,r.ProvinceCode,http.RequestAborted);
+            if(location.Region.Length>120)return Input.Invalid("Tên khu vực quá dài; vui lòng chọn một địa điểm khác hoặc liên hệ quản trị.");
             var user=new AppUser{Id=Guid.NewGuid(),Email=Input.Text(r.Email),UserName=Input.Text(r.Email),
-                DisplayName=Input.Text(r.DisplayName),Region=Input.Text(r.Region),Role=Enum.Parse<AccountRole>(r.Role.ToString()),
-                ApprovalStatus=ApprovalState.Pending,LockoutEnabled=true};
+                DisplayName=Input.Text(r.DisplayName),Region=location.Region,CountryCode=location.CountryCode,ProvinceCode=location.ProvinceCode,Role=AccountRole.Consumer,
+                ApprovalStatus=ApprovalState.Approved,EmailConfirmed=false,LockoutEnabled=true};
             var result=await users.CreateAsync(user,r.Password);
             if(!result.Succeeded) return Results.ValidationProblem(new Dictionary<string,string[]>{{"registration",result.Errors.Select(x=>x.Code).ToArray()}});
             db.AuditEntries.Add(SessionTokens.Audit(user.Id,user.Id,"AccountRegistered"));
             await db.SaveChangesAsync();
-            return Results.Created($"/api/v1/auth/me",SessionTokens.Profile(user));
+            return await otp.StartAsync(user,db,http,"register",registration:true);
         }).RequireRateLimiting("auth");
 
-        group.MapPost("/login",async(LoginRequest r,UserManager<AppUser> users,AppDbContext db)=> {
+        group.MapPost("/login",async(LoginRequest r,UserManager<AppUser> users,AppDbContext db,EmailOtpService otp,HttpContext http)=> {
             var user=await users.FindByEmailAsync(Input.Text(r.Email));
             if(user is null || !user.IsActive || await users.IsLockedOutAsync(user)) return BadLogin();
             if(!await users.CheckPasswordAsync(user,r.Password)) {await users.AccessFailedAsync(user);return BadLogin();}
@@ -33,8 +36,9 @@ public static class AuthEndpoints
                 var token=SessionTokens.New();
                 db.LoginChallenges.Add(new LoginChallenge{Hash=SessionTokens.Hash(token),UserId=user.Id,SecurityStamp=user.SecurityStamp ?? "",ExpiresAt=DateTimeOffset.UtcNow.AddMinutes(5)});
                 await db.SaveChangesAsync();
-                return Results.Ok(new {requiresTwoFactor=true,challengeToken=token,expiresIn=300});
+                return Results.Ok(new {requiresTwoFactor=true,method="authenticator",challengeToken=token,expiresIn=300});
             }
+            if(otp.RequiredOnLogin||!user.EmailConfirmed)return await otp.StartAsync(user,db,http,"login");
             return await Issue(user,db);
         }).RequireRateLimiting("auth");
 
@@ -51,7 +55,7 @@ public static class AuthEndpoints
                 await db.SaveChangesAsync();await tx.CommitAsync();return BadLogin();
             }
             c.Consumed=true;
-            var output=await Issue(user,db);
+            var output=await Issue(user,db,"password_totp");
             await tx.CommitAsync();return output;
         }).RequireRateLimiting("auth");
 
@@ -124,9 +128,9 @@ public static class AuthEndpoints
     }
 
     private static IResult BadLogin()=>Results.Problem(statusCode:401,title:"Không thể xác thực thông tin đăng nhập hoặc phiên.");
-    private static async Task<IResult> Issue(AppUser u,AppDbContext db)
+    internal static async Task<IResult> Issue(AppUser u,AppDbContext db,string authMethod="password")
     {
-        var(s,access,refresh)=SessionTokens.Create(u);db.AuthSessions.Add(s);
+        var(s,access,refresh)=SessionTokens.Create(u,authMethod);db.AuthSessions.Add(s);
         db.AuditEntries.Add(SessionTokens.Audit(u.Id,u.Id,"LoginSucceeded"));await db.SaveChangesAsync();
         return Results.Ok(SessionTokens.Response(u,s,access,refresh));
     }

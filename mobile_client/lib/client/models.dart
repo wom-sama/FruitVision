@@ -35,6 +35,9 @@ class Account {
     required this.isActive,
     this.reviewReason,
     this.twoFactorEnabled = false,
+    this.emailConfirmed = false,
+    this.countryCode,
+    this.provinceCode,
   });
   factory Account.fromJson(Map<String, dynamic> data) => Account(
     id: data['id'] as String,
@@ -46,11 +49,15 @@ class Account {
     isActive: data['isActive'] as bool,
     reviewReason: data['reviewReason'] as String?,
     twoFactorEnabled: data['twoFactorEnabled'] as bool? ?? false,
+    emailConfirmed: data['emailConfirmed'] == true,
+    countryCode: data['countryCode'] as String?,
+    provinceCode: data['provinceCode'] as String?,
   );
   final String id, displayName, email, region;
   final UserRole role;
   final ApprovalStatus approvalStatus;
-  final bool isActive, twoFactorEnabled;
+  final bool isActive, twoFactorEnabled, emailConfirmed;
+  final String? countryCode, provinceCode;
   final String? reviewReason;
   bool get isApproved => isActive && approvalStatus == ApprovalStatus.approved;
   bool get isAdmin => role == UserRole.admin;

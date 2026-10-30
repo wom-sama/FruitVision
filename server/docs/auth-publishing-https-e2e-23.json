@@ -1,0 +1,969 @@
+{
+  "status": "PASS",
+  "startedUtc": "2026-10-30T16:47:34.592899+00:00",
+  "scope": "Actual public HTTPS/WSS with four operator-supplied authenticated role sessions. Domain data is declared DEMO QA2.3, not legal proof, stock or transactions. Not four phones.",
+  "sessionProvenance": "Login/email OTP performed separately by operator; this driver confirms actual current API identities and never fabricates or refreshes tokens.",
+  "tlsVerificationDisabled": false,
+  "requests": [
+    {
+      "role": "Admin",
+      "method": "GET",
+      "route": "/api/v1/auth/me",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 16,
+      "latencyMs": 546.0
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "route": "/api/v1/auth/me",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 562,
+      "latencyMs": 329.0
+    },
+    {
+      "role": "Trader",
+      "method": "GET",
+      "route": "/api/v1/auth/me",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 891,
+      "latencyMs": 375.0
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "route": "/api/v1/auth/me",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 1266,
+      "latencyMs": 359.0
+    },
+    {
+      "role": "Admin",
+      "method": "GET",
+      "route": "/api/v1/ai/stats",
+      "status": 403,
+      "expectedStatus": 403,
+      "startMs": 1625,
+      "latencyMs": 672.0
+    },
+    {
+      "role": "Admin",
+      "method": "GET",
+      "route": "/api/v1/ai/capabilities",
+      "status": 403,
+      "expectedStatus": 403,
+      "startMs": 2297,
+      "latencyMs": 515.0
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "route": "/api/v1/ai/stats",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 2812,
+      "latencyMs": 329.0
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "route": "/api/v1/ai/capabilities",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 3141,
+      "latencyMs": 328.0
+    },
+    {
+      "role": "Trader",
+      "method": "GET",
+      "route": "/api/v1/ai/stats",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 3469,
+      "latencyMs": 375.0
+    },
+    {
+      "role": "Trader",
+      "method": "GET",
+      "route": "/api/v1/ai/capabilities",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 3844,
+      "latencyMs": 297.0
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "route": "/api/v1/ai/stats",
+      "status": 403,
+      "expectedStatus": 403,
+      "startMs": 4141,
+      "latencyMs": 625.0
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "route": "/api/v1/ai/capabilities",
+      "status": 403,
+      "expectedStatus": 403,
+      "startMs": 4766,
+      "latencyMs": 312.0
+    },
+    {
+      "role": "anonymous",
+      "method": "GET",
+      "route": "/api/v1/locations/countries",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 5078,
+      "latencyMs": 531.0
+    },
+    {
+      "role": "anonymous",
+      "method": "GET",
+      "route": "/api/v1/locations/provinces?country=VN",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 5609,
+      "latencyMs": 922.0
+    },
+    {
+      "role": "anonymous",
+      "method": "GET",
+      "route": "/api/v1/locations/provinces?country=US",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 6531,
+      "latencyMs": 610.0
+    },
+    {
+      "role": "anonymous",
+      "method": "GET",
+      "route": "/api/v1/catalog/products",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 7141,
+      "latencyMs": 562.0
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "route": "/api/v1/articles",
+      "status": 201,
+      "expectedStatus": 201,
+      "startMs": 7703,
+      "latencyMs": 406.0
+    },
+    {
+      "role": "Trader",
+      "method": "GET",
+      "route": "/api/v1/articles/c4cfba37-84b6-48c6-ac4e-869cc8a25c81",
+      "status": 404,
+      "expectedStatus": 404,
+      "startMs": 8109,
+      "latencyMs": 500.0
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "route": "/api/v1/articles",
+      "status": 403,
+      "expectedStatus": 403,
+      "startMs": 8609,
+      "latencyMs": 282.0
+    },
+    {
+      "role": "Admin",
+      "method": "POST",
+      "route": "/api/v1/admin/articles/c4cfba37-84b6-48c6-ac4e-869cc8a25c81/review",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 8891,
+      "latencyMs": 406.0
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "route": "/api/v1/articles?limit=50",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 9297,
+      "latencyMs": 562.0
+    },
+    {
+      "role": "Trader",
+      "method": "GET",
+      "route": "/api/v1/articles?limit=50",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 9859,
+      "latencyMs": 422.0
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "route": "/api/v1/articles?limit=50",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 10281,
+      "latencyMs": 281.0
+    },
+    {
+      "role": "anonymous",
+      "method": "GET",
+      "route": "/api/v1/articles/c4cfba37-84b6-48c6-ac4e-869cc8a25c81",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 10562,
+      "latencyMs": 329.0
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "route": "/api/v1/articles/c4cfba37-84b6-48c6-ac4e-869cc8a25c81",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 10891,
+      "latencyMs": 343.0
+    },
+    {
+      "role": "Trader",
+      "method": "GET",
+      "route": "/api/v1/articles/c4cfba37-84b6-48c6-ac4e-869cc8a25c81",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 11234,
+      "latencyMs": 313.0
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "route": "/api/v1/articles/c4cfba37-84b6-48c6-ac4e-869cc8a25c81",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 11547,
+      "latencyMs": 375.0
+    },
+    {
+      "role": "Consumer",
+      "method": "PUT",
+      "route": "/api/v1/articles/c4cfba37-84b6-48c6-ac4e-869cc8a25c81",
+      "status": 409,
+      "expectedStatus": 409,
+      "startMs": 11922,
+      "latencyMs": 406.0
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "route": "/api/v1/articles/c4cfba37-84b6-48c6-ac4e-869cc8a25c81",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 12328,
+      "latencyMs": 375.0
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "route": "/api/v1/branches",
+      "status": 400,
+      "expectedStatus": 400,
+      "startMs": 12703,
+      "latencyMs": 359.0
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "route": "/api/v1/branches",
+      "status": 201,
+      "expectedStatus": 201,
+      "startMs": 13062,
+      "latencyMs": 407.0
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "route": "/api/v1/posts",
+      "status": 409,
+      "expectedStatus": 409,
+      "startMs": 13469,
+      "latencyMs": 390.0
+    },
+    {
+      "role": "Trader",
+      "method": "POST",
+      "route": "/api/v1/branches",
+      "status": 201,
+      "expectedStatus": 201,
+      "startMs": 13859,
+      "latencyMs": 266.0
+    },
+    {
+      "role": "Trader",
+      "method": "POST",
+      "route": "/api/v1/posts",
+      "status": 409,
+      "expectedStatus": 409,
+      "startMs": 14125,
+      "latencyMs": 359.0
+    },
+    {
+      "role": "Trader",
+      "method": "GET",
+      "route": "/api/v1/branches/c312bc0b-2494-44d4-b783-f8bb4c846c37",
+      "status": 404,
+      "expectedStatus": 404,
+      "startMs": 14484,
+      "latencyMs": 610.0
+    },
+    {
+      "role": "Admin",
+      "method": "POST",
+      "route": "/api/v1/admin/branches/c312bc0b-2494-44d4-b783-f8bb4c846c37/review",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 15094,
+      "latencyMs": 297.0
+    },
+    {
+      "role": "anonymous",
+      "method": "GET",
+      "route": "/api/v1/branches/c312bc0b-2494-44d4-b783-f8bb4c846c37",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 15391,
+      "latencyMs": 359.0
+    },
+    {
+      "role": "Admin",
+      "method": "POST",
+      "route": "/api/v1/admin/branches/92c487ad-6127-47ce-be9b-cca02c8c6a5a/review",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 15750,
+      "latencyMs": 328.0
+    },
+    {
+      "role": "anonymous",
+      "method": "GET",
+      "route": "/api/v1/branches/92c487ad-6127-47ce-be9b-cca02c8c6a5a",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 16078,
+      "latencyMs": 578.0
+    },
+    {
+      "role": "Trader",
+      "method": "POST",
+      "route": "/api/v1/posts",
+      "status": 409,
+      "expectedStatus": 409,
+      "startMs": 16656,
+      "latencyMs": 313.0
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "route": "/api/v1/posts",
+      "status": 403,
+      "expectedStatus": 403,
+      "startMs": 16969,
+      "latencyMs": 312.0
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "route": "/api/v1/posts",
+      "status": 201,
+      "expectedStatus": 201,
+      "startMs": 18203,
+      "latencyMs": 438.0
+    },
+    {
+      "role": "Admin",
+      "method": "POST",
+      "route": "/api/v1/admin/posts/ce1a54dd-d812-4ddc-9ba5-5f9e62b82fbb/review",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 18641,
+      "latencyMs": 296.0
+    },
+    {
+      "role": "Trader",
+      "method": "POST",
+      "route": "/api/v1/posts",
+      "status": 201,
+      "expectedStatus": 201,
+      "startMs": 18937,
+      "latencyMs": 297.0
+    },
+    {
+      "role": "Admin",
+      "method": "POST",
+      "route": "/api/v1/admin/posts/1efdfc40-392c-4e0b-a208-ec61784affbb/review",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 19234,
+      "latencyMs": 344.0
+    },
+    {
+      "role": "Trader",
+      "method": "POST",
+      "route": "/api/v1/posts/ce1a54dd-d812-4ddc-9ba5-5f9e62b82fbb/conversations",
+      "status": 201,
+      "expectedStatus": 201,
+      "startMs": 19578,
+      "latencyMs": 375.0
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "route": "/api/v1/conversations/8771b687-822b-423e-adde-bbf48358afdb/messages",
+      "status": 404,
+      "expectedStatus": 404,
+      "startMs": 20156,
+      "latencyMs": 750.0
+    },
+    {
+      "role": "Admin",
+      "method": "GET",
+      "route": "/api/v1/conversations/8771b687-822b-423e-adde-bbf48358afdb/messages",
+      "status": 404,
+      "expectedStatus": 404,
+      "startMs": 20906,
+      "latencyMs": 328.0
+    },
+    {
+      "role": "Trader",
+      "method": "POST",
+      "route": "/api/v1/conversations/8771b687-822b-423e-adde-bbf48358afdb/messages",
+      "status": 201,
+      "expectedStatus": 201,
+      "startMs": 21375,
+      "latencyMs": 312.0
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "route": "/api/v1/conversations/8771b687-822b-423e-adde-bbf48358afdb/messages",
+      "status": 201,
+      "expectedStatus": 201,
+      "startMs": 23203,
+      "latencyMs": 375.0
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "route": "/api/v1/posts/ce1a54dd-d812-4ddc-9ba5-5f9e62b82fbb/conversations",
+      "status": 201,
+      "expectedStatus": 201,
+      "startMs": 25203,
+      "latencyMs": 375.0
+    },
+    {
+      "role": "Trader",
+      "method": "GET",
+      "route": "/api/v1/conversations/4b984c9e-c6a1-44e1-956a-cc4d1be1fc27/messages",
+      "status": 404,
+      "expectedStatus": 404,
+      "startMs": 25750,
+      "latencyMs": 625.0
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "route": "/api/v1/conversations/4b984c9e-c6a1-44e1-956a-cc4d1be1fc27/messages",
+      "status": 201,
+      "expectedStatus": 201,
+      "startMs": 26375,
+      "latencyMs": 453.0
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "route": "/api/v1/conversations/4b984c9e-c6a1-44e1-956a-cc4d1be1fc27/messages",
+      "status": 201,
+      "expectedStatus": 201,
+      "startMs": 27203,
+      "latencyMs": 297.0
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "route": "/api/v1/community/groups",
+      "status": 201,
+      "expectedStatus": 201,
+      "startMs": 29203,
+      "latencyMs": 328.0
+    },
+    {
+      "role": "Trader",
+      "method": "POST",
+      "route": "/api/v1/community/groups/8841b15c-8d29-496c-b313-dd51f6a40423/join",
+      "status": 201,
+      "expectedStatus": 201,
+      "startMs": 29531,
+      "latencyMs": 391.0
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "route": "/api/v1/community/groups/8841b15c-8d29-496c-b313-dd51f6a40423/join",
+      "status": 201,
+      "expectedStatus": 201,
+      "startMs": 29922,
+      "latencyMs": 375.0
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "route": "/api/v1/conversations/8841b15c-8d29-496c-b313-dd51f6a40423/messages",
+      "status": 201,
+      "expectedStatus": 201,
+      "startMs": 30578,
+      "latencyMs": 359.0
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "route": "/api/v1/community/groups/8841b15c-8d29-496c-b313-dd51f6a40423/leave",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 31203,
+      "latencyMs": 453.0
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "route": "/api/v1/conversations/8841b15c-8d29-496c-b313-dd51f6a40423/messages",
+      "status": 404,
+      "expectedStatus": 404,
+      "startMs": 31656,
+      "latencyMs": 531.0
+    },
+    {
+      "role": "Trader",
+      "method": "POST",
+      "route": "/api/v1/conversations/8841b15c-8d29-496c-b313-dd51f6a40423/messages",
+      "status": 201,
+      "expectedStatus": 201,
+      "startMs": 32187,
+      "latencyMs": 313.0
+    }
+  ],
+  "checks": [
+    {
+      "name": "four supplied role sessions identify four distinct users",
+      "pass": true,
+      "atMs": 16
+    },
+    {
+      "name": "Admin actual current verified approved identity",
+      "pass": true,
+      "atMs": 562
+    },
+    {
+      "name": "Producer actual current verified approved identity",
+      "pass": true,
+      "atMs": 891
+    },
+    {
+      "name": "Trader actual current verified approved identity",
+      "pass": true,
+      "atMs": 1266
+    },
+    {
+      "name": "Consumer actual current verified approved identity",
+      "pass": true,
+      "atMs": 1625
+    },
+    {
+      "name": "country catalog contains VN with provenance",
+      "pass": true,
+      "atMs": 5609
+    },
+    {
+      "name": "actual VN directory is34 provinces and contains selected79",
+      "pass": true,
+      "atMs": 6531
+    },
+    {
+      "name": "actual foreign catalog offers a cross-country rejection control",
+      "pass": true,
+      "atMs": 7141
+    },
+    {
+      "name": "mango is an actual catalog code",
+      "pass": true,
+      "atMs": 7703
+    },
+    {
+      "name": "community article starts AwaitingReview",
+      "pass": true,
+      "atMs": 8109
+    },
+    {
+      "name": "Producer public article lane contains no private reason",
+      "pass": true,
+      "atMs": 9859
+    },
+    {
+      "name": "Trader public article lane contains no private reason",
+      "pass": true,
+      "atMs": 10281
+    },
+    {
+      "name": "Consumer public article lane contains no private reason",
+      "pass": true,
+      "atMs": 10562
+    },
+    {
+      "name": "anonymous public detail omits moderation reason",
+      "pass": true,
+      "atMs": 10891
+    },
+    {
+      "name": "Producer public detail omits moderation reason",
+      "pass": true,
+      "atMs": 11234
+    },
+    {
+      "name": "Trader public detail omits moderation reason",
+      "pass": true,
+      "atMs": 11547
+    },
+    {
+      "name": "author can read private review result",
+      "pass": true,
+      "atMs": 11922
+    },
+    {
+      "name": "stale article write left published revision unchanged",
+      "pass": true,
+      "atMs": 12703
+    },
+    {
+      "name": "Producer branch is Pending from trusted selection",
+      "pass": true,
+      "atMs": 13469
+    },
+    {
+      "name": "Trader branch is Pending from trusted selection",
+      "pass": true,
+      "atMs": 14125
+    },
+    {
+      "name": "Producer public approved branch is minimal",
+      "pass": true,
+      "atMs": 15750
+    },
+    {
+      "name": "Trader public approved branch is minimal",
+      "pass": true,
+      "atMs": 16656
+    },
+    {
+      "name": "Producer actual WSS handshake",
+      "pass": true,
+      "atMs": 18187
+    },
+    {
+      "name": "Trader actual WSS handshake",
+      "pass": true,
+      "atMs": 18203
+    },
+    {
+      "name": "Consumer actual WSS handshake",
+      "pass": true,
+      "atMs": 18203
+    },
+    {
+      "name": "three real WSS background receivers concurrently alive",
+      "pass": true,
+      "atMs": 18203
+    },
+    {
+      "name": "Producer business post is linked to own Approved branch and awaits review",
+      "pass": true,
+      "atMs": 18641
+    },
+    {
+      "name": "Trader business post is linked to own Approved branch and awaits review",
+      "pass": true,
+      "atMs": 19234
+    },
+    {
+      "name": "Producer JoinConversation completion 8771b687-822b-423e-adde-bbf48358afdb",
+      "pass": true,
+      "atMs": 20047
+    },
+    {
+      "name": "Trader JoinConversation completion 8771b687-822b-423e-adde-bbf48358afdb",
+      "pass": true,
+      "atMs": 20156
+    },
+    {
+      "name": "Consumer JoinConversation completion 8771b687-822b-423e-adde-bbf48358afdb",
+      "pass": true,
+      "atMs": 21375
+    },
+    {
+      "name": "HTTP message identifies actual named sender 46f9b371-6958-449c-908d-e8129db7fb0a",
+      "pass": true,
+      "atMs": 21687
+    },
+    {
+      "name": "Producer actual WSS named message 46f9b371-6958-449c-908d-e8129db7fb0a",
+      "pass": true,
+      "atMs": 23203
+    },
+    {
+      "name": "Trader actual WSS named message 46f9b371-6958-449c-908d-e8129db7fb0a",
+      "pass": true,
+      "atMs": 23203
+    },
+    {
+      "name": "HTTP message identifies actual named sender 30bac27a-637d-4ffc-8d3f-6254adaf6a9c",
+      "pass": true,
+      "atMs": 23578
+    },
+    {
+      "name": "Producer actual WSS named message 30bac27a-637d-4ffc-8d3f-6254adaf6a9c",
+      "pass": true,
+      "atMs": 25203
+    },
+    {
+      "name": "Trader actual WSS named message 30bac27a-637d-4ffc-8d3f-6254adaf6a9c",
+      "pass": true,
+      "atMs": 25203
+    },
+    {
+      "name": "Consumer contact is a distinct private thread",
+      "pass": true,
+      "atMs": 25578
+    },
+    {
+      "name": "Producer JoinConversation completion 4b984c9e-c6a1-44e1-956a-cc4d1be1fc27",
+      "pass": true,
+      "atMs": 25656
+    },
+    {
+      "name": "Consumer JoinConversation completion 4b984c9e-c6a1-44e1-956a-cc4d1be1fc27",
+      "pass": true,
+      "atMs": 25750
+    },
+    {
+      "name": "HTTP message identifies actual named sender dcd1c0b7-2331-4182-8e56-57d2af618f31",
+      "pass": true,
+      "atMs": 26828
+    },
+    {
+      "name": "Producer actual WSS named message dcd1c0b7-2331-4182-8e56-57d2af618f31",
+      "pass": true,
+      "atMs": 27203
+    },
+    {
+      "name": "Consumer actual WSS named message dcd1c0b7-2331-4182-8e56-57d2af618f31",
+      "pass": true,
+      "atMs": 27203
+    },
+    {
+      "name": "HTTP message identifies actual named sender cd63dab6-f8c8-448a-809e-e14af1737fbf",
+      "pass": true,
+      "atMs": 27500
+    },
+    {
+      "name": "Producer actual WSS named message cd63dab6-f8c8-448a-809e-e14af1737fbf",
+      "pass": true,
+      "atMs": 29203
+    },
+    {
+      "name": "Consumer actual WSS named message cd63dab6-f8c8-448a-809e-e14af1737fbf",
+      "pass": true,
+      "atMs": 29203
+    },
+    {
+      "name": "Producer JoinConversation completion 8841b15c-8d29-496c-b313-dd51f6a40423",
+      "pass": true,
+      "atMs": 30375
+    },
+    {
+      "name": "Trader JoinConversation completion 8841b15c-8d29-496c-b313-dd51f6a40423",
+      "pass": true,
+      "atMs": 30469
+    },
+    {
+      "name": "Consumer JoinConversation completion 8841b15c-8d29-496c-b313-dd51f6a40423",
+      "pass": true,
+      "atMs": 30578
+    },
+    {
+      "name": "HTTP message identifies actual named sender 5d712629-20ee-4446-abec-571b666e270e",
+      "pass": true,
+      "atMs": 30937
+    },
+    {
+      "name": "Producer actual WSS named message 5d712629-20ee-4446-abec-571b666e270e",
+      "pass": true,
+      "atMs": 31203
+    },
+    {
+      "name": "Trader actual WSS named message 5d712629-20ee-4446-abec-571b666e270e",
+      "pass": true,
+      "atMs": 31203
+    },
+    {
+      "name": "Consumer actual WSS named message 5d712629-20ee-4446-abec-571b666e270e",
+      "pass": true,
+      "atMs": 31203
+    },
+    {
+      "name": "HTTP message identifies actual named sender d3815bbd-c502-4cc0-a808-7b6339b66d6a",
+      "pass": true,
+      "atMs": 32500
+    },
+    {
+      "name": "Producer actual WSS named message d3815bbd-c502-4cc0-a808-7b6339b66d6a",
+      "pass": true,
+      "atMs": 33203
+    },
+    {
+      "name": "Trader actual WSS named message d3815bbd-c502-4cc0-a808-7b6339b66d6a",
+      "pass": true,
+      "atMs": 33203
+    },
+    {
+      "name": "departed Consumer receives no new group WSS event",
+      "pass": true,
+      "atMs": 35203
+    }
+  ],
+  "phases": [
+    {
+      "name": "provided identities and Seller-only AI policy; no inference",
+      "startMs": 16,
+      "status": "PASS",
+      "endMs": 5078
+    },
+    {
+      "name": "actual trusted location catalog",
+      "startMs": 5078,
+      "status": "PASS",
+      "endMs": 7703
+    },
+    {
+      "name": "Consumer article reviewed separately from business posts",
+      "startMs": 7703,
+      "status": "PASS",
+      "endMs": 12703
+    },
+    {
+      "name": "Seller branches pending gate, trusted geography and Admin approval",
+      "startMs": 12703,
+      "status": "PASS",
+      "endMs": 17281
+    },
+    {
+      "name": "real WSS clients, moderated business posts, contact and named private messages",
+      "startMs": 17281,
+      "status": "PASS",
+      "endMs": 29203
+    },
+    {
+      "name": "fresh group recipient membership after leave",
+      "startMs": 29203,
+      "status": "PASS",
+      "endMs": 35203
+    }
+  ],
+  "records": {
+    "articleId": "c4cfba37-84b6-48c6-ac4e-869cc8a25c81",
+    "producerBranchId": "c312bc0b-2494-44d4-b783-f8bb4c846c37",
+    "traderBranchId": "92c487ad-6127-47ce-be9b-cca02c8c6a5a",
+    "producerPostId": "ce1a54dd-d812-4ddc-9ba5-5f9e62b82fbb",
+    "traderPostId": "1efdfc40-392c-4e0b-a208-ec61784affbb",
+    "producerTraderConversationId": "8771b687-822b-423e-adde-bbf48358afdb",
+    "messages": [
+      {
+        "id": "46f9b371-6958-449c-908d-e8129db7fb0a",
+        "conversationId": "8771b687-822b-423e-adde-bbf48358afdb",
+        "senderRole": "Trader"
+      },
+      {
+        "id": "30bac27a-637d-4ffc-8d3f-6254adaf6a9c",
+        "conversationId": "8771b687-822b-423e-adde-bbf48358afdb",
+        "senderRole": "Producer"
+      },
+      {
+        "id": "dcd1c0b7-2331-4182-8e56-57d2af618f31",
+        "conversationId": "4b984c9e-c6a1-44e1-956a-cc4d1be1fc27",
+        "senderRole": "Consumer"
+      },
+      {
+        "id": "cd63dab6-f8c8-448a-809e-e14af1737fbf",
+        "conversationId": "4b984c9e-c6a1-44e1-956a-cc4d1be1fc27",
+        "senderRole": "Producer"
+      },
+      {
+        "id": "5d712629-20ee-4446-abec-571b666e270e",
+        "conversationId": "8841b15c-8d29-496c-b313-dd51f6a40423",
+        "senderRole": "Producer"
+      },
+      {
+        "id": "d3815bbd-c502-4cc0-a808-7b6339b66d6a",
+        "conversationId": "8841b15c-8d29-496c-b313-dd51f6a40423",
+        "senderRole": "Trader"
+      }
+    ],
+    "producerConsumerConversationId": "4b984c9e-c6a1-44e1-956a-cc4d1be1fc27",
+    "groupId": "8841b15c-8d29-496c-b313-dd51f6a40423"
+  },
+  "formalRoleUpgradeLive": "NOT_RUN: requires a separate verified Consumer and actual formal evidence; main Consumer is preserved.",
+  "baseURL": "https://tips-differential-relating-validity.trycloudflare.com",
+  "actors": {
+    "Admin": {
+      "id": "469ef088-fc54-4d53-b075-cc1b9d7763cd"
+    },
+    "Producer": {
+      "id": "0973a2ff-981d-4598-82db-bf6c3eca83e8"
+    },
+    "Trader": {
+      "id": "cce06044-4006-473e-beef-27c3f33637f4"
+    },
+    "Consumer": {
+      "id": "a6508feb-fd18-4b83-9ad0-fb012bfe8224"
+    }
+  },
+  "geography": {
+    "countryCode": "VN",
+    "provinceCode": "79",
+    "provinceCount": 34,
+    "source": "https://provinces.open-api.vn/api/v2/",
+    "asOf": "2026-10-30T16:02:25.7505832+00:00",
+    "stale": false
+  },
+  "wssClients": {
+    "Producer": {
+      "bufferedFrames": 20,
+      "receiverFailureType": null,
+      "backgroundReceiverStarted": true
+    },
+    "Trader": {
+      "bufferedFrames": 16,
+      "receiverFailureType": null,
+      "backgroundReceiverStarted": true
+    },
+    "Consumer": {
+      "bufferedFrames": 14,
+      "receiverFailureType": null,
+      "backgroundReceiverStarted": true
+    }
+  },
+  "providedSessionsRetained": true,
+  "finishedUtc": "2026-10-30T16:48:10.086758+00:00",
+  "elapsedSeconds": 35.484
+}

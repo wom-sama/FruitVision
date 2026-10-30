@@ -1,0 +1,970 @@
+{
+  "status": "PASS",
+  "startedUtc": "2026-10-30T17:29:31.071134+00:00",
+  "scope": "Actual owned public HTTPS REST, four existing real-OTP sessions, ordinary canonical JPEG/article/Direct-image ACL and replay checks. Not four phones or WSS acceptance.",
+  "sessionProvenance": "Login/email OTP performed separately by operator; this driver confirms actual current API identities and never fabricates or refreshes tokens.",
+  "tlsVerificationDisabled": false,
+  "requests": [
+    {
+      "role": "Admin",
+      "method": "GET",
+      "route": "/api/v1/auth/me",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 297.0
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "route": "/api/v1/auth/me",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 313.0
+    },
+    {
+      "role": "Trader",
+      "method": "GET",
+      "route": "/api/v1/auth/me",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 343.0
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "route": "/api/v1/auth/me",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 344.0
+    },
+    {
+      "role": "anonymous",
+      "method": "GET",
+      "route": "/api/v1/locations/provinces?country=VN",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 3078.0
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "route": "/api/v1/articles/images",
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 812.0
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "route": "/api/v1/articles",
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 328.0
+    },
+    {
+      "role": "anonymous",
+      "method": "GET",
+      "route": "/api/v1/articles/525fae9d-c8d0-4c95-bcde-34cb49db7daf/image",
+      "status": 404,
+      "expectedStatus": 404,
+      "latencyMs": 641.0
+    },
+    {
+      "role": "Trader",
+      "method": "GET",
+      "route": "/api/v1/articles/525fae9d-c8d0-4c95-bcde-34cb49db7daf/image",
+      "status": 404,
+      "expectedStatus": 404,
+      "latencyMs": 359.0
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "route": "/api/v1/articles/525fae9d-c8d0-4c95-bcde-34cb49db7daf/image",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 297.0
+    },
+    {
+      "role": "Admin",
+      "method": "POST",
+      "route": "/api/v1/admin/articles/525fae9d-c8d0-4c95-bcde-34cb49db7daf/review",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 344.0
+    },
+    {
+      "role": "anonymous",
+      "method": "GET",
+      "route": "/api/v1/articles/525fae9d-c8d0-4c95-bcde-34cb49db7daf",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 484.0
+    },
+    {
+      "role": "anonymous",
+      "method": "GET",
+      "route": "/api/v1/articles/525fae9d-c8d0-4c95-bcde-34cb49db7daf/image",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 375.0
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "route": "/api/v1/articles/525fae9d-c8d0-4c95-bcde-34cb49db7daf/withdraw",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 594.0
+    },
+    {
+      "role": "anonymous",
+      "method": "GET",
+      "route": "/api/v1/articles/525fae9d-c8d0-4c95-bcde-34cb49db7daf/image",
+      "status": 404,
+      "expectedStatus": 404,
+      "latencyMs": 328.0
+    },
+    {
+      "role": "Admin",
+      "method": "POST",
+      "route": "/api/v1/admin/articles/525fae9d-c8d0-4c95-bcde-34cb49db7daf/review",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 359.0
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "route": "/api/v1/branches/mine?limit=50",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 610.0
+    },
+    {
+      "role": "Trader",
+      "method": "GET",
+      "route": "/api/v1/branches/mine?limit=50",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 546.0
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "route": "/api/v1/articles/images",
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 750.0
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "route": "/api/v1/articles",
+      "status": 400,
+      "expectedStatus": 400,
+      "latencyMs": 266.0
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "route": "/api/v1/articles",
+      "status": 409,
+      "expectedStatus": 409,
+      "latencyMs": 313.0
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "route": "/api/v1/articles",
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 343.0
+    },
+    {
+      "role": "Admin",
+      "method": "POST",
+      "route": "/api/v1/admin/articles/de70191c-51a0-43ac-ae37-a7f2735176d8/review",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 391.0
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "route": "/api/v1/articles?lane=Professional&limit=20",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 484.0
+    },
+    {
+      "role": "anonymous",
+      "method": "GET",
+      "route": "/api/v1/articles/de70191c-51a0-43ac-ae37-a7f2735176d8/image",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 657.0
+    },
+    {
+      "role": "Trader",
+      "method": "POST",
+      "route": "/api/v1/articles/de70191c-51a0-43ac-ae37-a7f2735176d8/conversations",
+      "status": 201,
+      "expectedStatus": [
+        200,
+        201
+      ],
+      "latencyMs": 437.0
+    },
+    {
+      "role": "Trader",
+      "method": "POST",
+      "route": "/api/v1/articles/de70191c-51a0-43ac-ae37-a7f2735176d8/conversations",
+      "status": 200,
+      "expectedStatus": [
+        200,
+        201
+      ],
+      "latencyMs": 437.0
+    },
+    {
+      "role": "Admin",
+      "method": "POST",
+      "route": "/api/v1/articles/de70191c-51a0-43ac-ae37-a7f2735176d8/conversations",
+      "status": 403,
+      "expectedStatus": 403,
+      "latencyMs": 328.0
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "route": "/api/v1/articles/de70191c-51a0-43ac-ae37-a7f2735176d8/conversations",
+      "status": 409,
+      "expectedStatus": 409,
+      "latencyMs": 313.0
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "route": "/api/v1/conversations/c2d3ed36-751b-4a42-b9c8-d2ccc07029b7/messages",
+      "status": 404,
+      "expectedStatus": 404,
+      "latencyMs": 718.0
+    },
+    {
+      "role": "Trader",
+      "method": "POST",
+      "route": "/api/v1/conversations/c2d3ed36-751b-4a42-b9c8-d2ccc07029b7/images?clientMessageId=qa24_8307471deb6a4cac964c31aeb2d7b388",
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 688.0
+    },
+    {
+      "role": "Trader",
+      "method": "POST",
+      "route": "/api/v1/conversations/c2d3ed36-751b-4a42-b9c8-d2ccc07029b7/images?clientMessageId=qa24_8307471deb6a4cac964c31aeb2d7b388",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 453.0
+    },
+    {
+      "role": "Trader",
+      "method": "POST",
+      "route": "/api/v1/conversations/c2d3ed36-751b-4a42-b9c8-d2ccc07029b7/images?clientMessageId=qa24_8307471deb6a4cac964c31aeb2d7b388",
+      "status": 409,
+      "expectedStatus": 409,
+      "latencyMs": 375.0
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "route": "/api/v1/conversations/c2d3ed36-751b-4a42-b9c8-d2ccc07029b7/images/821e964f-39f1-496a-9b1c-2129e6344a27",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 547.0
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "route": "/api/v1/conversations/c2d3ed36-751b-4a42-b9c8-d2ccc07029b7/images/821e964f-39f1-496a-9b1c-2129e6344a27",
+      "status": 404,
+      "expectedStatus": 404,
+      "latencyMs": 296.0
+    },
+    {
+      "role": "Admin",
+      "method": "GET",
+      "route": "/api/v1/conversations/c2d3ed36-751b-4a42-b9c8-d2ccc07029b7/images/821e964f-39f1-496a-9b1c-2129e6344a27",
+      "status": 404,
+      "expectedStatus": 404,
+      "latencyMs": 282.0
+    },
+    {
+      "role": "anonymous",
+      "method": "GET",
+      "route": "/api/v1/conversations/c2d3ed36-751b-4a42-b9c8-d2ccc07029b7/images/821e964f-39f1-496a-9b1c-2129e6344a27",
+      "status": 401,
+      "expectedStatus": 401,
+      "latencyMs": 359.0
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "route": "/api/v1/conversations/c2d3ed36-751b-4a42-b9c8-d2ccc07029b7/messages?limit=20",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 531.0
+    },
+    {
+      "role": "Admin",
+      "method": "GET",
+      "route": "/api/v1/secret/devices",
+      "status": 403,
+      "expectedStatus": 403,
+      "latencyMs": 313.0
+    },
+    {
+      "role": "Admin",
+      "method": "GET",
+      "route": "/api/v1/secret/conversations",
+      "status": 403,
+      "expectedStatus": 403,
+      "latencyMs": 500.0
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "route": "/api/v1/secret/devices",
+      "status": 403,
+      "expectedStatus": 403,
+      "latencyMs": 640.0
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "route": "/api/v1/secret/conversations",
+      "status": 403,
+      "expectedStatus": 403,
+      "latencyMs": 313.0
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "route": "/api/v1/secret/devices",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 312.0
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "route": "/api/v1/secret/conversations?limit=5",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 500.0
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "route": "/api/v1/secret/conversations/97ab4418-bac7-4d94-b541-64939d4a8131",
+      "status": 404,
+      "expectedStatus": 404,
+      "latencyMs": 641.0
+    },
+    {
+      "role": "Trader",
+      "method": "GET",
+      "route": "/api/v1/secret/devices",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 328.0
+    },
+    {
+      "role": "Trader",
+      "method": "GET",
+      "route": "/api/v1/secret/conversations?limit=5",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 281.0
+    },
+    {
+      "role": "Trader",
+      "method": "GET",
+      "route": "/api/v1/secret/conversations/c18a443f-6c99-4b83-8ee5-8eb6841c441e",
+      "status": 404,
+      "expectedStatus": 404,
+      "latencyMs": 625.0
+    },
+    {
+      "role": "anonymous",
+      "method": "GET",
+      "route": "/api/v1/secret/devices",
+      "status": 401,
+      "expectedStatus": 401,
+      "latencyMs": 329.0
+    }
+  ],
+  "checks": [
+    {
+      "name": "four supplied role sessions identify four distinct users",
+      "pass": true,
+      "atMs": 15
+    },
+    {
+      "name": "Admin GET /api/v1/auth/me returns expected status",
+      "pass": true,
+      "atMs": 312
+    },
+    {
+      "name": "Admin current verified approved role matches supplied real identity",
+      "pass": true,
+      "atMs": 312
+    },
+    {
+      "name": "Producer GET /api/v1/auth/me returns expected status",
+      "pass": true,
+      "atMs": 625
+    },
+    {
+      "name": "Producer current verified approved role matches supplied real identity",
+      "pass": true,
+      "atMs": 625
+    },
+    {
+      "name": "Trader GET /api/v1/auth/me returns expected status",
+      "pass": true,
+      "atMs": 968
+    },
+    {
+      "name": "Trader current verified approved role matches supplied real identity",
+      "pass": true,
+      "atMs": 968
+    },
+    {
+      "name": "Consumer GET /api/v1/auth/me returns expected status",
+      "pass": true,
+      "atMs": 1312
+    },
+    {
+      "name": "Consumer current verified approved role matches supplied real identity",
+      "pass": true,
+      "atMs": 1312
+    },
+    {
+      "name": "anonymous GET /api/v1/locations/provinces?country=VN returns expected status",
+      "pass": true,
+      "atMs": 4390
+    },
+    {
+      "name": "current API34-province VN directory with79 and provenance",
+      "pass": true,
+      "atMs": 4390
+    },
+    {
+      "name": "real Pillow JPEG fixture is within upload cap",
+      "pass": true,
+      "atMs": 4484
+    },
+    {
+      "name": "real Pillow JPEG fixture is within upload cap",
+      "pass": true,
+      "atMs": 4500
+    },
+    {
+      "name": "Consumer POST /api/v1/articles/images returns expected status",
+      "pass": true,
+      "atMs": 5312
+    },
+    {
+      "name": "unattached image upload exposes no public URL",
+      "pass": true,
+      "atMs": 5312
+    },
+    {
+      "name": "Consumer POST /api/v1/articles returns expected status",
+      "pass": true,
+      "atMs": 5640
+    },
+    {
+      "name": "Consumer article is Community lane and AwaitingReview",
+      "pass": true,
+      "atMs": 5640
+    },
+    {
+      "name": "anonymous GET /api/v1/articles/525fae9d-c8d0-4c95-bcde-34cb49db7daf/image returns expected status",
+      "pass": true,
+      "atMs": 6281
+    },
+    {
+      "name": "Trader GET /api/v1/articles/525fae9d-c8d0-4c95-bcde-34cb49db7daf/image returns expected status",
+      "pass": true,
+      "atMs": 6640
+    },
+    {
+      "name": "Consumer GET /api/v1/articles/525fae9d-c8d0-4c95-bcde-34cb49db7daf/image returns expected status",
+      "pass": true,
+      "atMs": 6937
+    },
+    {
+      "name": "actual image response is JPEG",
+      "pass": true,
+      "atMs": 6937
+    },
+    {
+      "name": "actual canonical JPEG dimensions match server metadata",
+      "pass": true,
+      "atMs": 6937
+    },
+    {
+      "name": "actual server canonicalization removed EXIF and resized input",
+      "pass": true,
+      "atMs": 6937
+    },
+    {
+      "name": "actual image byte length matches stored metadata",
+      "pass": true,
+      "atMs": 6937
+    },
+    {
+      "name": "Admin POST /api/v1/admin/articles/525fae9d-c8d0-4c95-bcde-34cb49db7daf/review returns expected status",
+      "pass": true,
+      "atMs": 7297
+    },
+    {
+      "name": "anonymous GET /api/v1/articles/525fae9d-c8d0-4c95-bcde-34cb49db7daf returns expected status",
+      "pass": true,
+      "atMs": 7781
+    },
+    {
+      "name": "published Community detail omits private review reason",
+      "pass": true,
+      "atMs": 7781
+    },
+    {
+      "name": "anonymous GET /api/v1/articles/525fae9d-c8d0-4c95-bcde-34cb49db7daf/image returns expected status",
+      "pass": true,
+      "atMs": 8156
+    },
+    {
+      "name": "actual image response is JPEG",
+      "pass": true,
+      "atMs": 8156
+    },
+    {
+      "name": "actual canonical JPEG dimensions match server metadata",
+      "pass": true,
+      "atMs": 8156
+    },
+    {
+      "name": "actual server canonicalization removed EXIF and resized input",
+      "pass": true,
+      "atMs": 8156
+    },
+    {
+      "name": "actual image byte length matches stored metadata",
+      "pass": true,
+      "atMs": 8156
+    },
+    {
+      "name": "published image matches actual private canonical bytes",
+      "pass": true,
+      "atMs": 8156
+    },
+    {
+      "name": "Consumer POST /api/v1/articles/525fae9d-c8d0-4c95-bcde-34cb49db7daf/withdraw returns expected status",
+      "pass": true,
+      "atMs": 8750
+    },
+    {
+      "name": "anonymous GET /api/v1/articles/525fae9d-c8d0-4c95-bcde-34cb49db7daf/image returns expected status",
+      "pass": true,
+      "atMs": 9078
+    },
+    {
+      "name": "Admin POST /api/v1/admin/articles/525fae9d-c8d0-4c95-bcde-34cb49db7daf/review returns expected status",
+      "pass": true,
+      "atMs": 9437
+    },
+    {
+      "name": "Producer GET /api/v1/branches/mine?limit=50 returns expected status",
+      "pass": true,
+      "atMs": 10047
+    },
+    {
+      "name": "Trader GET /api/v1/branches/mine?limit=50 returns expected status",
+      "pass": true,
+      "atMs": 10593
+    },
+    {
+      "name": "Producer POST /api/v1/articles/images returns expected status",
+      "pass": true,
+      "atMs": 11343
+    },
+    {
+      "name": "Producer POST /api/v1/articles returns expected status",
+      "pass": true,
+      "atMs": 11609
+    },
+    {
+      "name": "Producer POST /api/v1/articles returns expected status",
+      "pass": true,
+      "atMs": 11922
+    },
+    {
+      "name": "Producer POST /api/v1/articles returns expected status",
+      "pass": true,
+      "atMs": 12265
+    },
+    {
+      "name": "Seller article is Professional lane with own branch snapshot",
+      "pass": true,
+      "atMs": 12265
+    },
+    {
+      "name": "Admin POST /api/v1/admin/articles/de70191c-51a0-43ac-ae37-a7f2735176d8/review returns expected status",
+      "pass": true,
+      "atMs": 12656
+    },
+    {
+      "name": "Consumer GET /api/v1/articles?lane=Professional&limit=20 returns expected status",
+      "pass": true,
+      "atMs": 13140
+    },
+    {
+      "name": "Professional public lane includes new controlled article",
+      "pass": true,
+      "atMs": 13140
+    },
+    {
+      "name": "anonymous GET /api/v1/articles/de70191c-51a0-43ac-ae37-a7f2735176d8/image returns expected status",
+      "pass": true,
+      "atMs": 13797
+    },
+    {
+      "name": "actual image response is JPEG",
+      "pass": true,
+      "atMs": 13797
+    },
+    {
+      "name": "actual canonical JPEG dimensions match server metadata",
+      "pass": true,
+      "atMs": 13797
+    },
+    {
+      "name": "actual server canonicalization removed EXIF and resized input",
+      "pass": true,
+      "atMs": 13797
+    },
+    {
+      "name": "actual image byte length matches stored metadata",
+      "pass": true,
+      "atMs": 13797
+    },
+    {
+      "name": "Trader POST /api/v1/articles/de70191c-51a0-43ac-ae37-a7f2735176d8/conversations returns expected status",
+      "pass": true,
+      "atMs": 14234
+    },
+    {
+      "name": "Trader POST /api/v1/articles/de70191c-51a0-43ac-ae37-a7f2735176d8/conversations returns expected status",
+      "pass": true,
+      "atMs": 14234
+    },
+    {
+      "name": "simultaneous article contact creates once and reuses once",
+      "pass": true,
+      "atMs": 14234
+    },
+    {
+      "name": "article contact returns one bound Direct thread",
+      "pass": true,
+      "atMs": 14234
+    },
+    {
+      "name": "Admin POST /api/v1/articles/de70191c-51a0-43ac-ae37-a7f2735176d8/conversations returns expected status",
+      "pass": true,
+      "atMs": 14562
+    },
+    {
+      "name": "Producer POST /api/v1/articles/de70191c-51a0-43ac-ae37-a7f2735176d8/conversations returns expected status",
+      "pass": true,
+      "atMs": 14875
+    },
+    {
+      "name": "Consumer GET /api/v1/conversations/c2d3ed36-751b-4a42-b9c8-d2ccc07029b7/messages returns expected status",
+      "pass": true,
+      "atMs": 15593
+    },
+    {
+      "name": "Trader POST /api/v1/conversations/c2d3ed36-751b-4a42-b9c8-d2ccc07029b7/images?clientMessageId=qa24_8307471deb6a4cac964c31aeb2d7b388 returns expected status",
+      "pass": true,
+      "atMs": 16281
+    },
+    {
+      "name": "normal image message sender is exact authorized public identity",
+      "pass": true,
+      "atMs": 16281
+    },
+    {
+      "name": "ordinary image message has image metadata",
+      "pass": true,
+      "atMs": 16281
+    },
+    {
+      "name": "Trader POST /api/v1/conversations/c2d3ed36-751b-4a42-b9c8-d2ccc07029b7/images?clientMessageId=qa24_8307471deb6a4cac964c31aeb2d7b388 returns expected status",
+      "pass": true,
+      "atMs": 16734
+    },
+    {
+      "name": "same raw JPEG/idempotency key reuses message and image",
+      "pass": true,
+      "atMs": 16734
+    },
+    {
+      "name": "Trader POST /api/v1/conversations/c2d3ed36-751b-4a42-b9c8-d2ccc07029b7/images?clientMessageId=qa24_8307471deb6a4cac964c31aeb2d7b388 returns expected status",
+      "pass": true,
+      "atMs": 17109
+    },
+    {
+      "name": "Producer GET /api/v1/conversations/c2d3ed36-751b-4a42-b9c8-d2ccc07029b7/images/821e964f-39f1-496a-9b1c-2129e6344a27 returns expected status",
+      "pass": true,
+      "atMs": 17656
+    },
+    {
+      "name": "actual image response is JPEG",
+      "pass": true,
+      "atMs": 17656
+    },
+    {
+      "name": "actual canonical JPEG dimensions match server metadata",
+      "pass": true,
+      "atMs": 17672
+    },
+    {
+      "name": "actual server canonicalization removed EXIF and resized input",
+      "pass": true,
+      "atMs": 17672
+    },
+    {
+      "name": "actual image byte length matches stored metadata",
+      "pass": true,
+      "atMs": 17672
+    },
+    {
+      "name": "Consumer GET /api/v1/conversations/c2d3ed36-751b-4a42-b9c8-d2ccc07029b7/images/821e964f-39f1-496a-9b1c-2129e6344a27 returns expected status",
+      "pass": true,
+      "atMs": 17968
+    },
+    {
+      "name": "Admin GET /api/v1/conversations/c2d3ed36-751b-4a42-b9c8-d2ccc07029b7/images/821e964f-39f1-496a-9b1c-2129e6344a27 returns expected status",
+      "pass": true,
+      "atMs": 18250
+    },
+    {
+      "name": "anonymous GET /api/v1/conversations/c2d3ed36-751b-4a42-b9c8-d2ccc07029b7/images/821e964f-39f1-496a-9b1c-2129e6344a27 returns expected status",
+      "pass": true,
+      "atMs": 18609
+    },
+    {
+      "name": "Producer GET /api/v1/conversations/c2d3ed36-751b-4a42-b9c8-d2ccc07029b7/messages?limit=20 returns expected status",
+      "pass": true,
+      "atMs": 19140
+    },
+    {
+      "name": "REST catchup contains exactly one image message with correct metadata",
+      "pass": true,
+      "atMs": 19140
+    },
+    {
+      "name": "normal image message sender is exact authorized public identity",
+      "pass": true,
+      "atMs": 19140
+    },
+    {
+      "name": "Admin GET /api/v1/secret/devices returns expected status",
+      "pass": true,
+      "atMs": 19453
+    },
+    {
+      "name": "Admin GET /api/v1/secret/conversations returns expected status",
+      "pass": true,
+      "atMs": 19953
+    },
+    {
+      "name": "Consumer GET /api/v1/secret/devices returns expected status",
+      "pass": true,
+      "atMs": 20593
+    },
+    {
+      "name": "Consumer GET /api/v1/secret/conversations returns expected status",
+      "pass": true,
+      "atMs": 20906
+    },
+    {
+      "name": "Producer GET /api/v1/secret/devices returns expected status",
+      "pass": true,
+      "atMs": 21218
+    },
+    {
+      "name": "Producer secret bundle endpoint exposes public metadata only for own account",
+      "pass": true,
+      "atMs": 21218
+    },
+    {
+      "name": "Producer GET /api/v1/secret/conversations?limit=5 returns expected status",
+      "pass": true,
+      "atMs": 21718
+    },
+    {
+      "name": "Producer GET /api/v1/secret/conversations/97ab4418-bac7-4d94-b541-64939d4a8131 returns expected status",
+      "pass": true,
+      "atMs": 22359
+    },
+    {
+      "name": "Trader GET /api/v1/secret/devices returns expected status",
+      "pass": true,
+      "atMs": 22687
+    },
+    {
+      "name": "Trader secret bundle endpoint exposes public metadata only for own account",
+      "pass": true,
+      "atMs": 22687
+    },
+    {
+      "name": "Trader GET /api/v1/secret/conversations?limit=5 returns expected status",
+      "pass": true,
+      "atMs": 22968
+    },
+    {
+      "name": "Trader GET /api/v1/secret/conversations/c18a443f-6c99-4b83-8ee5-8eb6841c441e returns expected status",
+      "pass": true,
+      "atMs": 23593
+    },
+    {
+      "name": "anonymous GET /api/v1/secret/devices returns expected status",
+      "pass": true,
+      "atMs": 23922
+    }
+  ],
+  "phases": [
+    {
+      "name": "four real supplied sessions; no authentication manufacture",
+      "startMs": 15,
+      "status": "PASS",
+      "endMs": 1312
+    },
+    {
+      "name": "trusted API geography and actual Pillow input",
+      "startMs": 1312,
+      "status": "PASS",
+      "endMs": 4500
+    },
+    {
+      "name": "Consumer community article with real canonical image and moderation ACL",
+      "startMs": 4500,
+      "status": "PASS",
+      "endMs": 9437
+    },
+    {
+      "name": "Seller Professional article uses owned Approved branch; no legacy403 expectation",
+      "startMs": 9437,
+      "status": "PASS",
+      "endMs": 13797
+    },
+    {
+      "name": "article DM exactly reused; ordinary chat image private/idempotent and REST recoverable",
+      "startMs": 13797,
+      "status": "PASS",
+      "endMs": 19140
+    },
+    {
+      "name": "opaque secret metadata authorization surface; no key/cipher mutation or crypto claim",
+      "startMs": 19140,
+      "status": "PASS",
+      "endMs": 23922
+    }
+  ],
+  "records": {
+    "articleImageUploadIds": [
+      "0211f194-3f0c-496d-b488-42ae99af9e0e",
+      "5ddd1d87-77b2-4075-9d02-be94554578c2"
+    ],
+    "communityArticleId": "525fae9d-c8d0-4c95-bcde-34cb49db7daf",
+    "producerBranchId": "c312bc0b-2494-44d4-b783-f8bb4c846c37",
+    "traderBranchId": "92c487ad-6127-47ce-be9b-cca02c8c6a5a",
+    "professionalArticleId": "de70191c-51a0-43ac-ae37-a7f2735176d8",
+    "articleConversationIds": [
+      "c2d3ed36-751b-4a42-b9c8-d2ccc07029b7"
+    ],
+    "articleConversationId": "c2d3ed36-751b-4a42-b9c8-d2ccc07029b7",
+    "ordinaryImageMessageId": "6cbf7c48-d628-41b9-9dd8-e2a7dab4cb39",
+    "ordinaryChatImageId": "821e964f-39f1-496a-9b1c-2129e6344a27"
+  },
+  "formalRoleUpgradeLive": "NOT_RUN: main roles are preserved; no formal identity evidence is fabricated.",
+  "ordinaryImagesAreEndToEndEncrypted": false,
+  "secretCryptoAcceptance": "NOT_RUN: no keys are generated/enrolled, no sealed packets are posted, and no client/native cryptography is tested. Separate real-Sodium acceptance is required.",
+  "aiInference": "NOT_RUN: this driver calls no AI endpoints for any role.",
+  "requestBudget": 80,
+  "baseURL": "https://tips-differential-relating-validity.trycloudflare.com",
+  "actors": {
+    "Admin": {
+      "id": "469ef088-fc54-4d53-b075-cc1b9d7763cd"
+    },
+    "Producer": {
+      "id": "0973a2ff-981d-4598-82db-bf6c3eca83e8"
+    },
+    "Trader": {
+      "id": "cce06044-4006-473e-beef-27c3f33637f4"
+    },
+    "Consumer": {
+      "id": "a6508feb-fd18-4b83-9ad0-fb012bfe8224"
+    }
+  },
+  "inputFixture": {
+    "synthetic": true,
+    "realJpegEncoding": true,
+    "width": 2400,
+    "height": 1600,
+    "sizeBytes": 111379,
+    "sha256": "77fab0a6001f4dc2a4d1f60b1bdaefb08206d3b16e294e7c95e4a5bca238cf49",
+    "hasHarmlessExifForRemovalTest": true
+  },
+  "communityCanonicalImage": {
+    "sizeBytes": 94765,
+    "sha256": "784a23db394487f5a2dba791a1f5191c36539b1a02f52d46b64105195f36268d",
+    "width": 2048,
+    "height": 1365,
+    "exifRemoved": true
+  },
+  "professionalCanonicalImage": {
+    "sizeBytes": 94765,
+    "sha256": "784a23db394487f5a2dba791a1f5191c36539b1a02f52d46b64105195f36268d",
+    "width": 2048,
+    "height": 1365,
+    "exifRemoved": true
+  },
+  "ordinaryChatCanonicalImage": {
+    "sizeBytes": 94765,
+    "sha256": "784a23db394487f5a2dba791a1f5191c36539b1a02f52d46b64105195f36268d",
+    "width": 2048,
+    "height": 1365,
+    "exifRemoved": true
+  },
+  "secretMetadataBoundary": {
+    "authorization": "PASS",
+    "activeDeviceCounts": {
+      "Producer": 0,
+      "Trader": 0
+    },
+    "registeredOrRotatedDevices": false,
+    "postedSecretMessagesOrBlobs": false,
+    "serverCannotDecryptProvenByThisDriver": false,
+    "nextRequiredEvidence": "Separate real-Sodium signed/sealed text+image interop, OOB fingerprint verification, wrong-key/tamper and native keybag/third-party tests."
+  },
+  "preservedDemoData": "Published controlled synthetic articles/ordinary images and Direct thread remain for operator inspection; no history is automatically deleted.",
+  "httpRequests": 49,
+  "wssClients": {},
+  "providedSessionsRetained": true,
+  "finishedUtc": "2026-10-30T17:29:54.979180+00:00",
+  "elapsedSeconds": 23.922
+}

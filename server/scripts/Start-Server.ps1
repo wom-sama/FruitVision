@@ -7,20 +7,26 @@ $configPath=Join-Path $privateRoot 'runtime.json'
 $settings=Get-Content -LiteralPath $configPath -Raw | ConvertFrom-Json
 $dotnet=Join-Path $serverRoot '.tools\dotnet-runtime\staged\dotnet.exe'
 if(-not(Test-Path -LiteralPath $dotnet)){throw 'Stage the pinned 10.0.14 runtime first; see docs/runtime-provenance.json.'}
-$dll=Join-Path $serverRoot 'src\FruitVision.Api\bin\Release\net10.0\FruitVision.Api.dll'
+$applicationDirectory=$settings.Server.ApplicationDirectory
+if([string]::IsNullOrWhiteSpace($applicationDirectory)){$applicationDirectory=Join-Path $serverRoot 'src\FruitVision.Api\bin\Release\net10.0'}
+if(-not [System.IO.Path]::IsPathFullyQualified($applicationDirectory)){throw 'Server application directory must be an absolute operator-configured path.'}
+$dll=Join-Path $applicationDirectory 'FruitVision.Api.dll'
 if(-not (Test-Path -LiteralPath $dll)){throw 'Build Release first: dotnet build src/FruitVision.Api -c Release'}
 $statePath=Join-Path $privateRoot 'server-state.json'
 if(Test-Path -LiteralPath $statePath){
     $state=Get-Content -LiteralPath $statePath -Raw | ConvertFrom-Json
     $existing=Get-CimInstance Win32_Process -Filter "ProcessId=$($state.pid)" -ErrorAction SilentlyContinue
-    if($existing -and $existing.CommandLine.Contains($dll)){Write-Output "FruitVision already owns PID $($state.pid); no duplicate started.";return}
+    if($existing -and $existing.CommandLine.Contains($state.dll)){
+        if($state.dll -ne $dll){throw 'An older owned API deployment is running. Stop it explicitly before switching versions.'}
+        Write-Output "FruitVision already owns PID $($state.pid); no duplicate started.";return
+    }
 }
 if(Get-NetTCPConnection -LocalPort $Port -State Listen -ErrorAction SilentlyContinue){throw "Port $Port is already owned; no process will be stopped."}
 $oldConfig=$env:FRUITVISION_CONFIG;$oldEnvironment=$env:ASPNETCORE_ENVIRONMENT;$oldConnection=$env:ConnectionStrings__Database;$oldUrls=$env:ASPNETCORE_URLS
 try {
     $env:FRUITVISION_CONFIG=$configPath;$env:ASPNETCORE_ENVIRONMENT='Development'
     $env:ConnectionStrings__Database=$settings.MigrationConnection
-    & $dotnet $dll '--migrate' *> (Join-Path $privateRoot 'migration.log')
+    & $dotnet $dll '--migrate' '--contentRoot' $applicationDirectory *> (Join-Path $privateRoot 'migration.log')
     if($LASTEXITCODE -ne 0){throw 'Migration failed; inspect private migration.log.'}
     $previousPgPassword=$env:PGPASSWORD
     try {
@@ -38,7 +44,7 @@ ALTER DEFAULT PRIVILEGES FOR ROLE fv_owner IN SCHEMA public GRANT USAGE,SELECT O
     } finally {$env:PGPASSWORD=$previousPgPassword}
     $env:ConnectionStrings__Database=$settings.ConnectionStrings.Database
     $env:ASPNETCORE_URLS="http://127.0.0.1:$Port"
-    $process=Start-Process -FilePath $dotnet -ArgumentList ('"'+$dll+'"') -WorkingDirectory $serverRoot -WindowStyle Hidden -PassThru -RedirectStandardOutput (Join-Path $privateRoot 'api.stdout.log') -RedirectStandardError (Join-Path $privateRoot 'api.stderr.log')
+    $process=Start-Process -FilePath $dotnet -ArgumentList ('"'+$dll+'" --contentRoot "'+$applicationDirectory+'"') -WorkingDirectory $serverRoot -WindowStyle Hidden -PassThru -RedirectStandardOutput (Join-Path $privateRoot 'api.stdout.log') -RedirectStandardError (Join-Path $privateRoot 'api.stderr.log')
     [ordered]@{pid=$process.Id;dll=$dll;url=$env:ASPNETCORE_URLS;startedUtc=[DateTimeOffset]::UtcNow.ToString('o');scope='accounts-and-interactions';databaseRole='fv_api';publicInternet=$false} | ConvertTo-Json | Set-Content -LiteralPath $statePath -Encoding utf8
     $ready=$false
     for($i=0;$i -lt 30;$i++){

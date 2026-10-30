@@ -11,8 +11,11 @@ import 'realtime_scope.dart';
 import 'visuals.dart';
 import 'posts.dart';
 import 'event_refresh.dart';
-import 'market.dart';
+import 'mango_learning.dart';
 import 'update_page.dart';
+import 'role_applications.dart';
+import 'publishing.dart';
+import 'security.dart';
 export 'posts.dart' show PostCard;
 
 class Workspace extends StatefulWidget {
@@ -24,150 +27,88 @@ class Workspace extends StatefulWidget {
 
 class _WorkspaceState extends State<Workspace> {
   int _tab = 0;
-  final _ownPosts = GlobalKey<ApiListState>();
+  UserRole? _lastRole;
   @override
   Widget build(BuildContext context) {
-    final c = widget.controller;
-    final user = c.user!;
-    final admin = user.isAdmin && user.isApproved;
-    final trader = user.role == UserRole.trader && user.isApproved;
-    final producer = user.role == UserRole.producer && user.isApproved;
+    final c = widget.controller, user = c.user!;
+    final seller =
+        user.role == UserRole.producer || user.role == UserRole.trader;
+    final admin = user.isAdmin;
+    if (_lastRole != user.role) {
+      _tab = 0;
+      _lastRole = user.role;
+    }
     final entries = <(String, IconData)>[
+      if (admin)
+        ('Xét duyệt', Icons.fact_check_outlined)
+      else if (seller)
+        ('AI xoài', Icons.auto_awesome_outlined)
+      else
+        ('Học về xoài', Icons.menu_book_outlined),
+      if (seller) ('Kiến thức', Icons.menu_book_outlined),
       (
-        admin
-            ? 'Hồ sơ'
-            : producer
-            ? 'Tin của tôi'
-            : trader
-            ? 'Nguồn cung'
-            : 'Khám phá',
-        admin
-            ? Icons.fact_check_outlined
-            : producer
-            ? Icons.edit_note
-            : Icons.eco_outlined,
+        user.role == UserRole.consumer ? 'Cộng đồng' : 'Trao đổi',
+        Icons.forum_outlined,
       ),
-      ('AI', Icons.auto_awesome_outlined),
-      ('Trao đổi', Icons.forum_outlined),
       ('Tài khoản', Icons.person_outline),
     ];
     final tab = _tab.clamp(0, entries.length - 1);
     final status = ProfileBanner(controller: c);
-    Widget ownPosts() => LiveApiList(
-      listKey: _ownPosts,
-      api: c.api,
-      path: '/me/posts?limit=20',
-      targets: const {'PostChanged'},
-      header: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          status,
-          SectionTitle(
-            'Tin dự kiến của tôi',
-            subtitle: 'Theo dõi tin đã gửi và trạng thái kiểm duyệt.',
-            action: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                FilledButton.icon(
-                  onPressed: c.busy
-                      ? null
-                      : () async {
-                          final changed = await Navigator.of(context)
-                              .push<bool>(
-                                MaterialPageRoute(
-                                  builder: (_) => ForecastForm(controller: c),
-                                ),
-                              );
-                          if (mounted && changed == true) {
-                            _ownPosts.currentState?.reload();
-                          }
-                        },
-                  icon: const Icon(Icons.add),
-                  label: const Text('Tạo tin dự kiến'),
-                ),
-                const SizedBox(height: 8),
-                OutlinedButton.icon(
-                  onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute<void>(
-                      builder: (_) => ExplorePage(controller: c),
-                    ),
-                  ),
-                  icon: const Icon(Icons.travel_explore),
-                  label: const Text('Khám phá nông sản'),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-      empty:
-          'Bạn chưa gửi tin dự kiến. Tạo tin đầu tiên để giới thiệu nông sản.',
-      itemBuilder: (row) => PostCard(row: row, own: true, controller: c),
-    );
+    final conversations = user.isApproved
+        ? ConversationList(controller: c, header: status)
+        : ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
+              status,
+              const MessageBox(
+                'Tài khoản cần được duyệt và đang hoạt động để dùng hội thoại.',
+              ),
+            ],
+          );
     final pages = <Widget>[
       if (admin)
         AdminPage(controller: c, header: status)
-      else if (producer)
-        ownPosts()
+      else if (seller)
+        AiPage(controller: c, header: status)
       else
-        LiveApiList(
-          api: c.api,
-          path: '/posts?limit=20',
-          targets: const {'PublishedPostChanged'},
+        MangoLearningPage(controller: c, header: status),
+      if (seller) MangoLearningPage(controller: c, header: status),
+      if (user.role == UserRole.consumer)
+        ArticlesPage(
+          controller: c,
+          embedded: true,
           header: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               status,
-              SectionTitle(
-                trader ? 'Khám phá nguồn cung' : 'Tin nông sản',
-                subtitle: 'Tin dự kiến từ hồ sơ đã duyệt. Chưa xác nhận tồn kho; chưa hỗ trợ đặt hàng.',
-                action: trader
-                    ? OutlinedButton.icon(
-                        onPressed: () => Navigator.of(context).push(
-                          MaterialPageRoute<void>(
-                            builder: (_) => OwnPostsPage(controller: c),
-                          ),
+              OutlinedButton.icon(
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (_) => Scaffold(
+                      appBar: AppBar(title: const Text('Hội thoại & nhóm')),
+                      body: SafeArea(
+                        child: ConversationList(
+                          controller: c,
+                          header: const SizedBox.shrink(),
                         ),
-                        icon: const Icon(Icons.edit_note),
-                        label: const Text('Tin dự kiến của tôi'),
-                      )
-                    : null,
-              ),
-              ...[
-                OutlinedButton.icon(
-                  onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute<void>(
-                      builder: (_) => MarketPage(controller: c),
+                      ),
                     ),
                   ),
-                  icon: const Icon(Icons.insights_outlined),
-                  label: const Text('Giá & nguồn cung'),
                 ),
-                const SizedBox(height: 16),
-              ],
+                icon: const Icon(Icons.forum_outlined),
+                label: const Text('Hội thoại & nhóm'),
+              ),
+              const SizedBox(height: 12),
             ],
           ),
-          empty: 'Chưa có tin được công bố. Kéo xuống để cập nhật.',
-          itemBuilder: (row) => PostCard(row: row, controller: c),
-        ),
-      AiPage(controller: c, header: status),
-      user.isApproved
-          ? ConversationList(controller: c, header: status)
-          : ListView(
-              padding: const EdgeInsets.all(16),
-              children: [
-                status,
-                const SectionTitle('Trao đổi'),
-                const MessageBox(
-                  'Tài khoản cần được duyệt và đang hoạt động để dùng hội thoại.',
-                ),
-              ],
-            ),
+        )
+      else
+        conversations,
       AccountPage(controller: c, header: status),
     ];
     return Scaffold(
       appBar: AppBar(
-        title: const Text('FruitVision'),
+        title: const Text('FruitVision · Xoài'),
         actions: [
           IconButton(
             tooltip: 'Làm mới hồ sơ',
@@ -187,7 +128,10 @@ class _WorkspaceState extends State<Workspace> {
         labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
         onDestinationSelected: (index) => setState(() => _tab = index),
         destinations: entries
-            .map((e) => NavigationDestination(icon: Icon(e.$2), label: e.$1))
+            .map(
+              (entry) =>
+                  NavigationDestination(icon: Icon(entry.$2), label: entry.$1),
+            )
             .toList(),
       ),
     );
@@ -268,18 +212,6 @@ class ProfileBanner extends StatelessWidget {
                     icon: const Icon(Icons.refresh),
                     label: const Text('Cập nhật hồ sơ'),
                   ),
-                  if (user.canResubmit && user.isActive)
-                    FilledButton(
-                      onPressed: controller.busy
-                          ? null
-                          : () => Navigator.of(context).push(
-                              MaterialPageRoute<void>(
-                                builder: (_) =>
-                                    ResubmitForm(controller: controller),
-                              ),
-                            ),
-                      child: const Text('Bổ sung và gửi lại'),
-                    ),
                 ],
               ),
             ),
@@ -356,25 +288,65 @@ class AccountPage extends StatelessWidget {
             const SizedBox(height: 12),
             Text('Hồ sơ: ${user.approvalStatus.label}'),
             Text(
-              'Xác thực hai bước: ${user.twoFactorEnabled ? 'Đã bật' : 'Chưa bật'}',
+              user.twoFactorEnabled
+                  ? 'Xác thực: ứng dụng đã đăng ký cho tài khoản cũ'
+                  : 'Xác thực đăng nhập: mật khẩu và mã email',
             ),
           ],
         ),
-        const MessageBox(
-          'Phân tích ảnh/video được xử lý tại máy chủ khi dịch vụ AI sẵn sàng. Giao dịch, thanh toán và tồn kho chưa được triển khai.',
-        ),
         const SizedBox(height: 16),
+        OutlinedButton.icon(
+          onPressed: () => Navigator.of(context).push(
+            MaterialPageRoute<void>(
+              builder: (_) => SecurityPage(controller: controller),
+            ),
+          ),
+          icon: const Icon(Icons.security_outlined),
+          label: const Text('Bảo mật tài khoản'),
+        ),
+        const SizedBox(height: 8),
+        if (!user.isAdmin) ...[
+          OutlinedButton.icon(
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (_) => RoleApplicationsPage(controller: controller),
+              ),
+            ),
+            icon: const Icon(Icons.assignment_ind_outlined),
+            label: Text(
+              user.role == UserRole.consumer
+                  ? 'Nâng vai trò kinh doanh'
+                  : 'Hồ sơ nâng vai trò',
+            ),
+          ),
+          const SizedBox(height: 8),
+        ],
         if (user.canSell) ...[
           OutlinedButton.icon(
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute<void>(
-                builder: (_) => OwnPostsPage(controller: controller),
+                builder: (_) => BranchesPage(controller: controller),
               ),
             ),
-            icon: const Icon(Icons.edit_note),
-            label: const Text('Tin dự kiến của tôi'),
+            icon: const Icon(Icons.storefront_outlined),
+            label: const Text('Chi nhánh kinh doanh'),
           ),
           const SizedBox(height: 8),
+          ExpansionTile(
+            title: const Text('Công cụ nghiệp vụ trước đây'),
+            children: [
+              OutlinedButton.icon(
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (_) => OwnPostsPage(controller: controller),
+                  ),
+                ),
+                icon: const Icon(Icons.edit_note),
+                label: const Text('Tin dự kiến của tôi'),
+              ),
+              const SizedBox(height: 8),
+            ],
+          ),
         ],
         OutlinedButton.icon(
           onPressed: () => Navigator.of(context).push(

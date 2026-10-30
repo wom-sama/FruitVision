@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 
@@ -11,7 +12,11 @@ import 'event_refresh.dart';
 import 'community.dart';
 import 'posts.dart';
 import 'visuals.dart';
+import 'secret_chat.dart';
+import 'secret_scope.dart';
 import '../api.dart';
+import '../media.dart';
+import 'photo_viewer.dart';
 
 class ConversationList extends StatelessWidget {
   const ConversationList({
@@ -36,9 +41,22 @@ class ConversationList extends StatelessWidget {
         header,
         const SectionTitle(
           'Trao đổi',
-          subtitle:
-              'Liên hệ từ tin nông sản hoặc tham gia nhóm để bắt đầu trao đổi.',
+          subtitle: 'Hội thoại trực tiếp và nhóm chia sẻ về xoài.',
         ),
+        if (controller.user?.canSell == true &&
+            SecretScope.maybeOf(context) != null) ...[
+          OutlinedButton.icon(
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (_) =>
+                    SecretInboxPage(messaging: SecretScope.maybeOf(context)!),
+              ),
+            ),
+            icon: const Icon(Icons.enhanced_encryption_outlined),
+            label: const Text('Phòng bí mật'),
+          ),
+          const SizedBox(height: 8),
+        ],
         OutlinedButton.icon(
           onPressed: () => Navigator.of(context).push(
             MaterialPageRoute<void>(
@@ -51,7 +69,7 @@ class ConversationList extends StatelessWidget {
         const SizedBox(height: 16),
       ],
     ),
-    empty: 'Chưa có hội thoại. Mở một tin nông sản và chọn Liên hệ người đăng, hoặc tham gia nhóm cộng đồng.',
+    empty: 'Chưa có hội thoại. Tham gia nhóm cộng đồng để trao đổi về xoài.',
     itemBuilder: (row) => DataCard(
       onTap: () => Navigator.of(context).push(
         MaterialPageRoute<void>(
@@ -78,7 +96,7 @@ class ConversationList extends StatelessWidget {
         Text(
           row['kind'] == 'Group'
               ? 'Nhóm cộng đồng${value(row, 'region').isEmpty ? '' : ' · ${row['region']}'}'
-              : 'Trao đổi từ tin nông sản',
+              : 'Hội thoại trực tiếp',
         ),
         if (value(row, 'postId').isNotEmpty)
           TextButton.icon(
@@ -122,6 +140,11 @@ class _ChatPageState extends State<ChatPage> {
   List<Json> _messages = [];
   String? _error, _next, _retryText, _retryKey;
   bool _loading = true, _sending = false;
+  final _photoPicker = NativeMediaPicker();
+  PickedMedia? _imageDraft;
+  String? _imageKey;
+  UploadCancellation? _imageCancel;
+  bool _openingImage = false;
   bool _requestInFlight = false, _refreshPending = false;
   int _generation = 0;
   int _newMessages = 0;
@@ -190,6 +213,10 @@ class _ChatPageState extends State<ChatPage> {
     _hub?.leaveConversation(widget.id);
     _scroll.dispose();
     _text.dispose();
+    _imageCancel?.cancel();
+    final draft = _imageDraft;
+    _imageDraft = null;
+    if (draft != null) unawaited(_photoPicker.delete(draft));
     super.dispose();
   }
 
@@ -381,6 +408,119 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
+  Future<void> _chooseImage(String method) async {
+    if (_sending || _readOnly) return;
+    setState(() {
+      _sending = true;
+      _error = null;
+    });
+    PickedMedia? selected;
+    try {
+      selected = await _photoPicker.pick(method);
+      if (selected == null) return;
+      if (selected.contentType != 'image/jpeg' ||
+          selected.bytes > 5 * 1024 * 1024) {
+        throw const ApiException('Chọn ảnh JPEG chuẩn hóa tối đa 5 MiB.');
+      }
+      if (!mounted) {
+        await _photoPicker.delete(selected);
+        return;
+      }
+      final previous = _imageDraft;
+      setState(() {
+        _imageDraft = selected;
+        _imageKey =
+            'i${DateTime.now().microsecondsSinceEpoch}${_random.nextInt(1 << 30)}';
+      });
+      if (previous != null) await _photoPicker.delete(previous);
+    } catch (error) {
+      if (selected != null && selected != _imageDraft) {
+        await _photoPicker.delete(selected);
+      }
+      if (mounted) setState(() => _error = errorText(error));
+    } finally {
+      if (mounted) setState(() => _sending = false);
+    }
+  }
+
+  Future<void> _sendImage() async {
+    final photo = _imageDraft, key = _imageKey;
+    if (photo == null || key == null || _sending || _readOnly) return;
+    setState(() {
+      _sending = true;
+      _error = null;
+    });
+    _imageCancel = UploadCancellation();
+    try {
+      final sent = await widget.controller.api.sendChatImage(
+        widget.id,
+        key,
+        File(photo.path),
+        photo.contentType,
+        cancellation: _imageCancel,
+      );
+      if (!mounted) return;
+      final follow = _nearBottom,
+          alreadyShown = _messages.any(
+            (message) => message['id'] == sent['id'],
+          );
+      ++_generation;
+      setState(() {
+        _messages = [
+          ..._messages.where((message) => message['id'] != sent['id']),
+          sent,
+        ];
+        _imageDraft = null;
+        _imageKey = null;
+        _sending = false;
+        _loading = false;
+        if (follow) {
+          _newMessages = 0;
+        } else if (!alreadyShown) {
+          _newMessages++;
+        }
+      });
+      await _photoPicker.delete(photo);
+      await _positionMessages(latest: follow);
+    } catch (error) {
+      if (widget.group && error is ApiException && error.status == 409) {
+        await _refreshContext();
+      }
+      if (mounted) {
+        setState(
+          () => _error =
+              '${errorText(error)} Ảnh đang chờ xác nhận; thử lại sẽ giữ cùng mã yêu cầu.',
+        );
+      }
+    } finally {
+      _imageCancel = null;
+      if (mounted) setState(() => _sending = false);
+    }
+  }
+
+  Future<void> _openImage(Json image) async {
+    if (_openingImage) return;
+    setState(() => _openingImage = true);
+    try {
+      final bytes = await widget.controller.api.chatImageBytes(
+        widget.id,
+        value(image, 'id'),
+      );
+      if (mounted) {
+        await Navigator.of(context).push(
+          MaterialPageRoute<void>(
+            builder: (_) =>
+                PhotoViewerPage(bytes: bytes, title: 'Ảnh hội thoại'),
+          ),
+        );
+      }
+    } catch (error) {
+      if (mounted) setState(() => _error = errorText(error));
+    } finally {
+      if (mounted) setState(() => _openingImage = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(
@@ -409,6 +549,11 @@ class _ChatPageState extends State<ChatPage> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
+                      if (!widget.group)
+                        OpenSecretRoomButton(
+                          directId: widget.id,
+                          title: widget.title,
+                        ),
                       const RealtimeStatus(),
                       const SizedBox(height: 8),
                       if (_hub?.state == HubConnectionState.connected) ...[
@@ -460,8 +605,10 @@ class _ChatPageState extends State<ChatPage> {
                           child: const Text('Xem tin cũ hơn'),
                         ),
                       if (!_loading && _messages.isEmpty && _error == null)
-                        const MessageBox(
-                          'Chưa có tin nhắn. Gửi lời chào đầu tiên.',
+                        MessageBox(
+                          _readOnly
+                              ? 'Nhóm đã đóng và chưa có tin nhắn.'
+                              : 'Chưa có tin nhắn. Gửi lời chào đầu tiên.',
                         ),
                       ..._messages.map((message) {
                         final own =
@@ -523,6 +670,18 @@ class _ChatPageState extends State<ChatPage> {
                                   ),
                                 const SizedBox(height: 4),
                                 Text(value(message, 'text')),
+                                if (message['image'] is Map)
+                                  OutlinedButton.icon(
+                                    onPressed: _openingImage
+                                        ? null
+                                        : () => _openImage(
+                                            Map<String, dynamic>.from(
+                                              message['image'],
+                                            ),
+                                          ),
+                                    icon: const Icon(Icons.image_outlined),
+                                    label: const Text('Mở và phóng to ảnh'),
+                                  ),
                                 const SizedBox(height: 8),
                                 Text(
                                   displayTime(message['createdAt']),
@@ -579,11 +738,63 @@ class _ChatPageState extends State<ChatPage> {
                 ),
               ),
             ),
+          if (_imageDraft case final photo?)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: DataCard(
+                children: [
+                  Text(
+                    photo.name,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const Text(
+                    'Ảnh trong chat thường được máy chủ xử lý; đây không phải ảnh mã hóa đầu cuối.',
+                  ),
+                  Wrap(
+                    spacing: 8,
+                    children: [
+                      FilledButton.icon(
+                        onPressed: _sending || _readOnly ? null : _sendImage,
+                        icon: const Icon(Icons.send),
+                        label: const Text('Gửi ảnh'),
+                      ),
+                      TextButton(
+                        onPressed: _sending
+                            ? null
+                            : () async {
+                                setState(() {
+                                  _imageDraft = null;
+                                  _imageKey = null;
+                                });
+                                await _photoPicker.delete(photo);
+                              },
+                        child: const Text('Bỏ ảnh'),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
           Padding(
             padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
+                IconButton(
+                  tooltip: 'Chụp ảnh gửi trong chat thường',
+                  onPressed: _sending || _readOnly
+                      ? null
+                      : () => _chooseImage('captureChatImage'),
+                  icon: const Icon(Icons.camera_alt_outlined),
+                ),
+                IconButton(
+                  tooltip: 'Chọn ảnh gửi trong chat thường',
+                  onPressed: _sending || _readOnly
+                      ? null
+                      : () => _chooseImage('pickChatImage'),
+                  icon: const Icon(Icons.photo_library_outlined),
+                ),
                 Expanded(
                   child: TextField(
                     controller: _text,

@@ -271,6 +271,14 @@ class RealtimeClient extends ChangeNotifier {
               'PublishedPostChanged',
               'ConversationCreated',
               'CommunityChanged',
+              'ArticleChanged',
+              'PublishedArticleChanged',
+              'BranchChanged',
+              'ApprovedBranchChanged',
+              'RoleApplicationChanged',
+              'SecretMessageCreated',
+              'SecretConversationCreated',
+              'SecretDeviceChanged',
             }.contains(target) ||
             arguments is! List ||
             arguments.isEmpty ||
@@ -279,7 +287,7 @@ class RealtimeClient extends ChangeNotifier {
         }
         final data = Map<String, dynamic>.from(arguments.first as Map);
         final key =
-            '$target:${data['eventId'] ?? '${data['id']}:${data['revision']}:${data['status']}:${data['progress']}:${data['framesProcessed']}'}';
+            '$target:${data['serverEventId'] ?? data['eventId'] ?? '${data['id']}:${data['revision']}:${data['status']}:${data['progress']}:${data['framesProcessed']}'}';
         if (!_seen.add(key)) return;
         if (_seen.length > 200) _seen.remove(_seen.first);
         _events.add(HubEvent(target as String, data));

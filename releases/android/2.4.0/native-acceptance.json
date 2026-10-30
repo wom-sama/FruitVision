@@ -1,0 +1,32 @@
+{
+  "version": "2.4.0+6010",
+  "scope": "Shared HN_Final_API30 emulator, API30, 1024MiB; no physical phone proof",
+  "testedCandidateSha256": "290a0e66655d559190d2c65fa62c63ec593e1985c288b0d8d63da7e14297f970",
+  "finalDelta": "One auth-footer text string corrected to mango scope; final three APKs rebuilt and package verification repeated",
+  "installationMethod": "adb install -r; in-app OS installation of this version was not separately repeated",
+  "consumerSessionRestored": true,
+  "consumerLearningAndNoAiTab": true,
+  "producerPasswordAndRealFruitVisionEmailOtpLogin": true,
+  "realApiMangoImageAndAnnotatedPreview": true,
+  "androidSodiumKeyGenerationAndKeystoreWriteAndPublicEnrollment": true,
+  "androidInstrumentationTests": {
+    "passed": 4,
+    "failed": 0,
+    "cases": [
+      "keybag persistence/scope",
+      "corrupt bag fails closed",
+      "origin/size guards",
+      "photo orientation/EXIF/size"
+    ]
+  },
+  "memorySnapshotsKiB": {
+    "resultPss": 99165,
+    "resultRss": 214028,
+    "coldPss": 74184
+  },
+  "actualAiFps": "NOT_MEASURED",
+  "physicalBiometricPositive": "NOT_TESTED",
+  "twoPhoneE2eeOrHumanOutOfBandComparison": "NOT_TESTED",
+  "testDeviceCleanup": "Only the empty synthetic emulator device was revoked by guarded operator maintenance; this is not API fresh-auth revocation proof",
+  "nativeAndFrontendFeatureCodeUnchangedInFinalCopyOnlyRebuild": true
+}

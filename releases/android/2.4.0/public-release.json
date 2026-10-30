@@ -1,0 +1,28 @@
+{
+  "allPassed": true,
+  "baseURL": "https://tips-differential-relating-validity.trycloudflare.com",
+  "version": "2.4.0+6010",
+  "artifacts": [
+    {
+      "abi": "arm64-v8a",
+      "manifestHashMatches": true,
+      "mandatory": true,
+      "range206": true
+    },
+    {
+      "abi": "armeabi-v7a",
+      "manifestHashMatches": true,
+      "mandatory": true,
+      "range206": true
+    },
+    {
+      "abi": "x86_64",
+      "manifestHashMatches": true,
+      "mandatory": true,
+      "range206": true
+    }
+  ],
+  "fullPublicArm64DownloadHashVerified": true,
+  "sameVersionHasNoUpdate": true,
+  "fullDownloadBytes": 19727752
+}

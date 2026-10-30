@@ -193,7 +193,8 @@ void main() {
       tester,
     ) async {
       narrowPhone(tester);
-      final c = controller(UiTransport(), role: role);
+      final transport = UiTransport();
+      final c = controller(transport, role: role);
       addTearDown(c.dispose);
       await showTestApp(tester, c);
       await tester.pumpAndSettle();
@@ -202,21 +203,28 @@ void main() {
           .map((destination) => destination.label)
           .toList();
       final expected = switch (role) {
-        UserRole.admin => ['Hồ sơ', 'AI', 'Trao đổi', 'Tài khoản'],
-        UserRole.producer => ['Tin của tôi', 'AI', 'Trao đổi', 'Tài khoản'],
-        UserRole.trader => ['Nguồn cung', 'AI', 'Trao đổi', 'Tài khoản'],
-        UserRole.consumer => ['Khám phá', 'AI', 'Trao đổi', 'Tài khoản'],
+        UserRole.admin => ['Xét duyệt', 'Trao đổi', 'Tài khoản'],
+        UserRole.producer ||
+        UserRole.trader => ['AI xoài', 'Kiến thức', 'Trao đổi', 'Tài khoản'],
+        UserRole.consumer => ['Học về xoài', 'Cộng đồng', 'Tài khoản'],
       };
       expect(labels, expected);
-      expect(
-        find.text('Tạo tin dự kiến'),
-        role == UserRole.producer ? findsOneWidget : findsNothing,
-      );
-      await tester.tap(find.byType(NavigationDestination).at(1));
-      await tester.pumpAndSettle();
-      expect(find.text('Chọn ảnh'), findsOneWidget);
-      expect(find.text('Chọn video'), findsOneWidget);
-      expect(find.text('Chụp ảnh'), findsOneWidget);
+      if (role == UserRole.admin) {
+        expect(
+          transport.calls.where((call) => call.contains('/admin/applications')),
+          isEmpty,
+        );
+        expect(find.text('Duyệt nâng vai trò'), findsOneWidget);
+      }
+      expect(find.text('Tạo tin dự kiến'), findsNothing);
+      if (role == UserRole.producer || role == UserRole.trader) {
+        expect(find.text('Chọn ảnh'), findsOneWidget);
+        expect(find.text('Chọn video'), findsOneWidget);
+        expect(find.text('Chụp ảnh'), findsOneWidget);
+      } else {
+        expect(find.text('AI'), findsNothing);
+        expect(transport.calls.where((call) => call.contains('/ai/')), isEmpty);
+      }
       expect(tester.takeException(), isNull);
     });
   }
@@ -234,10 +242,8 @@ void main() {
     await tester.tap(signup);
     await tester.pumpAndSettle();
     expect(find.text('Xác nhận mật khẩu'), findsOneWidget);
-    final choices = tester.widget<DropdownButtonFormField<UserRole>>(
-      find.byType(DropdownButtonFormField<UserRole>),
-    );
-    expect(choices.initialValue, UserRole.producer);
+    expect(find.byType(DropdownButtonFormField<UserRole>), findsNothing);
+    expect(find.textContaining('Người tiêu dùng'), findsWidgets);
     final submit = find.text('Gửi đăng ký');
     await tester.ensureVisible(submit);
     await tester.tap(submit);
@@ -275,7 +281,7 @@ void main() {
     },
   );
 
-  testWidgets('needs-information profile exposes reason and resubmit', (
+  testWidgets('legacy needs-information profile exposes read-only reason', (
     tester,
   ) async {
     narrowPhone(tester);
@@ -291,10 +297,8 @@ void main() {
       find.textContaining('Bổ sung tên khu vực sản xuất.'),
       findsOneWidget,
     );
-    expect(find.text('Bổ sung và gửi lại'), findsOneWidget);
+    expect(find.text('Bổ sung và gửi lại'), findsNothing);
     expect(find.text('Tạo tin dự kiến'), findsNothing);
-    await tester.tap(find.byType(NavigationDestination).at(1));
-    await tester.pumpAndSettle();
     await tester.scrollUntilVisible(
       find.text(
         'Tài khoản cần được duyệt và đang hoạt động để dùng phân tích AI.',

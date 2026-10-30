@@ -1,0 +1,49 @@
+{
+  "scope": "User-authorized reuse of four source modules only; no peer users, templates, credentials, keys or services",
+  "sourceModules": [
+    {
+      "source": "nguyen_hoai_nam/backend/src/face/recognizer.js",
+      "sourceSha256": "a116dd9abb3206582ec8a2d3a61aa26fdbf4155134140b4213d583600218b972",
+      "file": "recognizer.js",
+      "currentSha256": "3abab041d2ef19d036d8373b37d0e3448e7fcd0e7d03bb9853d6fd91f7e02074"
+    },
+    {
+      "source": "nguyen_hoai_nam/backend/src/face/geometry.js",
+      "sourceSha256": "c409026bde3fa5167c749f2b95c5f95c310d3bd384fb15898b5407fae762d123",
+      "file": "geometry.js",
+      "currentSha256": "c409026bde3fa5167c749f2b95c5f95c310d3bd384fb15898b5407fae762d123"
+    },
+    {
+      "source": "nguyen_hoai_nam/backend/src/face/models.js",
+      "sourceSha256": "eb689025c1b7b552fe5f43015b222056a23d10dcad8426579f5928a8a23e0627",
+      "file": "models.js",
+      "currentSha256": "eb689025c1b7b552fe5f43015b222056a23d10dcad8426579f5928a8a23e0627"
+    },
+    {
+      "source": "nguyen_hoai_nam/backend/src/face/errors.js",
+      "sourceSha256": "e01c402693a39c646799eb45a1e61b24d76db966f387e02a00256c07fbc9d005",
+      "file": "errors.js",
+      "currentSha256": "e01c402693a39c646799eb45a1e61b24d76db966f387e02a00256c07fbc9d005"
+    }
+  ],
+  "peerLockSha256": "dd916150abc3d5cca7718f8063428dc1c0c0cdfc8f870b67459a16f7409684db",
+  "ownLockSha256": "ab87d50e79f48e6a4999206f7fd424ecc30d10c67f4b7e0415985ef0d44a54d3",
+  "directDependencies": {
+    "onnxruntimeNode": "1.31.1",
+    "sharp": "0.35.5"
+  },
+  "install": "npm ci --ignore-scripts --omit=dev; all install scripts and optional CUDA downloads skipped",
+  "adaptation": "Only recognizer Sharp concurrency1/cachefalse; geometry/model pins/error type unchanged. One-request bounded JSON wrapper.",
+  "modelLicenses": [
+    {
+      "licenseSha256": "c83b8120c50ccbd4c4f96edf53141bdd566ebb8f8e9227e415326aa1b1aba958",
+      "license": "MIT",
+      "model": "face_detection_yunet_2026may.onnx"
+    },
+    {
+      "licenseSha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "license": "Apache-2.0",
+      "model": "face_recognition_sface_2021dec.onnx"
+    }
+  ]
+}

@@ -24,6 +24,7 @@ import javax.crypto.spec.GCMParameterSpec
 class MainActivity : FlutterActivity() {
     private val mediaExecutor = Executors.newSingleThreadExecutor()
     private var updater: AppUpdater? = null
+    private var biometrics: DeviceBiometrics? = null
     private var mediaResult: MethodChannel.Result? = null
     private var captureFile: File? = null
     private var requestedMediaType = "image"
@@ -31,6 +32,7 @@ class MainActivity : FlutterActivity() {
     private val captureRequest = 4102
     private val uploadCache by lazy { File(cacheDir, "fv_uploads").apply { mkdirs() } }
     private val captureCache by lazy { File(cacheDir, "fv_capture").apply { mkdirs() } }
+    private val evidenceCache by lazy { File(cacheDir, "fv_evidence").apply { mkdirs() } }
     private val alias = "fruitvision.session.v2"
     private val preferences by lazy { getSharedPreferences("api_session_v2", MODE_PRIVATE) }
     private fun key(): SecretKey {
@@ -47,16 +49,20 @@ class MainActivity : FlutterActivity() {
         super.configureFlutterEngine(flutterEngine)
         val updateChannel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "vn.fruitvision/updates")
         updater = AppUpdater(this, updateChannel).also { handler -> updateChannel.setMethodCallHandler(handler::handle) }
+        biometrics = DeviceBiometrics(this)
+        val secretKeys=SecretKeyVault(this)
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger,"vn.fruitvision/secret_keys").setMethodCallHandler(secretKeys::handle)
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "vn.fruitvision/biometrics").setMethodCallHandler { call,result -> biometrics?.handle(call,result) }
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "vn.fruitvision/media")
             .setMethodCallHandler { call, result ->
                 when (call.method) {
-                    "pickImage", "pickVideo", "captureImage" -> {
+                    "pickImage", "pickVideo", "captureImage", "pickEvidence", "captureFace", "captureChatImage", "pickChatImage" -> {
                         if (mediaResult != null) result.error("MEDIA_BUSY", "Đang chọn một tệp khác.", null)
                         else {
                             mediaResult = result
-                            requestedMediaType = if (call.method == "pickVideo") "video" else "image"
+                            requestedMediaType = when(call.method) { "pickVideo" -> "video"; "pickEvidence" -> "evidence"; "captureFace" -> "face"; "captureChatImage","pickChatImage" -> "share"; else -> "image" }
                             try {
-                                if (call.method == "captureImage") {
+                                if (call.method in setOf("captureImage","captureFace","captureChatImage")) {
                                     val file = File.createTempFile("camera_", ".jpg", captureCache)
                                     captureFile = file
                                     val uri = FileProvider.getUriForFile(this, "$packageName.media", file)
@@ -69,8 +75,9 @@ class MainActivity : FlutterActivity() {
                                 } else {
                                     val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
                                         addCategory(Intent.CATEGORY_OPENABLE)
-                                        type = if (requestedMediaType == "video") "video/mp4" else "image/*"
-                                        if (requestedMediaType == "image") putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("image/jpeg", "image/png"))
+                                        type = when(requestedMediaType) { "video" -> "video/mp4"; "evidence" -> "*/*"; else -> "image/*" }
+                                        if (requestedMediaType == "evidence") putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("image/jpeg", "image/png", "application/pdf"))
+                                        if (requestedMediaType in setOf("image","share")) putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("image/jpeg", "image/png"))
                                     }
                                     startActivityForResult(intent, pickerRequest)
                                 }
@@ -85,12 +92,24 @@ class MainActivity : FlutterActivity() {
                         mediaExecutor.execute {
                             try {
                                 val file = File(path ?: error("Missing path")).canonicalFile
-                                require(file.parentFile == uploadCache.canonicalFile || file.parentFile == captureCache.canonicalFile)
+                                require(file.parentFile == uploadCache.canonicalFile || file.parentFile == captureCache.canonicalFile || file.parentFile == evidenceCache.canonicalFile)
                                 if (file.exists()) check(file.delete())
                                 runOnUiThread { result.success(null) }
                             } catch (_: Exception) {
                                 runOnUiThread { result.error("MEDIA_DELETE", "Không xóa được bản sao tạm.", null) }
                             }
+                        }
+                    }
+                    "openEvidence" -> {
+                        val path = call.argument<String>("path"); val mime = call.argument<String>("contentType")
+                        mediaExecutor.execute {
+                            try {
+                                val file = File(path ?: error("Missing path")); EvidencePolicy.validate(file,evidenceCache,mime ?: "")
+                                runOnUiThread {
+                                    startActivity(Intent(this,EvidenceViewerActivity::class.java).putExtra("path",file.canonicalPath).putExtra("contentType",mime))
+                                    result.success(null)
+                                }
+                            } catch (_:Exception) { runOnUiThread { result.error("EVIDENCE_VIEW","Không mở được tệp bằng chứng trong bộ nhớ tạm.",null) } }
                         }
                     }
                     else -> result.notImplemented()
@@ -99,7 +118,7 @@ class MainActivity : FlutterActivity() {
         // Recover abandoned private copies after process death; never touch other cache directories.
         mediaExecutor.execute {
             val cutoff = System.currentTimeMillis() - 24 * 60 * 60 * 1000
-            listOf(uploadCache, captureCache).forEach { directory ->
+            listOf(uploadCache, captureCache, evidenceCache).forEach { directory ->
                 directory.listFiles()?.filter { it.isFile && it.lastModified() < cutoff }?.forEach { it.delete() }
             }
         }
@@ -154,27 +173,28 @@ class MainActivity : FlutterActivity() {
         mediaExecutor.execute {
             var local: File? = captured
             try {
-                val contentType: String
-                val name: String
+                var contentType: String
+                var name: String
                 if (requestCode == captureRequest) {
                     val capture = captured ?: error("Missing capture")
                     local = capture
                     contentType = "image/jpeg"; name = "camera.jpg"
                     val signature = capture.inputStream().use { input -> byteArrayOf(input.read().toByte(), input.read().toByte()) }
                     require(signature[0] == 0xff.toByte() && signature[1] == 0xd8.toByte())
+                    if(mediaType == "face") { local = PhotoPreparation.prepare(capture,captureCache); capture.delete() }
                 } else {
                     val uri: Uri = data?.data ?: error("Missing document")
                     contentType = contentResolver.getType(uri) ?: error("Unknown media")
-                    require(if (mediaType == "video") contentType == "video/mp4" else contentType in setOf("image/jpeg", "image/png"))
+                    require(when(mediaType) { "video" -> contentType == "video/mp4"; "evidence" -> contentType in setOf("image/jpeg","image/png","application/pdf"); else -> contentType in setOf("image/jpeg", "image/png") })
                     var displayName = "selected-media"
                     contentResolver.query(uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)?.use { cursor ->
                         if (cursor.moveToFirst()) displayName = cursor.getString(0) ?: displayName
                     }
                     name = displayName.replace(Regex("[\\p{Cntrl}]"), " ").take(120)
-                    val extension = when (contentType) { "video/mp4" -> ".mp4"; "image/png" -> ".png"; else -> ".jpg" }
-                    val copy = File.createTempFile("selected_", extension, uploadCache)
+                    val extension = when (contentType) { "video/mp4" -> ".mp4"; "image/png" -> ".png"; "application/pdf" -> ".pdf"; else -> ".jpg" }
+                    val copy = File.createTempFile("selected_", extension, if(mediaType == "evidence") evidenceCache else uploadCache)
                     local = copy
-                    val maxBytes = if (mediaType == "video") 80L * 1024 * 1024 else 12L * 1024 * 1024
+                    val maxBytes = when(mediaType) { "video" -> 80L*1024*1024; "evidence" -> EvidencePolicy.MAX_BYTES; else -> 12L*1024*1024 }
                     contentResolver.openInputStream(uri)?.use { input ->
                         copy.outputStream().use { output ->
                             val buffer = ByteArray(64 * 1024); var total = 0L
@@ -187,21 +207,29 @@ class MainActivity : FlutterActivity() {
                         }
                     } ?: error("Unreadable document")
                 }
+                if(mediaType == "share") {
+                    val original=local ?: error("Missing image")
+                    local=PhotoPreparation.prepare(original,uploadCache,2048,5L*1024*1024)
+                    original.delete(); contentType="image/jpeg"; name="shared-image.jpg"
+                }
                 val file = local ?: error("Missing file")
-                val maxBytes = if (mediaType == "video") 80L * 1024 * 1024 else 12L * 1024 * 1024
+                val maxBytes = when(mediaType) { "video" -> 80L*1024*1024; "evidence" -> EvidencePolicy.MAX_BYTES; "share" -> 5L*1024*1024; else -> 12L*1024*1024 }
                 require(file.length() in 1..maxBytes)
+                if(mediaType == "evidence") EvidencePolicy.validate(file,evidenceCache,contentType)
                 val payload = mapOf("path" to file.absolutePath, "name" to name, "bytes" to file.length(),
-                    "mediaType" to mediaType, "contentType" to contentType)
+                    "sizeBytes" to file.length(),
+                    "mediaType" to if(mediaType in setOf("face","share")) "image" else mediaType, "contentType" to contentType)
                 runOnUiThread { result.success(payload) }
             } catch (_: Exception) {
                 local?.delete()
-                runOnUiThread { result.error("MEDIA_FILE", "Chọn JPEG/PNG tối đa 12 MiB hoặc MP4 tối đa 80 MiB.", null) }
+                runOnUiThread { result.error("MEDIA_FILE", if(mediaType == "evidence") "Chọn JPEG/PNG/PDF hợp lệ tối đa 5 MiB." else "Chọn JPEG/PNG tối đa 12 MiB hoặc MP4 tối đa 80 MiB.", null) }
             }
         }
     }
 
     override fun onDestroy() {
         updater?.close(); updater = null
+        biometrics?.close(); biometrics = null
         captureFile?.delete(); captureFile = null
         mediaResult?.error("MEDIA_CANCELLED", "Đã đóng trình chọn tệp.", null); mediaResult = null
         mediaExecutor.shutdownNow()

@@ -18,3 +18,6 @@ gradlew text eol=lf
 app/android/app/src/main/assets/** -text
 app/android/app/src/androidTest/assets/** -text
 releases/** -text
+
+# Retain exact upstream crypto license bytes, including upstream final blank lines.
+mobile_client/assets/legal/** -text whitespace=cr-at-eol,-blank-at-eof
