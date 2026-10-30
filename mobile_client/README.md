@@ -1,6 +1,6 @@
 # FruitVision Android 2.2 — client máy chủ
 
-README cho bản phát hành **2.2.0+6006**. Flutter gọi HTTPS/SignalR WSS; PC chạy PostgreSQL và CPU AI. APK không chứa model/runtime AI hoặc truy cập DB trực tiếp; ứng dụng offline lịch sử ở `../app/`. **APK6006 đã nâng cấp qua trình cài Android và chạy nghiệp vụ bốn vai trò tuần tự trên máy ảo API30**; xem [biên nhận cuối](../releases/android/2.2.0/native-acceptance.json). Không phải bốn điện thoại thật.
+README cho bản phát hành **2.2.0+6006**. Flutter gọi HTTPS/SignalR WSS; PC chạy PostgreSQL và CPU AI. APK không chứa model/runtime AI hoặc truy cập DB trực tiếp; ứng dụng offline lịch sử ở `../app/`. **APK 6006 đã nâng cấp qua trình cài Android và chạy nghiệp vụ bốn vai trò tuần tự trên máy ảo API 30**; xem [biên nhận cuối](../releases/android/2.2.0/native-acceptance.json). Không phải bốn điện thoại thật.
 
 ## Cài APK và chọn máy chủ
 
@@ -57,7 +57,7 @@ Kết quả/ảnh chú thích tách **maxVisibleCount**, **confirmedTrackCount**
 
 Foreground WSS nhận tin, moderation/community và tiến độ AI; sau reconnect tải REST, dedup ID/revision. Đăng xuất/đổi máy chủ hoặc app tạm dừng thì kết nối dừng; đây không phải background push khi đóng app. Chat mở ở tin mới nhất, giữ vị trí khi đọc lịch sử, có nút tin mới. Gửi lại cùng message key/nội dung dùng lại tin; đổi nội dung với key cũ `409`.
 
-Bản6006 hỗ trợ luồng cập nhật từ manifest/APK **đã đăng ký** trên PC: đúng ABI, size/SHA và kiểm package/version/signer ở native trước khi mở installer. Có kiểm tra/tải/hủy; hủy không được tính là đã nâng cấp. Tính sẵn sàng thực tế phụ thuộc server đã công bố bộ APK và receipt nghiệm thu native cuối.
+Bản 6006 hỗ trợ luồng cập nhật từ manifest/APK **đã đăng ký** trên PC: đúng ABI, size/SHA và kiểm package/version/signer ở native trước khi mở installer. Có kiểm tra/tải/hủy; hủy không được tính là đã nâng cấp. Tính sẵn sàng thực tế phụ thuộc server đã công bố bộ APK và receipt nghiệm thu native cuối.
 
 Android yêu cầu người dùng xác nhận cài; lần đầu có thể cần quyền cài từ nguồn này. Không có cập nhật im lặng hoặc bỏ kiểm chữ ký. Client cũ chưa có updater cần **một lần bootstrap cài thủ công APK tin cậy** có updater, rồi mới dùng cập nhật trong app. Giữ cùng course signer để nâng cấp; không gỡ app để né lỗi signer. Quy trình operator ở [MOBILE_RELEASES.md](../server/docs/MOBILE_RELEASES.md).
 
@@ -74,7 +74,7 @@ flutter build apk --release --split-per-abi --build-name=2.2.0 --build-number=60
 
 Kiểm ba APK bằng `tool/verify_apks.py` với version name/code đúng; Android/Gradle/build do người phụ trách chạy theo giới hạn tài nguyên, không suy thành PASS từ việc có file APK.
 
-[HTTPS/WSS bốn vai trò](../server/docs/verticals-https-e2e.json) đã PASS **49,281 giây, 80 HTTP, 4 WSS đồng thời** trên PC; không phải bốn điện thoại. [AI HTTPS E2E](../server/docs/ai-https-e2e.json) giữ bằng chứng ảnh/video 1073 khung và nhất quán API/worker, không chứng minh ground truth. Receipt 2.1 trong `verification/` là lịch sử. Flutter64/64 và analyzer sạch; native policy22/22, package/signature ba ABI đã kiểm. [Biên nhận6006](../releases/android/2.2.0/native-acceptance.json) ghi nâng cấp thực và nghiệp vụ bốn vai trò trên máy ảo. Không chạy lại tác vụ AI ảnh/video mới trên chính6006; bằng chứng AI nêu trên là các lượt giữ nguyên pipeline. Camera emulator trước đây chưa xác nhận chụp JPEG thành công.
+[HTTPS/WSS bốn vai trò](../server/docs/verticals-https-e2e.json) đã PASS **49,281 giây, 80 HTTP, 4 WSS đồng thời** trên PC; không phải bốn điện thoại. [AI HTTPS E2E](../server/docs/ai-https-e2e.json) giữ bằng chứng ảnh/video 1073 khung và nhất quán API/worker, không chứng minh ground truth. Receipt 2.1 trong `verification/` là lịch sử. Flutter 64/64 và analyzer sạch; native policy 22/22, package/signature ba ABI đã kiểm. [Biên nhận6006](../releases/android/2.2.0/native-acceptance.json) ghi nâng cấp thực và nghiệp vụ bốn vai trò trên máy ảo. Không chạy lại tác vụ AI ảnh/video mới trên chính6006; bằng chứng AI nêu trên là các lượt giữ nguyên pipeline. Camera emulator trước đây chưa xác nhận chụp JPEG thành công.
 
 Chưa triển khai đơn hàng, giữ hàng/chống vượt tồn, thanh toán/giao nhận/tranh chấp, IoT hoặc chuyển Forecast thành tồn kho. Không gọi toàn bộ nghiệp vụ kinh doanh, camera live hoặc APK chạy trên điện thoại thật đã hoàn tất.
 

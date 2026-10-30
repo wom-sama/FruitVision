@@ -1,6 +1,6 @@
 # FruitVision 2.2 — backend trên PC
 
-Backend phục vụ client Android **2.2.0+6006**: tài khoản/xét duyệt, tin Supply–Demand có kiểm duyệt, liên hệ riêng, cộng đồng, tham khảo cung/cầu, AI ảnh/video trên PC và đăng ký bản cập nhật APK. PostgreSQL giữ dữ liệu, SignalR phát sự kiện, CPU worker chạy model ONNX đã ghim. **APK6006 đã nâng cấp qua trình cài Android và chạy nghiệp vụ bốn vai trò tuần tự trên máy ảo API30**; xem [biên nhận cuối](../releases/android/2.2.0/native-acceptance.json). Không phải bốn điện thoại thật.
+Backend phục vụ client Android **2.2.0+6006**: tài khoản/xét duyệt, tin Supply–Demand có kiểm duyệt, liên hệ riêng, cộng đồng, tham khảo cung/cầu, AI ảnh/video trên PC và đăng ký bản cập nhật APK. PostgreSQL giữ dữ liệu, SignalR phát sự kiện, CPU worker chạy model ONNX đã ghim. **APK 6006 đã nâng cấp qua trình cài Android và chạy nghiệp vụ bốn vai trò tuần tự trên máy ảo API 30**; xem [biên nhận cuối](../releases/android/2.2.0/native-acceptance.json). Không phải bốn điện thoại thật.
 
 ## Chạy từ bản clone
 
@@ -101,9 +101,9 @@ Client cũ chưa có updater cần một lần bootstrap thủ công bằng APK 
 
 ## Bằng chứng và phần còn giới hạn
 
-[HTTPS/WSS bốn vai trò](docs/verticals-https-e2e.json): PASS **49,281 giây, 80 HTTP, 4 WSS đồng thời**, có moderation/contact races, Direct riêng, Group join/leave/close, Supply-only price và bản ghi demo thực. Đây là bốn client trên PC, không phải bốn điện thoại. [AI HTTPS E2E](docs/ai-https-e2e.json) giữ bằng chứng ảnh/video và tính nhất quán pipeline; không phải ground truth mô hình. Các receipt 2.1 là lịch sử, không thay thế biên nhận native6006.
+[HTTPS/WSS bốn vai trò](docs/verticals-https-e2e.json): PASS **49,281 giây, 80 HTTP, 4 WSS đồng thời**, có moderation/contact races, Direct riêng, Group join/leave/close, Supply-only price và bản ghi demo thực. Đây là bốn client trên PC, không phải bốn điện thoại. [AI HTTPS E2E](docs/ai-https-e2e.json) giữ bằng chứng ảnh/video và tính nhất quán pipeline; không phải ground truth mô hình. Các receipt 2.1 là lịch sử, không thay thế biên nhận native 6006.
 
-Lệnh kiểm backend: `dotnet test FruitVision.slnx`; integration dùng PostgreSQL/DB thử riêng. Worker: `python -B -m unittest discover -s ai -v` trong môi trường đã cài. Bộ kiểm hiện tại: backend60/60, Flutter64/64 và analyzer sạch, native policy22/22. Ba APK6006 đã kiểm package/chữ ký/hash; biên nhận Android lưu riêng cùng bản phát hành, không suy từ unit tests thành nghiệm thu điện thoại.
+Lệnh kiểm backend: `dotnet test FruitVision.slnx`; integration dùng PostgreSQL/DB thử riêng. Worker: `python -B -m unittest discover -s ai -v` trong môi trường đã cài. Bộ kiểm hiện tại: backend 60/60, Flutter 64/64 và analyzer sạch, native policy 22/22. Ba APK 6006 đã kiểm package/chữ ký/hash; biên nhận Android lưu riêng cùng bản phát hành, không suy từ unit tests thành nghiệm thu điện thoại.
 
 Chưa triển khai đơn mua bán, giữ hàng/chống vượt tồn, thanh toán/giao nhận/tranh chấp, IoT, chuyển Forecast thành tồn kho hoặc camera streaming. Chưa bảo đảm production 24×7, mô hình chính xác ngoài thực địa hay APK cuối đã chạy trên điện thoại thật. Duyệt hồ sơ không phải chứng nhận nông sản.
 
