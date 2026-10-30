@@ -1,0 +1,120 @@
+{
+  "status": "FOUNDATION_PUBLIC_HTTPS_VERIFIED",
+  "checkedUtc": "2026-10-30T08:39:20.670901+00:00",
+  "publicUrl": "https://tips-differential-relating-validity.trycloudflare.com",
+  "hostedOn": "user PC; Kestrel plus PostgreSQL; Cloudflare is HTTPS/WSS ingress only; no Render",
+  "temporaryHostname": true,
+  "hostnameChangesOnNewTunnel": true,
+  "apiOrigin": "http://127.0.0.1:5098",
+  "databaseBind": "127.0.0.1:55432",
+  "verifiedPublicPaths": [
+    {
+      "path": "/index.html",
+      "status": 200,
+      "expected": 200,
+      "bytes": 4695
+    },
+    {
+      "path": "/v1/index.html",
+      "status": 200,
+      "expected": 200,
+      "bytes": 3442
+    },
+    {
+      "path": "/v1/ui-init.js",
+      "status": 200,
+      "expected": 200,
+      "bytes": 1141
+    },
+    {
+      "path": "/v1/vendor/swagger-ui-5.34.0/swagger-ui-bundle.js",
+      "status": 200,
+      "expected": 200,
+      "bytes": 1684244
+    },
+    {
+      "path": "/openapi/v1.json",
+      "status": 200,
+      "expected": 200,
+      "bytes": 25880
+    },
+    {
+      "path": "/health/ready",
+      "status": 200,
+      "expected": 200,
+      "bytes": 70
+    },
+    {
+      "path": "/api/v1/admin/stats",
+      "status": 401,
+      "expected": 401,
+      "bytes": 0
+    },
+    {
+      "path": "/.local/runtime.json",
+      "status": 404,
+      "expected": 404,
+      "bytes": 0
+    }
+  ],
+  "integrationTests": {
+    "passed": 18,
+    "failed": 0,
+    "skipped": 0,
+    "source": ".local\\test-results\\public-final\\foundation-public-final.trx"
+  },
+  "httpsAndWssProbe": {
+    "checksPassed": 21,
+    "source": "docs/public-https-smoke.json",
+    "tlsVerified": true
+  },
+  "browserCheck": {
+    "surface": "ChatGPT hidden in-app browser",
+    "swaggerLoaded": true,
+    "authorizeVisible": true,
+    "healthExecuteObserved": 200,
+    "newStringEnumContractVerified": true,
+    "nonBlockingVendorWarning": "Swagger UI5.x whitespace deep-link deprecation observed; no functional error in health Execute."
+  },
+  "scopeComplete": [
+    "registration",
+    "login",
+    "four roles",
+    "approval/resubmit",
+    "account lock",
+    "revocable opaque sessions",
+    "refresh replay protection",
+    "TOTP",
+    "bounded API validation",
+    "public forecast reads and submission",
+    "member chat and SignalR",
+    "rich idempotent demo seed",
+    "local web API client and Swagger"
+  ],
+  "notComplete": [
+    "Flutter API APK",
+    "device-bound biometric/passkey",
+    "AI image worker/API",
+    "stock reservation and both trading routes",
+    "shipment/payment/disputes",
+    "survey estimation",
+    "MFA recovery/email reset",
+    "fixed domain",
+    "Windows Service auto-start",
+    "production capacity/security audit"
+  ],
+  "seed": {
+    "users": 24,
+    "products": 3,
+    "forecastPosts": 60,
+    "conversations": 16,
+    "messages": 480,
+    "syntheticHistory": 200,
+    "smokeMessagesAdded": 2,
+    "realPaymentOrInventoryFabricated": false
+  },
+  "lifecycle": "API, private database and one owned tunnel intentionally left running for human review; no foreign process modifications",
+  "binarySha256": "60db933f99d1c8b0fb878a7a52dd0db8e5e11abf7545eeef5902da2cd19119ec",
+  "testedOnPhysicalPhoneOrSeparateNetworkDevice": false,
+  "independentWebFetchTool": "unavailable for this temporary hostname; not relabeled as a successful independent external-device test"
+}

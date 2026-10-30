@@ -1,0 +1,11 @@
+{
+  "atUtc": "2026-10-30T10:43:03.817004+00:00",
+  "tests": 16,
+  "failures": 0,
+  "errors": 0,
+  "passed": true,
+  "workerSha256": "bbdfc7e2a7a61a8334aaf320418f9431f0b2e0cce9652e1e321ed232c39a7c02",
+  "testSha256": "22dfb1f79e43ddfbda4c428956934da0af7ed6e5e1d61183c0149dde40b5317f",
+  "command": "CPython311 -Xutf8-B -m unittest discover -s server/ai -v",
+  "scope": "Small CPU logic/decode tests plus separately retained actual ORT smoke and full-video receipts"
+}

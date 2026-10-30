@@ -1,0 +1,13 @@
+{
+  "atUtc": "2026-10-30T12:19:22.0735663Z",
+  "publicUrl": "https://tips-differential-relating-validity.trycloudflare.com",
+  "ready": {
+    "status": "ready",
+    "scope": "accounts-interactions-and-server-ai",
+    "aiReady": true
+  },
+  "newRoutesVerified": true,
+  "apiDllSha256": "5a6c0deaad5e8f4760601f41f1d5ab81b3eed93d050f1ff66c8267fc8133148d",
+  "modelSha256": "8a69c66a9444c18c98a7e3e58a44f4dddda9eb4583dd4448f430ff9e8db27c41",
+  "privateRuntime": "Project-local CPython3.11 venv, no E dependency"
+}

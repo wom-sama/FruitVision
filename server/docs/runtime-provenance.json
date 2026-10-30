@@ -1,0 +1,100 @@
+{
+  "status": "STAGED_VERIFIED",
+  "recorded_utc": "2026-10-30T07:56:11.5954282Z",
+  "runtime_version": "10.0.14",
+  "release_date": "2026-10-25",
+  "rid": "win-x64",
+  "installation_scope": "Project-private; no machine-wide install",
+  "staged_root": "C:\\Users\\ADMIN\\Documents\\Codex\\2026-08-23\\gi\\mobile_multifruit_work_20261009\\server\\.tools\\dotnet-runtime\\staged",
+  "executable": "C:\\Users\\ADMIN\\Documents\\Codex\\2026-08-23\\gi\\mobile_multifruit_work_20261009\\server\\.tools\\dotnet-runtime\\staged\\dotnet.exe",
+  "executable_sha256": "1e881ec1786c31ba712d052258b4ad4202ac155df5965794030037878abb822f",
+  "metadata": {
+    "url": "https://builds.dotnet.microsoft.com/dotnet/release-metadata/10.0/releases.json",
+    "retained_path": "C:\\Users\\ADMIN\\Documents\\Codex\\2026-08-23\\gi\\mobile_multifruit_work_20261009\\server\\.tools\\dotnet-runtime\\downloads\\releases.json",
+    "sha512": "c5228b350567c43d6968e17395dc754de943e20df31166f79b37fe11fca7fef58e751613fd7ce1aac5c4d21cbb5f9520f24739b4cb4d01d6c5a7e30301aaadfc"
+  },
+  "archives": [
+    {
+      "component": "aspnetcore-runtime",
+      "url": "https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/10.0.14/aspnetcore-runtime-10.0.14-win-x64.zip",
+      "retained_path": "E:\\OneDrive\\Desktop\\FruitVision_CoTheXoa_20261030\\server_downloads\\aspnetcore-runtime-10.0.14-win-x64.zip",
+      "bytes": 48521878,
+      "official_sha512": "f26712cbc7a0c3de6c78c78d2ec80f5a96e3da97f3ce67e964a66bc2d8638cf02f67113c28be5431b2739b29732d918bc3210064b52c845fe914e56fcd058acb",
+      "actual_sha512": "f26712cbc7a0c3de6c78c78d2ec80f5a96e3da97f3ce67e964a66bc2d8638cf02f67113c28be5431b2739b29732d918bc3210064b52c845fe914e56fcd058acb",
+      "sha512_verified": true,
+      "contains_dotnet_and_both_shared_runtimes": true,
+      "retained_after_verification": true,
+      "original_retained_path": "C:\\Users\\ADMIN\\Documents\\Codex\\2026-08-23\\gi\\mobile_multifruit_work_20261009\\server\\.tools\\dotnet-runtime\\downloads\\aspnetcore-runtime-10.0.14-win-x64.zip",
+      "quarantine_receipt": "docs/download-archive-quarantine.json"
+    }
+  ],
+  "path_safety": {
+    "checked_entries": 339,
+    "path_traversal_checks_passed": true,
+    "rooted_paths_rejected": true,
+    "symlink_entries_rejected": true,
+    "duplicate_paths_rejected": true,
+    "extraction_overwrite_allowed": false
+  },
+  "installed_file_count": 339,
+  "installed_logical_bytes": 110564641,
+  "license_notice": "Microsoft .NET distribution. LICENSE.txt and ThirdPartyNotices.txt from the official archive are retained in the staged root; see those documents for license terms and third-party notices.",
+  "license_files": [
+    {
+      "path": "C:\\Users\\ADMIN\\Documents\\Codex\\2026-08-23\\gi\\mobile_multifruit_work_20261009\\server\\.tools\\dotnet-runtime\\staged\\LICENSE.txt",
+      "bytes": 9519,
+      "sha256": "7f6839a61ce892b79c6549e2dc5a81fdbd240a0b260f8881216b45b7fda8b45d"
+    },
+    {
+      "path": "C:\\Users\\ADMIN\\Documents\\Codex\\2026-08-23\\gi\\mobile_multifruit_work_20261009\\server\\.tools\\dotnet-runtime\\staged\\ThirdPartyNotices.txt",
+      "bytes": 78887,
+      "sha256": "deb4427a295e1ed474b0d81c5a0d972c1b550b9a715cda939cdfa9236b1b418f"
+    }
+  ],
+  "verification_command": "C:\\Users\\ADMIN\\Documents\\Codex\\2026-08-23\\gi\\mobile_multifruit_work_20261009\\server\\.tools\\dotnet-runtime\\staged\\dotnet.exe --list-runtimes",
+  "verification_exit_code": 0,
+  "private_runtime_inventory": [
+    "Microsoft.AspNetCore.App 10.0.14 [C:\\Users\\ADMIN\\Documents\\Codex\\2026-08-23\\gi\\mobile_multifruit_work_20261009\\server\\.tools\\dotnet-runtime\\staged\\shared\\Microsoft.AspNetCore.App]",
+    "Microsoft.NETCore.App 10.0.14 [C:\\Users\\ADMIN\\Documents\\Codex\\2026-08-23\\gi\\mobile_multifruit_work_20261009\\server\\.tools\\dotnet-runtime\\staged\\shared\\Microsoft.NETCore.App]"
+  ],
+  "installed_global_unchanged": true,
+  "global_verification": {
+    "before_record": "C:\\Users\\ADMIN\\Documents\\Codex\\2026-08-23\\gi\\mobile_multifruit_work_20261009\\server\\.tools\\dotnet-runtime\\downloads\\global-runtime-inventory-before.json",
+    "global_dotnet": "C:\\Program Files\\dotnet\\dotnet.exe",
+    "executable_sha256_before": "ab1b71fd3dd71062e074c9fab8312081a81b7f2b3e0327c48c4d249c8d1a3135",
+    "executable_sha256_after": "ab1b71fd3dd71062e074c9fab8312081a81b7f2b3e0327c48c4d249c8d1a3135",
+    "runtime_inventory_before": [
+      "Microsoft.AspNetCore.App 8.0.30 [C:\\Program Files\\dotnet\\shared\\Microsoft.AspNetCore.App]",
+      "Microsoft.AspNetCore.App 10.0.2 [C:\\Program Files\\dotnet\\shared\\Microsoft.AspNetCore.App]",
+      "Microsoft.AspNetCore.App 10.0.11 [C:\\Program Files\\dotnet\\shared\\Microsoft.AspNetCore.App]",
+      "Microsoft.NETCore.App 6.0.4 [C:\\Program Files\\dotnet\\shared\\Microsoft.NETCore.App]",
+      "Microsoft.NETCore.App 8.0.21 [C:\\Program Files\\dotnet\\shared\\Microsoft.NETCore.App]",
+      "Microsoft.NETCore.App 8.0.30 [C:\\Program Files\\dotnet\\shared\\Microsoft.NETCore.App]",
+      "Microsoft.NETCore.App 10.0.2 [C:\\Program Files\\dotnet\\shared\\Microsoft.NETCore.App]",
+      "Microsoft.NETCore.App 10.0.11 [C:\\Program Files\\dotnet\\shared\\Microsoft.NETCore.App]",
+      "Microsoft.WindowsDesktop.App 6.0.4 [C:\\Program Files\\dotnet\\shared\\Microsoft.WindowsDesktop.App]",
+      "Microsoft.WindowsDesktop.App 8.0.30 [C:\\Program Files\\dotnet\\shared\\Microsoft.WindowsDesktop.App]",
+      "Microsoft.WindowsDesktop.App 10.0.2 [C:\\Program Files\\dotnet\\shared\\Microsoft.WindowsDesktop.App]",
+      "Microsoft.WindowsDesktop.App 10.0.11 [C:\\Program Files\\dotnet\\shared\\Microsoft.WindowsDesktop.App]"
+    ],
+    "runtime_inventory_after": [
+      "Microsoft.AspNetCore.App 8.0.30 [C:\\Program Files\\dotnet\\shared\\Microsoft.AspNetCore.App]",
+      "Microsoft.AspNetCore.App 10.0.2 [C:\\Program Files\\dotnet\\shared\\Microsoft.AspNetCore.App]",
+      "Microsoft.AspNetCore.App 10.0.11 [C:\\Program Files\\dotnet\\shared\\Microsoft.AspNetCore.App]",
+      "Microsoft.NETCore.App 6.0.4 [C:\\Program Files\\dotnet\\shared\\Microsoft.NETCore.App]",
+      "Microsoft.NETCore.App 8.0.21 [C:\\Program Files\\dotnet\\shared\\Microsoft.NETCore.App]",
+      "Microsoft.NETCore.App 8.0.30 [C:\\Program Files\\dotnet\\shared\\Microsoft.NETCore.App]",
+      "Microsoft.NETCore.App 10.0.2 [C:\\Program Files\\dotnet\\shared\\Microsoft.NETCore.App]",
+      "Microsoft.NETCore.App 10.0.11 [C:\\Program Files\\dotnet\\shared\\Microsoft.NETCore.App]",
+      "Microsoft.WindowsDesktop.App 6.0.4 [C:\\Program Files\\dotnet\\shared\\Microsoft.WindowsDesktop.App]",
+      "Microsoft.WindowsDesktop.App 8.0.30 [C:\\Program Files\\dotnet\\shared\\Microsoft.WindowsDesktop.App]",
+      "Microsoft.WindowsDesktop.App 10.0.2 [C:\\Program Files\\dotnet\\shared\\Microsoft.WindowsDesktop.App]",
+      "Microsoft.WindowsDesktop.App 10.0.11 [C:\\Program Files\\dotnet\\shared\\Microsoft.WindowsDesktop.App]"
+    ]
+  },
+  "machine_wide_install_performed": false,
+  "environment_variables_changed": false,
+  "api_restarted": false,
+  "processes_killed": false,
+  "sdk_downloaded_or_built": false
+}

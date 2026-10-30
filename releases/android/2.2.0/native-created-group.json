@@ -1,0 +1,17 @@
+{
+  "createdAndClosedByNativeConsumer": {
+    "id": "a6306018-74d8-45ad-9d6b-bd87ef3e2b0f",
+    "title": "Consumer Native Forum 2040",
+    "kind": "Group",
+    "ownerId": "a6508feb-fd18-4b83-9ad0-fb012bfe8224",
+    "region": "Bến Tre",
+    "productCode": null,
+    "isOpen": false,
+    "createdAt": "2026-10-30T13:40:55.362099+00:00",
+    "memberCount": 1,
+    "isMember": true,
+    "currentRole": "Owner"
+  },
+  "leftGroupHistoryHttpStatus": 404,
+  "leftGroupId": "5b4d31a4-999b-41d8-b951-c36e5972781d"
+}

@@ -1,0 +1,82 @@
+{
+  "schema": "fruitvision-swagger-vendor-v1",
+  "recordedAtUtc": "2026-10-30T08:22:00.4674781+00:00",
+  "package": {
+    "name": "swagger-ui-dist",
+    "version": "5.34.0",
+    "registryMetadataUrl": "https://registry.npmjs.org/swagger-ui-dist/5.34.0",
+    "repository": "https://github.com/swagger-api/swagger-ui",
+    "license": "Apache-2.0"
+  },
+  "archive": {
+    "sourceUrl": "https://registry.npmjs.org/swagger-ui-dist/-/swagger-ui-dist-5.34.0.tgz",
+    "bytes": 3299322,
+    "registryIntegrity": "sha512-H6tAIjr3XqE31PbkZl0OFya1ziRLDfTwh3J6OHdumPtPCLfjTnyLeagl/55kFNZcTOz9a9QI9WP0FXldwiGJag==",
+    "actualSha512": "1fab40223af75ea137d4f6e4665d0e1726b5ce244b0df4f087727a38776e98fb4f08b7e34e7c8b79a825ff9e6414d65c4cecfd6bd408f563f415795dc221896a",
+    "integrityVerifiedBeforeExtraction": true,
+    "attestationUrl": "https://registry.npmjs.org/-/npm/v1/attestations/swagger-ui-dist@5.34.0",
+    "attestationVerified": false
+  },
+  "retainedAssets": [
+    {
+      "path": "src/FruitVision.Api/wwwroot/v1/vendor/swagger-ui-5.34.0/LICENSE",
+      "sourceEntry": "package/LICENSE",
+      "bytes": 11358,
+      "sha512": "98f6b79b778f7b0a15415bd750c3a8a097d650511cb4ec8115188e115c47053fe700f578895c097051c9bc3dfb6197c2b13a15de203273e1a3218884f86e90e8",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "src/FruitVision.Api/wwwroot/v1/vendor/swagger-ui-5.34.0/NOTICE",
+      "sourceEntry": "package/NOTICE",
+      "bytes": 55,
+      "sha512": "b6aa809deafa2d98ad825b8c53931279836768fdab931a5ae96edefeec25d441527f0eca5f3d365dea9fe706a17ee0168eff8eaf90360104b99c4b5b7fc23c89",
+      "sha256": "0d20d1adef18aee3f40dd258172155521ce702ac445cb5f7b7d60ed32dad2fb2"
+    },
+    {
+      "path": "src/FruitVision.Api/wwwroot/v1/vendor/swagger-ui-5.34.0/swagger-ui-bundle.js",
+      "sourceEntry": "package/swagger-ui-bundle.js",
+      "bytes": 1684244,
+      "sha512": "0ae6f2d4a35a4109b5fa18806d4a1c8e67a7ab204c1f4e80cf0acb20d034a9848eb90f768d336f2aea2980023490928f5f174a582c70221a9a0d6a154ac617d1",
+      "sha256": "3f6abf70480db7e07914df4c98a77385f22ea585eaf457a3e6415ba0eae2d167"
+    },
+    {
+      "path": "src/FruitVision.Api/wwwroot/v1/vendor/swagger-ui-5.34.0/swagger-ui-bundle.js.LICENSE.txt",
+      "sourceEntry": "package/swagger-ui-bundle.js.LICENSE.txt",
+      "bytes": 4606,
+      "sha512": "674f32ca14616a86e0f3b98b8fcbd7ce2f8e975624be8c4466604d2fb05a444115b55d4d4943684328ec5d7a3e67eae1dff614e77ae24a25e496bddaea770429",
+      "sha256": "e5a4792feaa5332dfba37f1d7adf84308b93b4f2d8da0569a9f48a3cb61c969b"
+    },
+    {
+      "path": "src/FruitVision.Api/wwwroot/v1/vendor/swagger-ui-5.34.0/swagger-ui.css",
+      "sourceEntry": "package/swagger-ui.css",
+      "bytes": 187576,
+      "sha512": "c26294a3109ef1e43b8c99a5a60b5d2bb5ebe4e040e2566a2c7ce933d2b8151d3c5e4a886134d5ec6f080e33961a186253edb5d5e1e20740e4b1d3412823f37f",
+      "sha256": "c3cfe8248c4b0b89673600fb829924eafbac6de4bc4b2b06f5f5243483074d0a"
+    }
+  ],
+  "licenseEvidence": {
+    "packageDeclaration": "Apache-2.0",
+    "retainedLicense": "src/FruitVision.Api/wwwroot/v1/vendor/swagger-ui-5.34.0/LICENSE",
+    "retainedNotice": "src/FruitVision.Api/wwwroot/v1/vendor/swagger-ui-5.34.0/NOTICE",
+    "retainedBundledThirdPartyLicenses": "src/FruitVision.Api/wwwroot/v1/vendor/swagger-ui-5.34.0/swagger-ui-bundle.js.LICENSE.txt"
+  },
+  "handling": {
+    "exactArchiveEntriesOnly": true,
+    "npmInstallUsed": false,
+    "packageScriptsExecuted": false,
+    "upstreamAssetsUnmodified": true,
+    "sourceMapsAndUnusedPresetsExcluded": true,
+    "localAdaptations": [
+      "wwwroot/v1/index.html",
+      "wwwroot/v1/docs.css",
+      "wwwroot/v1/ui-init.js"
+    ],
+    "credentialsIncluded": false,
+    "remoteCdnUsed": false,
+    "remoteValidatorEnabled": false
+  },
+  "references": [
+    "https://swagger.io/docs/open-source-tools/swagger-ui/usage/configuration/",
+    "https://learn.microsoft.com/aspnet/core/fundamentals/openapi/customize-openapi?view=aspnetcore-10.0"
+  ]
+}

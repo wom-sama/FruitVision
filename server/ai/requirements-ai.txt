@@ -1,0 +1,8 @@
+# Windows x64 / CPython 3.11; CPU inference only. No Torch or CUDA required.
+onnxruntime==1.31.1
+numpy==2.0.2
+Pillow==11.3.0
+opencv-python-headless==4.13.0.92
+packaging==25.0
+protobuf==7.34.1
+flatbuffers==25.12.19

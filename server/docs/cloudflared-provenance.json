@@ -1,0 +1,12 @@
+{
+  "status": "DOWNLOAD_DIGEST_VERIFIED",
+  "version": "2026.10.6",
+  "url": "https://github.com/cloudflare/cloudflared/releases/download/2026.10.6/cloudflared-windows-amd64.exe",
+  "officialAssetDigest": "sha256:d521b3bf68982165f0d06d76732f22d9a105ef057ff3ae4c0986f3a23190950f",
+  "sha256": "d521b3bf68982165f0d06d76732f22d9a105ef057ff3ae4c0986f3a23190950f",
+  "bytes": 55390656,
+  "executable": "C:\\Users\\ADMIN\\Documents\\Codex\\2026-08-23\\gi\\mobile_multifruit_work_20261009\\server\\.tools\\cloudflared\\cloudflared.exe",
+  "source": "https://github.com/cloudflare/cloudflared/releases/tag/2026.10.6",
+  "tlsValidation": "Windows platform certificate validation; no bypass",
+  "autoupdate": false
+}

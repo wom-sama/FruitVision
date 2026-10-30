@@ -1,0 +1,7 @@
+# FruitVision mobile UI
+
+Practical role-based marketplace workspace. Forest green #146347, ink #17352A, background #F5F8F5 and white surfaces. Material3, system font with Vietnamese support; restrained 8/16/24dp spacing, 12–20dp corner radii, at least48dp touch targets. No decorative dashboards or invented charts.
+
+Login/signup are keyboard-safe scroll forms. Profile status banner always explains Pending/NeedsInformation/Rejected with reason and next action. Admin prioritizes applications; Producer prioritizes own forecast submissions; Trader explores supply and own submissions; Consumer browses without seller actions. All network states visible and recoverable. Use four or fewer main navigation destinations. AI/trading that API marks unavailable are clearly unavailable, never simulated as success.
+
+AI results prioritize the actual annotated server preview, then distinct numeric count tiles and grade proportions derived from the actual job. Model hashes, implementation details and detailed limitations belong in expandable explanations. Upload/cancel actions for a selected file remain reachable above navigation rather than below a long card. Job cards distinguish queued, running, failed, cancelled and completed; percent upload is distinct from percent processing. Public forecast bodies are summarized and expandable; estimated kg never becomes verified stock. Restrained blue accents distinguish information from green confirmation without relying only on color.

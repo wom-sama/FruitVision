@@ -1,0 +1,56 @@
+{
+  "post": {
+    "id": "2e472c04-5a70-4beb-bfe6-756bcd81bd86",
+    "title": "Native FruitVision 2031",
+    "body": "Native API QA supply harvest next week.",
+    "productCode": "mango",
+    "status": "Published",
+    "sourceType": "Forecast",
+    "estimatedQuantityKg": 125.0,
+    "createdAt": "2026-10-30T13:31:53.957984+00:00",
+    "revision": 2,
+    "reviewedAt": "2026-10-30T13:34:31.970292+00:00",
+    "region": "NativeQA2031",
+    "purpose": "Supply",
+    "availableOn": null,
+    "priceMinVndPerKg": 22000.0,
+    "priceMaxVndPerKg": 26000.0,
+    "author": {
+      "id": "0973a2ff-981d-4598-82db-bf6c3eca83e8",
+      "displayName": "Cơ sở sản xuất demo 01",
+      "region": "Đồng Tháp"
+    },
+    "actualStockKg": null,
+    "canOrder": false
+  },
+  "market": {
+    "region": "NativeQA2031",
+    "productCode": "mango",
+    "asOf": "2026-10-30T13:38:32.364318+00:00",
+    "source": "published-user-asking-prices",
+    "isForecast": false,
+    "items": [
+      {
+        "productCode": "mango",
+        "productName": "Xoài",
+        "region": "NativeQA2031",
+        "supplyEstimatedKg": 125.0,
+        "demandEstimatedKg": 0,
+        "supplyPostCount": 1,
+        "demandPostCount": 0,
+        "contributorCount": 1,
+        "referencePriceVndPerKg": 24000,
+        "priceMinVndPerKg": 22000.0,
+        "priceMaxVndPerKg": 26000.0,
+        "priceSampleCount": 1,
+        "lastUpdated": "2026-10-30T13:34:31.970292+00:00"
+      }
+    ],
+    "limitations": [
+      "Lượng cung/cầu là dự báo do người dùng đăng, không phải tồn kho thực, đơn hàng hoặc cam kết giao hàng.",
+      "Giá tham chiếu chỉ là trung vị điểm giữa khoảng giá chào bán của các bài cung công khai; không gồm giá hỏi mua, không phải giá giao dịch, giá thị trường chính thức hay dự đoán AI.",
+      "Mẫu tự khai có thể ít, cũ hoặc thiên lệch. Không có khoảng giá hợp lệ thì giá được để trống; không tạo giá giả.",
+      "Mỗi người có thể đăng nhiều bài; tổng lượng không bảo đảm đã loại trừ cùng một lô hàng."
+    ]
+  }
+}

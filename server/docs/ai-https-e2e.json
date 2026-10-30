@@ -1,0 +1,1928 @@
+{
+  "startedUtc": "2026-10-30T10:09:43.016845+00:00",
+  "baseUrl": "https://tips-differential-relating-validity.trycloudflare.com",
+  "checks": [
+    {
+      "name": "AI ready on owned PC",
+      "pass": true
+    },
+    {
+      "name": "producer login",
+      "pass": true
+    },
+    {
+      "name": "consumer login",
+      "pass": true
+    },
+    {
+      "name": "trader login",
+      "pass": true
+    },
+    {
+      "name": "anonymous job history denied",
+      "pass": true
+    },
+    {
+      "name": "actual WSS SignalR handshake",
+      "pass": true
+    },
+    {
+      "name": "bad magic rejected before inference",
+      "pass": true
+    },
+    {
+      "name": "raw image accepted as202",
+      "pass": true
+    },
+    {
+      "name": "other user cannot read job",
+      "pass": true
+    },
+    {
+      "name": "other user cannot preview job",
+      "pass": true
+    },
+    {
+      "name": "other user cannot cancel job",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "actual ORT image succeeded",
+      "pass": true
+    },
+    {
+      "name": "image event arrived on WSS",
+      "pass": true
+    },
+    {
+      "name": "image result has pinned model",
+      "pass": true
+    },
+    {
+      "name": "authorized annotated JPEG served",
+      "pass": true
+    },
+    {
+      "name": "request ID retry creates no duplicate job",
+      "pass": true
+    },
+    {
+      "name": "user supplied video accepted",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "job snapshot authenticated",
+      "pass": true
+    },
+    {
+      "name": "actual full video completed",
+      "pass": true
+    },
+    {
+      "name": "real video progress events received",
+      "pass": true
+    },
+    {
+      "name": "video counted decoded frames",
+      "pass": true
+    },
+    {
+      "name": "max-visible and confirmed-tracks separate",
+      "pass": true
+    },
+    {
+      "name": "chat group membership accepted",
+      "pass": true
+    },
+    {
+      "name": "chat persisted through API",
+      "pass": true
+    },
+    {
+      "name": "chat delivered on actual WSS",
+      "pass": true
+    }
+  ],
+  "scope": "Actual public HTTPS/WSS, private PostgreSQL, current pinned CPU ONNX worker. Not model accuracy qualification.",
+  "imageResult": {
+    "schema": "fruitvision-ai-v1",
+    "objects": [
+      {
+        "box": [
+          0.33634799321492515,
+          0.5357550303141276,
+          0.454396915435791,
+          0.7062548319498698
+        ],
+        "score": 0.9437745,
+        "trackId": null,
+        "stageCode": 0,
+        "fruitLabel": "Quả",
+        "stageLabel": "Xanh / chưa chín"
+      },
+      {
+        "box": [
+          0.36059996287027996,
+          0.3595401763916016,
+          0.593877665201823,
+          0.55557861328125
+        ],
+        "score": 0.9419609,
+        "trackId": null,
+        "stageCode": 0,
+        "fruitLabel": "Quả",
+        "stageLabel": "Xanh / chưa chín"
+      },
+      {
+        "box": [
+          0.43795789082845055,
+          0.6569775051540798,
+          0.585538101196289,
+          0.8643139309353298
+        ],
+        "score": 0.9418624,
+        "trackId": null,
+        "stageCode": 0,
+        "fruitLabel": "Quả",
+        "stageLabel": "Xanh / chưa chín"
+      }
+    ],
+    "modelName": "YOLOX-Tiny reviewed partial-visibility fruit geometry and source stages",
+    "gradeCounts": {
+      "Chín": 0,
+      "Chưa xác định": 0,
+      "Xanh / chưa chín": 3
+    },
+    "limitations": [
+      "Chỉ dùng cho bản trình diễn phi thương mại; giấy phép nguồn dữ liệu/model còn hạn chế.",
+      "Hai nhãn giai đoạn từ dữ liệu nguồn không xác nhận độ chín ngoài thực tế; quả chưa biết hoặc độ tin cậy thấp không được phân hạng.",
+      "Nhận dạng loài chỉ là chẩn đoán nội bộ; nhãn hiển thị chung là Quả.",
+      "Video chưa đạt tiêu chí chất lượng khoa học; có thể bỏ sót, trùng khung hoặc sai giai đoạn.",
+      "Theo dõi bằng hình học không tái nhận dạng vật thể: che khuất lâu, quay lại và camera chuyển động có thể làm sai số đếm.",
+      "Số qua vạch y=0.5 đếm mỗi ID một lần theo cả hai hướng; không phải bảo đảm số quả vật lý duy nhất.",
+      "Ảnh đơn không theo dõi ID; xem số quả đang thấy (maxVisibleCount)."
+    ],
+    "modelSha256": "8a69c66a9444c18c98a7e3e58a44f4dddda9eb4583dd4448f430ff9e8db27c41",
+    "framesProcessed": 1,
+    "maxVisibleCount": 3,
+    "lineCrossingCount": 0,
+    "processingSeconds": 1.157,
+    "confirmedTrackCount": 0
+  },
+  "videoResult": {
+    "schema": "fruitvision-ai-v1",
+    "objects": [
+      {
+        "box": [
+          0.7980271657307942,
+          0.5724386709707755,
+          0.8578717549641927,
+          0.6926804154007523
+        ],
+        "score": 0.9786276,
+        "trackId": 13,
+        "stageCode": 1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chín"
+      },
+      {
+        "box": [
+          0.28161233266194663,
+          0.7982323540581597,
+          0.36499125162760415,
+          0.9048377143012153
+        ],
+        "score": 0.9380426,
+        "trackId": 3,
+        "stageCode": -1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "box": [
+          0.7218667348225911,
+          0.49893244990596064,
+          0.771877670288086,
+          0.6179030806929977
+        ],
+        "score": 0.9327008,
+        "trackId": 29,
+        "stageCode": 1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chín"
+      },
+      {
+        "box": [
+          0.10064322153727213,
+          0.7798527470341435,
+          0.1918309211730957,
+          0.9005255805121528
+        ],
+        "score": 0.9284328,
+        "trackId": 1,
+        "stageCode": -1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "box": [
+          0.18145192464192708,
+          0.7563547770182292,
+          0.294686762491862,
+          0.8869467276114005
+        ],
+        "score": 0.9190281,
+        "trackId": 4,
+        "stageCode": -1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "box": [
+          0.2941340446472168,
+          0.6361536096643519,
+          0.378311824798584,
+          0.8065052173755787
+        ],
+        "score": 0.9147309,
+        "trackId": 8,
+        "stageCode": -1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "box": [
+          0.3976683298746745,
+          0.647823644567419,
+          0.46697877248128256,
+          0.7433999520760995
+        ],
+        "score": 0.8960755,
+        "trackId": 12,
+        "stageCode": -1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "box": [
+          0.5324091593424479,
+          0.6589063856336805,
+          0.5845361073811849,
+          0.7912355776186343
+        ],
+        "score": 0.884363,
+        "trackId": 16,
+        "stageCode": 1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chín"
+      },
+      {
+        "box": [
+          0.7256755828857422,
+          0.6181995533130787,
+          0.8013317108154296,
+          0.7913253219039352
+        ],
+        "score": 0.8725976,
+        "trackId": 9,
+        "stageCode": -1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "box": [
+          0.8200533548990886,
+          0.7115894458912037,
+          0.8921924591064453,
+          0.8655341254340277
+        ],
+        "score": 0.8484432,
+        "trackId": 6,
+        "stageCode": -1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "box": [
+          0.3724287668863932,
+          0.6961308232060185,
+          0.42372105916341146,
+          0.7869007251880787
+        ],
+        "score": 0.8334288,
+        "trackId": 31,
+        "stageCode": -1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "box": [
+          0.10591630935668946,
+          0.5910245542173033,
+          0.18184595108032225,
+          0.7068731237340856
+        ],
+        "score": 0.8243833,
+        "trackId": 27,
+        "stageCode": -1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "box": [
+          0.21004770596822103,
+          0.36816982693142364,
+          0.273858896891276,
+          0.4349305329499421
+        ],
+        "score": 0.8211249,
+        "trackId": 49,
+        "stageCode": -1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "box": [
+          0.3681178092956543,
+          0.3248756691261574,
+          0.4215815544128418,
+          0.42239232946325234
+        ],
+        "score": 0.8203632,
+        "trackId": 11,
+        "stageCode": -1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "box": [
+          0.28928114573160807,
+          0.4039504439742477,
+          0.3705392837524414,
+          0.5314253065321181
+        ],
+        "score": 0.8201731,
+        "trackId": 30,
+        "stageCode": -1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "box": [
+          0.4347477912902832,
+          0.4644383748372396,
+          0.4913230578104655,
+          0.5647069860387731
+        ],
+        "score": 0.7802066,
+        "trackId": 33,
+        "stageCode": -1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "box": [
+          0.12454136212666829,
+          0.44446789776837387,
+          0.20027658144632976,
+          0.5372299194335938
+        ],
+        "score": 0.7799701,
+        "trackId": 28,
+        "stageCode": -1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "box": [
+          0.12653485933939615,
+          0.3516738326461227,
+          0.1917617956797282,
+          0.4384624339916088
+        ],
+        "score": 0.7797137,
+        "trackId": 19,
+        "stageCode": -1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "box": [
+          0.1383821169535319,
+          0.523927081072772,
+          0.19936275482177734,
+          0.6011567292390047
+        ],
+        "score": 0.7736843,
+        "trackId": 10,
+        "stageCode": -1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "box": [
+          0.10343440373738606,
+          0.3146120424623843,
+          0.169798215230306,
+          0.3978792543764468
+        ],
+        "score": 0.7496426,
+        "trackId": 48,
+        "stageCode": -1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "box": [
+          0.09873295625050862,
+          0.6700087935836226,
+          0.1416290283203125,
+          0.7770886456524885
+        ],
+        "score": 0.7221006,
+        "trackId": 35,
+        "stageCode": -1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "box": [
+          0.2811395327250163,
+          0.5456608525028935,
+          0.36324567794799806,
+          0.6486881962528935
+        ],
+        "score": 0.7208682,
+        "trackId": 21,
+        "stageCode": -1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "box": [
+          0.41834545135498047,
+          0.5571783560293692,
+          0.46580028533935547,
+          0.6626216182002315
+        ],
+        "score": 0.7099287,
+        "trackId": 22,
+        "stageCode": -1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "box": [
+          0.3432697931925456,
+          0.3822203459563079,
+          0.3988424936930339,
+          0.48899976942274304
+        ],
+        "score": 0.7019744,
+        "trackId": 32,
+        "stageCode": -1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "box": [
+          0.14627335866292318,
+          0.7198723687065972,
+          0.22387431462605795,
+          0.812561939380787
+        ],
+        "score": 0.6707422,
+        "trackId": 40,
+        "stageCode": -1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "box": [
+          0.34117666880289715,
+          0.587962171766493,
+          0.40840301513671873,
+          0.6883607087311922
+        ],
+        "score": 0.6626416,
+        "trackId": 46,
+        "stageCode": -1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "box": [
+          0.12660829226175943,
+          0.6512853551793981,
+          0.17716444333394368,
+          0.7576838740596065
+        ],
+        "score": 0.6562229,
+        "trackId": 55,
+        "stageCode": -1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "box": [
+          0.34141381581624347,
+          0.32600606282552086,
+          0.38853689829508464,
+          0.41733827944155094
+        ],
+        "score": 0.6273381,
+        "trackId": 58,
+        "stageCode": -1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "box": [
+          0.38197072347005206,
+          0.43735549361617476,
+          0.4295497894287109,
+          0.5195638585973669
+        ],
+        "score": 0.6229271,
+        "trackId": 56,
+        "stageCode": -1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "box": [
+          0.23176039059956868,
+          0.4138816550925926,
+          0.29589303334554035,
+          0.5286786114728009
+        ],
+        "score": 0.6081984,
+        "trackId": 45,
+        "stageCode": -1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "box": [
+          0.34647935231526694,
+          0.5134991681134259,
+          0.41883767445882164,
+          0.6025275336371527
+        ],
+        "score": 0.5897843,
+        "trackId": 39,
+        "stageCode": -1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "box": [
+          0.1601812203725179,
+          0.6763344093605325,
+          0.23649408022562662,
+          0.758546730324074
+        ],
+        "score": 0.5887583,
+        "trackId": 7,
+        "stageCode": -1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "box": [
+          0.2718715031941732,
+          0.3571933322482639,
+          0.31320343017578123,
+          0.42229602955005785
+        ],
+        "score": 0.5230559,
+        "trackId": 59,
+        "stageCode": -1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "box": [
+          0.29659875233968097,
+          0.3436319421838831,
+          0.34207725524902344,
+          0.40585197166160303
+        ],
+        "score": 0.5209978,
+        "trackId": 60,
+        "stageCode": -1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "box": [
+          0.17528775533040364,
+          0.39329766167534724,
+          0.23065338134765626,
+          0.4760208695023148
+        ],
+        "score": 0.4720901,
+        "trackId": 57,
+        "stageCode": -1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "box": [
+          0.09842646916707357,
+          0.23633338080512153,
+          0.12626651128133137,
+          0.29818640814887154
+        ],
+        "score": 0.4467919,
+        "trackId": 41,
+        "stageCode": -1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "box": [
+          0.38149820963541664,
+          0.499349127875434,
+          0.4414569854736328,
+          0.6141876220703125
+        ],
+        "score": 0.4374531,
+        "trackId": 63,
+        "stageCode": -1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "box": [
+          0.23906370798746746,
+          0.6860235143590856,
+          0.3051729202270508,
+          0.7848222520616319
+        ],
+        "score": 0.4098013,
+        "trackId": 62,
+        "stageCode": -1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "box": [
+          0.098627503712972,
+          0.3866254453305845,
+          0.13352505366007486,
+          0.45149835657190396
+        ],
+        "score": 0.4012198,
+        "trackId": 15,
+        "stageCode": -1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "box": [
+          0.4255725224812826,
+          0.4239153261537905,
+          0.47358900705973306,
+          0.49301277443214697
+        ],
+        "score": 0.391379,
+        "trackId": 53,
+        "stageCode": -1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "box": [
+          0.28424469629923504,
+          0.47968049225983794,
+          0.3445701281229655,
+          0.5784670229311343
+        ],
+        "score": 0.3807794,
+        "trackId": 54,
+        "stageCode": -1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "box": [
+          0.19514083862304688,
+          0.4204202722620081,
+          0.25883092880249026,
+          0.5246378015588831
+        ],
+        "score": 0.3606403,
+        "trackId": 44,
+        "stageCode": -1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "box": [
+          0.20830281575520834,
+          0.5986198142722801,
+          0.27012481689453127,
+          0.7160150598596644
+        ],
+        "score": 0.3512327,
+        "trackId": 61,
+        "stageCode": -1,
+        "fruitLabel": "Quả",
+        "stageLabel": "Chưa xác định"
+      }
+    ],
+    "modelName": "YOLOX-Tiny reviewed partial-visibility fruit geometry and source stages",
+    "gradeCounts": {
+      "Chín": 59,
+      "Chưa xác định": 136,
+      "Xanh / chưa chín": 3
+    },
+    "limitations": [
+      "Chỉ dùng cho bản trình diễn phi thương mại; giấy phép nguồn dữ liệu/model còn hạn chế.",
+      "Hai nhãn giai đoạn từ dữ liệu nguồn không xác nhận độ chín ngoài thực tế; quả chưa biết hoặc độ tin cậy thấp không được phân hạng.",
+      "Nhận dạng loài chỉ là chẩn đoán nội bộ; nhãn hiển thị chung là Quả.",
+      "Video chưa đạt tiêu chí chất lượng khoa học; có thể bỏ sót, trùng khung hoặc sai giai đoạn.",
+      "Theo dõi bằng hình học không tái nhận dạng vật thể: che khuất lâu, quay lại và camera chuyển động có thể làm sai số đếm.",
+      "Số qua vạch y=0.5 đếm mỗi ID một lần theo cả hai hướng; không phải bảo đảm số quả vật lý duy nhất."
+    ],
+    "modelSha256": "8a69c66a9444c18c98a7e3e58a44f4dddda9eb4583dd4448f430ff9e8db27c41",
+    "framesProcessed": 1073,
+    "maxVisibleCount": 43,
+    "lineCrossingCount": 48,
+    "processingSeconds": 83.843,
+    "confirmedTrackCount": 198
+  },
+  "videoSourceSha256": "491b8366ae70c842c104cc0c56c79d5da03a457f299aec20708fc05273ac58c6",
+  "imageEvents": [
+    {
+      "id": "6ab78c8f-56c4-4273-8c7c-a3f0af96767a",
+      "status": "Queued",
+      "progress": 0,
+      "framesProcessed": 0,
+      "revision": 1
+    }
+  ],
+  "videoEvents": [
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Queued",
+      "progress": 0,
+      "framesProcessed": 0,
+      "revision": 1
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 0,
+      "framesProcessed": 0,
+      "revision": 2
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 0,
+      "framesProcessed": 1,
+      "revision": 3
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 1,
+      "framesProcessed": 11,
+      "revision": 4
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 2,
+      "framesProcessed": 22,
+      "revision": 5
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 3,
+      "framesProcessed": 33,
+      "revision": 6
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 4,
+      "framesProcessed": 44,
+      "revision": 7
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 5,
+      "framesProcessed": 55,
+      "revision": 8
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 6,
+      "framesProcessed": 66,
+      "revision": 9
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 7,
+      "framesProcessed": 76,
+      "revision": 10
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 8,
+      "framesProcessed": 87,
+      "revision": 11
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 9,
+      "framesProcessed": 98,
+      "revision": 12
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 10,
+      "framesProcessed": 109,
+      "revision": 13
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 11,
+      "framesProcessed": 120,
+      "revision": 14
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 12,
+      "framesProcessed": 131,
+      "revision": 15
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 13,
+      "framesProcessed": 141,
+      "revision": 16
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 14,
+      "framesProcessed": 152,
+      "revision": 17
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 15,
+      "framesProcessed": 163,
+      "revision": 18
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 16,
+      "framesProcessed": 174,
+      "revision": 19
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 17,
+      "framesProcessed": 185,
+      "revision": 20
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 18,
+      "framesProcessed": 196,
+      "revision": 21
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 19,
+      "framesProcessed": 206,
+      "revision": 22
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 20,
+      "framesProcessed": 217,
+      "revision": 23
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 21,
+      "framesProcessed": 228,
+      "revision": 24
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 22,
+      "framesProcessed": 239,
+      "revision": 25
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 23,
+      "framesProcessed": 250,
+      "revision": 26
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 24,
+      "framesProcessed": 261,
+      "revision": 27
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 25,
+      "framesProcessed": 271,
+      "revision": 28
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 26,
+      "framesProcessed": 282,
+      "revision": 29
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 27,
+      "framesProcessed": 293,
+      "revision": 30
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 28,
+      "framesProcessed": 304,
+      "revision": 31
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 29,
+      "framesProcessed": 315,
+      "revision": 32
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 30,
+      "framesProcessed": 326,
+      "revision": 33
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 31,
+      "framesProcessed": 336,
+      "revision": 34
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 32,
+      "framesProcessed": 347,
+      "revision": 35
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 33,
+      "framesProcessed": 358,
+      "revision": 36
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 34,
+      "framesProcessed": 369,
+      "revision": 37
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 35,
+      "framesProcessed": 380,
+      "revision": 38
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 36,
+      "framesProcessed": 391,
+      "revision": 39
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 37,
+      "framesProcessed": 402,
+      "revision": 40
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 38,
+      "framesProcessed": 412,
+      "revision": 41
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 39,
+      "framesProcessed": 423,
+      "revision": 42
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 40,
+      "framesProcessed": 434,
+      "revision": 43
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 41,
+      "framesProcessed": 445,
+      "revision": 44
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 42,
+      "framesProcessed": 456,
+      "revision": 45
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 43,
+      "framesProcessed": 467,
+      "revision": 46
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 44,
+      "framesProcessed": 477,
+      "revision": 47
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 45,
+      "framesProcessed": 488,
+      "revision": 48
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 46,
+      "framesProcessed": 499,
+      "revision": 49
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 47,
+      "framesProcessed": 510,
+      "revision": 50
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 48,
+      "framesProcessed": 521,
+      "revision": 51
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 49,
+      "framesProcessed": 532,
+      "revision": 52
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 50,
+      "framesProcessed": 542,
+      "revision": 53
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 51,
+      "framesProcessed": 553,
+      "revision": 54
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 52,
+      "framesProcessed": 564,
+      "revision": 55
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 53,
+      "framesProcessed": 575,
+      "revision": 56
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 54,
+      "framesProcessed": 586,
+      "revision": 57
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 55,
+      "framesProcessed": 597,
+      "revision": 58
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 56,
+      "framesProcessed": 607,
+      "revision": 59
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 57,
+      "framesProcessed": 618,
+      "revision": 60
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 58,
+      "framesProcessed": 629,
+      "revision": 61
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 59,
+      "framesProcessed": 640,
+      "revision": 62
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 60,
+      "framesProcessed": 651,
+      "revision": 63
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 61,
+      "framesProcessed": 662,
+      "revision": 64
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 62,
+      "framesProcessed": 672,
+      "revision": 65
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 63,
+      "framesProcessed": 683,
+      "revision": 66
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 64,
+      "framesProcessed": 694,
+      "revision": 67
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 65,
+      "framesProcessed": 705,
+      "revision": 68
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 66,
+      "framesProcessed": 716,
+      "revision": 69
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 67,
+      "framesProcessed": 727,
+      "revision": 70
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 68,
+      "framesProcessed": 738,
+      "revision": 71
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 69,
+      "framesProcessed": 748,
+      "revision": 72
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 70,
+      "framesProcessed": 759,
+      "revision": 73
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 71,
+      "framesProcessed": 770,
+      "revision": 74
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 72,
+      "framesProcessed": 781,
+      "revision": 75
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 73,
+      "framesProcessed": 792,
+      "revision": 76
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 74,
+      "framesProcessed": 803,
+      "revision": 77
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 75,
+      "framesProcessed": 813,
+      "revision": 78
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 76,
+      "framesProcessed": 824,
+      "revision": 79
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 77,
+      "framesProcessed": 835,
+      "revision": 80
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 78,
+      "framesProcessed": 846,
+      "revision": 81
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 79,
+      "framesProcessed": 857,
+      "revision": 82
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 80,
+      "framesProcessed": 868,
+      "revision": 83
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 81,
+      "framesProcessed": 878,
+      "revision": 84
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 82,
+      "framesProcessed": 889,
+      "revision": 85
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 83,
+      "framesProcessed": 900,
+      "revision": 86
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 84,
+      "framesProcessed": 911,
+      "revision": 87
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 85,
+      "framesProcessed": 922,
+      "revision": 88
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 86,
+      "framesProcessed": 933,
+      "revision": 89
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 87,
+      "framesProcessed": 943,
+      "revision": 90
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 88,
+      "framesProcessed": 954,
+      "revision": 91
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 89,
+      "framesProcessed": 965,
+      "revision": 92
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 90,
+      "framesProcessed": 976,
+      "revision": 93
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 91,
+      "framesProcessed": 987,
+      "revision": 94
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 92,
+      "framesProcessed": 998,
+      "revision": 95
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 93,
+      "framesProcessed": 1008,
+      "revision": 96
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 94,
+      "framesProcessed": 1019,
+      "revision": 97
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 95,
+      "framesProcessed": 1030,
+      "revision": 98
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 96,
+      "framesProcessed": 1041,
+      "revision": 99
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 97,
+      "framesProcessed": 1052,
+      "revision": 100
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 98,
+      "framesProcessed": 1063,
+      "revision": 101
+    },
+    {
+      "id": "bc34a44d-feb6-4e85-b033-b0e0aa580d8a",
+      "status": "Running",
+      "progress": 99,
+      "framesProcessed": 1073,
+      "revision": 102
+    }
+  ],
+  "jobIds": [
+    "6ab78c8f-56c4-4273-8c7c-a3f0af96767a",
+    "bc34a44d-feb6-4e85-b033-b0e0aa580d8a"
+  ],
+  "status": "PASS",
+  "finishedUtc": "2026-10-30T10:11:21.554097+00:00"
+}

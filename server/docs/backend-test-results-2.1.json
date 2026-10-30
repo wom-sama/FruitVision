@@ -1,0 +1,35 @@
+{
+  "status": "PASS",
+  "counters": {
+    "total": "29",
+    "executed": "29",
+    "passed": "29",
+    "failed": "0",
+    "error": "0",
+    "timeout": "0",
+    "aborted": "0",
+    "inconclusive": "0",
+    "passedButRunAborted": "0",
+    "notRunnable": "0",
+    "notExecuted": "0",
+    "disconnected": "0",
+    "warning": "0",
+    "completed": "0",
+    "inProgress": "0",
+    "pending": "0"
+  },
+  "trxPrivatePath": "C:\\Users\\ADMIN\\Documents\\Codex\\2026-08-23\\gi\\mobile_multifruit_work_20261009\\server\\.local\\test-results\\ai-2.1\\foundation-and-ai-2.1.trx",
+  "trxSha256": "b50ad67c6f64149b8cb5384b4b0288e1a60b363584cdfbc2340da60b97c0e287",
+  "testAssemblySha256": "f2007eedf9f69743a88359e05c5d010e7c5e6de148b59555389c6ff263e89ae1",
+  "releaseApiSha256": "5f5a8a37a4733b76c2e6cd795314d25e5b44458ccf448067b242ce7ad33ff638",
+  "sourceSha256": {
+    "server\\src\\FruitVision.Api\\Ai\\AiEndpoints.cs": "9c93077e54a0c90fd7482a54570b4ba6f9b81a132ad18913f7fa0d10739b70a7",
+    "server\\src\\FruitVision.Api\\Ai\\AiJob.cs": "4fbbf5778c19e706a979e4bffd96d5037654c6427dcb13be4a61f19bf6bc50b4",
+    "server\\src\\FruitVision.Api\\Ai\\AiJobEvents.cs": "6c84d5f76705b5e3f41ee6c75fd125a8352fe3d251fee42c70a2ef71f33bd0fb",
+    "server\\src\\FruitVision.Api\\Ai\\AiJobWorker.cs": "b2d5c9b5865400c1ffc9f8a792008d496022328d356bdead05a81a738fe1aa05",
+    "server\\src\\FruitVision.Api\\Ai\\AiOptions.cs": "cb20ee87d168c53fcc949e3bca394ddec4486722f792c0e6816cfd0a42ff0f11",
+    "server\\src\\FruitVision.Api\\Ai\\AiStorage.cs": "d2120042e6bd9b3e2f3cd7ee2f0fba45540644a3c74ffda4eb9f92f3fba029f8"
+  },
+  "command": "dotnet test -c Debug --no-build --logger trx",
+  "atUtc": "2026-10-30T10:44:11.876997+00:00"
+}

@@ -1,0 +1,9 @@
+{
+  "status": "PASS",
+  "sameBytesSameKey200": true,
+  "changedBytesSameKey409": true,
+  "retryAfterInputCleanup200": true,
+  "originalInputRemoved": true,
+  "jobId": "69cc5eda-12a0-47e4-aa79-ec46fbb0ee94",
+  "baseUrl": "https://tips-differential-relating-validity.trycloudflare.com"
+}

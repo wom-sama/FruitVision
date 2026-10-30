@@ -1,0 +1,518 @@
+{
+  "startedUtc": "2026-10-30T12:38:33.303003+00:00",
+  "status": "PARTIAL",
+  "scope": "Owned live HTTPS/WSS: one newly registered Producer, approval/contact/private sender identity/account lock; one real CPU image job. Not model accuracy or mobile FPS.",
+  "tlsVerificationDisabled": false,
+  "checks": [
+    {
+      "name": "current privately recorded owned HTTPS only",
+      "pass": true,
+      "atMs": 0
+    },
+    {
+      "name": "real registration starts Pending Producer",
+      "pass": true,
+      "atMs": 2141
+    },
+    {
+      "name": "Admin approves real registered peer",
+      "pass": true,
+      "atMs": 3516
+    },
+    {
+      "name": "same-role Producer contact is reused once",
+      "pass": true,
+      "atMs": 4672
+    },
+    {
+      "name": "real TLS WebSocket upgrade verified",
+      "pass": true,
+      "atMs": 5453
+    },
+    {
+      "name": "SignalR JSON handshake accepted",
+      "pass": true,
+      "atMs": 5578
+    },
+    {
+      "name": "producer REST sender exact public string identity",
+      "pass": true,
+      "atMs": 6016
+    },
+    {
+      "name": "peer REST sender exact public string identity",
+      "pass": true,
+      "atMs": 6375
+    },
+    {
+      "name": "WSS sender exact public string identity 0540cc3d-e708-416c-8709-4da7965dcabf",
+      "pass": true,
+      "atMs": 6453
+    },
+    {
+      "name": "WSS sender exact public string identity 4cc8f319-a925-4c79-9cb4-985ea2371bfa",
+      "pass": true,
+      "atMs": 6453
+    },
+    {
+      "name": "actual WSS receives both persisted peer messages",
+      "pass": true,
+      "atMs": 6453
+    },
+    {
+      "name": "GET sender exact public string identity 4cc8f319-a925-4c79-9cb4-985ea2371bfa",
+      "pass": true,
+      "atMs": 7172
+    },
+    {
+      "name": "GET sender exact public string identity 0540cc3d-e708-416c-8709-4da7965dcabf",
+      "pass": true,
+      "atMs": 7172
+    },
+    {
+      "name": "REST recovery contains both messages",
+      "pass": true,
+      "atMs": 7172
+    },
+    {
+      "name": "fresh Producer supply awaits review",
+      "pass": true,
+      "atMs": 8016
+    },
+    {
+      "name": "continuation uses same privately recorded owned HTTPS",
+      "pass": true,
+      "atMs": 0
+    },
+    {
+      "name": "disabled author cannot publish and stays publicly hidden",
+      "pass": true,
+      "atMs": 3484
+    },
+    {
+      "name": "bounded single-image response",
+      "pass": true,
+      "atMs": 4265
+    },
+    {
+      "name": "one real image accepted202",
+      "pass": true,
+      "atMs": 4265
+    },
+    {
+      "name": "real .NET-to-configured-Python image succeeds",
+      "pass": true,
+      "atMs": 6906
+    },
+    {
+      "name": "same actual source graph hash",
+      "pass": true,
+      "atMs": 6922
+    },
+    {
+      "name": "same three green detections on retained image",
+      "pass": true,
+      "atMs": 6922
+    },
+    {
+      "name": "bounded single-image response",
+      "pass": true,
+      "atMs": 7812
+    },
+    {
+      "name": "authorized annotated JPEG returned",
+      "pass": true,
+      "atMs": 7812
+    }
+  ],
+  "requests": [
+    {
+      "role": "anonymous",
+      "method": "POST",
+      "route": "/api/v1/auth/login",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 16,
+      "latencyMs": 1468.0
+    },
+    {
+      "role": "anonymous",
+      "method": "POST",
+      "route": "/api/v1/auth/login",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 16,
+      "latencyMs": 1468.0
+    },
+    {
+      "role": "anonymous",
+      "method": "POST",
+      "route": "/api/v1/auth/login",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 16,
+      "latencyMs": 1468.0
+    },
+    {
+      "role": "anonymous",
+      "method": "POST",
+      "route": "/api/v1/auth/register",
+      "status": 201,
+      "expectedStatus": 201,
+      "startMs": 1484,
+      "latencyMs": 657.0
+    },
+    {
+      "role": "anonymous",
+      "method": "POST",
+      "route": "/api/v1/auth/login",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 2156,
+      "latencyMs": 500.0
+    },
+    {
+      "role": "peer",
+      "method": "POST",
+      "route": "/api/v1/posts/48853e34-6371-4dfd-a9c5-ac9da67b6f02/conversations",
+      "status": 403,
+      "expectedStatus": 403,
+      "startMs": 2656,
+      "latencyMs": 422.0
+    },
+    {
+      "role": "admin",
+      "method": "POST",
+      "route": "/api/v1/admin/applications/e2ed539e-ee5e-4a54-bf14-ffaf8023009a/review",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 3078,
+      "latencyMs": 438.0
+    },
+    {
+      "role": "peer",
+      "method": "POST",
+      "route": "/api/v1/posts/48853e34-6371-4dfd-a9c5-ac9da67b6f02/conversations",
+      "status": 201,
+      "expectedStatus": 201,
+      "startMs": 3516,
+      "latencyMs": 781.0
+    },
+    {
+      "role": "peer",
+      "method": "POST",
+      "route": "/api/v1/posts/48853e34-6371-4dfd-a9c5-ac9da67b6f02/conversations",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 4297,
+      "latencyMs": 375.0
+    },
+    {
+      "role": "producer",
+      "method": "POST",
+      "route": "/api/v1/conversations/9c0b00bd-2f4e-4a2e-9a21-55583a408343/messages",
+      "status": 201,
+      "expectedStatus": 201,
+      "startMs": 5578,
+      "latencyMs": 438.0
+    },
+    {
+      "role": "peer",
+      "method": "POST",
+      "route": "/api/v1/conversations/9c0b00bd-2f4e-4a2e-9a21-55583a408343/messages",
+      "status": 201,
+      "expectedStatus": 201,
+      "startMs": 6016,
+      "latencyMs": 359.0
+    },
+    {
+      "role": "peer",
+      "method": "GET",
+      "route": "/api/v1/conversations/9c0b00bd-2f4e-4a2e-9a21-55583a408343/messages",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 6453,
+      "latencyMs": 719.0
+    },
+    {
+      "role": "consumer",
+      "method": "GET",
+      "route": "/api/v1/conversations/9c0b00bd-2f4e-4a2e-9a21-55583a408343/messages",
+      "status": 404,
+      "expectedStatus": 404,
+      "startMs": 7172,
+      "latencyMs": 453.0
+    },
+    {
+      "role": "peer",
+      "method": "POST",
+      "route": "/api/v1/posts",
+      "status": 201,
+      "expectedStatus": 201,
+      "startMs": 7625,
+      "latencyMs": 391.0
+    },
+    {
+      "role": "admin",
+      "method": "POST",
+      "route": "/api/v1/admin/users/e2ed539e-ee5e-4a54-bf14-ffaf8023009a/status",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 8016,
+      "latencyMs": 406.0
+    },
+    {
+      "role": "admin",
+      "method": "POST",
+      "route": "/api/v1/auth/logout",
+      "status": 204,
+      "expectedStatus": null,
+      "startMs": 8422,
+      "latencyMs": 328.0
+    },
+    {
+      "role": "producer",
+      "method": "POST",
+      "route": "/api/v1/auth/logout",
+      "status": 204,
+      "expectedStatus": null,
+      "startMs": 8750,
+      "latencyMs": 406.0
+    },
+    {
+      "role": "consumer",
+      "method": "POST",
+      "route": "/api/v1/auth/logout",
+      "status": 204,
+      "expectedStatus": null,
+      "startMs": 9156,
+      "latencyMs": 375.0
+    },
+    {
+      "role": "anonymous",
+      "method": "POST",
+      "route": "/api/v1/auth/login",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 0,
+      "latencyMs": 1922.0,
+      "stage": "continuation"
+    },
+    {
+      "role": "anonymous",
+      "method": "POST",
+      "route": "/api/v1/auth/login",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 1922,
+      "latencyMs": 609.0,
+      "stage": "continuation"
+    },
+    {
+      "role": "admin",
+      "method": "POST",
+      "route": "/api/v1/admin/posts/889ad48a-4e97-4d31-9c8e-0aeb77095466/review",
+      "status": 409,
+      "expectedStatus": 409,
+      "startMs": 2531,
+      "latencyMs": 375.0,
+      "stage": "continuation"
+    },
+    {
+      "role": "anonymous",
+      "method": "GET",
+      "route": "/api/v1/posts/889ad48a-4e97-4d31-9c8e-0aeb77095466",
+      "status": 404,
+      "expectedStatus": 404,
+      "startMs": 2906,
+      "latencyMs": 578.0,
+      "stage": "continuation"
+    },
+    {
+      "role": "producer",
+      "method": "POST",
+      "route": "/api/v1/ai/jobs?mediaType=image",
+      "status": 202,
+      "latencyMs": 703,
+      "stage": "continuation"
+    },
+    {
+      "role": "producer",
+      "method": "GET",
+      "route": "/api/v1/ai/jobs/5750c4ac-cca1-4cdf-bbb4-ea8b62fec843",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 6265,
+      "latencyMs": 641.0,
+      "stage": "continuation"
+    },
+    {
+      "role": "producer",
+      "method": "GET",
+      "route": "/api/v1/ai/jobs/5750c4ac-cca1-4cdf-bbb4-ea8b62fec843/preview",
+      "status": 200,
+      "latencyMs": 781,
+      "stage": "continuation"
+    },
+    {
+      "role": "admin",
+      "method": "POST",
+      "route": "/api/v1/auth/logout",
+      "status": 204,
+      "expectedStatus": null,
+      "startMs": 7812,
+      "latencyMs": 313.0,
+      "stage": "continuation"
+    },
+    {
+      "role": "producer",
+      "method": "POST",
+      "route": "/api/v1/auth/logout",
+      "status": 204,
+      "expectedStatus": null,
+      "startMs": 8125,
+      "latencyMs": 375.0,
+      "stage": "continuation"
+    }
+  ],
+  "interleavings": [],
+  "records": {
+    "originalPublishedSupplyPostId": "48853e34-6371-4dfd-a9c5-ac9da67b6f02",
+    "registeredPeerId": "e2ed539e-ee5e-4a54-bf14-ffaf8023009a",
+    "peerProducerConversationId": "9c0b00bd-2f4e-4a2e-9a21-55583a408343",
+    "messageIds": [
+      "0540cc3d-e708-416c-8709-4da7965dcabf",
+      "4cc8f319-a925-4c79-9cb4-985ea2371bfa"
+    ],
+    "blockedAuthorPostId": "889ad48a-4e97-4d31-9c8e-0aeb77095466",
+    "aiImageJobId": "5750c4ac-cca1-4cdf-bbb4-ea8b62fec843"
+  },
+  "cleanup": [
+    {
+      "role": "admin",
+      "logoutStatus": 204
+    },
+    {
+      "role": "producer",
+      "logoutStatus": 204
+    },
+    {
+      "role": "consumer",
+      "logoutStatus": 204
+    },
+    {
+      "role": "admin",
+      "logoutStatus": 204,
+      "stage": "continuation"
+    },
+    {
+      "role": "producer",
+      "logoutStatus": 204,
+      "stage": "continuation"
+    }
+  ],
+  "schemaVersion": 1,
+  "baseUrl": "https://tips-differential-relating-validity.trycloudflare.com",
+  "controlledPeerDisabled": true,
+  "finishedUtc": "2026-10-30T12:40:05.143911+00:00",
+  "elapsedSeconds": 9.531,
+  "httpRequests": 27,
+  "continuationStartedUtc": "2026-10-30T12:39:56.640262+00:00",
+  "harnessRecovery": {
+    "cause": "Probe expected top-level isActive after successful200; API correctly wraps account profile in user.",
+    "noMutationRetried": true,
+    "originalErrorType": "KeyError",
+    "liveRevokedPeerTokenCheck": "UNVERIFIED: original memory-only token cleared during failed-run cleanup; no account recreated or reenabled."
+  },
+  "businessStatus": "PASS_EXCEPT_LIVE_REVOKED_TOKEN_UNVERIFIED",
+  "aiPreflightFreeGiB": 3.514,
+  "aiStatus": "PASS",
+  "ai": {
+    "jobId": "5750c4ac-cca1-4cdf-bbb4-ea8b62fec843",
+    "graphSha256": "8a69c66a9444c18c98a7e3e58a44f4dddda9eb4583dd4448f430ff9e8db27c41",
+    "runtimeDescription": "C:-hosted project-local server/.tools/ai-venv Python3.11 and its own site-packages; no external extra module path",
+    "extraModulePathConfigured": false,
+    "workerSourceClearsInheritedEnvironment": true,
+    "workerSourceSha256": "b2d5c9b5865400c1ffc9f8a792008d496022328d356bdead05a81a738fe1aa05",
+    "result": {
+      "schema": "fruitvision-ai-v1",
+      "objects": [
+        {
+          "box": [
+            0.33634799321492515,
+            0.5357550303141276,
+            0.454396915435791,
+            0.7062548319498698
+          ],
+          "score": 0.9437745,
+          "trackId": null,
+          "stageCode": 0,
+          "fruitLabel": "Quả",
+          "stageLabel": "Xanh / chưa chín"
+        },
+        {
+          "box": [
+            0.36059996287027996,
+            0.3595401763916016,
+            0.593877665201823,
+            0.55557861328125
+          ],
+          "score": 0.9419609,
+          "trackId": null,
+          "stageCode": 0,
+          "fruitLabel": "Quả",
+          "stageLabel": "Xanh / chưa chín"
+        },
+        {
+          "box": [
+            0.43795789082845055,
+            0.6569775051540798,
+            0.585538101196289,
+            0.8643139309353298
+          ],
+          "score": 0.9418624,
+          "trackId": null,
+          "stageCode": 0,
+          "fruitLabel": "Quả",
+          "stageLabel": "Xanh / chưa chín"
+        }
+      ],
+      "modelName": "YOLOX-Tiny reviewed partial-visibility fruit geometry and source stages",
+      "gradeCounts": {
+        "Chín": 0,
+        "Chưa xác định": 0,
+        "Xanh / chưa chín": 3
+      },
+      "limitations": [
+        "Chỉ dùng cho bản trình diễn phi thương mại; giấy phép nguồn dữ liệu/model còn hạn chế.",
+        "Hai nhãn giai đoạn từ dữ liệu nguồn không xác nhận độ chín ngoài thực tế; quả chưa biết hoặc độ tin cậy thấp không được phân hạng.",
+        "Nhận dạng loài chỉ là chẩn đoán nội bộ; nhãn hiển thị chung là Quả.",
+        "Video chưa đạt tiêu chí chất lượng khoa học; có thể bỏ sót, trùng khung hoặc sai giai đoạn.",
+        "Theo dõi bằng hình học không tái nhận dạng vật thể: che khuất lâu, quay lại và camera chuyển động có thể làm sai số đếm.",
+        "Số qua vạch y=0.5 đếm mỗi ID một lần theo cả hai hướng; không phải bảo đảm số quả vật lý duy nhất.",
+        "Ảnh đơn không theo dõi ID; xem số quả đang thấy (maxVisibleCount)."
+      ],
+      "modelSha256": "8a69c66a9444c18c98a7e3e58a44f4dddda9eb4583dd4448f430ff9e8db27c41",
+      "framesProcessed": 1,
+      "maxVisibleCount": 3,
+      "lineCrossingCount": 0,
+      "processingSeconds": 0.703,
+      "confirmedTrackCount": 0
+    },
+    "snapshots": [
+      {
+        "status": "Succeeded",
+        "progress": 100,
+        "revision": 4
+      }
+    ],
+    "previewBytes": 34646,
+    "previewSha256": "28f4d628097a4cbe63a24a6471eb60c57d11e7eb5345f09135a8717ba3e2dbe2",
+    "imageSourceSha256": "efd9b77733593c6ecbebc3304a0b64394e8019df394f82d13bb386f108b33dd2"
+  },
+  "remainingUnverified": [
+    "Live401 using pre-lock peer access token: probe exited after successful lock and cleared that memory-only token. Isolated backend revocation tests are separate evidence."
+  ],
+  "continuationElapsedSeconds": 8.5,
+  "combinedActiveProbeSeconds": 18.031
+}

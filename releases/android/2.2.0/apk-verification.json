@@ -1,0 +1,59 @@
+{
+  "allPassed": true,
+  "artifacts": [
+    {
+      "abi": "arm64-v8a",
+      "path": "app-arm64-v8a-release.apk",
+      "bytes": 18827440,
+      "sha256": "e74c9f02d4cf8a312f6eaf9b334a117ce0cdcba88fde7e4bb8122979f514e8ba",
+      "version": "2.2.0+6006",
+      "v2Signature": true,
+      "signerSha256": "b254a31dc9fd217c68e076f8ac880dd151086904851fafd9f6c4c18f2905d971",
+      "platformPermissions": [
+        "INTERNET",
+        "REQUEST_INSTALL_PACKAGES"
+      ],
+      "appSignatureOnlyReceiverPermission": true,
+      "noAiRuntimeOrWeights": true,
+      "cleartextDisabled": true,
+      "backupDisabled": true,
+      "signingNote": "Existing debug signer retained for course demo upgrades; not Play Store release signing."
+    },
+    {
+      "abi": "armeabi-v7a",
+      "path": "app-armeabi-v7a-release.apk",
+      "bytes": 16318072,
+      "sha256": "9d8559546e6339dd8ba83a9e01ebaaed0600bf71aa186614bbf5df40303919d7",
+      "version": "2.2.0+6006",
+      "v2Signature": true,
+      "signerSha256": "b254a31dc9fd217c68e076f8ac880dd151086904851fafd9f6c4c18f2905d971",
+      "platformPermissions": [
+        "INTERNET",
+        "REQUEST_INSTALL_PACKAGES"
+      ],
+      "appSignatureOnlyReceiverPermission": true,
+      "noAiRuntimeOrWeights": true,
+      "cleartextDisabled": true,
+      "backupDisabled": true,
+      "signingNote": "Existing debug signer retained for course demo upgrades; not Play Store release signing."
+    },
+    {
+      "abi": "x86_64",
+      "path": "app-x86_64-release.apk",
+      "bytes": 20327602,
+      "sha256": "c6c40c8d4810f9c266de043cf8fc2c90659be3d6ffb8f4e5e489157b0b651347",
+      "version": "2.2.0+6006",
+      "v2Signature": true,
+      "signerSha256": "b254a31dc9fd217c68e076f8ac880dd151086904851fafd9f6c4c18f2905d971",
+      "platformPermissions": [
+        "INTERNET",
+        "REQUEST_INSTALL_PACKAGES"
+      ],
+      "appSignatureOnlyReceiverPermission": true,
+      "noAiRuntimeOrWeights": true,
+      "cleartextDisabled": true,
+      "backupDisabled": true,
+      "signingNote": "Existing debug signer retained for course demo upgrades; not Play Store release signing."
+    }
+  ]
+}

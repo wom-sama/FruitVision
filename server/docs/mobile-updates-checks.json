@@ -1,0 +1,116 @@
+{
+  "atUtc": "2026-10-30T12:59:58.9190965+00:00",
+  "publisherDummyCases": 26,
+  "publisherPassed": 26,
+  "scope": "Publisher filesystem/receipt validation using explicitly unsigned dummy bytes; no APK signature or actual update claim",
+  "cases": [
+    {
+      "name": "first complete publication succeeds",
+      "passed": true
+    },
+    {
+      "name": "latest equals immutable version snapshot bytes",
+      "passed": true
+    },
+    {
+      "name": "all three canonical ABI artifacts registered",
+      "passed": true
+    },
+    {
+      "name": "copied hash arm64-v8a",
+      "passed": true
+    },
+    {
+      "name": "copied hash armeabi-v7a",
+      "passed": true
+    },
+    {
+      "name": "copied hash x86_64",
+      "passed": true
+    },
+    {
+      "name": "identical receipt rerun is idempotent",
+      "passed": true
+    },
+    {
+      "name": "idempotence preserves exact latest bytes and publishedAt",
+      "passed": true
+    },
+    {
+      "name": "same-version different notes rejected",
+      "passed": true
+    },
+    {
+      "name": "downgrade rejected",
+      "passed": true
+    },
+    {
+      "name": "receipt hash mismatch rejected",
+      "passed": true
+    },
+    {
+      "name": "invalid publication leaves latest unchanged",
+      "passed": true
+    },
+    {
+      "name": "invalid publication exposes no version snapshot",
+      "passed": true
+    },
+    {
+      "name": "receipt path traversal outside explicit directory rejected",
+      "passed": true
+    },
+    {
+      "name": "mixed signers rejected",
+      "passed": true
+    },
+    {
+      "name": "unverified V2 receipt rejected",
+      "passed": true
+    },
+    {
+      "name": "declared artifact over80MiB rejected",
+      "passed": true
+    },
+    {
+      "name": "missing ABI rejected",
+      "passed": true
+    },
+    {
+      "name": "relative publication root rejected",
+      "passed": true
+    },
+    {
+      "name": "same-version different signed-byte claim rejected",
+      "passed": true
+    },
+    {
+      "name": "immutable registered file remains original",
+      "passed": true
+    },
+    {
+      "name": "all rejected attempts preserve latest pointer",
+      "passed": true
+    },
+    {
+      "name": "newer verified version publishes successfully",
+      "passed": true
+    },
+    {
+      "name": "latest advances to6006 with matching snapshot bytes",
+      "passed": true
+    },
+    {
+      "name": "older immutable snapshot survives newer publication",
+      "passed": true
+    },
+    {
+      "name": "older registered APK bytes survive newer publication",
+      "passed": true
+    }
+  ],
+  "backendFullSuite": 60,
+  "nativePolicyCases": 22,
+  "apkUpgradeAcceptance": "PASS on shared API30 emulator,6004 to6006 through actual HTTPS/native validation/Android installer; see releases/android/2.2.0/native-acceptance.json",
+  "flutterSuite": 64
+}

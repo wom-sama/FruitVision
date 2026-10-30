@@ -1,0 +1,97 @@
+{
+  "version": "1",
+  "pip_version": "26.2.1",
+  "install": [
+    {
+      "download_info": {
+        "url": "https://files.pythonhosted.org/packages/69/82/2e2bf967ade9567d77c307533566ef56a19c32e2114fc062a405703def88/onnxruntime-1.31.1-cp311-cp311-win_amd64.whl",
+        "archive_info": {
+          "hashes": {
+            "sha256": "c3d91b5de31e2fc82d71bd65b2b22bddee8b49057a3a36338e9a868e0ea90c05"
+          },
+          "hash": "sha256=c3d91b5de31e2fc82d71bd65b2b22bddee8b49057a3a36338e9a868e0ea90c05"
+        }
+      },
+      "is_direct": false,
+      "is_yanked": false,
+      "requested": true,
+      "metadata": {
+        "metadata_version": "2.4",
+        "name": "onnxruntime",
+        "version": "1.31.1",
+        "dynamic": [
+          "author",
+          "author-email",
+          "classifier",
+          "description",
+          "download-url",
+          "home-page",
+          "keywords",
+          "license",
+          "provides-extra",
+          "requires-dist",
+          "requires-python",
+          "summary"
+        ],
+        "summary": "ONNX Runtime is a runtime accelerator for Machine Learning models",
+        "description": "ONNX Runtime\n============\n\nONNX Runtime is a performance-focused scoring engine for Open Neural Network Exchange (ONNX) models.\nFor more information on ONNX Runtime, please see `aka.ms/onnxruntime <https://aka.ms/onnxruntime/>`_ or the `Github project <https://github.com/microsoft/onnxruntime/>`_.\n\n\nChanges\n-------\n\n1.31.1\n^^^^^^\n\nRelease Notes : https://github.com/Microsoft/onnxruntime/releases/tag/v1.31.1\n\n1.31.0\n^^^^^^\n\nRelease Notes : https://github.com/Microsoft/onnxruntime/releases/tag/v1.31.0\n\n1.30.0\n^^^^^^\n\nRelease Notes : https://github.com/Microsoft/onnxruntime/releases/tag/v1.30.0\n\n1.29.0\n^^^^^^\n\nRelease Notes : https://github.com/Microsoft/onnxruntime/releases/tag/v1.29.0\n\n1.28.0\n^^^^^^\n\nRelease Notes : https://github.com/Microsoft/onnxruntime/releases/tag/v1.28.0\n\n1.27.0\n^^^^^^\n\nRelease Notes : https://github.com/Microsoft/onnxruntime/releases/tag/v1.27.0\n\n1.26.0\n^^^^^^\n\nRelease Notes : https://github.com/Microsoft/onnxruntime/releases/tag/v1.26.0\n\n1.25.0\n^^^^^^\n\nRelease Notes : https://github.com/Microsoft/onnxruntime/releases/tag/v1.25.0\n\n1.24.1\n^^^^^^\n\nRelease Notes : https://github.com/Microsoft/onnxruntime/releases/tag/v1.24.1\n\n1.23.0\n^^^^^^\n\nRelease Notes : https://github.com/Microsoft/onnxruntime/releases/tag/v1.23.0\n\n1.22.0\n^^^^^^\n\nRelease Notes : https://github.com/Microsoft/onnxruntime/releases/tag/v1.22.0\n\n1.21.0\n^^^^^^\n\nRelease Notes : https://github.com/Microsoft/onnxruntime/releases/tag/v1.21.0\n\n1.20.0\n^^^^^^\n\nRelease Notes : https://github.com/Microsoft/onnxruntime/releases/tag/v1.20.0\n\n1.19.0\n^^^^^^\n\nRelease Notes : https://github.com/Microsoft/onnxruntime/releases/tag/v1.19.0\n\n1.18.0\n^^^^^^\n\nRelease Notes : https://github.com/Microsoft/onnxruntime/releases/tag/v1.18.0\n\n1.17.0\n^^^^^^\n\nRelease Notes : https://github.com/Microsoft/onnxruntime/releases/tag/v1.17.0\n\n1.16.0\n^^^^^^\n\nRelease Notes : https://github.com/Microsoft/onnxruntime/releases/tag/v1.16.0\n\n1.15.0\n^^^^^^\n\nRelease Notes : https://github.com/Microsoft/onnxruntime/releases/tag/v1.15.0\n\n1.14.0\n^^^^^^\n\nRelease Notes : https://github.com/Microsoft/onnxruntime/releases/tag/v1.14.0\n\n1.13.1\n^^^^^^\n\nRelease Notes : https://github.com/Microsoft/onnxruntime/releases/tag/v1.13.1\n\n1.12.0\n^^^^^^\n\nRelease Notes : https://github.com/Microsoft/onnxruntime/releases/tag/v1.12.0\n\n1.11.0\n^^^^^^\n\nRelease Notes : https://github.com/Microsoft/onnxruntime/releases/tag/v1.11.0\n\n1.10.0\n^^^^^^\n\nRelease Notes : https://github.com/Microsoft/onnxruntime/releases/tag/v1.10.0\n\n1.9.0\n^^^^^\n\nRelease Notes : https://github.com/Microsoft/onnxruntime/releases/tag/v1.9.0\n\n1.8.2\n^^^^^\n\nRelease Notes : https://github.com/Microsoft/onnxruntime/releases/tag/v1.8.2\n\n1.8.1\n^^^^^\n\nRelease Notes : https://github.com/Microsoft/onnxruntime/releases/tag/v1.8.1\n\n1.8.0\n^^^^^\n\nRelease Notes : https://github.com/Microsoft/onnxruntime/releases/tag/v1.8.0\n\n1.7.0\n^^^^^\n\nRelease Notes : https://github.com/Microsoft/onnxruntime/releases/tag/v1.7.0\n\n1.6.0\n^^^^^\n\nRelease Notes : https://github.com/Microsoft/onnxruntime/releases/tag/v1.6.0\n\n1.5.3\n^^^^^\n\nRelease Notes : https://github.com/Microsoft/onnxruntime/releases/tag/v1.5.3\n\n1.5.2\n^^^^^\n\nRelease Notes : https://github.com/Microsoft/onnxruntime/releases/tag/v1.5.2\n\n1.5.1\n^^^^^\n\nRelease Notes : https://github.com/Microsoft/onnxruntime/releases/tag/v1.5.1\n\n\n1.4.0\n^^^^^\n\nRelease Notes : https://github.com/Microsoft/onnxruntime/releases/tag/v1.4.0\n\n1.3.1\n^^^^^\n\nRelease Notes : https://github.com/Microsoft/onnxruntime/releases/tag/v1.3.1\n\n1.3.0\n^^^^^\n\nRelease Notes : https://github.com/Microsoft/onnxruntime/releases/tag/v1.3.0\n\n1.2.0\n^^^^^\n\nRelease Notes : https://github.com/Microsoft/onnxruntime/releases/tag/v1.2.0\n\n1.1.0\n^^^^^\n\nRelease Notes : https://github.com/Microsoft/onnxruntime/releases/tag/v1.1.0\n\n1.0.0\n^^^^^\n\nRelease Notes : https://github.com/Microsoft/onnxruntime/releases/tag/v1.0.0\n\n0.5.0\n^^^^^\n\nRelease Notes : https://github.com/Microsoft/onnxruntime/releases/tag/v0.5.0\n\n0.4.0\n^^^^^\n\nRelease Notes : https://github.com/Microsoft/onnxruntime/releases/tag/v0.4.0\n",
+        "keywords": [
+          "onnx",
+          "machine",
+          "learning"
+        ],
+        "home_page": "https://onnxruntime.ai",
+        "download_url": "https://github.com/microsoft/onnxruntime/tags",
+        "author": "Microsoft Corporation",
+        "author_email": "onnxruntime@microsoft.com",
+        "license": "MIT License",
+        "classifier": [
+          "Development Status :: 5 - Production/Stable",
+          "Intended Audience :: Developers",
+          "License :: OSI Approved :: MIT License",
+          "Operating System :: POSIX :: Linux",
+          "Operating System :: Microsoft :: Windows",
+          "Operating System :: MacOS",
+          "Topic :: Scientific/Engineering",
+          "Topic :: Scientific/Engineering :: Mathematics",
+          "Topic :: Scientific/Engineering :: Artificial Intelligence",
+          "Topic :: Software Development",
+          "Topic :: Software Development :: Libraries",
+          "Topic :: Software Development :: Libraries :: Python Modules",
+          "Programming Language :: Python",
+          "Programming Language :: Python :: 3 :: Only",
+          "Programming Language :: Python :: 3.11",
+          "Programming Language :: Python :: 3.12",
+          "Programming Language :: Python :: 3.13",
+          "Programming Language :: Python :: 3.14"
+        ],
+        "requires_dist": [
+          "flatbuffers",
+          "numpy>=1.21.6",
+          "packaging",
+          "protobuf>=4.25.8",
+          "sympy; extra == \"symbolic\"",
+          "ml_dtypes; extra == \"quantization\""
+        ],
+        "requires_python": ">=3.11",
+        "provides_extra": [
+          "symbolic",
+          "quantization"
+        ]
+      }
+    }
+  ],
+  "environment": {
+    "implementation_name": "cpython",
+    "implementation_version": "3.11.9",
+    "os_name": "nt",
+    "platform_machine": "AMD64",
+    "platform_release": "10",
+    "platform_system": "Windows",
+    "platform_version": "10.0.26200",
+    "python_full_version": "3.11.9",
+    "platform_python_implementation": "CPython",
+    "python_version": "3.11",
+    "sys_platform": "win32"
+  }
+}

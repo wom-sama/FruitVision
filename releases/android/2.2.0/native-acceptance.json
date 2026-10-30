@@ -1,0 +1,83 @@
+{
+  "status": "PASS",
+  "atUtc": "2026-10-30T13:44:20.904205+00:00",
+  "scope": "Actual release APK via manual ADB input/screenshots on shared emulator; four roles sequentially, not four phones",
+  "version": "2.2.0+6006",
+  "device": {
+    "avd": "HN_Final_API30",
+    "api": 30,
+    "guestMemTotalKiB": 997976,
+    "cores": 2,
+    "appPssSnapshotKiB": 105154,
+    "appRssSnapshotKiB": 135680,
+    "appSwapPssSnapshotKiB": 22441,
+    "memoryNote": "Single snapshot after business actions; not CPU/FPS/phone benchmark"
+  },
+  "upgrade": {
+    "bootstrapVersionCode": 6004,
+    "installedVersionCode": 6006,
+    "targetX64Sha256": "c6c40c8d4810f9c266de043cf8fc2c90659be3d6ffb8f4e5e489157b0b651347",
+    "transport": "Real public HTTPS -> native SHA/size/package/version/signer validation -> FileProvider -> Android package installer confirmation",
+    "adbInstallUsedForTarget": false,
+    "sessionKeystorePreserved": true,
+    "startupOfferObserved": true,
+    "permissionSettingsObserved": true,
+    "permissionChangeKilledProcess": true,
+    "exitReason": "OTHER KILLS BY SYSTEM: REQUEST_INSTALL_PACKAGES changed",
+    "cached6005RecoveredAndReverifiedWithoutDownload": true,
+    "inFlightDownloadCancelledAndReturnedToOffer": true,
+    "osInstallerAppInstalledObserved": true
+  },
+  "business": {
+    "nativeProducerCreatedPostId": "2e472c04-5a70-4beb-bfe6-756bcd81bd86",
+    "nativeAdminPublishedRevision": 2,
+    "nativeTraderContactConversationId": "ee58fdb6-5bbd-4b7b-acd7-b09b24edbb00",
+    "nativeTraderSent": "Trader native inquiry 2035",
+    "independentProducerReplyAutoVisible": "Producer reply to native trader 2031",
+    "replyMessageId": "4067c6e2-fadf-4809-af09-60584aa9c8ef",
+    "senderNameAndRoleVisible": true,
+    "consumerMarket": {
+      "region": "NativeQA2031",
+      "supplyEstimatedKg": 125,
+      "referencePostedPriceVndPerKg": 24000,
+      "priceSamples": 1
+    },
+    "consumerJoinedAndLeftGroupId": "5b4d31a4-999b-41d8-b951-c36e5972781d",
+    "groupMembershipObserved": [
+      1,
+      2,
+      1
+    ],
+    "groupReplyAutoVisible": "Producer group reply 2038",
+    "leftGroupHistoryHttpStatus": 404,
+    "consumerCreatedAndClosedGroupId": "a6306018-74d8-45ad-9d6b-bd87ef3e2b0f",
+    "closedGroupComposerDisabled": true
+  },
+  "unchangedEvidence": {
+    "pcAiImage": "server/docs/live-peer-and-ai-2.2.json (real image successful; overall report PARTIAL due separate revocation observation)",
+    "priorMobileAiImageVideo": "2.1 evidence retained; no new AI image/video submission on this exact6006 APK",
+    "fourConcurrentHttpsWss": "server/docs/verticals-https-e2e.json"
+  },
+  "limitations": [
+    "No physical phone acceptance in this release",
+    "One early UiAutomator process failed and Android framework restarted; subsequent acceptance used manual shell inputs/screenshots",
+    "Closed empty-group hint still says send first greeting; composer is correctly disabled/read-only",
+    "Camera still capture and continuous camera streaming not validated; no production/FPS/model-grade accuracy claim"
+  ],
+  "screenshots": {
+    "updater-cache-recovered.png": "6e2b3a1a7cc8b6d2bd0848179f83ee9bcbbc3b901ac33a338be04974263b9aa6",
+    "updater-cancel-attempt-6006.png": "457b03d1e801dea37a83deeae7b13070fc463a870b7813b3e249f6eb51cf5137",
+    "updater-os-confirmation.png": "9e7c8d1030fe7dcb3b4f6ec7a32aa21b09831726ccb893dac5d5d9ab3d6a0638",
+    "updater-os-finished.png": "1afb54c7697c1ccec0617ad42a050458fcedc1d1d48b0b811e4e7487d96fa237",
+    "2.2-producer-restored.png": "c2fad1a54f387b4e5c4dc3139cc46a94c7509eb70fe9d817d3605a5e29a18d07",
+    "2.2-producer-created-home.png": "d0b6887b6d97ea7fd1f59e9710f9ad45957806cf546e12d69cdf146fe50e3b6a",
+    "2.2-admin-published-top.png": "fcd53a6c89c4b48e02c12cc1d2114c0b3619b04145f365764fb0e36b26503d04",
+    "2.2-trader-realtime-reply.png": "a8021c529fad50701ef813a3affe18c9af298df1d31bbe12e349f8cefb0a5733",
+    "2.2-market-native-reference.png": "f942b9bc8294851c5ee969cf599dda64ff7b3e7b012f50c375131056299db68c",
+    "2.2-community-reply.png": "82c03224c35a9225871d66ad9b3c8977dfb3195809a0a827e5b607c67b11b419",
+    "2.2-community-left.png": "0476aca8e13efa01528625492e1dbcc782b2f9a654f4c7d442001ef1283bfa01",
+    "2.2-consumer-owned-group.png": "c968562c238975e55f65e238a86b732156037599c1fe16bfa226b385761b9aeb",
+    "2.2-consumer-group-closed-confirmed.png": "b0588d69d63c9132ced3e41dc7c6adfb6895ff6b53be1070a9374665f1f6b68b",
+    "2.2-closed-group-readonly.png": "d82eced36a62663182148f697735bb8c63c62227c8e41f57973e92940893556e"
+  }
+}

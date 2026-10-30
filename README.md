@@ -1,84 +1,56 @@
 # FruitVision
 
-Ứng dụng Android xử lý ảnh, video và camera trực tiếp ngay trên thiết bị: phát hiện nhiều quả, hiển thị mức chín quan sát được cho loài được hỗ trợ và thống kê số đếm theo phiên. Repository cũng giữ demo desktop V18.6 để tham khảo pipeline phân loại xoài bằng Python.
+Đồ án **Lập trình trên thiết bị di động — HUTECH**: nền tảng nông sản bốn vai trò, tin cung/cầu dự kiến, trao đổi thời gian thực và phân tích ảnh/video bằng AI trên PC.
 
-Bản Android bàn giao: **1.3.5+5009**, Android **8.0 / API 26** trở lên; APK hiện có vẫn hiển thị tên **Fruit Offline**. Mô hình đã đóng gói trong APK; khi sử dụng không cần Python, máy chủ, tài khoản hay kết nối Internet. Đây là demo nghiên cứu/học thuật phi thương mại.
+Client hiện tại: **2.2.0+6006**, Android 8.0 trở lên. Flutter chỉ gọi **API HTTPS**; tài khoản, CSDL và AI nằm trên PC. Điện thoại không cần Python hay trọng số AI. Bản offline cũ ở `app/` được giữ để bảo toàn nguồn gốc.
 
 ## Bắt đầu
 
-| Bạn muốn làm gì? | Tài liệu / tệp cần mở |
-| --- | --- |
-| Cài trên điện thoại, không biên dịch | [Hướng dẫn cài Android](docs/INSTALL_ANDROID.md#cài-apk-có-sẵn) |
-| Tải APK phù hợp | [ARM64](releases/android/1.3.5/app-arm64-v8a-release.apk) · [ARM32](releases/android/1.3.5/app-armeabi-v7a-release.apk) · [x86_64](releases/android/1.3.5/app-x86_64-release.apk) |
-| Mở mã nguồn bằng Android Studio / tự build | [Môi trường và cách build Android](docs/INSTALL_ANDROID.md#biên-dịch-từ-mã-nguồn) |
-| Chạy demo Python trên máy tính | [Hướng dẫn desktop](docs/INSTALL_DESKTOP.md) |
-| Tìm hiểu các thành phần | [Kiến trúc](docs/ARCHITECTURE.md) · [Mô hình Android](models/android/model-card.md) |
-| Xem tối ưu và phạm vi kiểm chứng | [Tối ưu đã áp dụng](docs/optimizations/README.md) · [Bằng chứng bản 1.3.5](releases/android/1.3.5/) |
-| Xem kiểm tra gói mã nguồn nộp bài | [Kiểm tra submission](docs/SUBMISSION_CHECKS.md) |
-| Xem slide thuyết trình | [PDF HUTECH đầy đủ 23 trang](docs/presentation/AI_phan_loai_xoai_HUTECH_da_trinh_bay.pdf) |
+| Nhu cầu | Tệp / hướng dẫn |
+|---|---|
+| Cài Android | [ARM64](releases/android/2.2.0/app-arm64-v8a-release.apk) · [ARM32](releases/android/2.2.0/app-armeabi-v7a-release.apk) · [x86_64](releases/android/2.2.0/app-x86_64-release.apk) |
+| Chạy backend và CSDL | [Server](server/README.md) · [Cài từ clone mới](server/docs/RELEASE_2_2_INTERACTIONS.md) |
+| Build client / đổi máy chủ | [Flutter client](mobile_client/README.md) |
+| Demo bốn vai trò | [Luồng demo](server/docs/DEMO_4_ROLES_2_2.md) |
+| Kiến trúc và API | [Luồng hệ thống](docs/ARCHITECTURE_SERVER.md) · [Hợp đồng](server/docs/POST_COMMUNITY_CONTRACT.md) |
+| Cập nhật APK trong app | [Hướng dẫn phát hành](server/docs/MOBILE_RELEASES.md) |
+| Slide đã trình bày | [PDF HUTECH 23 trang](docs/presentation/AI_phan_loai_xoai_HUTECH_da_trinh_bay.pdf) |
+| Offline / desktop trước đây | [Tài liệu lưu trữ](README_OFFLINE_ARCHIVE.md) |
 
-Phần lớn điện thoại Android hiện nay dùng APK **ARM64**. Mở tệp APK trên GitHub rồi chọn tải tệp gốc; hướng dẫn Android giải thích cách xác định ABI, cấp quyền cài đặt và xử lý lỗi cập nhật.
+PC phải chạy API, PostgreSQL, worker AI và tunnel HTTPS. Điện thoại cần mạng và đúng URL máy chủ; `localhost` trên điện thoại không phải PC. Hostname tunnel tạm có thể thay đổi khi khởi động lại. Tài khoản/mật khẩu demo được sinh riêng trong `server/.local/demo-accounts.json`; người vận hành cấp riêng, không đưa lên Git/APK.
 
-## Chức năng và phạm vi
+## Vai trò
 
-- **Ảnh:** chọn ảnh, chụp ảnh hoặc dùng ảnh mẫu; xem các khung phát hiện và kết quả từng quả.
-- **Video:** đọc các khung tuần tự, cập nhật kết quả và số đếm; hỗ trợ hủy xử lý. Mỗi video tối đa 10 phút.
-- **Camera trực tiếp:** xem preview và kết quả AI trên thiết bị; tần suất phân tích thực phụ thuộc phần cứng và nhiệt độ.
-- **Đếm theo phiên / qua vạch:** theo dõi ID bằng hình học; có thể chọn chiều và vị trí vạch cho video/camera cố định.
-- **Phân mức có giới hạn:** bản Android hiện tại hỗ trợ chuối và xoài với hai nhãn nguồn `Xanh / chưa chín`, `Chín`. Nhóm quả chung/chưa hỗ trợ có thể được phát hiện, nhưng giữ trạng thái **chưa phân mức**.
+| Vai trò | Chức năng |
+|---|---|
+| **Admin — Quản trị** | Duyệt hồ sơ; khóa/mở tài khoản; duyệt, từ chối, công bố hoặc tạm dừng bài; xem số liệu hệ thống. |
+| **Producer — Nhà sản xuất** | Đăng nguồn cung dự kiến, theo dõi duyệt; khám phá tin và trao đổi với thương lái/người dùng. |
+| **Trader — Thương lái** | Đăng nhu cầu thu mua hoặc nguồn cung; xem thông tin vùng và mở hội thoại từ tin. |
+| **Consumer — Người tiêu dùng** | Đọc tin công khai, giá chào bán tham khảo theo vùng, liên hệ người đăng và tham gia cộng đồng. |
 
-Số quả trong một ảnh, tổng ID theo phiên và lượt qua vạch là các đại lượng khác nhau. Che khuất lâu, quả đi ra rồi quay lại, quả chạm nhau hoặc camera di chuyển có thể gây mất ID, đếm thiếu hoặc đếm lại. Chưa có ground truth quỹ đạo để xác nhận sản lượng duy nhất; không quy đổi số đếm thành kg. Mức chín quan sát trên vỏ không phải kết luận an toàn thực phẩm.
+Tài khoản hoạt động đã duyệt có thể tạo/tham gia nhóm và phân tích ảnh/video. API kiểm quyền mỗi yêu cầu; ẩn nút không thay thế phân quyền. Tin mới phải được Admin công bố mới xuất hiện công khai.
 
-## Hai demo dùng hai pipeline khác nhau
+Giá tham khảo lấy từ **bài chào bán**, có vùng/số mẫu/thời điểm; không phải dự đoán AI hoặc giá giao dịch. Kg do người đăng khai là dự kiến; chưa có tồn kho, đơn hàng, thanh toán hay IoT.
 
-| | Android `app/` | Desktop `demos/desktop/` |
-| --- | --- | --- |
-| Mục đích | Demo nhiều quả trên điện thoại | Giữ pipeline xoài V18.6 trên máy tính |
-| Pipeline chính | YOLOX-Tiny ONNX → hậu xử lý → tracking/đếm | Grounding DINO → SAM → ViT-B/16 + delta V18.6 |
-| Đối tượng mỗi khung | Nhiều quả, tối đa 64 kết quả sau chọn lọc | Một quả chính được chọn |
-| Nhãn phân mức | 2 mức cho chuối/xoài được hỗ trợ | 5 lớp xoài của checkpoint V18.6 |
-| Môi trường | Flutter, Kotlin/C++, ONNX Runtime Android | Python 3.11, PyTorch, Transformers |
-| Offline | Ngay sau khi cài APK | Sau khi cài thư viện và tải đủ model một lần |
-
-Không dùng accuracy/F1 của desktop để đại diện cho Android. Script desktop hiện chạy suy luận và xuất kết quả, không huấn luyện hay tự tính lại accuracy/F1.
-
-## Cấu trúc repository
+## Cấu trúc và công nghệ
 
 ```text
-FruitVision/
-├── README.md
-├── app/                           # Mã nguồn Flutter + Android bản 1.3.5
-│   ├── lib/                       # Giao diện, tracking và bộ đếm
-│   ├── test/                      # Kiểm thử Flutter/Dart
-│   └── android/app/src/
-│       ├── main/assets/           # ONNX, metadata, ảnh mẫu, nguồn/giấy phép
-│       ├── main/kotlin/           # Decode, camera, inference Android
-│       ├── main/cpp/              # Tiền xử lý và chuyển đổi pixel native
-│       ├── test/                  # Kiểm thử JVM
-│       └── androidTest/           # Kiểm thử trên thiết bị/máy ảo Android
-├── models/android/                # Kiến trúc PyTorch, checkpoint, model card, test/export
-├── demos/desktop/                 # Demo Python, setup, notebook và delta V18.6
-├── releases/android/1.3.5/         # Ba APK, hash và bằng chứng phát hành
-└── docs/
-    ├── INSTALL_ANDROID.md
-    ├── INSTALL_DESKTOP.md
-    ├── ARCHITECTURE.md
-    ├── optimizations/README.md
-    └── presentation/              # PDF đã thuyết trình
+server/            ASP.NET Core API, PostgreSQL, worker AI, migration, seed, tests
+mobile_client/     Flutter client, native media/session/updater
+releases/android/  APK theo phiên bản, hash và biên nhận nghiệm thu
+docs/              Kiến trúc, slide và tài liệu kỹ thuật
+app/               Offline cũ; giữ model/metadata/giấy phép cho worker PC
+models/            Kiến trúc/checkpoint và model card đã công bố
+demos/desktop/     Pipeline desktop V18.6 trước đây
 ```
 
-Graph Android nằm trực tiếp tại [`app/android/app/src/main/assets/mango_detector.onnx`](app/android/app/src/main/assets/mango_detector.onnx), không bị nhân bản sang `models/android/`. [Mã kiến trúc và checkpoint PyTorch](models/android/README.md) cho phép dựng lại và kiểm tra graph; không cần Python để cài/build app. Demo desktop tự tải backbone ViT và snapshot DINO/SAM được khóa phiên bản trong bước setup; repository không yêu cầu Git LFS.
+Flutter/Dart → HTTPS REST / SignalR WSS → ASP.NET Core 10 → EF Core/Npgsql/PostgreSQL. API dùng Identity, phiên opaque, refresh rotation, MFA TOTP tùy chọn, kiểm dữ liệu/quyền và giới hạn yêu cầu. Python + ONNX Runtime chạy YOLOX-Tiny FP32 trên CPU PC. APK không nối trực tiếp CSDL hoặc Python.
 
-## Công nghệ và kết quả kiểm chứng
+Cập nhật trong app tải HTTPS vào cache riêng, đối chiếu SHA-256, package, version và signer rồi mở trình cài Android. **Cần người dùng xác nhận**; client cũ chưa có updater cần cài bản mới một lần. Thay đổi backend tương thích không cần cập nhật APK.
 
-Bản Android dùng Flutter **3.47.5**, Dart **3.13.4**, Kotlin và C++ qua JNI, CameraX, MediaCodec và ONNX Runtime Android **1.31.0**. Đồ thị chạy thực tế là YOLOX-Tiny **FP32, 20.307.691 byte**; chế độ hiện tại không dùng MangoStudent cũ, chưng cất kiến thức, INT8, GPU/NPU, server hay IoT.
+## Phạm vi kiểm chứng
 
-Bộ bằng chứng bàn giao 1.3.5 ghi nhận **147 kiểm thử Flutter**, **92 kiểm thử JVM** và **29 kiểm thử Android debug** đạt. APK release đã cài và chạy offline trên máy ảo Pixel 8 API 37; video kiểm tra hoàn tất 1.073 khung. Đây là kết quả kiểm tra đã lưu cùng bản phát hành, không phải cam kết mọi môi trường clone đều đã chạy lại các kiểm thử này. Xem [tài liệu kiểm tra phát hành](releases/android/1.3.5/KIEM_TRA_PHAT_HANH.md).
+Đọc biên nhận cùng APK để phân biệt unit/integration, HTTP/WSS thật, thao tác máy ảo và điện thoại. Bốn client mạng đồng thời không được gọi là bốn điện thoại đã kiểm thử. AI hỗ trợ ảnh và MP4 có giới hạn; chưa truyền camera liên tục lên server. Tracking có thể đếm lại khi che khuất/quay lại hoặc camera di chuyển; không bảo đảm sản lượng duy nhất, kg, độ ngọt hoặc an toàn thực phẩm.
 
-Thay đổi 1.3.5 giảm độ trễ phân tích đầu và cấp phát bộ nhớ. **Chưa đạt mục tiêu 30 FPS, chưa kiểm chứng hiệu năng điện thoại vật lý**, chưa chứng minh tăng throughput trong điều kiện đối chứng. Các candidate INT8 đã thử không giữ được kiểm tra chất lượng nên không được phát hành. [Tài liệu tối ưu](docs/optimizations/README.md) phân biệt cơ chế đã có, phép đo và giới hạn.
+Không công bố `.local`, `.tools`, DB/dump, secret, khóa ký, upload riêng hay môi trường Python. Hướng dẫn tạo môi trường riêng từ clone, không phụ thuộc ổ đĩa người phát triển. Đây là đồ án **phi thương mại**; xem [LICENSE.md](LICENSE.md), [model card](models/android/model-card.md) và các thông báo nguồn trong `app/android/app/src/main/assets/`. PDF 23 trang giữ nguyên; nội dung lịch sử trong slide không tự đại diện cho kiến trúc mới.
 
-## Tài liệu và nguồn gốc
-
-PDF trong `docs/presentation/` là **bản phục dựng đầy đủ 23 trang**, cập nhật ngày 16/10/2026: giữ nguyên 12 trang đã chỉnh sửa và bổ sung nội dung của 11 trang thiếu; bỏ slide thành viên riêng vì thông tin đã có trên bìa. Đây là bản phục dựng từ các PDF đã xuất, không phải khôi phục lịch sử Canva. Xem [nguồn gốc và phạm vi slide](docs/presentation/README.md). Để xác định hành vi và model của ứng dụng bàn giao, đọc model card, hướng dẫn cài và tài liệu bản 1.3.5; các pipeline/số liệu trong bài trình bày không tự động áp dụng cho bản Android hiện tại.
-
-Nguồn và điều kiện sử dụng model/dữ liệu được ghi tại [LICENSE.md](LICENSE.md), [`SOURCE_ATTRIBUTION.json`](app/android/app/src/main/assets/SOURCE_ATTRIBUTION.json) và [`YOLOX_LICENSE.txt`](app/android/app/src/main/assets/YOLOX_LICENSE.txt). Các thành phần bên thứ ba giữ giấy phép của chúng; việc có mã nguồn công khai không thay thế điều kiện sử dụng của model và dữ liệu kết hợp. [Các repository tham khảo](docs/REFERENCES.md) chỉ là tham khảo cách tổ chức bài nộp.

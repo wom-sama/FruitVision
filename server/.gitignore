@@ -1,0 +1,10 @@
+.local/
+.tools/
+**/bin/
+**/obj/
+**/TestResults/
+*.user
+*.log
+PUBLIC_URL.txt
+**/__pycache__/
+**/*.pyc

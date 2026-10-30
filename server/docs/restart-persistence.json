@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "dateUtc": "2026-10-30T08:07:47.450184+00:00",
+  "api_and_database_both_restarted": true,
+  "postgres_pid_changed": true,
+  "existing_opaque_session_valid_after_restart": true,
+  "counts_before": {
+    "users": 24,
+    "posts": 60,
+    "messages": 481
+  },
+  "counts_after": {
+    "users": 24,
+    "posts": 60,
+    "messages": 481
+  },
+  "duplicate_seed_records": false,
+  "private_log": ".local/restart-probe.log",
+  "physical_phone_or_internet_test": false
+}

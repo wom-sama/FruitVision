@@ -1,0 +1,588 @@
+{
+  "status": "PASS",
+  "outputDirectory": "C:\\Users\\ADMIN\\Documents\\Codex\\2026-08-23\\gi\\mobile_multifruit_work_20261009\\server\\.local\\ai-preflight\\1ddaace5abdd424fbdd75b2d099d03b9",
+  "result": {
+    "schema": "fruitvision-ai-v1",
+    "modelName": "YOLOX-Tiny reviewed partial-visibility fruit geometry and source stages",
+    "modelSha256": "8a69c66a9444c18c98a7e3e58a44f4dddda9eb4583dd4448f430ff9e8db27c41",
+    "framesProcessed": 1073,
+    "maxVisibleCount": 43,
+    "confirmedTrackCount": 198,
+    "lineCrossingCount": 48,
+    "gradeCounts": {
+      "Xanh / chưa chín": 3,
+      "Chín": 59,
+      "Chưa xác định": 136
+    },
+    "objects": [
+      {
+        "trackId": 13,
+        "box": [
+          0.7980271657307942,
+          0.5724386709707755,
+          0.8578717549641927,
+          0.6926804154007523
+        ],
+        "score": 0.9786276,
+        "fruitLabel": "Quả",
+        "stageCode": 1,
+        "stageLabel": "Chín"
+      },
+      {
+        "trackId": 3,
+        "box": [
+          0.28161233266194663,
+          0.7982323540581597,
+          0.36499125162760415,
+          0.9048377143012153
+        ],
+        "score": 0.9380426,
+        "fruitLabel": "Quả",
+        "stageCode": -1,
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "trackId": 29,
+        "box": [
+          0.7218667348225911,
+          0.49893244990596064,
+          0.771877670288086,
+          0.6179030806929977
+        ],
+        "score": 0.9327008,
+        "fruitLabel": "Quả",
+        "stageCode": 1,
+        "stageLabel": "Chín"
+      },
+      {
+        "trackId": 1,
+        "box": [
+          0.10064322153727213,
+          0.7798527470341435,
+          0.1918309211730957,
+          0.9005255805121528
+        ],
+        "score": 0.9284328,
+        "fruitLabel": "Quả",
+        "stageCode": -1,
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "trackId": 4,
+        "box": [
+          0.18145192464192708,
+          0.7563547770182292,
+          0.294686762491862,
+          0.8869467276114005
+        ],
+        "score": 0.9190281,
+        "fruitLabel": "Quả",
+        "stageCode": -1,
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "trackId": 8,
+        "box": [
+          0.2941340446472168,
+          0.6361536096643519,
+          0.378311824798584,
+          0.8065052173755787
+        ],
+        "score": 0.9147309,
+        "fruitLabel": "Quả",
+        "stageCode": -1,
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "trackId": 12,
+        "box": [
+          0.3976683298746745,
+          0.647823644567419,
+          0.46697877248128256,
+          0.7433999520760995
+        ],
+        "score": 0.8960755,
+        "fruitLabel": "Quả",
+        "stageCode": -1,
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "trackId": 16,
+        "box": [
+          0.5324091593424479,
+          0.6589063856336805,
+          0.5845361073811849,
+          0.7912355776186343
+        ],
+        "score": 0.884363,
+        "fruitLabel": "Quả",
+        "stageCode": 1,
+        "stageLabel": "Chín"
+      },
+      {
+        "trackId": 9,
+        "box": [
+          0.7256755828857422,
+          0.6181995533130787,
+          0.8013317108154296,
+          0.7913253219039352
+        ],
+        "score": 0.8725976,
+        "fruitLabel": "Quả",
+        "stageCode": -1,
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "trackId": 6,
+        "box": [
+          0.8200533548990886,
+          0.7115894458912037,
+          0.8921924591064453,
+          0.8655341254340277
+        ],
+        "score": 0.8484432,
+        "fruitLabel": "Quả",
+        "stageCode": -1,
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "trackId": 31,
+        "box": [
+          0.3724287668863932,
+          0.6961308232060185,
+          0.42372105916341146,
+          0.7869007251880787
+        ],
+        "score": 0.8334288,
+        "fruitLabel": "Quả",
+        "stageCode": -1,
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "trackId": 27,
+        "box": [
+          0.10591630935668946,
+          0.5910245542173033,
+          0.18184595108032225,
+          0.7068731237340856
+        ],
+        "score": 0.8243833,
+        "fruitLabel": "Quả",
+        "stageCode": -1,
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "trackId": 49,
+        "box": [
+          0.21004770596822103,
+          0.36816982693142364,
+          0.273858896891276,
+          0.4349305329499421
+        ],
+        "score": 0.8211249,
+        "fruitLabel": "Quả",
+        "stageCode": -1,
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "trackId": 11,
+        "box": [
+          0.3681178092956543,
+          0.3248756691261574,
+          0.4215815544128418,
+          0.42239232946325234
+        ],
+        "score": 0.8203632,
+        "fruitLabel": "Quả",
+        "stageCode": -1,
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "trackId": 30,
+        "box": [
+          0.28928114573160807,
+          0.4039504439742477,
+          0.3705392837524414,
+          0.5314253065321181
+        ],
+        "score": 0.8201731,
+        "fruitLabel": "Quả",
+        "stageCode": -1,
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "trackId": 33,
+        "box": [
+          0.4347477912902832,
+          0.4644383748372396,
+          0.4913230578104655,
+          0.5647069860387731
+        ],
+        "score": 0.7802066,
+        "fruitLabel": "Quả",
+        "stageCode": -1,
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "trackId": 28,
+        "box": [
+          0.12454136212666829,
+          0.44446789776837387,
+          0.20027658144632976,
+          0.5372299194335938
+        ],
+        "score": 0.7799701,
+        "fruitLabel": "Quả",
+        "stageCode": -1,
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "trackId": 19,
+        "box": [
+          0.12653485933939615,
+          0.3516738326461227,
+          0.1917617956797282,
+          0.4384624339916088
+        ],
+        "score": 0.7797137,
+        "fruitLabel": "Quả",
+        "stageCode": -1,
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "trackId": 10,
+        "box": [
+          0.1383821169535319,
+          0.523927081072772,
+          0.19936275482177734,
+          0.6011567292390047
+        ],
+        "score": 0.7736843,
+        "fruitLabel": "Quả",
+        "stageCode": -1,
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "trackId": 48,
+        "box": [
+          0.10343440373738606,
+          0.3146120424623843,
+          0.169798215230306,
+          0.3978792543764468
+        ],
+        "score": 0.7496426,
+        "fruitLabel": "Quả",
+        "stageCode": -1,
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "trackId": 35,
+        "box": [
+          0.09873295625050862,
+          0.6700087935836226,
+          0.1416290283203125,
+          0.7770886456524885
+        ],
+        "score": 0.7221006,
+        "fruitLabel": "Quả",
+        "stageCode": -1,
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "trackId": 21,
+        "box": [
+          0.2811395327250163,
+          0.5456608525028935,
+          0.36324567794799806,
+          0.6486881962528935
+        ],
+        "score": 0.7208682,
+        "fruitLabel": "Quả",
+        "stageCode": -1,
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "trackId": 22,
+        "box": [
+          0.41834545135498047,
+          0.5571783560293692,
+          0.46580028533935547,
+          0.6626216182002315
+        ],
+        "score": 0.7099287,
+        "fruitLabel": "Quả",
+        "stageCode": -1,
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "trackId": 32,
+        "box": [
+          0.3432697931925456,
+          0.3822203459563079,
+          0.3988424936930339,
+          0.48899976942274304
+        ],
+        "score": 0.7019744,
+        "fruitLabel": "Quả",
+        "stageCode": -1,
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "trackId": 40,
+        "box": [
+          0.14627335866292318,
+          0.7198723687065972,
+          0.22387431462605795,
+          0.812561939380787
+        ],
+        "score": 0.6707422,
+        "fruitLabel": "Quả",
+        "stageCode": -1,
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "trackId": 46,
+        "box": [
+          0.34117666880289715,
+          0.587962171766493,
+          0.40840301513671873,
+          0.6883607087311922
+        ],
+        "score": 0.6626416,
+        "fruitLabel": "Quả",
+        "stageCode": -1,
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "trackId": 55,
+        "box": [
+          0.12660829226175943,
+          0.6512853551793981,
+          0.17716444333394368,
+          0.7576838740596065
+        ],
+        "score": 0.6562229,
+        "fruitLabel": "Quả",
+        "stageCode": -1,
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "trackId": 58,
+        "box": [
+          0.34141381581624347,
+          0.32600606282552086,
+          0.38853689829508464,
+          0.41733827944155094
+        ],
+        "score": 0.6273381,
+        "fruitLabel": "Quả",
+        "stageCode": -1,
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "trackId": 56,
+        "box": [
+          0.38197072347005206,
+          0.43735549361617476,
+          0.4295497894287109,
+          0.5195638585973669
+        ],
+        "score": 0.6229271,
+        "fruitLabel": "Quả",
+        "stageCode": -1,
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "trackId": 45,
+        "box": [
+          0.23176039059956868,
+          0.4138816550925926,
+          0.29589303334554035,
+          0.5286786114728009
+        ],
+        "score": 0.6081984,
+        "fruitLabel": "Quả",
+        "stageCode": -1,
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "trackId": 39,
+        "box": [
+          0.34647935231526694,
+          0.5134991681134259,
+          0.41883767445882164,
+          0.6025275336371527
+        ],
+        "score": 0.5897843,
+        "fruitLabel": "Quả",
+        "stageCode": -1,
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "trackId": 7,
+        "box": [
+          0.1601812203725179,
+          0.6763344093605325,
+          0.23649408022562662,
+          0.758546730324074
+        ],
+        "score": 0.5887583,
+        "fruitLabel": "Quả",
+        "stageCode": -1,
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "trackId": 59,
+        "box": [
+          0.2718715031941732,
+          0.3571933322482639,
+          0.31320343017578123,
+          0.42229602955005785
+        ],
+        "score": 0.5230559,
+        "fruitLabel": "Quả",
+        "stageCode": -1,
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "trackId": 60,
+        "box": [
+          0.29659875233968097,
+          0.3436319421838831,
+          0.34207725524902344,
+          0.40585197166160303
+        ],
+        "score": 0.5209978,
+        "fruitLabel": "Quả",
+        "stageCode": -1,
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "trackId": 57,
+        "box": [
+          0.17528775533040364,
+          0.39329766167534724,
+          0.23065338134765626,
+          0.4760208695023148
+        ],
+        "score": 0.4720901,
+        "fruitLabel": "Quả",
+        "stageCode": -1,
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "trackId": 41,
+        "box": [
+          0.09842646916707357,
+          0.23633338080512153,
+          0.12626651128133137,
+          0.29818640814887154
+        ],
+        "score": 0.4467919,
+        "fruitLabel": "Quả",
+        "stageCode": -1,
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "trackId": 63,
+        "box": [
+          0.38149820963541664,
+          0.499349127875434,
+          0.4414569854736328,
+          0.6141876220703125
+        ],
+        "score": 0.4374531,
+        "fruitLabel": "Quả",
+        "stageCode": -1,
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "trackId": 62,
+        "box": [
+          0.23906370798746746,
+          0.6860235143590856,
+          0.3051729202270508,
+          0.7848222520616319
+        ],
+        "score": 0.4098013,
+        "fruitLabel": "Quả",
+        "stageCode": -1,
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "trackId": 15,
+        "box": [
+          0.098627503712972,
+          0.3866254453305845,
+          0.13352505366007486,
+          0.45149835657190396
+        ],
+        "score": 0.4012198,
+        "fruitLabel": "Quả",
+        "stageCode": -1,
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "trackId": 53,
+        "box": [
+          0.4255725224812826,
+          0.4239153261537905,
+          0.47358900705973306,
+          0.49301277443214697
+        ],
+        "score": 0.391379,
+        "fruitLabel": "Quả",
+        "stageCode": -1,
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "trackId": 54,
+        "box": [
+          0.28424469629923504,
+          0.47968049225983794,
+          0.3445701281229655,
+          0.5784670229311343
+        ],
+        "score": 0.3807794,
+        "fruitLabel": "Quả",
+        "stageCode": -1,
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "trackId": 44,
+        "box": [
+          0.19514083862304688,
+          0.4204202722620081,
+          0.25883092880249026,
+          0.5246378015588831
+        ],
+        "score": 0.3606403,
+        "fruitLabel": "Quả",
+        "stageCode": -1,
+        "stageLabel": "Chưa xác định"
+      },
+      {
+        "trackId": 61,
+        "box": [
+          0.20830281575520834,
+          0.5986198142722801,
+          0.27012481689453127,
+          0.7160150598596644
+        ],
+        "score": 0.3512327,
+        "fruitLabel": "Quả",
+        "stageCode": -1,
+        "stageLabel": "Chưa xác định"
+      }
+    ],
+    "limitations": [
+      "Chỉ dùng cho bản trình diễn phi thương mại; giấy phép nguồn dữ liệu/model còn hạn chế.",
+      "Hai nhãn giai đoạn từ dữ liệu nguồn không xác nhận độ chín ngoài thực tế; quả chưa biết hoặc độ tin cậy thấp không được phân hạng.",
+      "Nhận dạng loài chỉ là chẩn đoán nội bộ; nhãn hiển thị chung là Quả.",
+      "Video chưa đạt tiêu chí chất lượng khoa học; có thể bỏ sót, trùng khung hoặc sai giai đoạn.",
+      "Theo dõi bằng hình học không tái nhận dạng vật thể: che khuất lâu, quay lại và camera chuyển động có thể làm sai số đếm.",
+      "Số qua vạch y=0.5 đếm mỗi ID một lần theo cả hai hướng; không phải bảo đảm số quả vật lý duy nhất."
+    ],
+    "processingSeconds": 74.969
+  }
+}

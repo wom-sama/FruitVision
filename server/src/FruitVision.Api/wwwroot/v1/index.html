@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>FruitVision API v1 · Thao tác ghi thay đổi dữ liệu demo</title>
+  <link rel="stylesheet" href="/v1/vendor/swagger-ui-5.34.0/swagger-ui.css">
+  <link rel="stylesheet" href="/v1/docs.css">
+  <script src="/v1/vendor/swagger-ui-5.34.0/swagger-ui-bundle.js" defer></script>
+  <script src="/v1/ui-init.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#swagger-ui">Chuyển đến các API</a>
+  <header class="docs-header">
+    <div class="docs-shell docs-heading">
+      <a class="brand" href="/">FruitVision<span>API v1</span></a>
+      <nav aria-label="Điều hướng tài liệu">
+        <a href="/">Ứng dụng</a>
+        <a href="/openapi/v1.json">OpenAPI JSON</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section class="docs-shell docs-intro" aria-labelledby="docs-title">
+      <p class="eyebrow">Tài liệu API · Swagger UI</p>
+      <h1 id="docs-title">Kết nối với FruitVision</h1>
+      <p>Tra cứu yêu cầu, thử đăng nhập và kiểm tra quyền theo tài khoản đang sử dụng.</p>
+      <p class="execution-note"><strong>Try it out / Execute gửi yêu cầu thật.</strong> Các thao tác ghi thay đổi dữ liệu demo trên máy chủ.</p>
+      <details class="auth-guide" open>
+        <summary>Đăng nhập và sử dụng Authorize</summary>
+        <ol>
+          <li>Mở <code>POST /api/v1/auth/login</code>, chọn <strong>Try it out</strong> rồi nhập email và mật khẩu của bạn.</li>
+          <li>Nếu nhận <code>requiresTwoFactor: true</code>, gọi <code>POST /api/v1/auth/mfa/login</code> với <code>challengeToken</code> vừa nhận và <code>code</code> gồm 6 chữ số từ ứng dụng xác thực.</li>
+          <li>Sao chép <code>accessToken</code> từ kết quả đăng nhập thành công. Bấm <strong>Authorize</strong> và dán <strong>chỉ token</strong> vào ô <code>SessionBearer</code>; Swagger tự thêm tiền tố <code>Bearer</code>.</li>
+          <li>Gọi <code>GET /api/v1/auth/me</code> để kiểm tra vai trò và trạng thái hồ sơ. <code>Admin</code> được dùng nhóm quản trị; <code>Producer</code> và <code>Trader</code> đã duyệt được đăng tin. Hội thoại cần hồ sơ đã duyệt và quyền thành viên; <code>Consumer</code> không có quyền đăng tin.</li>
+          <li>Khi gọi <code>POST /api/v1/auth/refresh</code>, thay token trong <strong>Authorize</strong> bằng <code>accessToken</code> mới. Đăng xuất thu hồi phiên hiện tại. Token không được lưu qua lần tải lại trang.</li>
+        </ol>
+        <p>Hồ sơ mới luôn ở trạng thái <code>Pending</code>. Máy chủ kiểm tra phiên, vai trò và quyền truy cập từng yêu cầu; việc đọc tài liệu không cấp quyền sử dụng API.</p>
+      </details>
+    </section>
+    <div id="swagger-ui" tabindex="-1"></div>
+    <noscript><p class="docs-shell">Bật JavaScript để dùng Swagger UI, hoặc xem <a href="/openapi/v1.json">hợp đồng OpenAPI JSON</a>.</p></noscript>
+  </main>
+  <footer class="docs-shell docs-footer">FruitVision API v1 · Swagger UI 5.34.0 · <a href="/v1/vendor/swagger-ui-5.34.0/LICENSE">Giấy phép</a></footer>
+</body>
+</html>

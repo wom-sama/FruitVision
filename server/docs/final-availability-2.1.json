@@ -1,0 +1,88 @@
+{
+  "schema": "fruitvision-final-availability-v1",
+  "recordedAtUtc": "2026-10-30T11:04:15.714Z",
+  "status": "PASS",
+  "scope": "Five unauthenticated public HTTPS GET checks only; no authentication mutations, restart, SDK/test suite, inference job or VM run.",
+  "checks": [
+    {
+      "url": "https://tips-differential-relating-validity.trycloudflare.com/health/ready",
+      "observedAtUtc": "2026-10-30T11:03:24.0059064+00:00",
+      "statusCode": 200,
+      "contentType": "application/json; charset=utf-8",
+      "fields": {
+        "status": "ready",
+        "scope": "accounts-interactions-and-server-ai",
+        "aiReady": true
+      },
+      "elapsedMs": 664
+    },
+    {
+      "url": "https://tips-differential-relating-validity.trycloudflare.com/api/v1/system/capabilities",
+      "observedAtUtc": "2026-10-30T11:03:24.0017617+00:00",
+      "statusCode": 200,
+      "contentType": "application/json; charset=utf-8",
+      "fields": {
+        "aiReady": true,
+        "aiExecutionLocation": "server",
+        "tradeFlowReady": false
+      },
+      "elapsedMs": 764
+    },
+    {
+      "url": "https://tips-differential-relating-validity.trycloudflare.com/v1/index.html",
+      "observedAtUtc": "2026-10-30T11:03:24.0449376+00:00",
+      "statusCode": 200,
+      "contentType": "text/html",
+      "fields": {
+        "title": "FruitVision API v1 · Thao tác ghi thay đổi dữ liệu demo"
+      },
+      "elapsedMs": 749
+    },
+    {
+      "url": "https://tips-differential-relating-validity.trycloudflare.com/index.html",
+      "observedAtUtc": "2026-10-30T11:03:24.0870950+00:00",
+      "statusCode": 200,
+      "contentType": "text/html",
+      "fields": {
+        "title": "FruitVision · Nền tảng nông sản"
+      },
+      "elapsedMs": 696
+    },
+    {
+      "url": "https://tips-differential-relating-validity.trycloudflare.com/openapi/v1.json",
+      "observedAtUtc": "2026-10-30T11:03:24.1498969+00:00",
+      "statusCode": 200,
+      "contentType": "application/json; charset=utf-8",
+      "fields": {
+        "openapi": "3.1.1",
+        "title": "FruitVision API",
+        "version": "v1"
+      },
+      "elapsedMs": 745
+    }
+  ],
+  "urlExampleValidation": {
+    "documentation": "docs/AI_API_USAGE.md",
+    "source": "PUBLIC_URL.txt",
+    "firstHttpsUrlMatchesOwnedTunnelState": true
+  },
+  "androidAcceptance": {
+    "chatEvidence": "../../mobile_client/verification/2.1-polished/chat-ui.json",
+    "automaticWithoutManualRefresh": true,
+    "requiredScrollToNewest": true,
+    "videoResultUi": "PENDING",
+    "vmGuardStoppedUtc": "2026-10-30T11:01:16Z",
+    "vmRunPerformedForThisCheck": false
+  },
+  "immediateAcceptanceRisk": {
+    "priority": "P2",
+    "source": "mobile_client/lib/client/ui/chat.dart:235",
+    "finding": "Chat messages are sorted oldest-first and displayed in a ListView without automatic scrolling; a new realtime message can remain below the viewport.",
+    "acceptanceAction": "Inspect the newest/bottom messages when verifying receipt; record the scrolling requirement. Do not interpret old visible rows alone as missing realtime.",
+    "confidence": "Confirmed by current source and the retained polished chat UI receipt."
+  },
+  "limitations": [
+    "Availability/readiness is not model accuracy, multi-user capacity or physical-phone performance evidence.",
+    "These GET checks do not verify the final Android video result screen."
+  ]
+}

@@ -1,0 +1,38 @@
+:root { color-scheme: light; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #183247; background: #fff; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+a { color: #1260a0; text-underline-offset: .18em; }
+a:focus-visible, summary:focus-visible, #swagger-ui:focus-visible { outline: 3px solid #1678b9; outline-offset: 4px; }
+.docs-shell { width: min(1180px, calc(100% - 40px)); margin-inline: auto; }
+.docs-header { border-bottom: 1px solid #dce6ec; background: #f7fafc; }
+.docs-heading { display: flex; align-items: center; justify-content: space-between; min-height: 76px; gap: 24px; }
+.brand { display: flex; align-items: baseline; gap: 12px; color: #143b55; font-weight: 750; font-size: 23px; letter-spacing: -.04em; text-decoration: none; }
+.brand span { color: #5b7282; font-size: 13px; font-weight: 550; letter-spacing: .02em; }
+.docs-heading nav { display: flex; gap: 24px; font-size: 14px; }
+.docs-intro { padding-block: 38px 18px; }
+.eyebrow { margin: 0 0 10px; color: #426778; font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+h1 { margin: 0 0 12px; color: #143b55; font-size: clamp(28px, 4vw, 39px); line-height: 1.15; letter-spacing: -.035em; }
+.docs-intro p { line-height: 1.6; }
+.execution-note { padding: 14px 18px; border-left: 4px solid #cc9b36; border-radius: 0 6px 6px 0; background: #fff9ed; color: #614b1e; font-size: 14px; }
+.auth-guide { margin-top: 22px; padding: 18px 22px; border: 1px solid #d8e4ec; border-radius: 10px; background: #f8fbfd; font-size: 14px; }
+.auth-guide summary { cursor: pointer; color: #1c4c68; font-weight: 700; font-size: 16px; }
+.auth-guide ol { padding-left: 24px; margin-bottom: 16px; }
+.auth-guide li { padding-left: 5px; margin-block: 12px; line-height: 1.7; }
+.auth-guide p { margin: 0; color: #4f6573; }
+.auth-guide code { padding: 2px 5px; border-radius: 4px; background: #eaf1f5; color: #234c66; font-size: .94em; overflow-wrap: anywhere; }
+#swagger-ui .wrapper { max-width: 1220px; }
+#swagger-ui .info { margin-block: 22px; }
+#swagger-ui .info .title { font-size: 25px; }
+#swagger-ui .scheme-container { box-shadow: none; border-block: 1px solid #e1e9ee; }
+#swagger-ui select { appearance: auto; background-image: none; }
+.docs-footer { border-top: 1px solid #dce6ec; margin-top: 28px; padding-block: 24px; color: #5d7280; font-size: 12px; line-height: 1.6; }
+.skip-link { position: absolute; top: -80px; left: 16px; z-index: 20; padding: 12px 16px; border-radius: 5px; background: #fff; }
+.skip-link:focus { top: 12px; }
+@media (max-width: 640px) {
+  .docs-shell { width: calc(100% - 28px); }
+  .docs-heading { min-height: 86px; align-items: flex-start; flex-direction: column; justify-content: center; gap: 10px; padding-block: 12px; }
+  .docs-heading nav { gap: 20px; font-size: 13px; }
+  .docs-intro { padding-top: 28px; }
+  .auth-guide { padding: 16px; }
+  #swagger-ui .wrapper { padding-inline: 14px; }
+}

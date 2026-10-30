@@ -1,0 +1,27 @@
+{
+  "status": "MOVED_VERIFIED",
+  "dateUtc": "2026-10-30T08:04:12.9964478+00:00",
+  "scope": "Only redundant downloaded ZIP archives; extracted runtime and database stay in place",
+  "files": [
+    {
+      "source": "C:\\Users\\ADMIN\\Documents\\Codex\\2026-08-23\\gi\\mobile_multifruit_work_20261009\\server\\.tools\\downloads\\postgresql-windows-x64-binaries.zip",
+      "destination": "E:\\OneDrive\\Desktop\\FruitVision_CoTheXoa_20261030\\server_downloads\\postgresql-windows-x64-binaries.zip",
+      "bytes": 384620317,
+      "algorithm": "SHA256",
+      "hash": "e2246ba91d22345bc3d017586c09ede52d9df180b1eeb480f050445f1cad84e2",
+      "hash_verified": true,
+      "original_absent": true
+    },
+    {
+      "source": "C:\\Users\\ADMIN\\Documents\\Codex\\2026-08-23\\gi\\mobile_multifruit_work_20261009\\server\\.tools\\dotnet-runtime\\downloads\\aspnetcore-runtime-10.0.14-win-x64.zip",
+      "destination": "E:\\OneDrive\\Desktop\\FruitVision_CoTheXoa_20261030\\server_downloads\\aspnetcore-runtime-10.0.14-win-x64.zip",
+      "bytes": 48521878,
+      "algorithm": "SHA512",
+      "hash": "f26712cbc7a0c3de6c78c78d2ec80f5a96e3da97f3ce67e964a66bc2d8638cf02f67113c28be5431b2739b29732d918bc3210064b52c845fe914e56fcd058acb",
+      "hash_verified": true,
+      "original_absent": true
+    }
+  ],
+  "logical_bytes": 433142195.0,
+  "permanent_deletion": false
+}

@@ -1,0 +1,1353 @@
+{
+  "startedUtc": "2026-10-30T12:21:02.889591+00:00",
+  "status": "PASS",
+  "scope": "Four independent role clients on this PC, actual owned public HTTPS/WSS and API persistence; not four phones, stock, trades or market-price qualification.",
+  "tlsVerificationDisabled": false,
+  "checks": [
+    {
+      "name": "only current privately recorded HTTPS tunnel",
+      "pass": true,
+      "atMs": 0
+    },
+    {
+      "name": "producer login contains in-memory access token",
+      "pass": true,
+      "atMs": 3390
+    },
+    {
+      "name": "admin login contains in-memory access token",
+      "pass": true,
+      "atMs": 3422
+    },
+    {
+      "name": "consumer login contains in-memory access token",
+      "pass": true,
+      "atMs": 3422
+    },
+    {
+      "name": "trader login contains in-memory access token",
+      "pass": true,
+      "atMs": 3484
+    },
+    {
+      "name": "producer own approved role",
+      "pass": true,
+      "atMs": 4156
+    },
+    {
+      "name": "admin own approved role",
+      "pass": true,
+      "atMs": 4172
+    },
+    {
+      "name": "consumer own approved role",
+      "pass": true,
+      "atMs": 4172
+    },
+    {
+      "name": "trader own approved role",
+      "pass": true,
+      "atMs": 4312
+    },
+    {
+      "name": "actual product catalog available",
+      "pass": true,
+      "atMs": 4875
+    },
+    {
+      "name": "market source/time and non-AI asking reference",
+      "pass": true,
+      "atMs": 5687
+    },
+    {
+      "name": "filtered market has at most one exact region/product bucket",
+      "pass": true,
+      "atMs": 5687
+    },
+    {
+      "name": "price baseline permits an honest 25000 reference probe",
+      "pass": true,
+      "atMs": 5687
+    },
+    {
+      "name": "trader actual WSS handshake",
+      "pass": true,
+      "atMs": 6656
+    },
+    {
+      "name": "admin actual WSS handshake",
+      "pass": true,
+      "atMs": 6656
+    },
+    {
+      "name": "producer actual WSS handshake",
+      "pass": true,
+      "atMs": 6672
+    },
+    {
+      "name": "consumer actual WSS handshake",
+      "pass": true,
+      "atMs": 6672
+    },
+    {
+      "name": "all four independent WSS clients concurrently live",
+      "pass": true,
+      "atMs": 6672
+    },
+    {
+      "name": "producer submission awaits moderation",
+      "pass": true,
+      "atMs": 7156
+    },
+    {
+      "name": "simultaneous same-revision review has one success/one conflict",
+      "pass": true,
+      "atMs": 8719
+    },
+    {
+      "name": "new published supply is newest visible feed entry",
+      "pass": true,
+      "atMs": 9469
+    },
+    {
+      "name": "eight simultaneous contacts create once and reuse seven times",
+      "pass": true,
+      "atMs": 11265
+    },
+    {
+      "name": "all eight contact results identify one direct thread",
+      "pass": true,
+      "atMs": 11265
+    },
+    {
+      "name": "producer sees newly contacted thread",
+      "pass": true,
+      "atMs": 11844
+    },
+    {
+      "name": "consumer JoinConversation completion c72ea09d-ad15-4a25-bdb0-ef291388fc6f",
+      "pass": true,
+      "atMs": 13172
+    },
+    {
+      "name": "consumer direct thread is distinct",
+      "pass": true,
+      "atMs": 13547
+    },
+    {
+      "name": "producer JoinConversation completion c72ea09d-ad15-4a25-bdb0-ef291388fc6f",
+      "pass": true,
+      "atMs": 13656
+    },
+    {
+      "name": "trader JoinConversation completion c72ea09d-ad15-4a25-bdb0-ef291388fc6f",
+      "pass": true,
+      "atMs": 13765
+    },
+    {
+      "name": "producer JoinConversation completion 9e814411-4856-4e94-b03f-9104cabb970a",
+      "pass": true,
+      "atMs": 13875
+    },
+    {
+      "name": "consumer JoinConversation completion 9e814411-4856-4e94-b03f-9104cabb970a",
+      "pass": true,
+      "atMs": 13984
+    },
+    {
+      "name": "producer receives persisted WSS message 7aea0a95-fe0a-43b4-b78c-986e926d1ce4",
+      "pass": true,
+      "atMs": 15125
+    },
+    {
+      "name": "trader receives persisted WSS message 7aea0a95-fe0a-43b4-b78c-986e926d1ce4",
+      "pass": true,
+      "atMs": 15125
+    },
+    {
+      "name": "message retry reuses persisted ID",
+      "pass": true,
+      "atMs": 15531
+    },
+    {
+      "name": "producer receives persisted WSS message bdf03024-abb8-4fe7-a406-f09fb0d588a8",
+      "pass": true,
+      "atMs": 17109
+    },
+    {
+      "name": "trader receives persisted WSS message bdf03024-abb8-4fe7-a406-f09fb0d588a8",
+      "pass": true,
+      "atMs": 17109
+    },
+    {
+      "name": "producer receives persisted WSS message c8997de7-1ae8-4dfb-89cc-acef6f6a011a",
+      "pass": true,
+      "atMs": 19109
+    },
+    {
+      "name": "consumer receives persisted WSS message c8997de7-1ae8-4dfb-89cc-acef6f6a011a",
+      "pass": true,
+      "atMs": 19125
+    },
+    {
+      "name": "producer receives persisted WSS message 5f4e94ab-bb58-4f29-91a1-40ff86bac0d4",
+      "pass": true,
+      "atMs": 21109
+    },
+    {
+      "name": "consumer receives persisted WSS message 5f4e94ab-bb58-4f29-91a1-40ff86bac0d4",
+      "pass": true,
+      "atMs": 21125
+    },
+    {
+      "name": "group creator is owner/member",
+      "pass": true,
+      "atMs": 21515
+    },
+    {
+      "name": "trader duplicate concurrent group join adds once",
+      "pass": true,
+      "atMs": 22000
+    },
+    {
+      "name": "consumer duplicate concurrent group join adds once",
+      "pass": true,
+      "atMs": 22984
+    },
+    {
+      "name": "admin JoinConversation completion 83f130a3-713e-4d39-8ff5-2a8bd2f10dba",
+      "pass": true,
+      "atMs": 24437
+    },
+    {
+      "name": "producer JoinConversation completion 83f130a3-713e-4d39-8ff5-2a8bd2f10dba",
+      "pass": true,
+      "atMs": 24547
+    },
+    {
+      "name": "trader JoinConversation completion 83f130a3-713e-4d39-8ff5-2a8bd2f10dba",
+      "pass": true,
+      "atMs": 24656
+    },
+    {
+      "name": "consumer JoinConversation completion 83f130a3-713e-4d39-8ff5-2a8bd2f10dba",
+      "pass": true,
+      "atMs": 24765
+    },
+    {
+      "name": "admin receives persisted WSS message eb79585d-baf3-4da4-8298-9ee8a9ba7648",
+      "pass": true,
+      "atMs": 27109
+    },
+    {
+      "name": "producer receives persisted WSS message eb79585d-baf3-4da4-8298-9ee8a9ba7648",
+      "pass": true,
+      "atMs": 27109
+    },
+    {
+      "name": "trader receives persisted WSS message eb79585d-baf3-4da4-8298-9ee8a9ba7648",
+      "pass": true,
+      "atMs": 27109
+    },
+    {
+      "name": "consumer receives persisted WSS message eb79585d-baf3-4da4-8298-9ee8a9ba7648",
+      "pass": true,
+      "atMs": 27109
+    },
+    {
+      "name": "admin receives persisted WSS message 4592270d-6d48-45d2-928f-cae869c3e0c8",
+      "pass": true,
+      "atMs": 31094
+    },
+    {
+      "name": "producer receives persisted WSS message 4592270d-6d48-45d2-928f-cae869c3e0c8",
+      "pass": true,
+      "atMs": 31094
+    },
+    {
+      "name": "trader receives persisted WSS message 4592270d-6d48-45d2-928f-cae869c3e0c8",
+      "pass": true,
+      "atMs": 31109
+    },
+    {
+      "name": "departed consumer receives no new group WSS message",
+      "pass": true,
+      "atMs": 33125
+    },
+    {
+      "name": "market source/time and non-AI asking reference",
+      "pass": true,
+      "atMs": 35015
+    },
+    {
+      "name": "filtered market has at most one exact region/product bucket",
+      "pass": true,
+      "atMs": 35015
+    },
+    {
+      "name": "supply adds exactly500 estimated kg and one asking sample",
+      "pass": true,
+      "atMs": 35015
+    },
+    {
+      "name": "admin publishes trader demand",
+      "pass": true,
+      "atMs": 35687
+    },
+    {
+      "name": "market source/time and non-AI asking reference",
+      "pass": true,
+      "atMs": 36562
+    },
+    {
+      "name": "filtered market has at most one exact region/product bucket",
+      "pass": true,
+      "atMs": 36562
+    },
+    {
+      "name": "demand adds200 estimated kg without shifting supply asking reference",
+      "pass": true,
+      "atMs": 36562
+    },
+    {
+      "name": "admin pauses supply with current revision",
+      "pass": true,
+      "atMs": 36922
+    },
+    {
+      "name": "market source/time and non-AI asking reference",
+      "pass": true,
+      "atMs": 37719
+    },
+    {
+      "name": "filtered market has at most one exact region/product bucket",
+      "pass": true,
+      "atMs": 37719
+    },
+    {
+      "name": "paused supply is excluded from quantities and price samples",
+      "pass": true,
+      "atMs": 37719
+    },
+    {
+      "name": "supply restored Published for human demo",
+      "pass": true,
+      "atMs": 38406
+    },
+    {
+      "name": "group creator is owner/member",
+      "pass": true,
+      "atMs": 38765
+    },
+    {
+      "name": "admin JoinConversation completion 8ec7519f-fe89-4c96-85c8-c50d3f82f3fd",
+      "pass": true,
+      "atMs": 39875
+    },
+    {
+      "name": "producer JoinConversation completion 8ec7519f-fe89-4c96-85c8-c50d3f82f3fd",
+      "pass": true,
+      "atMs": 39984
+    },
+    {
+      "name": "trader JoinConversation completion 8ec7519f-fe89-4c96-85c8-c50d3f82f3fd",
+      "pass": true,
+      "atMs": 40094
+    },
+    {
+      "name": "consumer JoinConversation completion 8ec7519f-fe89-4c96-85c8-c50d3f82f3fd",
+      "pass": true,
+      "atMs": 40203
+    },
+    {
+      "name": "admin receives persisted WSS message 118437d7-7dc0-4244-9a7b-e1e0fe079c0c",
+      "pass": true,
+      "atMs": 41109
+    },
+    {
+      "name": "producer receives persisted WSS message 118437d7-7dc0-4244-9a7b-e1e0fe079c0c",
+      "pass": true,
+      "atMs": 41109
+    },
+    {
+      "name": "trader receives persisted WSS message 118437d7-7dc0-4244-9a7b-e1e0fe079c0c",
+      "pass": true,
+      "atMs": 41109
+    },
+    {
+      "name": "consumer receives persisted WSS message 118437d7-7dc0-4244-9a7b-e1e0fe079c0c",
+      "pass": true,
+      "atMs": 41109
+    },
+    {
+      "name": "admin receives persisted WSS message f938084b-93a4-4204-a55f-a27c83237cf5",
+      "pass": true,
+      "atMs": 43109
+    },
+    {
+      "name": "producer receives persisted WSS message f938084b-93a4-4204-a55f-a27c83237cf5",
+      "pass": true,
+      "atMs": 43109
+    },
+    {
+      "name": "trader receives persisted WSS message f938084b-93a4-4204-a55f-a27c83237cf5",
+      "pass": true,
+      "atMs": 43109
+    },
+    {
+      "name": "consumer receives persisted WSS message f938084b-93a4-4204-a55f-a27c83237cf5",
+      "pass": true,
+      "atMs": 43125
+    },
+    {
+      "name": "admin receives persisted WSS message 222d55e2-b0ae-4d2d-bf1e-e4bb75458eb4",
+      "pass": true,
+      "atMs": 45109
+    },
+    {
+      "name": "producer receives persisted WSS message 222d55e2-b0ae-4d2d-bf1e-e4bb75458eb4",
+      "pass": true,
+      "atMs": 45109
+    },
+    {
+      "name": "trader receives persisted WSS message 222d55e2-b0ae-4d2d-bf1e-e4bb75458eb4",
+      "pass": true,
+      "atMs": 45109
+    },
+    {
+      "name": "consumer receives persisted WSS message 222d55e2-b0ae-4d2d-bf1e-e4bb75458eb4",
+      "pass": true,
+      "atMs": 45109
+    },
+    {
+      "name": "admin receives persisted WSS message 554c4673-3834-4f41-bdd9-0eb1074ef7e1",
+      "pass": true,
+      "atMs": 47109
+    },
+    {
+      "name": "producer receives persisted WSS message 554c4673-3834-4f41-bdd9-0eb1074ef7e1",
+      "pass": true,
+      "atMs": 47109
+    },
+    {
+      "name": "trader receives persisted WSS message 554c4673-3834-4f41-bdd9-0eb1074ef7e1",
+      "pass": true,
+      "atMs": 47109
+    },
+    {
+      "name": "consumer receives persisted WSS message 554c4673-3834-4f41-bdd9-0eb1074ef7e1",
+      "pass": true,
+      "atMs": 47109
+    },
+    {
+      "name": "human-ready group remains open with all four roles",
+      "pass": true,
+      "atMs": 47797
+    },
+    {
+      "name": "market source/time and non-AI asking reference",
+      "pass": true,
+      "atMs": 48156
+    },
+    {
+      "name": "filtered market has at most one exact region/product bucket",
+      "pass": true,
+      "atMs": 48156
+    }
+  ],
+  "requests": [
+    {
+      "role": "anonymous",
+      "method": "GET",
+      "route": "/health/ready",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 0,
+      "latencyMs": 1094.0
+    },
+    {
+      "role": "anonymous",
+      "method": "GET",
+      "route": "/.local/runtime.json",
+      "status": 404,
+      "expectedStatus": 404,
+      "startMs": 1094,
+      "latencyMs": 593.0
+    },
+    {
+      "role": "anonymous",
+      "method": "GET",
+      "route": "/api/v1/community/groups",
+      "status": 401,
+      "expectedStatus": 401,
+      "startMs": 1687,
+      "latencyMs": 797.0
+    },
+    {
+      "role": "anonymous",
+      "method": "POST",
+      "route": "/api/v1/auth/login",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 2500,
+      "latencyMs": 890.0
+    },
+    {
+      "role": "anonymous",
+      "method": "POST",
+      "route": "/api/v1/auth/login",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 2484,
+      "latencyMs": 938.0
+    },
+    {
+      "role": "anonymous",
+      "method": "POST",
+      "route": "/api/v1/auth/login",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 2625,
+      "latencyMs": 797.0
+    },
+    {
+      "role": "anonymous",
+      "method": "POST",
+      "route": "/api/v1/auth/login",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 2562,
+      "latencyMs": 922.0
+    },
+    {
+      "role": "producer",
+      "method": "GET",
+      "route": "/api/v1/auth/me",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 3390,
+      "latencyMs": 766.0
+    },
+    {
+      "role": "admin",
+      "method": "GET",
+      "route": "/api/v1/auth/me",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 3422,
+      "latencyMs": 750.0
+    },
+    {
+      "role": "consumer",
+      "method": "GET",
+      "route": "/api/v1/auth/me",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 3422,
+      "latencyMs": 750.0
+    },
+    {
+      "role": "trader",
+      "method": "GET",
+      "route": "/api/v1/auth/me",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 3484,
+      "latencyMs": 828.0
+    },
+    {
+      "role": "consumer",
+      "method": "GET",
+      "route": "/api/v1/catalog/products",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 4312,
+      "latencyMs": 563.0
+    },
+    {
+      "role": "consumer",
+      "method": "GET",
+      "route": "/api/v1/market/summary?region=%C4%90%E1%BB%93ng+Th%C3%A1p&productCode=mango",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 4875,
+      "latencyMs": 812.0
+    },
+    {
+      "role": "producer",
+      "method": "POST",
+      "route": "/api/v1/posts",
+      "status": 201,
+      "expectedStatus": 201,
+      "startMs": 6672,
+      "latencyMs": 484.0
+    },
+    {
+      "role": "trader",
+      "method": "GET",
+      "route": "/api/v1/posts/48853e34-6371-4dfd-a9c5-ac9da67b6f02",
+      "status": 404,
+      "expectedStatus": 404,
+      "startMs": 7156,
+      "latencyMs": 688.0
+    },
+    {
+      "role": "anonymous",
+      "method": "GET",
+      "route": "/api/v1/posts/48853e34-6371-4dfd-a9c5-ac9da67b6f02",
+      "status": 404,
+      "expectedStatus": 404,
+      "startMs": 7156,
+      "latencyMs": 703.0
+    },
+    {
+      "role": "consumer",
+      "method": "GET",
+      "route": "/api/v1/posts/48853e34-6371-4dfd-a9c5-ac9da67b6f02",
+      "status": 404,
+      "expectedStatus": 404,
+      "startMs": 7203,
+      "latencyMs": 656.0
+    },
+    {
+      "role": "trader",
+      "method": "POST",
+      "route": "/api/v1/admin/posts/48853e34-6371-4dfd-a9c5-ac9da67b6f02/review",
+      "status": 403,
+      "expectedStatus": 403,
+      "startMs": 7859,
+      "latencyMs": 344.0
+    },
+    {
+      "role": "admin",
+      "method": "POST",
+      "route": "/api/v1/admin/posts/48853e34-6371-4dfd-a9c5-ac9da67b6f02/review",
+      "status": 200,
+      "expectedStatus": null,
+      "startMs": 8203,
+      "latencyMs": 500.0
+    },
+    {
+      "role": "admin",
+      "method": "POST",
+      "route": "/api/v1/admin/posts/48853e34-6371-4dfd-a9c5-ac9da67b6f02/review",
+      "status": 409,
+      "expectedStatus": null,
+      "startMs": 8219,
+      "latencyMs": 500.0
+    },
+    {
+      "role": "consumer",
+      "method": "GET",
+      "route": "/api/v1/posts?limit=20",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 8719,
+      "latencyMs": 750.0
+    },
+    {
+      "role": "producer",
+      "method": "POST",
+      "route": "/api/v1/posts/48853e34-6371-4dfd-a9c5-ac9da67b6f02/conversations",
+      "status": 409,
+      "expectedStatus": 409,
+      "startMs": 9469,
+      "latencyMs": 421.0
+    },
+    {
+      "role": "admin",
+      "method": "POST",
+      "route": "/api/v1/posts/48853e34-6371-4dfd-a9c5-ac9da67b6f02/conversations",
+      "status": 403,
+      "expectedStatus": 403,
+      "startMs": 9890,
+      "latencyMs": 360.0
+    },
+    {
+      "role": "trader",
+      "method": "POST",
+      "route": "/api/v1/posts/48853e34-6371-4dfd-a9c5-ac9da67b6f02/conversations",
+      "status": 201,
+      "expectedStatus": null,
+      "startMs": 10250,
+      "latencyMs": 828.0
+    },
+    {
+      "role": "trader",
+      "method": "POST",
+      "route": "/api/v1/posts/48853e34-6371-4dfd-a9c5-ac9da67b6f02/conversations",
+      "status": 200,
+      "expectedStatus": null,
+      "startMs": 10250,
+      "latencyMs": 875.0
+    },
+    {
+      "role": "trader",
+      "method": "POST",
+      "route": "/api/v1/posts/48853e34-6371-4dfd-a9c5-ac9da67b6f02/conversations",
+      "status": 200,
+      "expectedStatus": null,
+      "startMs": 10375,
+      "latencyMs": 750.0
+    },
+    {
+      "role": "trader",
+      "method": "POST",
+      "route": "/api/v1/posts/48853e34-6371-4dfd-a9c5-ac9da67b6f02/conversations",
+      "status": 200,
+      "expectedStatus": null,
+      "startMs": 10609,
+      "latencyMs": 531.0
+    },
+    {
+      "role": "trader",
+      "method": "POST",
+      "route": "/api/v1/posts/48853e34-6371-4dfd-a9c5-ac9da67b6f02/conversations",
+      "status": 200,
+      "expectedStatus": null,
+      "startMs": 10422,
+      "latencyMs": 750.0
+    },
+    {
+      "role": "trader",
+      "method": "POST",
+      "route": "/api/v1/posts/48853e34-6371-4dfd-a9c5-ac9da67b6f02/conversations",
+      "status": 200,
+      "expectedStatus": null,
+      "startMs": 10828,
+      "latencyMs": 422.0
+    },
+    {
+      "role": "trader",
+      "method": "POST",
+      "route": "/api/v1/posts/48853e34-6371-4dfd-a9c5-ac9da67b6f02/conversations",
+      "status": 200,
+      "expectedStatus": null,
+      "startMs": 10719,
+      "latencyMs": 546.0
+    },
+    {
+      "role": "trader",
+      "method": "POST",
+      "route": "/api/v1/posts/48853e34-6371-4dfd-a9c5-ac9da67b6f02/conversations",
+      "status": 200,
+      "expectedStatus": null,
+      "startMs": 10656,
+      "latencyMs": 609.0
+    },
+    {
+      "role": "producer",
+      "method": "GET",
+      "route": "/api/v1/conversations?limit=50",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 11265,
+      "latencyMs": 579.0
+    },
+    {
+      "role": "consumer",
+      "method": "GET",
+      "route": "/api/v1/conversations/c72ea09d-ad15-4a25-bdb0-ef291388fc6f/messages",
+      "status": 404,
+      "expectedStatus": 404,
+      "startMs": 11844,
+      "latencyMs": 734.0
+    },
+    {
+      "role": "consumer",
+      "method": "POST",
+      "route": "/api/v1/community/groups/c72ea09d-ad15-4a25-bdb0-ef291388fc6f/join",
+      "status": 404,
+      "expectedStatus": 404,
+      "startMs": 12578,
+      "latencyMs": 422.0
+    },
+    {
+      "role": "consumer",
+      "method": "POST",
+      "route": "/api/v1/posts/48853e34-6371-4dfd-a9c5-ac9da67b6f02/conversations",
+      "status": 201,
+      "expectedStatus": 201,
+      "startMs": 13172,
+      "latencyMs": 375.0
+    },
+    {
+      "role": "trader",
+      "method": "POST",
+      "route": "/api/v1/conversations/c72ea09d-ad15-4a25-bdb0-ef291388fc6f/messages",
+      "status": 201,
+      "expectedStatus": 201,
+      "startMs": 13984,
+      "latencyMs": 438.0
+    },
+    {
+      "role": "trader",
+      "method": "POST",
+      "route": "/api/v1/conversations/c72ea09d-ad15-4a25-bdb0-ef291388fc6f/messages",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 15125,
+      "latencyMs": 406.0
+    },
+    {
+      "role": "trader",
+      "method": "POST",
+      "route": "/api/v1/conversations/c72ea09d-ad15-4a25-bdb0-ef291388fc6f/messages",
+      "status": 409,
+      "expectedStatus": 409,
+      "startMs": 15531,
+      "latencyMs": 672.0
+    },
+    {
+      "role": "producer",
+      "method": "POST",
+      "route": "/api/v1/conversations/c72ea09d-ad15-4a25-bdb0-ef291388fc6f/messages",
+      "status": 201,
+      "expectedStatus": 201,
+      "startMs": 16203,
+      "latencyMs": 359.0
+    },
+    {
+      "role": "consumer",
+      "method": "POST",
+      "route": "/api/v1/conversations/9e814411-4856-4e94-b03f-9104cabb970a/messages",
+      "status": 201,
+      "expectedStatus": 201,
+      "startMs": 17109,
+      "latencyMs": 313.0
+    },
+    {
+      "role": "producer",
+      "method": "POST",
+      "route": "/api/v1/conversations/9e814411-4856-4e94-b03f-9104cabb970a/messages",
+      "status": 201,
+      "expectedStatus": 201,
+      "startMs": 19125,
+      "latencyMs": 344.0
+    },
+    {
+      "role": "producer",
+      "method": "POST",
+      "route": "/api/v1/community/groups",
+      "status": 201,
+      "expectedStatus": 201,
+      "startMs": 21125,
+      "latencyMs": 390.0
+    },
+    {
+      "role": "trader",
+      "method": "POST",
+      "route": "/api/v1/community/groups/83f130a3-713e-4d39-8ff5-2a8bd2f10dba/join",
+      "status": 201,
+      "expectedStatus": null,
+      "startMs": 21547,
+      "latencyMs": 437.0
+    },
+    {
+      "role": "trader",
+      "method": "POST",
+      "route": "/api/v1/community/groups/83f130a3-713e-4d39-8ff5-2a8bd2f10dba/join",
+      "status": 200,
+      "expectedStatus": null,
+      "startMs": 21515,
+      "latencyMs": 485.0
+    },
+    {
+      "role": "consumer",
+      "method": "POST",
+      "route": "/api/v1/community/groups/83f130a3-713e-4d39-8ff5-2a8bd2f10dba/join",
+      "status": 201,
+      "expectedStatus": null,
+      "startMs": 22000,
+      "latencyMs": 453.0
+    },
+    {
+      "role": "consumer",
+      "method": "POST",
+      "route": "/api/v1/community/groups/83f130a3-713e-4d39-8ff5-2a8bd2f10dba/join",
+      "status": 200,
+      "expectedStatus": null,
+      "startMs": 22000,
+      "latencyMs": 984.0
+    },
+    {
+      "role": "admin",
+      "method": "GET",
+      "route": "/api/v1/conversations/83f130a3-713e-4d39-8ff5-2a8bd2f10dba/messages",
+      "status": 404,
+      "expectedStatus": 404,
+      "startMs": 22984,
+      "latencyMs": 625.0
+    },
+    {
+      "role": "admin",
+      "method": "POST",
+      "route": "/api/v1/community/groups/83f130a3-713e-4d39-8ff5-2a8bd2f10dba/join",
+      "status": 201,
+      "expectedStatus": 201,
+      "startMs": 23609,
+      "latencyMs": 313.0
+    },
+    {
+      "role": "consumer",
+      "method": "POST",
+      "route": "/api/v1/community/groups/83f130a3-713e-4d39-8ff5-2a8bd2f10dba/join",
+      "status": 400,
+      "expectedStatus": 400,
+      "startMs": 23922,
+      "latencyMs": 406.0
+    },
+    {
+      "role": "producer",
+      "method": "POST",
+      "route": "/api/v1/conversations/83f130a3-713e-4d39-8ff5-2a8bd2f10dba/messages",
+      "status": 201,
+      "expectedStatus": 201,
+      "startMs": 24765,
+      "latencyMs": 375.0
+    },
+    {
+      "role": "consumer",
+      "method": "POST",
+      "route": "/api/v1/community/groups/83f130a3-713e-4d39-8ff5-2a8bd2f10dba/leave",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 27109,
+      "latencyMs": 1563.0
+    },
+    {
+      "role": "consumer",
+      "method": "GET",
+      "route": "/api/v1/conversations/83f130a3-713e-4d39-8ff5-2a8bd2f10dba/messages",
+      "status": 404,
+      "expectedStatus": 404,
+      "startMs": 28672,
+      "latencyMs": 359.0
+    },
+    {
+      "role": "trader",
+      "method": "POST",
+      "route": "/api/v1/conversations/83f130a3-713e-4d39-8ff5-2a8bd2f10dba/messages",
+      "status": 201,
+      "expectedStatus": 201,
+      "startMs": 29031,
+      "latencyMs": 469.0
+    },
+    {
+      "role": "trader",
+      "method": "POST",
+      "route": "/api/v1/community/groups/83f130a3-713e-4d39-8ff5-2a8bd2f10dba/close",
+      "status": 403,
+      "expectedStatus": 403,
+      "startMs": 33125,
+      "latencyMs": 312.0
+    },
+    {
+      "role": "producer",
+      "method": "POST",
+      "route": "/api/v1/community/groups/83f130a3-713e-4d39-8ff5-2a8bd2f10dba/close",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 33437,
+      "latencyMs": 375.0
+    },
+    {
+      "role": "trader",
+      "method": "POST",
+      "route": "/api/v1/conversations/83f130a3-713e-4d39-8ff5-2a8bd2f10dba/messages",
+      "status": 409,
+      "expectedStatus": 409,
+      "startMs": 33812,
+      "latencyMs": 391.0
+    },
+    {
+      "role": "consumer",
+      "method": "POST",
+      "route": "/api/v1/community/groups/83f130a3-713e-4d39-8ff5-2a8bd2f10dba/join",
+      "status": 409,
+      "expectedStatus": 409,
+      "startMs": 34203,
+      "latencyMs": 391.0
+    },
+    {
+      "role": "consumer",
+      "method": "GET",
+      "route": "/api/v1/market/summary?region=%C4%90%E1%BB%93ng+Th%C3%A1p&productCode=mango",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 34594,
+      "latencyMs": 421.0
+    },
+    {
+      "role": "trader",
+      "method": "POST",
+      "route": "/api/v1/posts",
+      "status": 201,
+      "expectedStatus": 201,
+      "startMs": 35015,
+      "latencyMs": 329.0
+    },
+    {
+      "role": "admin",
+      "method": "POST",
+      "route": "/api/v1/admin/posts/b57fa4f8-f87f-4cda-9268-878420beec54/review",
+      "status": 200,
+      "expectedStatus": null,
+      "startMs": 35344,
+      "latencyMs": 343.0
+    },
+    {
+      "role": "trader",
+      "method": "POST",
+      "route": "/api/v1/posts/b57fa4f8-f87f-4cda-9268-878420beec54/conversations",
+      "status": 409,
+      "expectedStatus": 409,
+      "startMs": 35687,
+      "latencyMs": 407.0
+    },
+    {
+      "role": "consumer",
+      "method": "GET",
+      "route": "/api/v1/market/summary?region=%C4%90%E1%BB%93ng+Th%C3%A1p&productCode=mango",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 36094,
+      "latencyMs": 468.0
+    },
+    {
+      "role": "admin",
+      "method": "POST",
+      "route": "/api/v1/admin/posts/48853e34-6371-4dfd-a9c5-ac9da67b6f02/review",
+      "status": 200,
+      "expectedStatus": null,
+      "startMs": 36562,
+      "latencyMs": 360.0
+    },
+    {
+      "role": "consumer",
+      "method": "GET",
+      "route": "/api/v1/posts/48853e34-6371-4dfd-a9c5-ac9da67b6f02",
+      "status": 404,
+      "expectedStatus": 404,
+      "startMs": 36922,
+      "latencyMs": 328.0
+    },
+    {
+      "role": "consumer",
+      "method": "GET",
+      "route": "/api/v1/market/summary?region=%C4%90%E1%BB%93ng+Th%C3%A1p&productCode=mango",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 37250,
+      "latencyMs": 469.0
+    },
+    {
+      "role": "admin",
+      "method": "POST",
+      "route": "/api/v1/admin/posts/48853e34-6371-4dfd-a9c5-ac9da67b6f02/review",
+      "status": 200,
+      "expectedStatus": null,
+      "startMs": 37719,
+      "latencyMs": 687.0
+    },
+    {
+      "role": "producer",
+      "method": "POST",
+      "route": "/api/v1/community/groups",
+      "status": 201,
+      "expectedStatus": 201,
+      "startMs": 38406,
+      "latencyMs": 359.0
+    },
+    {
+      "role": "admin",
+      "method": "POST",
+      "route": "/api/v1/community/groups/8ec7519f-fe89-4c96-85c8-c50d3f82f3fd/join",
+      "status": 201,
+      "expectedStatus": 201,
+      "startMs": 38765,
+      "latencyMs": 375.0
+    },
+    {
+      "role": "trader",
+      "method": "POST",
+      "route": "/api/v1/community/groups/8ec7519f-fe89-4c96-85c8-c50d3f82f3fd/join",
+      "status": 201,
+      "expectedStatus": 201,
+      "startMs": 39140,
+      "latencyMs": 344.0
+    },
+    {
+      "role": "consumer",
+      "method": "POST",
+      "route": "/api/v1/community/groups/8ec7519f-fe89-4c96-85c8-c50d3f82f3fd/join",
+      "status": 201,
+      "expectedStatus": 201,
+      "startMs": 39484,
+      "latencyMs": 281.0
+    },
+    {
+      "role": "admin",
+      "method": "POST",
+      "route": "/api/v1/conversations/8ec7519f-fe89-4c96-85c8-c50d3f82f3fd/messages",
+      "status": 201,
+      "expectedStatus": 201,
+      "startMs": 40203,
+      "latencyMs": 344.0
+    },
+    {
+      "role": "producer",
+      "method": "POST",
+      "route": "/api/v1/conversations/8ec7519f-fe89-4c96-85c8-c50d3f82f3fd/messages",
+      "status": 201,
+      "expectedStatus": 201,
+      "startMs": 41109,
+      "latencyMs": 375.0
+    },
+    {
+      "role": "trader",
+      "method": "POST",
+      "route": "/api/v1/conversations/8ec7519f-fe89-4c96-85c8-c50d3f82f3fd/messages",
+      "status": 201,
+      "expectedStatus": 201,
+      "startMs": 43125,
+      "latencyMs": 437.0
+    },
+    {
+      "role": "consumer",
+      "method": "POST",
+      "route": "/api/v1/conversations/8ec7519f-fe89-4c96-85c8-c50d3f82f3fd/messages",
+      "status": 201,
+      "expectedStatus": 201,
+      "startMs": 45109,
+      "latencyMs": 422.0
+    },
+    {
+      "role": "consumer",
+      "method": "GET",
+      "route": "/api/v1/community/groups/8ec7519f-fe89-4c96-85c8-c50d3f82f3fd",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 47109,
+      "latencyMs": 688.0
+    },
+    {
+      "role": "consumer",
+      "method": "GET",
+      "route": "/api/v1/market/summary?region=%C4%90%E1%BB%93ng+Th%C3%A1p&productCode=mango",
+      "status": 200,
+      "expectedStatus": 200,
+      "startMs": 47797,
+      "latencyMs": 359.0
+    },
+    {
+      "role": "producer",
+      "method": "POST",
+      "route": "/api/v1/auth/logout",
+      "status": 204,
+      "expectedStatus": null,
+      "startMs": 48609,
+      "latencyMs": 547.0
+    },
+    {
+      "role": "admin",
+      "method": "POST",
+      "route": "/api/v1/auth/logout",
+      "status": 204,
+      "expectedStatus": null,
+      "startMs": 48609,
+      "latencyMs": 610.0
+    },
+    {
+      "role": "consumer",
+      "method": "POST",
+      "route": "/api/v1/auth/logout",
+      "status": 204,
+      "expectedStatus": null,
+      "startMs": 48656,
+      "latencyMs": 563.0
+    },
+    {
+      "role": "trader",
+      "method": "POST",
+      "route": "/api/v1/auth/logout",
+      "status": 204,
+      "expectedStatus": null,
+      "startMs": 48859,
+      "latencyMs": 422.0
+    }
+  ],
+  "interleavings": [
+    {
+      "name": "four-role-login",
+      "operations": 4,
+      "startMs": 2484,
+      "endMs": 4312
+    },
+    {
+      "name": "four-concurrent-WSS-connects",
+      "operations": 4,
+      "startMs": 5687,
+      "endMs": 6672
+    },
+    {
+      "name": "same-revision-admin-review",
+      "operations": 2,
+      "startMs": 8203,
+      "endMs": 8719
+    },
+    {
+      "name": "eight-concurrent-trader-contacts",
+      "operations": 8,
+      "startMs": 10250,
+      "endMs": 11265
+    },
+    {
+      "name": "trader-duplicate-concurrent-group-join",
+      "operations": 2,
+      "startMs": 21515,
+      "endMs": 22000
+    },
+    {
+      "name": "consumer-duplicate-concurrent-group-join",
+      "operations": 2,
+      "startMs": 22000,
+      "endMs": 22984
+    }
+  ],
+  "records": {
+    "supplyPostId": "48853e34-6371-4dfd-a9c5-ac9da67b6f02",
+    "producerTraderConversationId": "c72ea09d-ad15-4a25-bdb0-ef291388fc6f",
+    "producerConsumerConversationId": "9e814411-4856-4e94-b03f-9104cabb970a",
+    "messages": [
+      {
+        "id": "7aea0a95-fe0a-43b4-b78c-986e926d1ce4",
+        "conversationId": "c72ea09d-ad15-4a25-bdb0-ef291388fc6f",
+        "senderRole": "trader"
+      },
+      {
+        "id": "bdf03024-abb8-4fe7-a406-f09fb0d588a8",
+        "conversationId": "c72ea09d-ad15-4a25-bdb0-ef291388fc6f",
+        "senderRole": "producer"
+      },
+      {
+        "id": "c8997de7-1ae8-4dfb-89cc-acef6f6a011a",
+        "conversationId": "9e814411-4856-4e94-b03f-9104cabb970a",
+        "senderRole": "consumer"
+      },
+      {
+        "id": "5f4e94ab-bb58-4f29-91a1-40ff86bac0d4",
+        "conversationId": "9e814411-4856-4e94-b03f-9104cabb970a",
+        "senderRole": "producer"
+      },
+      {
+        "id": "eb79585d-baf3-4da4-8298-9ee8a9ba7648",
+        "conversationId": "83f130a3-713e-4d39-8ff5-2a8bd2f10dba",
+        "senderRole": "producer"
+      },
+      {
+        "id": "4592270d-6d48-45d2-928f-cae869c3e0c8",
+        "conversationId": "83f130a3-713e-4d39-8ff5-2a8bd2f10dba",
+        "senderRole": "trader"
+      },
+      {
+        "id": "118437d7-7dc0-4244-9a7b-e1e0fe079c0c",
+        "conversationId": "8ec7519f-fe89-4c96-85c8-c50d3f82f3fd",
+        "senderRole": "admin"
+      },
+      {
+        "id": "f938084b-93a4-4204-a55f-a27c83237cf5",
+        "conversationId": "8ec7519f-fe89-4c96-85c8-c50d3f82f3fd",
+        "senderRole": "producer"
+      },
+      {
+        "id": "222d55e2-b0ae-4d2d-bf1e-e4bb75458eb4",
+        "conversationId": "8ec7519f-fe89-4c96-85c8-c50d3f82f3fd",
+        "senderRole": "trader"
+      },
+      {
+        "id": "554c4673-3834-4f41-bdd9-0eb1074ef7e1",
+        "conversationId": "8ec7519f-fe89-4c96-85c8-c50d3f82f3fd",
+        "senderRole": "consumer"
+      }
+    ],
+    "closedAcceptanceGroupId": "83f130a3-713e-4d39-8ff5-2a8bd2f10dba",
+    "demandPostId": "b57fa4f8-f87f-4cda-9268-878420beec54",
+    "openHumanDemoGroupId": "8ec7519f-fe89-4c96-85c8-c50d3f82f3fd",
+    "productCode": "mango",
+    "region": "Đồng Tháp"
+  },
+  "cleanup": [
+    {
+      "role": "producer",
+      "logoutStatus": 204
+    },
+    {
+      "role": "admin",
+      "logoutStatus": 204
+    },
+    {
+      "role": "consumer",
+      "logoutStatus": 204
+    },
+    {
+      "role": "trader",
+      "logoutStatus": 204
+    }
+  ],
+  "baseUrl": "https://tips-differential-relating-validity.trycloudflare.com",
+  "marketBaseline": {
+    "productCode": "mango",
+    "productName": "Xoài",
+    "region": "Đồng Tháp",
+    "supplyEstimatedKg": 80.25,
+    "demandEstimatedKg": 0,
+    "supplyPostCount": 1,
+    "demandPostCount": 0,
+    "contributorCount": 1,
+    "referencePriceVndPerKg": null,
+    "priceMinVndPerKg": null,
+    "priceMaxVndPerKg": null,
+    "priceSampleCount": 0,
+    "lastUpdated": "2026-10-01T00:00:00+00:00"
+  },
+  "marketAfter": {
+    "productCode": "mango",
+    "productName": "Xoài",
+    "region": "Đồng Tháp",
+    "supplyEstimatedKg": 580.25,
+    "demandEstimatedKg": 200.0,
+    "supplyPostCount": 2,
+    "demandPostCount": 1,
+    "contributorCount": 2,
+    "referencePriceVndPerKg": 25000,
+    "priceMinVndPerKg": 20000.0,
+    "priceMaxVndPerKg": 30000.0,
+    "priceSampleCount": 1,
+    "lastUpdated": "2026-10-30T12:21:41.235826+00:00"
+  },
+  "wssClients": {
+    "admin": {
+      "bufferedFrames": 30,
+      "receiverFailureType": null,
+      "backgroundReceiverStarted": true
+    },
+    "producer": {
+      "bufferedFrames": 36,
+      "receiverFailureType": null,
+      "backgroundReceiverStarted": true
+    },
+    "trader": {
+      "bufferedFrames": 30,
+      "receiverFailureType": null,
+      "backgroundReceiverStarted": true
+    },
+    "consumer": {
+      "bufferedFrames": 28,
+      "receiverFailureType": null,
+      "backgroundReceiverStarted": true
+    }
+  },
+  "finishedUtc": "2026-10-30T12:21:52.171409+00:00",
+  "elapsedSeconds": 49.281
+}

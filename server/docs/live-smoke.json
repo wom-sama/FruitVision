@@ -1,0 +1,100 @@
+{
+  "startedUtc": "2026-10-30T08:00:07.625172+00:00",
+  "scope": "real-loopback-Kestrel-PostgreSQL-and-SignalR; no AI/phone/Internet throughput claim",
+  "actualCounts": {
+    "users": 24,
+    "pendingApplications": 3,
+    "posts": 60,
+    "messages": 480,
+    "activeSessions": 2,
+    "aiIntegrated": false,
+    "inventoryTradingImplemented": false
+  },
+  "smallReadProbe": {
+    "requests": 30,
+    "concurrency": 6,
+    "p50Ms": 2.63,
+    "p95Ms": 50.58,
+    "environment": "localhost, seeded small database, no inference load; not production capacity"
+  },
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "readiness",
+      "passed": true
+    },
+    {
+      "name": "web-client-served",
+      "passed": true
+    },
+    {
+      "name": "private-config-not-served",
+      "passed": true
+    },
+    {
+      "name": "unauthenticated-admin-denied",
+      "passed": true
+    },
+    {
+      "name": "malformed-json",
+      "passed": true
+    },
+    {
+      "name": "oversize-before-db",
+      "passed": true
+    },
+    {
+      "name": "wrong-content-type",
+      "passed": true
+    },
+    {
+      "name": "login:admin@fruitvision.test",
+      "passed": true
+    },
+    {
+      "name": "login:producer@fruitvision.test",
+      "passed": true
+    },
+    {
+      "name": "seed-counts",
+      "passed": true
+    },
+    {
+      "name": "own-conversations",
+      "passed": true
+    },
+    {
+      "name": "signalr-handshake",
+      "passed": true
+    },
+    {
+      "name": "signalr-authorized-group",
+      "passed": true
+    },
+    {
+      "name": "message-persisted",
+      "passed": true
+    },
+    {
+      "name": "real-socket-realtime-delivery",
+      "passed": true
+    },
+    {
+      "name": "idempotent-message-retry",
+      "passed": true
+    },
+    {
+      "name": "30-reads-6-clients-no-errors",
+      "passed": true
+    },
+    {
+      "name": "logout",
+      "passed": true
+    },
+    {
+      "name": "logout-token-invalid",
+      "passed": true
+    }
+  ],
+  "finishedUtc": "2026-10-30T08:00:09.426739+00:00"
+}
