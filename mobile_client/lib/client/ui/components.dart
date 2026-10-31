@@ -11,9 +11,22 @@ List<Json> rows(Json response) => (response['items'] as List? ?? [])
     .whereType<Map>()
     .map((row) => Map<String, dynamic>.from(row))
     .toList();
+String safeErrorMessage(String message) {
+  if (RegExp(
+    r'SocketException|HandshakeException|Connection refused|Failed host lookup|/api/v\d|[A-Z]:\\|Bearer\s',
+    caseSensitive: false,
+  ).hasMatch(message)) {
+    return 'Chưa hoàn tất được thao tác. Kiểm tra kết nối và thử lại.';
+  }
+  return message.replaceAll(
+    RegExp(r'''(?:https?|wss?)://[^\s<>"“”]+''', caseSensitive: false),
+    'dịch vụ',
+  );
+}
+
 String errorText(Object error) => error is ApiException
-    ? error.message
-    : 'Không thể kết nối máy chủ. Vui lòng thử lại.';
+    ? safeErrorMessage(error.message)
+    : 'Chưa kết nối được. Kiểm tra mạng và thử lại.';
 String displayTime(Object? input) {
   final date = DateTime.tryParse(input?.toString() ?? '')?.toLocal();
   if (date == null) return '';
@@ -47,7 +60,7 @@ class MessageBox extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            text,
+            error ? safeErrorMessage(text) : text,
             style: TextStyle(
               color: error
                   ? Theme.of(context).colorScheme.onErrorContainer
@@ -211,11 +224,14 @@ class ApiListState extends State<ApiList> {
 Future<void> openServerSettings(
   BuildContext context,
   SessionController controller,
-) => Navigator.of(context).push(
-  MaterialPageRoute<void>(
-    builder: (_) => ServerSettings(controller: controller),
-  ),
-);
+) async {
+  if (controller.user?.isAdmin != true) return;
+  await Navigator.of(context).push(
+    MaterialPageRoute<void>(
+      builder: (_) => ServerSettings(controller: controller),
+    ),
+  );
+}
 
 class ServerSettings extends StatefulWidget {
   const ServerSettings({super.key, required this.controller});
@@ -236,6 +252,7 @@ class _ServerSettingsState extends State<ServerSettings> {
   }
 
   Future<void> _save() async {
+    if (widget.controller.user?.isAdmin != true) return;
     if (_saving || !_form.currentState!.validate()) return;
     setState(() {
       _saving = true;
@@ -254,51 +271,61 @@ class _ServerSettingsState extends State<ServerSettings> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('Máy chủ')),
-    body: SafeArea(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
-        child: Form(
-          key: _form,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SectionTitle(
-                'Địa chỉ kết nối',
-                subtitle: 'Địa chỉ HTTPS tạm thời có thể đổi khi máy chủ khởi động lại. Đổi máy chủ sẽ kết thúc phiên hiện tại.',
-              ),
-              TextFormField(
-                controller: _url,
-                enabled: !_saving,
-                keyboardType: TextInputType.url,
-                autocorrect: false,
-                decoration: const InputDecoration(labelText: 'URL HTTPS'),
-                validator: (text) {
-                  final uri = Uri.tryParse(text?.trim() ?? '');
-                  return uri == null ||
-                          uri.scheme != 'https' ||
-                          uri.host.isEmpty ||
-                          uri.userInfo.isNotEmpty ||
-                          uri.hasQuery ||
-                          uri.hasFragment
-                      ? 'Nhập URL HTTPS hợp lệ, không có thông tin đăng nhập.'
-                      : null;
-                },
-              ),
-              const SizedBox(height: 16),
-              if (_error != null) ...[
-                MessageBox(_error!, error: true),
-                const SizedBox(height: 16),
-              ],
-              FilledButton(
-                onPressed: _saving ? null : _save,
-                child: Text(_saving ? 'Đang lưu…' : 'Lưu máy chủ'),
-              ),
-            ],
+  Widget build(BuildContext context) => widget.controller.user?.isAdmin != true
+      ? Scaffold(
+          appBar: AppBar(title: const Text('Quản trị')),
+          body: const SafeArea(
+            child: Padding(
+              padding: EdgeInsets.all(24),
+              child: Text('Chỉ quản trị được cấu hình kết nối.'),
+            ),
           ),
-        ),
-      ),
-    ),
-  );
+        )
+      : Scaffold(
+          appBar: AppBar(title: const Text('Máy chủ')),
+          body: SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(24),
+              child: Form(
+                key: _form,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const SectionTitle(
+                      'Địa chỉ kết nối',
+                      subtitle: 'Địa chỉ HTTPS tạm thời có thể đổi khi máy chủ khởi động lại. Đổi máy chủ sẽ kết thúc phiên hiện tại.',
+                    ),
+                    TextFormField(
+                      controller: _url,
+                      enabled: !_saving,
+                      keyboardType: TextInputType.url,
+                      autocorrect: false,
+                      decoration: const InputDecoration(labelText: 'URL HTTPS'),
+                      validator: (text) {
+                        final uri = Uri.tryParse(text?.trim() ?? '');
+                        return uri == null ||
+                                uri.scheme != 'https' ||
+                                uri.host.isEmpty ||
+                                uri.userInfo.isNotEmpty ||
+                                uri.hasQuery ||
+                                uri.hasFragment
+                            ? 'Nhập URL HTTPS hợp lệ, không có thông tin đăng nhập.'
+                            : null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    if (_error != null) ...[
+                      MessageBox(_error!, error: true),
+                      const SizedBox(height: 16),
+                    ],
+                    FilledButton(
+                      onPressed: _saving ? null : _save,
+                      child: Text(_saving ? 'Đang lưu…' : 'Lưu máy chủ'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
 }

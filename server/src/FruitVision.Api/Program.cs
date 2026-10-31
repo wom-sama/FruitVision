@@ -51,16 +51,20 @@ builder.Services.AddCors(o=>o.AddDefaultPolicy(p=>{
 }));
 builder.Services.AddRateLimiter(o=>{
     o.RejectionStatusCode=429;
-    o.GlobalLimiter=PartitionedRateLimiter.Create<HttpContext,string>(h=>RateLimitPartition.GetFixedWindowLimiter(
-        h.User.Identity?.IsAuthenticated==true ? "user:"+h.User.UserId().ToString("N") : "ip:"+(h.Connection.RemoteIpAddress?.ToString()??"local"),
-        _=>new FixedWindowRateLimiterOptions{PermitLimit=builder.Configuration.GetValue("Limits:RequestsPerMinute",120),Window=TimeSpan.FromMinutes(1),QueueLimit=0}));
+    o.GlobalLimiter=PartitionedRateLimiter.Create<HttpContext,string>(h=> {
+        var live=h.GetEndpoint()?.Metadata.GetMetadata<LiveAiFrameRateMetadata>() is not null;
+        var identity=h.User.Identity?.IsAuthenticated==true ? "user:"+h.User.UserId().ToString("N") : "ip:"+(h.Connection.RemoteIpAddress?.ToString()??"local");
+        return RateLimitPartition.GetFixedWindowLimiter((live?"live:":"standard:")+identity,
+            _=>new FixedWindowRateLimiterOptions{PermitLimit=live?8:builder.Configuration.GetValue("Limits:RequestsPerMinute",120),Window=live?TimeSpan.FromSeconds(1):TimeSpan.FromMinutes(1),QueueLimit=0});
+    });
     o.AddPolicy("auth",h=>RateLimitPartition.GetFixedWindowLimiter(h.Connection.RemoteIpAddress?.ToString()??"local",
         _=>new FixedWindowRateLimiterOptions{PermitLimit=builder.Configuration.GetValue("Limits:AuthPerMinute",30),Window=TimeSpan.FromMinutes(1),QueueLimit=0}));
-    o.OnRejected=async(c,t)=>{c.HttpContext.Response.Headers.RetryAfter="60";await c.HttpContext.Response.WriteAsJsonAsync(new{title="Quá nhiều yêu cầu. Vui lòng thử lại sau.",status=429},t);};
+    o.OnRejected=async(c,t)=>{c.HttpContext.Response.Headers.RetryAfter=c.HttpContext.GetEndpoint()?.Metadata.GetMetadata<LiveAiFrameRateMetadata>() is not null?"1":"60";await c.HttpContext.Response.WriteAsJsonAsync(new{title="Quá nhiều yêu cầu. Vui lòng thử lại sau.",status=429},t);};
 });
 builder.Services.AddSignalR(o=>{o.MaximumReceiveMessageSize=8192;o.MaximumParallelInvocationsPerClient=1;o.EnableDetailedErrors=false;});
 builder.Services.AddSingleton<SessionConnections>();builder.Services.AddHostedService<OutboxDispatcher>();
 builder.Services.AddFruitVisionAi(builder.Configuration);
+builder.Services.AddLiveAi(builder.Configuration);
 builder.Services.AddLocationDirectory();
 builder.Services.AddRoleApplications(builder.Configuration);
 builder.Services.AddSecretMessaging(builder.Configuration);
@@ -139,6 +143,7 @@ app.MapGet("/api/v1/system/capabilities",(AiRuntimeStatus ai,EmailOtpService otp
     roleApplicationsReady=true,communityArticlesReady=true,branchModerationReady=true,apiLocationSelectionReady=true,
     postModerationReady=true,postConversationsReady=true,communityGroupsReady=true,regionalMarketReferenceReady=true,marketPricePredictionReady=false,stockAndOrdersReady=false}));
 app.MapAuth();app.MapAccounts();app.MapInteractions();app.MapFruitVisionAi();app.MapMobileUpdates();
+app.MapLiveAi();
 app.MapLocations();app.MapRoleApplications();app.MapPublishing();
 app.MapEmailOtp();app.MapAiInsights();
 app.MapDeviceBiometrics();
@@ -147,6 +152,12 @@ app.MapSecretMessaging();
 app.MapLearning();
 app.MapNormalMedia();
 app.MapArticleContact();
+app.MapArticleEngagement();
+app.MapConversationContext();
+app.MapInbox();
+app.MapDirectContacts();
+app.MapAdminAppointments();
+app.MapProfiles();
 app.MapHub<FruitHub>("/hubs/fruitvision",o=>{o.CloseOnAuthenticationExpiration=true;o.Transports=HttpTransportType.WebSockets|HttpTransportType.LongPolling;});
 app.MapOpenApi();
 app.Run();

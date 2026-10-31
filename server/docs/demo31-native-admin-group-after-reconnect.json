@@ -1,0 +1,16 @@
+{
+  "startedUtc": "2026-10-30T22:43:16.424223+00:00",
+  "status": "SINGLE_MARKER_PERSISTED_NATIVE_OBSERVATION_PENDING",
+  "scope": "Exactly one normal Trader POST to the previously bound Admin-APK group. Automatic native WSS receipt must be observed separately by Root.",
+  "marker": "DEMO_QA31_WSS_AFTER_RECONNECT",
+  "senderRole": "Trader",
+  "nativeAutomaticReceive": "PENDING_ROOT_OBSERVATION",
+  "groupClosedByThisOperation": false,
+  "apiStatus": 201,
+  "senderMetadataVerified": true,
+  "messageIdSha256": "55cc9cf6b1a7c08b4c4cfb5072f39f65c2cf5d6d88b72425082ebe22684456f1",
+  "httpRequests": 1,
+  "sessionRotations": 0,
+  "finishedUtc": "2026-10-30T22:43:16.795505+00:00",
+  "canonicalLockReleased": true
+}

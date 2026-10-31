@@ -221,6 +221,59 @@ namespace FruitVision.Api.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("FruitVision.Api.Data.ArticleComment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ArticleId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Body")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<Guid>("ClientCommentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("ArticleId", "CreatedAt", "Id");
+
+                    b.HasIndex("ArticleId", "UserId", "ClientCommentId")
+                        .IsUnique();
+
+                    b.ToTable("ArticleComments", (string)null);
+                });
+
+            modelBuilder.Entity("FruitVision.Api.Data.ArticleLike", b =>
+                {
+                    b.Property<Guid>("ArticleId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("ArticleId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ArticleLikes", (string)null);
+                });
+
             modelBuilder.Entity("FruitVision.Api.Data.AuditEntry", b =>
                 {
                     b.Property<Guid>("Id")
@@ -479,7 +532,7 @@ namespace FruitVision.Api.Data.Migrations
 
                             t.HasCheckConstraint("CK_Article_Revision", "\"Revision\" >= 1");
 
-                            t.HasCheckConstraint("CK_Article_Status", "\"Status\" IN ('AwaitingReview','Published','Rejected','Paused')");
+                            t.HasCheckConstraint("CK_Article_Status", "\"Status\" IN ('AwaitingReview','Published','Rejected','Paused','Deleted')");
                         });
                 });
 
@@ -566,6 +619,35 @@ namespace FruitVision.Api.Data.Migrations
                     b.ToTable("Conversations", t =>
                         {
                             t.HasCheckConstraint("CK_Conversation_Kind", "\"Kind\" IN ('Direct','Group')");
+                        });
+                });
+
+            modelBuilder.Entity("FruitVision.Api.Data.ConversationReadState", b =>
+                {
+                    b.Property<Guid>("ConversationId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset?>("LastNormalCreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("LastNormalMessageId")
+                        .HasColumnType("uuid");
+
+                    b.Property<long>("LastSecretSequence")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("ConversationId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ConversationReadStates", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_Inbox_NormalCursor", "(\"LastNormalCreatedAt\" IS NULL) = (\"LastNormalMessageId\" IS NULL)");
+
+                            t.HasCheckConstraint("CK_Inbox_SecretCursor", "\"LastSecretSequence\" >= 0");
                         });
                 });
 
@@ -1442,7 +1524,67 @@ namespace FruitVision.Api.Data.Migrations
                         {
                             t.HasCheckConstraint("CK_Branch_Revision", "\"Revision\" >= 1");
 
-                            t.HasCheckConstraint("CK_Branch_Status", "\"Status\" IN ('Pending','Approved','Rejected','NeedsInformation')");
+                            t.HasCheckConstraint("CK_Branch_Status", "\"Status\" IN ('Pending','Approved','Rejected','NeedsInformation','Deleted')");
+                        });
+                });
+
+            modelBuilder.Entity("FruitVision.Api.Data.UserBlock", b =>
+                {
+                    b.Property<Guid>("OwnerUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("BlockedUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("OwnerUserId", "BlockedUserId");
+
+                    b.HasIndex("BlockedUserId", "OwnerUserId");
+
+                    b.ToTable("UserBlocks", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_UserBlock_NotSelf", "\"OwnerUserId\" <> \"BlockedUserId\"");
+                        });
+                });
+
+            modelBuilder.Entity("FruitVision.Api.Data.UserProfile", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Bio")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("character varying(16)");
+
+                    b.Property<string>("Phone")
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<bool>("ShowGender")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("ShowPhone")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("ShowRegion")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("UserProfiles", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_UserProfile_Gender", "\"Gender\" IN ('Unknown','Female','Male','Other')");
                         });
                 });
 
@@ -1512,6 +1654,36 @@ namespace FruitVision.Api.Data.Migrations
 
             modelBuilder.Entity("FruitVision.Api.Ai.AiJob", b =>
                 {
+                    b.HasOne("FruitVision.Api.Data.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("FruitVision.Api.Data.ArticleComment", b =>
+                {
+                    b.HasOne("FruitVision.Api.Data.CommunityArticle", null)
+                        .WithMany()
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FruitVision.Api.Data.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("FruitVision.Api.Data.ArticleLike", b =>
+                {
+                    b.HasOne("FruitVision.Api.Data.CommunityArticle", null)
+                        .WithMany()
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("FruitVision.Api.Data.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -1610,6 +1782,15 @@ namespace FruitVision.Api.Data.Migrations
                         .WithMany()
                         .HasForeignKey("ProductCode")
                         .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("FruitVision.Api.Data.ConversationReadState", b =>
+                {
+                    b.HasOne("FruitVision.Api.Data.Participant", null)
+                        .WithMany()
+                        .HasForeignKey("ConversationId", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("FruitVision.Api.Data.EmailOtpChallenge", b =>
@@ -1848,6 +2029,30 @@ namespace FruitVision.Api.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("FruitVision.Api.Data.UserBlock", b =>
+                {
+                    b.HasOne("FruitVision.Api.Data.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("BlockedUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("FruitVision.Api.Data.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("OwnerUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("FruitVision.Api.Data.UserProfile", b =>
+                {
+                    b.HasOne("FruitVision.Api.Data.AppUser", null)
+                        .WithOne()
+                        .HasForeignKey("FruitVision.Api.Data.UserProfile", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>

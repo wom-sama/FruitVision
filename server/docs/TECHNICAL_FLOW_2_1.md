@@ -2,6 +2,8 @@
 
 # FruitVision 2.1 — Kiến trúc và luồng kỹ thuật để trình bày demo
 
+Các tệp ghi “không công bố” chỉ có trong bộ làm việc/bàn giao nội bộ; bản clone này không kèm các tệp đó.
+
 Đối chiếu mã và biên nhận ngày 30/10/2026. FruitVision 2.1 là ứng dụng Flutter gọi một backend ASP.NET Core chạy trên PC. Backend giữ quyền quyết định tài khoản, dữ liệu và tác vụ; PostgreSQL giữ trạng thái bền vững; tiến trình Python riêng chạy model ONNX trên CPU. Điện thoại chọn/chụp tệp, truyền bytes và hiển thị kết quả từ máy chủ.
 
 Lát cắt hiện có: tài khoản/xét duyệt, tin dự kiến, chat, lịch sử và AI ảnh/video hữu hạn. **Chụp ảnh mở ứng dụng máy ảnh bên ngoài để nhận một JPEG**; chưa triển khai truyền camera liên tục hoặc suy luận live camera stream. APK mới không chứa model/runtime AI; mã offline lịch sử ở `app/` được giữ riêng. Xem [hướng dẫn API](AI_API_USAGE.md) và [hợp đồng worker](../ai/README.md).
@@ -180,7 +182,7 @@ Tracking dùng liên kết hình học và vận tốc, không có bộ tái nh�
 
 Hai nhãn Xanh / chưa chín và Chín là **giai đoạn theo nguồn dữ liệu**, không phải phép đo xác nhận độ chín thực địa. Loài/độ tin cậy không đủ được giữ Chưa xác định; giao diện hiển thị nhãn chung Quả. Model metadata vẫn ghi giới hạn chất lượng video người dùng; pipeline chạy hết video không thay thế đánh giá precision/recall hoặc ground truth độc lập. Không suy ra kg, tồn kho, dư lượng, an toàn thực phẩm hay chứng nhận từ kết quả này.
 
-Mã YOLOX Apache-2.0 không tự cấp quyền thương mại cho mọi dữ liệu/trọng số. Hồ sơ nguồn giữ hạn chế RaspGrade CC-BY-NC-4.0 và ghi nhận thông báo Zenodo xung đột; model kết hợp hiện **demo phi thương mại**. Xem [metadata](../../app/android/app/src/main/assets/model_metadata.json), [SOURCE_ATTRIBUTION](../../app/android/app/src/main/assets/SOURCE_ATTRIBUTION.json), [giấy phép YOLOX](../../app/android/app/src/main/assets/YOLOX_LICENSE.txt).
+Mã YOLOX Apache-2.0 không tự cấp quyền thương mại cho mọi dữ liệu/trọng số. Hồ sơ nguồn giữ hạn chế RaspGrade CC-BY-NC-4.0 và ghi nhận thông báo Zenodo xung đột; model kết hợp hiện **demo phi thương mại**. Xem metadata (`../../app/android/app/src/main/assets/model_metadata.json`; không công bố), SOURCE_ATTRIBUTION (`../../app/android/app/src/main/assets/SOURCE_ATTRIBUTION.json`; không công bố), giấy phép YOLOX (`../../app/android/app/src/main/assets/YOLOX_LICENSE.txt`; không công bố).
 
 ## 5. Chat và cập nhật AI qua WSS
 

@@ -187,12 +187,12 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('Cần kiểm tra chứng từ.'), findsOneWidget);
       await tester.scrollUntilVisible(
-        find.text('Lưu hồ sơ'),
+        find.text('Lưu bản nháp'),
         -220,
         scrollable: find.byType(Scrollable).first,
       );
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Lưu hồ sơ'));
+      await tester.tap(find.text('Lưu bản nháp'));
       await tester.pumpAndSettle();
       expect(
         transport.mutations
@@ -281,17 +281,17 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byType(NavigationDestination).last);
       await tester.pumpAndSettle();
-      await tester.scrollUntilVisible(find.text('Chi nhánh kinh doanh'), 180);
+      await tester.scrollUntilVisible(find.text('Cơ sở kinh doanh'), 180);
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Chi nhánh kinh doanh'));
+      await tester.tap(find.text('Cơ sở kinh doanh'));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Đăng ký chi nhánh'));
+      await tester.tap(find.text('Đăng ký cơ sở kinh doanh'));
       await tester.pumpAndSettle();
-      await enter(tester, 'Tên chi nhánh', 'Điểm thu mua Sa Đéc');
+      await enter(tester, 'Tên cơ sở', 'Điểm thu mua Sa Đéc');
       await choose(tester, 'Quốc gia', 'Việt Nam');
       await choose(tester, 'Tỉnh / thành phố', 'Đồng Tháp');
       await enter(tester, 'Địa chỉ đường / số nhà', 'Số 20, đường Hoa');
-      await enter(tester, 'Số điện thoại chi nhánh', '0901234567');
+      await enter(tester, 'Số điện thoại liên hệ', '0901234567');
       await tester.ensureVisible(find.text('Gửi xét duyệt'));
       await tester.pumpAndSettle();
       await tester.tap(find.text('Gửi xét duyệt'));
@@ -339,9 +339,9 @@ void main() {
       await tester.ensureVisible(find.text('Xoài'));
       await tester.pumpAndSettle();
       await tester.tap(find.text('Xoài'));
-      await tester.ensureVisible(find.text('Lưu hồ sơ'));
+      await tester.ensureVisible(find.text('Lưu bản nháp'));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Lưu hồ sơ'));
+      await tester.tap(find.text('Lưu bản nháp'));
       await tester.pumpAndSettle();
       final saved = transport.mutations.singleWhere(
         (call) => call['method'] == 'PUT',

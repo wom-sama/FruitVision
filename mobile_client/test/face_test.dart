@@ -130,11 +130,19 @@ void main() {
         find.textContaining('chưa có kiểm tra người thật'),
         findsOneWidget,
       );
-      await tester.scrollUntilVisible(find.text('Chụp ảnh khuôn mặt'), 180);
+      expect(find.text('Chọn ảnh JPEG/PNG ≤ 2 MiB'), findsNothing);
+      await tester.scrollUntilVisible(find.text('Quét khuôn mặt'), 180);
       await tester.pumpAndSettle();
       await tester.runAsync(() async {
-        await tester.tap(find.text('Chụp ảnh khuôn mặt'));
-        await Future<void>.delayed(const Duration(milliseconds: 40));
+        await tester.tap(find.text('Quét khuôn mặt'));
+        for (
+          var attempt = 0;
+          attempt < 500 && find.text(chosen.name).evaluate().isEmpty;
+          attempt++
+        ) {
+          await Future<void>.delayed(const Duration(milliseconds: 10));
+          await tester.pump();
+        }
       });
       await tester.pumpAndSettle();
       expect(picker.methods, ['captureFace']);

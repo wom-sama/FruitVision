@@ -1,0 +1,41 @@
+{
+  "status": "READ_ONLY_COMPLETE",
+  "startedUtc": "2026-10-30T19:47:00.563332+00:00",
+  "scope": "Read-only main-account demo preconditions; normal existing-session refresh allowed. No domain mutations, evidence downloads, broad suite or UI acceptance.",
+  "maximumAuthorizedHttpRequests": 17,
+  "roles": {
+    "Producer": {
+      "currentRole": "Producer",
+      "approvedOwnedBranchesInFirst50": 1,
+      "eligiblePublishedProfessionalArticlesInFirst50": 1,
+      "branchPageHasMore": false,
+      "articlePageHasMore": false
+    },
+    "Trader": {
+      "currentRole": "Trader",
+      "approvedOwnedBranchesInFirst50": 1,
+      "eligiblePublishedProfessionalArticlesInFirst50": 0,
+      "branchPageHasMore": false,
+      "articlePageHasMore": false
+    },
+    "Consumer": {
+      "currentRole": "Consumer",
+      "activeApplicationsInFirst50": 0,
+      "activeQaApplicationsInFirst50": 0,
+      "applicationPageHasMore": false,
+      "canPrepareNewOwnQaDraft": true
+    }
+  },
+  "preconditions": {
+    "producerHasApprovedBranch": true,
+    "traderHasApprovedBranch": true,
+    "consumerRemainsConsumer": true,
+    "consumerHasNoActiveApplication": true
+  },
+  "allListedPreconditionsReady": true,
+  "httpRequests": 17,
+  "sessionRotations": 4,
+  "finishedUtc": "2026-10-30T19:47:06.720027+00:00",
+  "domainMutations": 0,
+  "privateIdentifiersSaved": true
+}

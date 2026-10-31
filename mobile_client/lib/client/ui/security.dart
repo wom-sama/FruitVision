@@ -175,7 +175,7 @@ class _SecurityPageState extends State<SecurityPage> {
                     ),
                   ),
                   icon: const Icon(Icons.enhanced_encryption_outlined),
-                  label: const Text('Khóa nhắn tin bí mật'),
+                  label: const Text('Khóa chat riêng mã hóa đầu cuối'),
                 ),
                 const SizedBox(height: 16),
               ],

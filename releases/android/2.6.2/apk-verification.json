@@ -1,0 +1,122 @@
+{
+  "allPassed": true,
+  "artifacts": [
+    {
+      "abi": "arm64-v8a",
+      "path": "app-arm64-v8a-release.apk",
+      "bytes": 20880694,
+      "sha256": "0f9843e4e3d152b9ae5d99c4476982567b8ebb90e7a4d7938c1d49692e3aa57b",
+      "version": "2.6.2+6014",
+      "v2Signature": true,
+      "signerSha256": "b254a31dc9fd217c68e076f8ac880dd151086904851fafd9f6c4c18f2905d971",
+      "platformPermissions": [
+        "INTERNET",
+        "CAMERA",
+        "USE_BIOMETRIC",
+        "USE_FINGERPRINT",
+        "REQUEST_INSTALL_PACKAGES",
+        "ACCESS_NETWORK_STATE"
+      ],
+      "cameraX": {
+        "version": "1.6.2",
+        "nativeLibraries": {
+          "libimage_processing_util_jni.so": "0292b063fafccf734472cbb59588e756c2dbca907c72021ba6fbf126385508a2",
+          "libsurface_util_jni.so": "a5c9d1928ea92ec7a94dff8cf666e7739cd734198b9f0ae1d4e28ea3c86516ba"
+        },
+        "elfAbiVerified": true
+      },
+      "appSignatureOnlyReceiverPermission": true,
+      "noAiRuntimeOrWeights": true,
+      "cleartextDisabled": true,
+      "backupDisabled": true,
+      "e2eeLibrary": {
+        "name": "libsodium.so",
+        "upstreamVersion": "1.0.22-stable",
+        "sha256": "703e66eb449f8f5b16dfb3da9a8cfad80413a452dadb71e8e588f28c09a70354",
+        "elfAbiVerified": true,
+        "nativeAssetBindingVerified": true
+      },
+      "cryptoLicenseHashesVerified": true,
+      "signingNote": "Existing debug signer retained for course demo upgrades; not Play Store release signing.",
+      "pathNote": "GitHub Release asset filename; local verification was performed before publication."
+    },
+    {
+      "abi": "armeabi-v7a",
+      "path": "app-armeabi-v7a-release.apk",
+      "bytes": 18470820,
+      "sha256": "2c1908b904487a99a3ccf977b4ead3b71d7294a438cfe2ff35d72f9ed2ba90fe",
+      "version": "2.6.2+6014",
+      "v2Signature": true,
+      "signerSha256": "b254a31dc9fd217c68e076f8ac880dd151086904851fafd9f6c4c18f2905d971",
+      "platformPermissions": [
+        "INTERNET",
+        "CAMERA",
+        "USE_BIOMETRIC",
+        "USE_FINGERPRINT",
+        "REQUEST_INSTALL_PACKAGES",
+        "ACCESS_NETWORK_STATE"
+      ],
+      "cameraX": {
+        "version": "1.6.2",
+        "nativeLibraries": {
+          "libimage_processing_util_jni.so": "05973c0cf8e8dd281c8ec505c41814b78b740461056925bb41120594d7c35dcd",
+          "libsurface_util_jni.so": "78eb0b10e91b819be97cb7daa8c97fb757fa6d07cb80ccb7e92c113b45bda9be"
+        },
+        "elfAbiVerified": true
+      },
+      "appSignatureOnlyReceiverPermission": true,
+      "noAiRuntimeOrWeights": true,
+      "cleartextDisabled": true,
+      "backupDisabled": true,
+      "e2eeLibrary": {
+        "name": "libsodium.so",
+        "upstreamVersion": "1.0.22-stable",
+        "sha256": "e789ff79afbcfb3fac6a43e80808062c528f2273478580fc66539725d15a5b8e",
+        "elfAbiVerified": true,
+        "nativeAssetBindingVerified": true
+      },
+      "cryptoLicenseHashesVerified": true,
+      "signingNote": "Existing debug signer retained for course demo upgrades; not Play Store release signing.",
+      "pathNote": "GitHub Release asset filename; local verification was performed before publication."
+    },
+    {
+      "abi": "x86_64",
+      "path": "app-x86_64-release.apk",
+      "bytes": 22519095,
+      "sha256": "22b1ee8aa4d90b949418cee03d8a2b2d66d74ea14742a6fc169195d0909d47a6",
+      "version": "2.6.2+6014",
+      "v2Signature": true,
+      "signerSha256": "b254a31dc9fd217c68e076f8ac880dd151086904851fafd9f6c4c18f2905d971",
+      "platformPermissions": [
+        "INTERNET",
+        "CAMERA",
+        "USE_BIOMETRIC",
+        "USE_FINGERPRINT",
+        "REQUEST_INSTALL_PACKAGES",
+        "ACCESS_NETWORK_STATE"
+      ],
+      "cameraX": {
+        "version": "1.6.2",
+        "nativeLibraries": {
+          "libimage_processing_util_jni.so": "112703727717651e69e91f3ea2c3c2311737ee5809a909c9d342a811b6c7c069",
+          "libsurface_util_jni.so": "e5311942b4fce0f7f2505d41150cf9921e558a6368929cb73127450f74dd4fe4"
+        },
+        "elfAbiVerified": true
+      },
+      "appSignatureOnlyReceiverPermission": true,
+      "noAiRuntimeOrWeights": true,
+      "cleartextDisabled": true,
+      "backupDisabled": true,
+      "e2eeLibrary": {
+        "name": "libsodium.so",
+        "upstreamVersion": "1.0.22-stable",
+        "sha256": "5fea4d10ee319ebd5bf1dcf59f3d8fc7ad78f072415542abc9259f80794f89ad",
+        "elfAbiVerified": true,
+        "nativeAssetBindingVerified": true
+      },
+      "cryptoLicenseHashesVerified": true,
+      "signingNote": "Existing debug signer retained for course demo upgrades; not Play Store release signing.",
+      "pathNote": "GitHub Release asset filename; local verification was performed before publication."
+    }
+  ]
+}

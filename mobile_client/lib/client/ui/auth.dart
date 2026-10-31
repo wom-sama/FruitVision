@@ -80,11 +80,12 @@ class _AuthPageState extends State<AuthPage> {
       appBar: AppBar(
         title: const Text('FruitVision'),
         actions: [
-          IconButton(
-            tooltip: 'Cài đặt máy chủ',
-            onPressed: c.busy ? null : () => openServerSettings(context, c),
-            icon: const Icon(Icons.dns_outlined),
-          ),
+          if (c.user?.isAdmin == true)
+            IconButton(
+              tooltip: 'Cài đặt máy chủ',
+              onPressed: c.busy ? null : () => openServerSettings(context, c),
+              icon: const Icon(Icons.dns_outlined),
+            ),
         ],
       ),
       body: SafeArea(
@@ -120,7 +121,7 @@ class _AuthPageState extends State<AuthPage> {
                                   : 'Nhập mã 6 chữ số từ ứng dụng xác thực của bạn.'
                             : _register
                             ? 'Bắt đầu với tài khoản Người tiêu dùng. Bạn có thể gửi hồ sơ nâng vai trò sau khi xác minh email.'
-                            : 'Đăng nhập để học về xoài, chia sẻ cùng cộng đồng và dùng chức năng theo vai trò.',
+                            : 'Phiên đã lưu sẽ được khôi phục khi mở ứng dụng. Đăng nhập mới dùng mật khẩu và mã email để bảo vệ tài khoản.',
                       ),
                       if (c.error != null) ...[
                         MessageBox(c.error!, error: true),

@@ -26,7 +26,7 @@ public sealed class NormalMediaTests(ApiFixture fixture)
         var processor = new TestProcessor();
         using var app = App(processor, new Dictionary<string, string?> {
             ["MediaLimits:UserStoredBytes"] = "4", ["MediaLimits:TotalStoredBytes"] = "2147483648", ["MediaLimits:MinimumFreeDiskBytes"] = "1" });
-        using var owner = await Account(app, "Consumer"); var group = await Group(owner.Http);
+        using var owner = await Account(app, "Consumer"); using var groupAdmin = await Account(app, "Admin"); var group = await Group(groupAdmin.Http, owner.Http);
         await Upload(owner.Http, "/api/v1/articles/images");
         using var chat = await UploadResponse(owner.Http, $"/api/v1/conversations/{group}/images?clientMessageId={Guid.NewGuid():N}");
         Assert.Equal(HttpStatusCode.Conflict, chat.StatusCode);
@@ -99,7 +99,7 @@ public sealed class NormalMediaTests(ApiFixture fixture)
     {
         using var app = App(); using var owner = await Account(app, "Producer"); using var member = await Account(app, "Consumer");
         using var admin = await Account(app, "Admin");
-        var group = await Group(owner.Http); var key = Guid.NewGuid().ToString("N");
+        using var groupAdmin = await Account(app, "Admin"); var group = await Group(groupAdmin.Http, owner.Http); var key = Guid.NewGuid().ToString("N");
         using var joined = await member.Http.PostAsJsonAsync($"/api/v1/community/groups/{group}/join", new { }); Assert.Equal(HttpStatusCode.Created, joined.StatusCode);
         var sends = await Task.WhenAll(Enumerable.Range(0, 3).Select(_ => UploadResponse(owner.Http, $"/api/v1/conversations/{group}/images?clientMessageId={key}")));
         JsonElement message;
@@ -120,7 +120,7 @@ public sealed class NormalMediaTests(ApiFixture fixture)
         Assert.Contains(history.GetProperty("items").EnumerateArray(), m => m.GetProperty("id").GetGuid() == message.GetProperty("id").GetGuid() && m.GetProperty("image").GetProperty("id").GetGuid() == image.GetProperty("id").GetGuid());
         using var leave = await member.Http.PostAsJsonAsync($"/api/v1/community/groups/{group}/leave", new { }); Assert.Equal(HttpStatusCode.OK, leave.StatusCode);
         using var revoked = await member.Http.GetAsync(path); Assert.Equal(HttpStatusCode.NotFound, revoked.StatusCode);
-        using var close = await owner.Http.PostAsJsonAsync($"/api/v1/community/groups/{group}/close", new { }); Assert.Equal(HttpStatusCode.OK, close.StatusCode);
+        using var close = await groupAdmin.Http.PostAsJsonAsync($"/api/v1/community/groups/{group}/close", new { }); Assert.Equal(HttpStatusCode.OK, close.StatusCode);
         using var closedRead = await owner.Http.GetAsync(path); Assert.Equal(HttpStatusCode.OK, closedRead.StatusCode);
         using var closedSend = await UploadResponse(owner.Http, $"/api/v1/conversations/{group}/images?clientMessageId={Guid.NewGuid():N}"); Assert.Equal(HttpStatusCode.Conflict, closedSend.StatusCode);
         using var scope = app.Services.CreateScope(); var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
@@ -171,7 +171,12 @@ public sealed class NormalMediaTests(ApiFixture fixture)
     private static async Task<JsonElement> Submit(HttpClient client, object body) { using var r = await client.PostAsJsonAsync("/api/v1/articles", body); Assert.Equal(HttpStatusCode.Created, r.StatusCode); return await r.Content.ReadFromJsonAsync<JsonElement>(); }
     private static async Task Review(HttpClient admin, string kind, Guid id, string status, int revision) { using var r = await admin.PostAsJsonAsync($"/api/v1/admin/{kind}/{id}/review", new { status, reason = "Declared test fixture review", expectedRevision = revision }); Assert.Equal(HttpStatusCode.OK, r.StatusCode); }
     private static async Task<Guid> Branch(WebApplicationFactory<Program> app, Guid owner, string status) { using var scope = app.Services.CreateScope(); var db = scope.ServiceProvider.GetRequiredService<AppDbContext>(); var b = new SellerBranch { OwnerId = owner, Name = "Declared test branch", CountryCode = "VN", ProvinceCode = "79", CountryName = "Việt Nam", ProvinceName = "Test only", Region = "Test only", Street = "Fixture only", Phone = "0901234567", Status = status }; db.Add(b); await db.SaveChangesAsync(); return b.Id; }
-    private static async Task<Guid> Group(HttpClient owner) { using var r = await owner.PostAsJsonAsync("/api/v1/community/groups", new { title = "Mango image conversation", region = "Declared test region", productCode = "mango" }); Assert.Equal(HttpStatusCode.Created, r.StatusCode); return (await r.Content.ReadFromJsonAsync<JsonElement>()).GetProperty("id").GetGuid(); }
+    private static async Task<Guid> Group(HttpClient admin, HttpClient member)
+    {
+        using var r = await admin.PostAsJsonAsync("/api/v1/community/groups", new { title = "Mango image conversation", region = "Declared test region", productCode = "mango" }); Assert.Equal(HttpStatusCode.Created, r.StatusCode);
+        var id = (await r.Content.ReadFromJsonAsync<JsonElement>()).GetProperty("id").GetGuid();
+        using var joined = await member.PostAsJsonAsync($"/api/v1/community/groups/{id}/join", new { }); Assert.Equal(HttpStatusCode.Created, joined.StatusCode); return id;
+    }
     private static async Task<JsonElement> Upload(HttpClient client, string path) { using var r = await UploadResponse(client, path); Assert.Equal(HttpStatusCode.Created, r.StatusCode); return await r.Content.ReadFromJsonAsync<JsonElement>(); }
     private static Task<HttpResponseMessage> UploadResponse(HttpClient client, string path, byte[]? bytes = null, string contentType = "image/png") { var content = new ByteArrayContent(bytes ?? Png); content.Headers.ContentType = new MediaTypeHeaderValue(contentType); return client.PostAsync(path, content); }
     private sealed record Actor(Guid Id, string Email, HttpClient Http) : IDisposable { public void Dispose() => Http.Dispose(); }

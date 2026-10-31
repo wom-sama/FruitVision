@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../session.dart';
 import 'components.dart';
 import 'publishing.dart';
+import 'learning_practice.dart';
 
 class MangoLearningPage extends StatefulWidget {
   const MangoLearningPage({
@@ -95,6 +96,24 @@ class _MangoLearningPageState extends State<MangoLearningPage> {
               ),
             ),
           if (content != null) ...[
+            if (!widget.controller.user!.isAdmin)
+              FilledButton.icon(
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (_) => PublicationEditor(
+                      controller: widget.controller,
+                      article: true,
+                    ),
+                  ),
+                ),
+                icon: const Icon(Icons.add_photo_alternate_outlined),
+                label: Text(
+                  widget.controller.user!.canSell
+                      ? 'Viết bài chuyên môn'
+                      : 'Chia sẻ bài và ảnh cộng đồng',
+                ),
+              ),
+            const SizedBox(height: 16),
             Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
               spacing: 8,
@@ -135,24 +154,9 @@ class _MangoLearningPageState extends State<MangoLearningPage> {
                 ],
               ),
             ),
-            ...rows({'items': content['sections']}).map(
-              (section) => Padding(
-                padding: const EdgeInsets.only(top: 16, bottom: 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text(
-                      value(section, 'title'),
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                    const SizedBox(height: 8),
-                    SelectableText(
-                      value(section, 'body'),
-                      style: TextStyle(fontSize: 16 * _zoom, height: 1.5),
-                    ),
-                  ],
-                ),
-              ),
+            LearningPractice(
+              lessons: rows({'items': content['sections']}),
+              zoom: _zoom,
             ),
             const SizedBox(height: 16),
             const SectionTitle('Giới hạn cần hiểu'),

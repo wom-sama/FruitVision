@@ -18,11 +18,11 @@ public static class PublishingEndpoints
         app.MapGet("/api/v1/articles", async (string? lane, int? limit, Guid? after, AppDbContext db, CancellationToken ct) =>
             ValidLane(lane) ? await ArticlePage(FilterLane(PublicArticles(db), lane), limit, after, false, ct) : Input.Invalid("lane phải là Community hoặc Professional."));
         app.MapGet("/api/v1/articles/mine", async (string? lane, int? limit, Guid? after, HttpContext http, AppDbContext db, CancellationToken ct) =>
-            ValidLane(lane) ? await ArticlePage(FilterLane(db.Set<CommunityArticle>().AsNoTracking().Where(a => a.AuthorId == http.User.UserId()), lane), limit, after, true, ct) : Input.Invalid("lane phải là Community hoặc Professional.")).RequireAuthorization();
+            ValidLane(lane) ? await ArticlePage(FilterLane(db.Set<CommunityArticle>().AsNoTracking().Where(a => a.AuthorId == http.User.UserId() && a.Status != "Deleted"), lane), limit, after, true, ct) : Input.Invalid("lane phải là Community hoặc Professional.")).RequireAuthorization();
         app.MapGet("/api/v1/articles/{id:guid}", async (Guid id, HttpContext http, AppDbContext db, CancellationToken ct) =>
         {
             var article = await db.Set<CommunityArticle>().AsNoTracking().Include(a => a.Author).Include(a => a.Branch).Include(a => a.Image).SingleOrDefaultAsync(a => a.Id == id, ct);
-            if (article is null) return Results.NotFound();
+            if (article is null || article.Status == "Deleted") return Results.NotFound();
             var privateView = Private(http, article.AuthorId);
             return privateView || ArticleVisible(article) ? Results.Ok(ArticleView(article, privateView)) : Results.NotFound();
         });
@@ -30,37 +30,79 @@ public static class PublishingEndpoints
             .RequireAuthorization(policy => policy.RequireRole("Consumer", "Producer", "Trader")).AddEndpointFilter<InputFilter>();
         app.MapPut("/api/v1/articles/{id:guid}", ReviseArticle).RequireAuthorization("Approved")
             .RequireAuthorization(policy => policy.RequireRole("Consumer", "Producer", "Trader")).AddEndpointFilter<InputFilter>();
+        app.MapDelete("/api/v1/articles/{id:guid}", DeleteArticle).RequireAuthorization("Approved")
+            .RequireAuthorization(policy => policy.RequireRole("Consumer", "Producer", "Trader"));
         app.MapPost("/api/v1/articles/{id:guid}/withdraw", WithdrawArticle).RequireAuthorization("Approved")
             .RequireAuthorization(policy => policy.RequireRole("Consumer", "Producer", "Trader")).AddEndpointFilter<InputFilter>();
         app.MapGet("/api/v1/admin/articles", async (string? status, string? lane, int? limit, Guid? after, AppDbContext db, CancellationToken ct) =>
         {
             if (status is not null && !ArticleStates.Contains(status)) return Input.Invalid("Trạng thái bài viết không hợp lệ.");
             if (!ValidLane(lane)) return Input.Invalid("lane phải là Community hoặc Professional.");
-            var query = FilterLane(db.Set<CommunityArticle>().AsNoTracking(), lane);
+            var query = FilterLane(db.Set<CommunityArticle>().AsNoTracking().Where(a => a.Status != "Deleted"), lane);
             if (status is not null) query = query.Where(a => a.Status == status);
             return await ArticlePage(query, limit, after, true, ct);
         }).RequireAuthorization("Admin");
         app.MapPost("/api/v1/admin/articles/{id:guid}/review", ReviewArticle).RequireAuthorization("Admin").AddEndpointFilter<InputFilter>();
 
         app.MapGet("/api/v1/branches/mine", async (int? limit, Guid? after, HttpContext http, AppDbContext db, CancellationToken ct) =>
-            await BranchPage(db.Set<SellerBranch>().AsNoTracking().Where(b => b.OwnerId == http.User.UserId()), limit, after, ct)).RequireAuthorization("Seller");
+            await BranchPage(db.Set<SellerBranch>().AsNoTracking().Where(b => b.OwnerId == http.User.UserId() && b.Status != "Deleted"), limit, after, ct)).RequireAuthorization("Seller");
         app.MapGet("/api/v1/branches/{id:guid}", async (Guid id, HttpContext http, AppDbContext db, CancellationToken ct) =>
         {
             var branch = await db.Set<SellerBranch>().AsNoTracking().Include(b => b.Owner).SingleOrDefaultAsync(b => b.Id == id, ct);
-            if (branch is null) return Results.NotFound();
+            if (branch is null || branch.Status == "Deleted") return Results.NotFound();
             var privateView = Private(http, branch.OwnerId);
             return privateView || BranchVisible(branch) ? Results.Ok(BranchView(branch, privateView)) : Results.NotFound();
         });
         app.MapPost("/api/v1/branches", SubmitBranch).RequireAuthorization("Seller").AddEndpointFilter<InputFilter>();
         app.MapPut("/api/v1/branches/{id:guid}", ReviseBranch).RequireAuthorization("Seller").AddEndpointFilter<InputFilter>();
+        app.MapDelete("/api/v1/branches/{id:guid}", DeleteBranch).RequireAuthorization("Seller");
         app.MapGet("/api/v1/admin/branches", async (string? status, int? limit, Guid? after, AppDbContext db, CancellationToken ct) =>
         {
             if (status is not null && !BranchStates.Contains(status)) return Input.Invalid("Trạng thái chi nhánh không hợp lệ.");
-            var query = db.Set<SellerBranch>().AsNoTracking().AsQueryable();
+            var query = db.Set<SellerBranch>().AsNoTracking().Where(b => b.Status != "Deleted");
             if (status is not null) query = query.Where(b => b.Status == status);
             return await BranchPage(query, limit, after, ct);
         }).RequireAuthorization("Admin");
         app.MapPost("/api/v1/admin/branches/{id:guid}/review", ReviewBranch).RequireAuthorization("Admin").AddEndpointFilter<InputFilter>();
+    }
+
+    private static async Task<IResult> DeleteArticle(Guid id, int? expectedRevision, HttpContext http, AppDbContext db,
+        IHubContext<FruitHub> hub, ILoggerFactory logs, CancellationToken ct)
+    {
+        if (expectedRevision is null or < 1) return Input.Invalid("Cần phiên bản hiện tại để xóa bài viết.");
+        var uid = http.User.UserId(); await using var transaction = await db.Database.BeginTransactionAsync(ct);
+        var article = await db.Set<CommunityArticle>().FromSqlInterpolated($"SELECT * FROM \"CommunityArticles\" WHERE \"Id\"={id} AND \"AuthorId\"={uid} FOR UPDATE").SingleOrDefaultAsync(ct);
+        if (article is null) return Results.NotFound();
+        article.Author = await LockedUser(db, uid, ct);
+        if (!Eligible(article.Author) || article.Author.Role == AccountRole.Admin) return Results.Forbid();
+        if (article.Status == "Deleted") return Results.NoContent();
+        if (article.Revision != expectedRevision) return Results.Conflict(new { message = "Bài viết đã thay đổi; hãy tải lại trước khi xóa." });
+        await LoadArticleRelations(db, article, ct); var wasVisible = ArticleVisible(article);
+        article.Status = "Deleted"; article.Revision++; article.UpdatedAt = DateTimeOffset.UtcNow;
+        db.AuditEntries.Add(SessionTokens.Audit(uid, uid, "ArticleDeleted", id.ToString()));
+        await db.SaveChangesAsync(ct); await transaction.CommitAsync(ct);
+        await Notify(hub, logs, "Article", id, uid, article.Status, article.Revision, wasVisible);
+        return Results.NoContent();
+    }
+
+    private static async Task<IResult> DeleteBranch(Guid id, int? expectedRevision, HttpContext http, AppDbContext db,
+        IHubContext<FruitHub> hub, ILoggerFactory logs, CancellationToken ct)
+    {
+        if (expectedRevision is null or < 1) return Input.Invalid("Cần phiên bản hiện tại để xóa cơ sở.");
+        var uid = http.User.UserId(); await using var transaction = await db.Database.BeginTransactionAsync(ct);
+        var branch = await db.Set<SellerBranch>().FromSqlInterpolated($"SELECT * FROM \"SellerBranches\" WHERE \"Id\"={id} AND \"OwnerId\"={uid} FOR UPDATE").SingleOrDefaultAsync(ct);
+        if (branch is null) return Results.NotFound();
+        branch.Owner = await LockedUser(db, uid, ct); if (!Seller(branch.Owner)) return Results.Forbid();
+        if (branch.Status == "Deleted") return Results.NoContent();
+        if (branch.Revision != expectedRevision) return Results.Conflict(new { message = "Cơ sở đã thay đổi; hãy tải lại trước khi xóa." });
+        if (await db.Set<CommunityArticle>().AnyAsync(a => a.BranchId == id && a.Status != "Deleted", ct) ||
+            await db.Posts.AnyAsync(p => p.BranchId == id && p.Status != "Deleted", ct))
+            return Results.Conflict(new { message = "Cơ sở còn gắn với nội dung. Hãy xóa hoặc chuyển nội dung sang cơ sở khác trước." });
+        var wasVisible = BranchVisible(branch); branch.Status = "Deleted"; branch.Revision++; branch.UpdatedAt = DateTimeOffset.UtcNow;
+        db.AuditEntries.Add(SessionTokens.Audit(uid, uid, "BranchDeleted", id.ToString()));
+        await db.SaveChangesAsync(ct); await transaction.CommitAsync(ct);
+        await Notify(hub, logs, "Branch", id, uid, branch.Status, branch.Revision, wasVisible);
+        return Results.NoContent();
     }
 
     // Use inside the caller's business-post transaction so FOR SHARE retains branch approval until commit.
@@ -138,7 +180,7 @@ public static class PublishingEndpoints
         if (!ArticleText(request.Title, request.Body)) return Input.Invalid("Nội dung bài viết không hợp lệ.");
         var uid = http.User.UserId(); await using var transaction = await db.Database.BeginTransactionAsync(ct);
         var article = await db.Set<CommunityArticle>().FromSqlInterpolated($"SELECT * FROM \"CommunityArticles\" WHERE \"Id\"={id} AND \"AuthorId\"={uid} FOR UPDATE").SingleOrDefaultAsync(ct);
-        if (article is null) return Results.NotFound();
+        if (article is null || article.Status == "Deleted") return Results.NotFound();
         article.Author = await LockedUser(db, uid, ct);
         if (!Eligible(article.Author) || article.Author.Role == AccountRole.Admin || (article.AudienceLane == "Professional" && !Seller(article.Author))) return Results.Forbid();
         if (article.Revision != request.ExpectedRevision) return Results.Conflict(new { message = "Bài viết đã thay đổi; hãy tải lại phiên bản mới." });
@@ -165,7 +207,7 @@ public static class PublishingEndpoints
     {
         var uid = http.User.UserId(); await using var transaction = await db.Database.BeginTransactionAsync(ct);
         var article = await db.Set<CommunityArticle>().FromSqlInterpolated($"SELECT * FROM \"CommunityArticles\" WHERE \"Id\"={id} AND \"AuthorId\"={uid} FOR UPDATE").SingleOrDefaultAsync(ct);
-        if (article is null) return Results.NotFound();
+        if (article is null || article.Status == "Deleted") return Results.NotFound();
         article.Author = await LockedUser(db, uid, ct);
         if (!Eligible(article.Author) || article.Author.Role == AccountRole.Admin) return Results.Forbid();
         await LoadArticleRelations(db, article, ct);
@@ -183,7 +225,7 @@ public static class PublishingEndpoints
             return Input.Invalid("Kết quả hoặc lý do xét duyệt bài viết không hợp lệ.");
         await using var transaction = await db.Database.BeginTransactionAsync(ct);
         var article = await db.Set<CommunityArticle>().FromSqlInterpolated($"SELECT * FROM \"CommunityArticles\" WHERE \"Id\"={id} FOR UPDATE").SingleOrDefaultAsync(ct);
-        if (article is null) return Results.NotFound();
+        if (article is null || article.Status == "Deleted") return Results.NotFound();
         var allowed = (article.Status, request.Status) is ("AwaitingReview", "Published") or ("AwaitingReview", "Rejected") or ("Published", "Paused") or ("Paused", "Published");
         if (!allowed || article.Revision != request.ExpectedRevision) return Results.Conflict(new { message = "Trạng thái hoặc phiên bản bài viết đã thay đổi." });
         article.Author = await LockedUser(db, article.AuthorId, ct);
@@ -221,13 +263,13 @@ public static class PublishingEndpoints
         LocationDirectory directory, IHubContext<FruitHub> hub, ILoggerFactory logs, CancellationToken ct)
     {
         var uid = http.User.UserId();
-        if (!await db.Set<SellerBranch>().AsNoTracking().AnyAsync(b => b.Id == id && b.OwnerId == uid, ct)) return Results.NotFound();
+        if (!await db.Set<SellerBranch>().AsNoTracking().AnyAsync(b => b.Id == id && b.OwnerId == uid && b.Status != "Deleted", ct)) return Results.NotFound();
         if (!BranchText(request.Name, request.Street, request.Phone)) return Input.Invalid("Thông tin chi nhánh không hợp lệ.");
         var location = await directory.ValidateAsync(request.CountryCode, request.ProvinceCode, ct);
         if (!LocationFits(location)) return Input.Invalid("Nhãn địa điểm vượt giới hạn 120 ký tự; không tự cắt mã hoặc nhãn.");
         await using var transaction = await db.Database.BeginTransactionAsync(ct);
         var branch = await db.Set<SellerBranch>().FromSqlInterpolated($"SELECT * FROM \"SellerBranches\" WHERE \"Id\"={id} AND \"OwnerId\"={uid} FOR UPDATE").SingleOrDefaultAsync(ct);
-        if (branch is null) return Results.NotFound();
+        if (branch is null || branch.Status == "Deleted") return Results.NotFound();
         branch.Owner = await LockedUser(db, uid, ct);
         if (!Seller(branch.Owner)) return Results.Forbid();
         if (branch.Revision != request.ExpectedRevision) return Results.Conflict(new { message = "Chi nhánh đã thay đổi; hãy tải lại phiên bản mới." });
@@ -247,7 +289,7 @@ public static class PublishingEndpoints
             return Input.Invalid("Kết quả hoặc lý do xét duyệt chi nhánh không hợp lệ.");
         await using var transaction = await db.Database.BeginTransactionAsync(ct);
         var branch = await db.Set<SellerBranch>().FromSqlInterpolated($"SELECT * FROM \"SellerBranches\" WHERE \"Id\"={id} FOR UPDATE").SingleOrDefaultAsync(ct);
-        if (branch is null) return Results.NotFound();
+        if (branch is null || branch.Status == "Deleted") return Results.NotFound();
         var allowed = branch.Status == "Pending" || (branch.Status == "Approved" && request.Status is "Rejected" or "NeedsInformation");
         if (!allowed || branch.Revision != request.ExpectedRevision) return Results.Conflict(new { message = "Trạng thái hoặc phiên bản chi nhánh đã thay đổi; hồ sơ cần chỉnh sửa/gửi lại nếu bị trả về." });
         branch.Owner = await LockedUser(db, branch.OwnerId, ct);

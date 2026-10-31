@@ -8,7 +8,7 @@ export 'models.dart';
 
 const defaultApiUrl = String.fromEnvironment(
   'FRUITVISION_API_URL',
-  defaultValue: 'https://tips-differential-relating-validity.trycloudflare.com',
+  defaultValue: 'https://vip-certainly-broke-lease.trycloudflare.com',
 );
 
 class ApiReply {
@@ -46,6 +46,69 @@ abstract interface class MediaTransport {
     int maxBytes,
   );
   void close();
+}
+
+abstract interface class JpegTransport {
+  Future<ApiReply> sendJpeg(
+    Uri uri,
+    Map<String, String> headers,
+    Uint8List bytes,
+    UploadCancellation cancellation,
+  );
+  void close();
+}
+
+class IoJpegTransport implements JpegTransport {
+  final _client = HttpClient()
+    ..connectionTimeout = const Duration(seconds: 5)
+    ..maxConnectionsPerHost = 1;
+  @override
+  Future<ApiReply> sendJpeg(
+    Uri uri,
+    Map<String, String> headers,
+    Uint8List bytes,
+    UploadCancellation cancellation,
+  ) async {
+    HttpClientRequest? request;
+    var expired = false;
+    final timer = Timer(const Duration(seconds: 15), () {
+      expired = true;
+      request?.abort();
+    });
+    try {
+      return await (() async {
+        request = await _client.postUrl(uri);
+        cancellation._abort = () => request?.abort();
+        if (expired || cancellation.cancelled) {
+          request!.abort();
+          throw const ApiException('Đã hủy gửi khung hình.');
+        }
+        request!.followRedirects = false;
+        headers.forEach(request!.headers.set);
+        request!.contentLength = bytes.length;
+        request!.add(bytes);
+        final response = await request!.close();
+        final body = await IoMediaTransport._read(response, 1024 * 1024);
+        if (expired || cancellation.cancelled) {
+          throw const ApiException('Đã hủy gửi khung hình.');
+        }
+        return ApiReply(response.statusCode, utf8.decode(body));
+      })().timeout(const Duration(seconds: 15));
+    } on ApiException {
+      rethrow;
+    } catch (_) {
+      request?.abort();
+      throw const ApiException(
+        'Chưa gửi được khung hình. Kiểm tra kết nối và thử lại.',
+      );
+    } finally {
+      timer.cancel();
+      cancellation._abort = null;
+    }
+  }
+
+  @override
+  void close() => _client.close(force: true);
 }
 
 class IoMediaTransport implements MediaTransport {
@@ -208,12 +271,15 @@ class ApiClient {
     String baseUrl = defaultApiUrl,
     ApiTransport? transport,
     MediaTransport? mediaTransport,
+    JpegTransport? jpegTransport,
   }) : _baseUrl = validateBaseUrl(baseUrl),
        _transport = transport ?? IoApiTransport(),
-       _mediaTransport = mediaTransport ?? IoMediaTransport();
+       _mediaTransport = mediaTransport ?? IoMediaTransport(),
+       _jpegTransport = jpegTransport ?? IoJpegTransport();
   String _baseUrl;
   final ApiTransport _transport;
   final MediaTransport _mediaTransport;
+  final JpegTransport _jpegTransport;
   final _uploads = <UploadCancellation>{};
   TokenPair? _tokens;
   Future<void>? _refreshing;
@@ -349,6 +415,93 @@ class ApiClient {
   }
 
   Future<Map<String, dynamic>> get(String path) => _request('GET', path, null);
+  Future<Map<String, dynamic>> sendJpeg(
+    String path,
+    Uint8List bytes, {
+    Map<String, String> headers = const {},
+    required UploadCancellation cancellation,
+  }) async {
+    if (!RegExp(
+          r'^/ai/live/sessions/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}/frames$',
+        ).hasMatch(path) ||
+        bytes.length < 4 ||
+        bytes.length > 1024 * 1024 ||
+        bytes[0] != 255 ||
+        bytes[1] != 216 ||
+        bytes[2] != 255) {
+      throw const ApiException('Khung hình JPEG không hợp lệ hoặc vượt 1 MiB.');
+    }
+    if (headers.length != 1 ||
+        headers.keys.single.toLowerCase() != 'x-frame-sequence' ||
+        !RegExp(r'^[1-9][0-9]{0,17}$').hasMatch(headers.values.single)) {
+      throw const ApiException(
+        'Cần thứ tự khung hình hợp lệ; không được ghi đè thông tin xác thực.',
+      );
+    }
+    final sequence = headers.values.single,
+        generation = _generation,
+        payload = Uint8List.fromList(bytes),
+        watch = Stopwatch()..start();
+    void guard() {
+      if (generation != _generation || cancellation.cancelled) {
+        throw const ApiException(
+          'Đã dừng gửi khung hình hoặc phiên đã thay đổi.',
+        );
+      }
+    }
+
+    Future<T> bounded<T>(Future<T> Function() work) async {
+      final remaining = const Duration(seconds: 15) - watch.elapsed;
+      if (remaining <= Duration.zero) {
+        cancellation.cancel();
+        throw const ApiException('Gửi khung hình quá thời gian.');
+      }
+      return work().timeout(
+        remaining,
+        onTimeout: () {
+          cancellation.cancel();
+          throw const ApiException('Gửi khung hình quá thời gian.');
+        },
+      );
+    }
+
+    _uploads.add(cancellation);
+    try {
+      guard();
+      final token = await bounded(authenticatedToken);
+      guard();
+      Future<ApiReply> send(String access) => bounded(
+        () => _jpegTransport.sendJpeg(
+          Uri.parse('$_baseUrl/api/v1$path'),
+          {
+            'Authorization': 'Bearer $access',
+            'Content-Type': 'image/jpeg',
+            'Accept': 'application/json',
+            'X-Frame-Sequence': sequence,
+          },
+          payload,
+          cancellation,
+        ),
+      );
+      var reply = await send(token);
+      guard();
+      if (reply.status == 401) {
+        if (_tokens?.accessToken == token) {
+          await bounded(() => _refresh(generation));
+        }
+        guard();
+        if (_tokens == null) {
+          throw const ApiException('Phiên đăng nhập đã kết thúc.', status: 401);
+        }
+        reply = await send(_tokens!.accessToken);
+        guard();
+      }
+      return _decode(reply);
+    } finally {
+      _uploads.remove(cancellation);
+    }
+  }
+
   Future<Map<String, dynamic>> post(String path, Map<String, dynamic>? body) =>
       _request('POST', path, body);
   Future<Map<String, dynamic>> put(String path, Map<String, dynamic> body) =>
@@ -744,5 +897,6 @@ class ApiClient {
     cancelUploads();
     _transport.close();
     _mediaTransport.close();
+    _jpegTransport.close();
   }
 }

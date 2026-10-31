@@ -185,7 +185,21 @@ class SessionController extends ChangeNotifier {
     try {
       final stored = await _vault.read();
       if (stored != null) {
-        api.changeBaseUrl(stored['baseUrl'] as String);
+        final origin = ApiClient.validateBaseUrl(stored['baseUrl'] as String);
+        if (origin ==
+                'https://tips-differential-relating-validity.trycloudflare.com' &&
+            origin != defaultApiUrl) {
+          // A signed release may replace this exact retired origin. Never carry
+          // its credentials to the replacement, or migrate a custom server.
+          api.changeBaseUrl(defaultApiUrl);
+          user = null;
+          _lastStrongSignInAt = null;
+          _clearChallenge();
+          await _persist(null);
+          notice = 'Địa chỉ kết nối đã được cập nhật. Vui lòng đăng nhập lại.';
+          return true;
+        }
+        api.changeBaseUrl(origin);
         final pair = stored['tokens'];
         if (pair is Map<String, dynamic>) {
           api.setTokens(TokenPair.fromJson(pair));

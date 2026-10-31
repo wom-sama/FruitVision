@@ -128,11 +128,11 @@ void main() {
       await tester.pumpAndSettle();
       expect(calls, 2);
       await tester.scrollUntilVisible(
-        find.text('Phòng 55555555'),
+      find.text('Chat riêng 55555555'),
         100,
         scrollable: find.byType(Scrollable).first,
       );
-      expect(find.text('Phòng 55555555'), findsOneWidget);
+    expect(find.text('Chat riêng 55555555'), findsOneWidget);
       expect(tester.takeException(), isNull);
       await tester.pumpWidget(const SizedBox.shrink());
       cleanup();

@@ -1,0 +1,13 @@
+{
+  "status": "PASS_OWN_DISPOSABLE_ACCOUNT_ONLY",
+  "registrationWithRealEmailOtp": true,
+  "consumerToAdminAppointmentActualHttps": true,
+  "oldConsumerSessionRevoked401": true,
+  "mainFourRolesPreserved": true,
+  "awaitsNewAdminEmailOtp": true,
+  "accountOwnership": "New labeled QA account on owner Gmail; private credentials retained, no human account touched",
+  "atUtc": "2026-10-30T21:46:17.757082+00:00",
+  "newAdminGenuineOtpLogin": true,
+  "newAdminCanAccessActualAdminEndpoint": true,
+  "cleanup": "OldConsumer session revoked; extra labeled QA Admin retained securely on owner Gmail; not an original four-role account, no public credentials"
+}

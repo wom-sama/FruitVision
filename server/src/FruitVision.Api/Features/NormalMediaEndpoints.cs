@@ -104,16 +104,23 @@ public static class NormalMediaEndpoints
             return Input.Invalid("clientMessageId cần 8–64 ký tự hợp lệ.");
         var uid = http.User.UserId();
         if (!await db.Participants.AnyAsync(p => p.ConversationId == id && p.UserId == uid, ct)) return Results.NotFound();
+        if (await db.Conversations.AsNoTracking().AnyAsync(c => c.Id == id && c.Kind == "Direct", ct))
+        {
+            var pair = await db.Participants.AsNoTracking().Where(p => p.ConversationId == id).Select(p => p.UserId).ToArrayAsync(ct);
+            if (pair.Length != 2) return Results.NotFound();
+            if (await ProfileBlocks.IsEitherBlockedAsync(db, pair[0], pair[1], ct)) return Results.Problem(statusCode: 403, title: "Tài khoản đã chặn liên hệ riêng.");
+        }
         LimitBody(http); var imageId = Guid.NewGuid(); string? raw = null, canonical = null, final = null; var committed = false;
         try
         {
             raw = storage.Staging(imageId, ".upload"); canonical = storage.Staging(imageId, ".jpg");
             var hash = await storage.ReceiveAsync(http.Request, raw, ct);
             await using var transaction = await db.Database.BeginTransactionAsync(ct);
-            var conversation = await db.Conversations.FromSqlInterpolated($"SELECT * FROM \"Conversations\" WHERE \"Id\"={id} FOR UPDATE").SingleOrDefaultAsync(ct);
-            if (conversation is null || conversation.Kind is not ("Direct" or "Group") || !await db.Participants.AnyAsync(p => p.ConversationId == id && p.UserId == uid, ct)) return Results.NotFound();
-            var user = await db.Users.FromSqlInterpolated($"SELECT * FROM \"AspNetUsers\" WHERE \"Id\"={uid} FOR SHARE").SingleAsync(ct);
-            if (!user.IsActive || user.ApprovalStatus != ApprovalState.Approved) return Results.Forbid();
+            var access = await ProfileBlocks.LockNormalSendAsync(db, id, uid, ct);
+            var conversation = access.Conversation;
+            if (conversation is null) return Results.NotFound();
+            if (access.Blocked) return Results.Problem(statusCode: 403, title: "Tài khoản đã chặn liên hệ riêng.");
+            var user = access.Sender; if (user is null) return Results.Forbid();
             var sender = new MessageSenderView(uid, user.DisplayName, user.Role.ToString());
             var old = await db.Messages.AsNoTracking().SingleOrDefaultAsync(m => m.ConversationId == id && m.SenderId == uid && m.ClientMessageId == clientMessageId, ct);
             if (old is not null)

@@ -1,0 +1,606 @@
+{
+  "status": "PASS",
+  "startedUtc": "2026-10-30T21:01:39.509093+00:00",
+  "scope": "Actual public HTTPS profile privacy/block/CRUD with four existing real OTP sessions; no four-device, AI or cryptographic claim.",
+  "sessionProvenance": "Existing separately verified Email OTP sessions; access checked against auth/me, expired access rotated only through the normal refresh endpoint with atomic private-file persistence. No token or freshness fabricated.",
+  "tlsVerificationDisabled": false,
+  "requests": [
+    {
+      "role": "Admin",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": [
+        200,
+        401
+      ],
+      "latencyMs": 265.0,
+      "routeTemplate": "/api/v1/auth/me"
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": [
+        200,
+        401
+      ],
+      "latencyMs": 266.0,
+      "routeTemplate": "/api/v1/auth/me"
+    },
+    {
+      "role": "Trader",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": [
+        200,
+        401
+      ],
+      "latencyMs": 281.0,
+      "routeTemplate": "/api/v1/auth/me"
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": [
+        200,
+        401
+      ],
+      "latencyMs": 266.0,
+      "routeTemplate": "/api/v1/auth/me"
+    },
+    {
+      "role": "Admin",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 484.0,
+      "routeTemplate": "/api/v1/profile"
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 297.0,
+      "routeTemplate": "/api/v1/profile"
+    },
+    {
+      "role": "Trader",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 313.0,
+      "routeTemplate": "/api/v1/profile"
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 281.0,
+      "routeTemplate": "/api/v1/profile"
+    },
+    {
+      "role": "Admin",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 578.0,
+      "routeTemplate": "/api/v1/admin/admin-candidates",
+      "queryNames": [
+        "limit"
+      ]
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "status": 403,
+      "expectedStatus": 403,
+      "latencyMs": 500.0,
+      "routeTemplate": "/api/v1/admin/admin-candidates"
+    },
+    {
+      "role": "Trader",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 438.0,
+      "routeTemplate": "/api/v1/profiles/{id}"
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 453.0,
+      "routeTemplate": "/api/v1/profile/blocked"
+    },
+    {
+      "role": "Trader",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 265.0,
+      "routeTemplate": "/api/v1/profile/blocked"
+    },
+    {
+      "role": "Consumer",
+      "method": "PUT",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 282.0,
+      "routeTemplate": "/api/v1/profile"
+    },
+    {
+      "role": "Trader",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 234.0,
+      "routeTemplate": "/api/v1/profiles/{id}"
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "status": 201,
+      "expectedStatus": [
+        200,
+        201
+      ],
+      "latencyMs": 281.0,
+      "routeTemplate": "/api/v1/conversations/direct"
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 235.0,
+      "routeTemplate": "/api/v1/conversations/{id}/messages"
+    },
+    {
+      "role": "Consumer",
+      "method": "PUT",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 281.0,
+      "routeTemplate": "/api/v1/profiles/{id}/block"
+    },
+    {
+      "role": "Trader",
+      "method": "GET",
+      "status": 404,
+      "expectedStatus": 404,
+      "latencyMs": 265.0,
+      "routeTemplate": "/api/v1/profiles/{id}"
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "status": 404,
+      "expectedStatus": 404,
+      "latencyMs": 469.0,
+      "routeTemplate": "/api/v1/profiles/{id}"
+    },
+    {
+      "role": "Trader",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 578.0,
+      "routeTemplate": "/api/v1/contacts",
+      "queryNames": [
+        "limit"
+      ]
+    },
+    {
+      "role": "Trader",
+      "method": "POST",
+      "status": 404,
+      "expectedStatus": 404,
+      "latencyMs": 266.0,
+      "routeTemplate": "/api/v1/conversations/direct"
+    },
+    {
+      "role": "Trader",
+      "method": "POST",
+      "status": 403,
+      "expectedStatus": 403,
+      "latencyMs": 281.0,
+      "routeTemplate": "/api/v1/conversations/{id}/messages"
+    },
+    {
+      "role": "Trader",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 469.0,
+      "routeTemplate": "/api/v1/conversations/{id}/messages",
+      "queryNames": [
+        "limit"
+      ]
+    },
+    {
+      "role": "Consumer",
+      "method": "DELETE",
+      "status": 204,
+      "expectedStatus": 204,
+      "latencyMs": 250.0,
+      "routeTemplate": "/api/v1/profiles/{id}/block"
+    },
+    {
+      "role": "Trader",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 266.0,
+      "routeTemplate": "/api/v1/profiles/{id}"
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 281.0,
+      "routeTemplate": "/api/v1/articles"
+    },
+    {
+      "role": "Consumer",
+      "method": "PUT",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 281.0,
+      "routeTemplate": "/api/v1/articles/{id}"
+    },
+    {
+      "role": "Consumer",
+      "method": "DELETE",
+      "status": 204,
+      "expectedStatus": 204,
+      "latencyMs": 250.0,
+      "routeTemplate": "/api/v1/articles/{id}",
+      "queryNames": [
+        "expectedRevision"
+      ]
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "status": 404,
+      "expectedStatus": 404,
+      "latencyMs": 578.0,
+      "routeTemplate": "/api/v1/articles/{id}"
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 563.0,
+      "routeTemplate": "/api/v1/branches/mine",
+      "queryNames": [
+        "limit"
+      ]
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 2500.0,
+      "routeTemplate": "/api/v1/branches"
+    },
+    {
+      "role": "Producer",
+      "method": "DELETE",
+      "status": 204,
+      "expectedStatus": 204,
+      "latencyMs": 297.0,
+      "routeTemplate": "/api/v1/branches/{id}",
+      "queryNames": [
+        "expectedRevision"
+      ]
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "status": 404,
+      "expectedStatus": 404,
+      "latencyMs": 438.0,
+      "routeTemplate": "/api/v1/branches/{id}"
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 250.0,
+      "routeTemplate": "/api/v1/auth/me"
+    },
+    {
+      "role": "Consumer",
+      "method": "PUT",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 265.0,
+      "routeTemplate": "/api/v1/profile"
+    }
+  ],
+  "checks": [
+    {
+      "name": "four supplied role sessions identify four distinct users",
+      "pass": true,
+      "atMs": 0
+    },
+    {
+      "name": "Admin GET /api/v1/auth/me returns expected status",
+      "pass": true,
+      "atMs": 265
+    },
+    {
+      "name": "Admin is the current active verified approved supplied role",
+      "pass": true,
+      "atMs": 265
+    },
+    {
+      "name": "Producer GET /api/v1/auth/me returns expected status",
+      "pass": true,
+      "atMs": 531
+    },
+    {
+      "name": "Producer is the current active verified approved supplied role",
+      "pass": true,
+      "atMs": 531
+    },
+    {
+      "name": "Trader GET /api/v1/auth/me returns expected status",
+      "pass": true,
+      "atMs": 812
+    },
+    {
+      "name": "Trader is the current active verified approved supplied role",
+      "pass": true,
+      "atMs": 812
+    },
+    {
+      "name": "Consumer GET /api/v1/auth/me returns expected status",
+      "pass": true,
+      "atMs": 1078
+    },
+    {
+      "name": "Consumer is the current active verified approved supplied role",
+      "pass": true,
+      "atMs": 1078
+    },
+    {
+      "name": "Admin GET /api/v1/profile returns expected status",
+      "pass": true,
+      "atMs": 1562
+    },
+    {
+      "name": "Producer GET /api/v1/profile returns expected status",
+      "pass": true,
+      "atMs": 1859
+    },
+    {
+      "name": "Trader GET /api/v1/profile returns expected status",
+      "pass": true,
+      "atMs": 2172
+    },
+    {
+      "name": "Consumer GET /api/v1/profile returns expected status",
+      "pass": true,
+      "atMs": 2453
+    },
+    {
+      "name": "all four own profiles preserve current roles and private email",
+      "pass": true,
+      "atMs": 2453
+    },
+    {
+      "name": "Admin GET /api/v1/admin/admin-candidates returns expected status",
+      "pass": true,
+      "atMs": 3031
+    },
+    {
+      "name": "Admin candidate projection has only the four intended fields",
+      "pass": true,
+      "atMs": 3031
+    },
+    {
+      "name": "Consumer GET /api/v1/admin/admin-candidates returns expected status",
+      "pass": true,
+      "atMs": 3531
+    },
+    {
+      "name": "Trader GET /api/v1/profiles/{id} returns expected status",
+      "pass": true,
+      "atMs": 3969
+    },
+    {
+      "name": "public profile never contains email or legal evidence",
+      "pass": true,
+      "atMs": 3969
+    },
+    {
+      "name": "Consumer GET /api/v1/profile/blocked returns expected status",
+      "pass": true,
+      "atMs": 4422
+    },
+    {
+      "name": "no preexisting QA pair block will be removed",
+      "pass": true,
+      "atMs": 4422
+    },
+    {
+      "name": "Trader GET /api/v1/profile/blocked returns expected status",
+      "pass": true,
+      "atMs": 4687
+    },
+    {
+      "name": "no preexisting QA pair block will be removed",
+      "pass": true,
+      "atMs": 4687
+    },
+    {
+      "name": "Consumer PUT /api/v1/profile returns expected status",
+      "pass": true,
+      "atMs": 4969
+    },
+    {
+      "name": "Trader GET /api/v1/profiles/{id} returns expected status",
+      "pass": true,
+      "atMs": 5203
+    },
+    {
+      "name": "individual visibility choices govern actual public projection",
+      "pass": true,
+      "atMs": 5203
+    },
+    {
+      "name": "Consumer POST /api/v1/conversations/direct returns expected status",
+      "pass": true,
+      "atMs": 5484
+    },
+    {
+      "name": "Consumer POST /api/v1/conversations/{id}/messages returns expected status",
+      "pass": true,
+      "atMs": 5719
+    },
+    {
+      "name": "Consumer PUT /api/v1/profiles/{id}/block returns expected status",
+      "pass": true,
+      "atMs": 6000
+    },
+    {
+      "name": "Trader GET /api/v1/profiles/{id} returns expected status",
+      "pass": true,
+      "atMs": 6265
+    },
+    {
+      "name": "Consumer GET /api/v1/profiles/{id} returns expected status",
+      "pass": true,
+      "atMs": 6734
+    },
+    {
+      "name": "Trader GET /api/v1/contacts returns expected status",
+      "pass": true,
+      "atMs": 7312
+    },
+    {
+      "name": "blocked profile is absent from contacts",
+      "pass": true,
+      "atMs": 7312
+    },
+    {
+      "name": "Trader POST /api/v1/conversations/direct returns expected status",
+      "pass": true,
+      "atMs": 7578
+    },
+    {
+      "name": "Trader POST /api/v1/conversations/{id}/messages returns expected status",
+      "pass": true,
+      "atMs": 7859
+    },
+    {
+      "name": "Trader GET /api/v1/conversations/{id}/messages returns expected status",
+      "pass": true,
+      "atMs": 8328
+    },
+    {
+      "name": "existing conversation history is retained",
+      "pass": true,
+      "atMs": 8328
+    },
+    {
+      "name": "Consumer DELETE /api/v1/profiles/{id}/block returns expected status",
+      "pass": true,
+      "atMs": 8578
+    },
+    {
+      "name": "Trader GET /api/v1/profiles/{id} returns expected status",
+      "pass": true,
+      "atMs": 8844
+    },
+    {
+      "name": "Consumer POST /api/v1/articles returns expected status",
+      "pass": true,
+      "atMs": 9125
+    },
+    {
+      "name": "Consumer PUT /api/v1/articles/{id} returns expected status",
+      "pass": true,
+      "atMs": 9406
+    },
+    {
+      "name": "Consumer DELETE /api/v1/articles/{id} returns expected status",
+      "pass": true,
+      "atMs": 9656
+    },
+    {
+      "name": "Consumer GET /api/v1/articles/{id} returns expected status",
+      "pass": true,
+      "atMs": 10234
+    },
+    {
+      "name": "Producer GET /api/v1/branches/mine returns expected status",
+      "pass": true,
+      "atMs": 10797
+    },
+    {
+      "name": "Producer POST /api/v1/branches returns expected status",
+      "pass": true,
+      "atMs": 13297
+    },
+    {
+      "name": "Producer DELETE /api/v1/branches/{id} returns expected status",
+      "pass": true,
+      "atMs": 13609
+    },
+    {
+      "name": "Producer GET /api/v1/branches/{id} returns expected status",
+      "pass": true,
+      "atMs": 14047
+    },
+    {
+      "name": "Consumer GET /api/v1/auth/me returns expected status",
+      "pass": true,
+      "atMs": 14297
+    },
+    {
+      "name": "existing Consumer role remains unchanged",
+      "pass": true,
+      "atMs": 14297
+    },
+    {
+      "name": "Consumer PUT /api/v1/profile returns expected status",
+      "pass": true,
+      "atMs": 14562
+    },
+    {
+      "name": "original optional profile and all visibility flags are restored",
+      "pass": true,
+      "atMs": 14562
+    }
+  ],
+  "phases": [],
+  "ordinaryImagesAreEndToEndEncrypted": false,
+  "secretCryptoAcceptance": "NOT_RUN: no secret endpoint, ciphertext, key, device or secret read cursor is mutated. API unit tests cover separate metadata/ACL behavior; this driver supplies no cryptographic proof.",
+  "aiInference": "NOT_RUN: this driver calls no AI endpoints for any role.",
+  "requestBudget": 50,
+  "intendedCleanup": "Restore Consumer optional profile, remove only this run new block, soft-delete only newly owned article/branch. Preserve existing accounts, four roles, human applications, history and other blocks.",
+  "ordinaryPhotoAcceptance": "NOT_RUN: focus is text delivery, inbox ordering and exact read cursors; ordinary image ACL has a separate acceptance helper.",
+  "httpRequests": 36,
+  "sessionRotations": 0,
+  "ownedFixtureCounts": {
+    "normalMessages": 1,
+    "articles": 1,
+    "branches": 1
+  },
+  "wssClients": {},
+  "providedSessionsRetained": true,
+  "finishedUtc": "2026-10-30T21:01:54.089852+00:00",
+  "elapsedSeconds": 14.578,
+  "receiptMetadataCorrection": "Root clarified inherited provenance text; original request observations, result and sessionRotations retained unchanged."
+}

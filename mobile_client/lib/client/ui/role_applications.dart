@@ -10,6 +10,7 @@ import 'components.dart';
 import 'event_refresh.dart';
 import 'location_picker.dart';
 import 'moderation.dart';
+import 'photo_viewer.dart';
 
 String roleName(Object? role) =>
     role == 'Producer' ? 'Nhà sản xuất' : 'Thương lái';
@@ -196,7 +197,10 @@ class _RoleApplicationPageState extends State<RoleApplicationPage> {
     }
   }
 
-  Future<void> _mutate(Future<Json> Function() action) async {
+  Future<void> _mutate(
+    Future<Json?> Function() action, {
+    String? successMessage,
+  }) async {
     if (_busy) return;
     setState(() {
       _busy = true;
@@ -205,10 +209,14 @@ class _RoleApplicationPageState extends State<RoleApplicationPage> {
     });
     try {
       final next = await action();
+      if (next == null) return;
       if (mounted) {
         setState(() {
           _data = next;
-          _notice = 'Đã lưu hồ sơ trên máy chủ.';
+          _notice = next['status'] == 'Submitted'
+              ? 'Đã gửi xét duyệt. Quản trị sẽ thấy hồ sơ trong danh sách chờ.'
+              : successMessage ??
+                    'Đã lưu bản nháp. Hồ sơ chưa được gửi xét duyệt.';
         });
       }
     } catch (e) {
@@ -226,6 +234,13 @@ class _RoleApplicationPageState extends State<RoleApplicationPage> {
   }
 
   Future<void> _save({bool submit = false}) async {
+    if (_busy) return;
+    if (submit && (_data?['evidence'] as List? ?? []).isEmpty) {
+      setState(
+        () => _error = 'Thêm ít nhất một chứng từ trước khi gửi xét duyệt.',
+      );
+      return;
+    }
     if (!_form.currentState!.validate() ||
         _products.isEmpty ||
         _products.length > 8 ||
@@ -269,35 +284,44 @@ class _RoleApplicationPageState extends State<RoleApplicationPage> {
       );
       if (!submit) return saved;
       if (mounted) setState(() => _data = saved);
-      return widget.controller.api.post(
+      final submitted = await widget.controller.api.post(
         '/role-applications/${Uri.encodeComponent(widget.id)}/submit',
         {'expectedRevision': saved['revision']},
       );
+      if (submitted['status'] != 'Submitted') {
+        throw const ApiException(
+          'Chưa nhận được xác nhận gửi xét duyệt. Tải lại hồ sơ để kiểm tra.',
+        );
+      }
+      return submitted;
     });
   }
 
   Future<void> _addEvidence() async {
-    await _mutate(() async {
-      final picked = await _picker.pick();
-      if (picked == null) return _data!;
-      try {
-        if (!mounted) return _data!;
-        _upload = UploadCancellation();
-        return await widget.controller.api.uploadEvidence(
-          applicationId: widget.id,
-          category: _data!['requestedRole'] == 'Producer'
-              ? 'ProductionEvidence'
-              : 'BusinessEvidence',
-          expectedRevision: _data!['revision'] as int,
-          file: File(picked.path),
-          contentType: picked.contentType,
-          cancellation: _upload,
-        );
-      } finally {
-        _upload = null;
-        await _picker.delete(picked);
-      }
-    });
+    await _mutate(
+      () async {
+        final picked = await _picker.pick();
+        if (picked == null) return null;
+        try {
+          if (!mounted) return null;
+          _upload = UploadCancellation();
+          return await widget.controller.api.uploadEvidence(
+            applicationId: widget.id,
+            category: _data!['requestedRole'] == 'Producer'
+                ? 'ProductionEvidence'
+                : 'BusinessEvidence',
+            expectedRevision: _data!['revision'] as int,
+            file: File(picked.path),
+            contentType: picked.contentType,
+            cancellation: _upload,
+          );
+        } finally {
+          _upload = null;
+          await _picker.delete(picked);
+        }
+      },
+      successMessage: 'Đã thêm chứng từ. Hồ sơ vẫn chưa gửi; bấm Gửi xét duyệt để chuyển cho quản trị.',
+    );
   }
 
   Future<void> _viewEvidence(Json evidence) async {
@@ -312,11 +336,36 @@ class _RoleApplicationPageState extends State<RoleApplicationPage> {
         value(evidence, 'id'),
         admin: widget.admin,
       );
-      if (mounted) await _picker.view(bytes, value(evidence, 'contentType'));
+      if (!mounted) return;
+      final contentType = value(evidence, 'contentType');
+      if (contentType == 'image/jpeg' || contentType == 'image/png') {
+        try {
+          await Navigator.of(context).push(
+            MaterialPageRoute<void>(
+              builder: (_) =>
+                  PhotoViewerPage(bytes: bytes, title: 'Ảnh minh chứng'),
+            ),
+          );
+        } finally {
+          await ResizeImage(
+            MemoryImage(bytes),
+            width: 2048,
+            height: 2048,
+            policy: ResizeImagePolicy.fit,
+          ).evict();
+          bytes.fillRange(0, bytes.length, 0);
+        }
+      } else {
+        await _picker.view(bytes, contentType);
+      }
     } catch (e) {
       if (mounted) {
         setState(
-          () => _error = e is ApiException ? e.message : 'Không mở được chứng từ. Thiết bị cần ứng dụng xem ảnh hoặc PDF.',
+          () => _error = e is ApiException
+              ? errorText(e)
+              : value(evidence, 'contentType') == 'application/pdf'
+              ? 'Không mở được PDF. Thiết bị cần ứng dụng đọc PDF phù hợp.'
+              : 'Không mở được ảnh minh chứng. Hãy tải lại hoặc kiểm tra tệp đã gửi.',
         );
       }
     } finally {
@@ -350,13 +399,53 @@ class _RoleApplicationPageState extends State<RoleApplicationPage> {
         .toList();
     return Scaffold(
       appBar: AppBar(title: const Text('Hồ sơ nâng vai trò')),
+      bottomNavigationBar: _editable
+          ? SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    if (_error != null) MessageBox(_error!, error: true),
+                    Text(
+                      evidence.isEmpty
+                          ? 'Bước tiếp theo: thêm ít nhất một chứng từ.'
+                          : 'Bản nháp chưa gửi · ${evidence.length} chứng từ đã tải lên.',
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: OutlinedButton(
+                            onPressed: _busy ? null : _save,
+                            child: const Text('Lưu bản nháp'),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: FilledButton(
+                            onPressed: _busy ? null : () => _save(submit: true),
+                            child: Text(
+                              _busy ? 'Đang xử lý…' : 'Gửi xét duyệt',
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            )
+          : null,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              if (_error != null) MessageBox(_error!, error: true),
+              if (_error != null && !_editable)
+                MessageBox(_error!, error: true),
               if (_notice != null) MessageBox(_notice!),
               if (data == null && _error == null)
                 const LinearProgressIndicator(),
@@ -365,6 +454,10 @@ class _RoleApplicationPageState extends State<RoleApplicationPage> {
                   roleName(data['requestedRole']),
                   subtitle: applicationStatus(data['status']),
                 ),
+                if (_editable)
+                  const MessageBox(
+                    'Lưu nháp và tải chứng từ chưa phải gửi hồ sơ. Khi hoàn tất, bấm Gửi xét duyệt ở cuối màn hình. Chỉ khi trạng thái là Đã gửi xét duyệt quản trị mới nhận được hồ sơ.',
+                  ),
                 if (value(data, 'reviewReason').isNotEmpty)
                   MessageBox(value(data, 'reviewReason')),
                 if (_editable)
@@ -476,10 +569,6 @@ class _RoleApplicationPageState extends State<RoleApplicationPage> {
                               .toList(),
                         ),
                         const SizedBox(height: 16),
-                        OutlinedButton(
-                          onPressed: _busy ? null : _save,
-                          child: const Text('Lưu hồ sơ'),
-                        ),
                       ],
                     ),
                   )
@@ -545,10 +634,6 @@ class _RoleApplicationPageState extends State<RoleApplicationPage> {
                     label: const Text('Thêm chứng từ'),
                   ),
                   const SizedBox(height: 12),
-                  FilledButton(
-                    onPressed: _busy ? null : () => _save(submit: true),
-                    child: const Text('Gửi xét duyệt'),
-                  ),
                 ],
                 if (widget.admin && data['status'] == 'Submitted')
                   ReviewActions(

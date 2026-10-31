@@ -4,6 +4,7 @@ import '../session.dart';
 import 'components.dart';
 import 'posts.dart';
 import 'moderation.dart';
+import 'admin_appointments.dart';
 
 class AdminPage extends StatefulWidget {
   const AdminPage({super.key, required this.controller, required this.header});
@@ -46,9 +47,20 @@ class _AdminPageState extends State<AdminPage> {
       physics: const AlwaysScrollableScrollPhysics(),
       children: [
         widget.header,
+        if (widget.controller.user?.isAdmin == true)
+          OutlinedButton.icon(
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (_) =>
+                    AdminAppointmentsPage(controller: widget.controller),
+              ),
+            ),
+            icon: const Icon(Icons.admin_panel_settings_outlined),
+            label: const Text('Bổ nhiệm quản trị viên'),
+          ),
         const SectionTitle(
           'Xét duyệt hoạt động',
-          subtitle: 'Hồ sơ nâng vai trò, chi nhánh, bài chuyên môn và ảnh chia sẻ cộng đồng.',
+          subtitle: 'Hồ sơ nâng vai trò, cơ sở hoạt động, bài chuyên môn và bài cộng đồng.',
         ),
         for (final kind in ReviewKind.values) ...[
           OutlinedButton.icon(

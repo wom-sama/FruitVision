@@ -135,6 +135,7 @@ public static class SecretMessagingEndpoints
         await using var tx = await db.Database.BeginTransactionAsync(ct); var uid = http.User.UserId();
         var pair = await DirectPair(db, request.DirectConversationId, uid, true, ct);
         if (pair is null) return Results.NotFound();
+        if (await ProfileBlocks.IsEitherBlockedAsync(db, pair.First, pair.Second, ct)) return BlockedContact();
         var existing = await db.Set<SecretConversation>().AsNoTracking().SingleOrDefaultAsync(c => c.DirectConversationId == pair.DirectId, ct);
         if (existing is not null)
         {
@@ -193,6 +194,7 @@ public static class SecretMessagingEndpoints
         var hash = RequestHash(request); if (hash is null) return Input.Invalid("Cần UUID và đúng hai phong bì base64 chuẩn, mỗi bản mã từ 1 đến 16384 byte.");
         await using var tx = await db.Database.BeginTransactionAsync(ct); var uid = http.User.UserId();
         var context = await Load(db, id, uid, true, ct); if (context is null) return Results.NotFound();
+        if (await ProfileBlocks.IsEitherBlockedAsync(db, context.Members.First, context.Members.Second, ct)) return BlockedContact();
         var devices = await ActiveDevices(db, context.Members, ct); var own = OwnDevice(devices, uid, request.SenderDeviceId);
         if (devices.Count != 2 || own is null || !request.Envelopes.Select(e => e.RecipientDeviceId).ToHashSet().SetEquals(devices.Select(d => d.DeviceId))) return KeysChanged();
         var existing = await db.Set<SecretMessage>().AsNoTracking().SingleOrDefaultAsync(m => m.ConversationId == id && m.SenderUserId == uid && m.ClientMessageId == request.ClientMessageId, ct);
@@ -244,6 +246,7 @@ public static class SecretMessagingEndpoints
     private static async Task<IResult> Upload(Guid id, Guid senderDeviceId, Guid recipientDeviceId, HttpContext http, AppDbContext db, SecretAttachmentStorage storage, CancellationToken ct)
     {
         var uid = http.User.UserId(); var initial = await Load(db, id, uid, false, ct); if (initial is null) return Results.NotFound();
+        if (await ProfileBlocks.IsEitherBlockedAsync(db, initial.Members.First, initial.Members.Second, ct)) return BlockedContact();
         var initialDevices = await ActiveDevices(db, initial.Members, ct);
         if (initialDevices.Count != 2 || OwnDevice(initialDevices, uid, senderDeviceId) is null || !initialDevices.Any(d => d.UserId != uid && d.DeviceId == recipientDeviceId)) return KeysChanged();
         if (http.Request.ContentType != "application/octet-stream") return Input.Invalid("Chỉ nhận luồng bản mã application/octet-stream; không gửi ảnh gốc hoặc khóa ảnh.");
@@ -259,6 +262,7 @@ public static class SecretMessagingEndpoints
             // Streaming holds no user/database lock. Recheck and lock identities/keys at commit.
             await using var tx = await db.Database.BeginTransactionAsync(ct);
             var current = await Load(db, id, uid, true, ct); if (current is null) return Results.NotFound();
+            if (await ProfileBlocks.IsEitherBlockedAsync(db, current.Members.First, current.Members.Second, ct)) return BlockedContact();
             var devices = await ActiveDevices(db, current.Members, ct);
             if (devices.Count != 2 || OwnDevice(devices, uid, senderDeviceId) is not { } own || own.Version != attachment.SenderKeyVersion || !devices.Any(d => d.UserId != uid && d.DeviceId == recipientDeviceId && d.Version == attachment.RecipientKeyVersion)) return KeysChanged();
             await MediaStorageQuota.EnsureAsync(db, uid, attachment.SizeBytes, storage.RootPath, http.RequestServices.GetRequiredService<IConfiguration>(), ct);
@@ -282,6 +286,8 @@ public static class SecretMessagingEndpoints
         var file = await storage.OpenAsync(attachment, ct); if (file is null) return Results.NotFound();
         return Results.File(file, "application/octet-stream", "encrypted_" + attachment.Id.ToString("N") + ".bin");
     }
+    private static IResult BlockedContact() => Results.Problem(statusCode: 403, title: "Tài khoản đã chặn liên hệ riêng.");
+
     private static async Task Notify(IHubContext<FruitHub> hub, ILoggerFactory logs, Pair pair, string target, object metadata)
     {
         try { await hub.Clients.Groups(new[] { "user:" + pair.First, "user:" + pair.Second }).SendAsync(target, metadata, CancellationToken.None); }

@@ -27,6 +27,7 @@ class FlowTransport implements ApiTransport {
   bool joined = false, groupOpen = true;
   bool groupOwned = false;
   String groupTitle = 'Nhóm xoài Đồng Tháp';
+  String groupOwnerId = 'consumer-one';
   Map<String, dynamic> get post => {
     'id': 'post-one',
     'title': 'Xoài Đồng Tháp vụ mới',
@@ -52,7 +53,7 @@ class FlowTransport implements ApiTransport {
     'id': 'group-one',
     'title': groupTitle,
     'kind': 'Group',
-    'ownerId': groupOwned ? 'consumer-one' : 'producer-one',
+    'ownerId': groupOwned ? groupOwnerId : 'producer-one',
     'region': 'Đồng Tháp',
     'productCode': 'mango',
     'isOpen': groupOpen,
@@ -352,11 +353,10 @@ void main() {
       await tester.tap(
         find.byWidgetPredicate(
           (widget) =>
-              widget is NavigationDestination && widget.label == 'Cộng đồng',
+              widget is NavigationDestination && widget.label == 'Tin nhắn',
         ),
       );
       await tester.pumpAndSettle();
-      await press(tester, 'Hội thoại & nhóm');
       await press(tester, 'Nhóm cộng đồng');
       await press(tester, 'Nhóm xoài Đồng Tháp');
       await press(tester, 'Tham gia và trò chuyện');
@@ -386,17 +386,17 @@ void main() {
     },
   );
   testWidgets(
-    'Community owner creates and closes a real group; closed chat is read only',
+    'Admin creates and closes a real group; closed chat is read only',
     (tester) async {
-      final transport = await showFlow(tester, UserRole.consumer);
+      final transport = await showFlow(tester, UserRole.admin);
+      transport.groupOwnerId = 'admin-one';
       await tester.tap(
         find.byWidgetPredicate(
           (widget) =>
-              widget is NavigationDestination && widget.label == 'Cộng đồng',
+              widget is NavigationDestination && widget.label == 'Tin nhắn',
         ),
       );
       await tester.pumpAndSettle();
-      await press(tester, 'Hội thoại & nhóm');
       await press(tester, 'Nhóm cộng đồng');
       await press(tester, 'Tạo nhóm');
       await tester.enterText(

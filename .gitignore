@@ -40,3 +40,14 @@ models/android/exports/
 # Package/IDE caches are never submission source
 .cache/
 .vs/
+
+# Private server/client state, tool installations and generated .NET output
+.local/
+.tools/
+bin/
+obj/
+TestResults/
+.test-results/
+.pub-cache/
+PUBLIC_URL.txt
+*.user

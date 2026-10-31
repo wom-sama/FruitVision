@@ -278,6 +278,7 @@ class RealtimeClient extends ChangeNotifier {
               'RoleApplicationChanged',
               'SecretMessageCreated',
               'SecretConversationCreated',
+              'InboxChanged',
               'SecretDeviceChanged',
             }.contains(target) ||
             arguments is! List ||

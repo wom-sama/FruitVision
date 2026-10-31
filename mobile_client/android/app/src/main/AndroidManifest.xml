@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera.any" android:required="false" />
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
     <uses-permission android:name="android.permission.USE_FINGERPRINT" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
@@ -20,6 +22,7 @@
         </activity>
         <meta-data android:name="flutterEmbedding" android:value="2" />
         <activity android:name=".EvidenceViewerActivity" android:exported="false" />
+        <activity android:name=".FVFaceScanActivity" android:exported="false" android:screenOrientation="portrait" />
         <provider android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.media" android:exported="false" android:grantUriPermissions="true">
             <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/media_paths" />

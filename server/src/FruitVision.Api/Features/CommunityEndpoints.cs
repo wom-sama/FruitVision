@@ -56,7 +56,7 @@ public static class CommunityEndpoints
             await Changed(hub, group.Id, app.Logger, ct);
             await Joined(hub, group.Id, uid, app.Logger, ct);
             return Results.Created($"/api/v1/community/groups/{group.Id}", result);
-        }).AddEndpointFilter<InputFilter>();
+        }).RequireAuthorization("Admin").AddEndpointFilter<InputFilter>();
         routes.MapGet("/groups/{id:guid}", async (Guid id, HttpContext http, AppDbContext db, CancellationToken ct) =>
         {
             var uid = http.User.UserId();
@@ -109,7 +109,6 @@ public static class CommunityEndpoints
             await using var transaction = await db.Database.BeginTransactionAsync(ct);
             var group = await LockedGroup(db, id, ct);
             if (group is null) return Results.NotFound();
-            if (group.OwnerId != uid && !http.User.IsInRole("Admin")) return Input.Denied();
             if (!group.IsOpen) return Results.Ok(await View(db, id, uid, ct));
             group.IsOpen = false;
             db.AuditEntries.Add(SessionTokens.Audit(uid, group.OwnerId, "CommunityGroupClosed"));
@@ -118,7 +117,7 @@ public static class CommunityEndpoints
             await transaction.CommitAsync(ct);
             await Changed(hub, id, app.Logger, ct);
             return Results.Ok(result);
-        });
+        }).RequireAuthorization("Admin");
     }
 
     private static IQueryable<CommunityGroupView> Views(IQueryable<Conversation> query, AppDbContext db, Guid uid) =>

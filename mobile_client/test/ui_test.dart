@@ -87,7 +87,10 @@ class UiTransport implements ApiTransport {
   ) async {
     calls.add('$method ${uri.path}');
     final path = uri.path;
-    Object data = {'items': <Object>[]};
+    Object data = {
+      'items': <Object>[],
+      'summary': {'unreadTotal': 0, 'unreadConversations': 0},
+    };
     if (path.endsWith('/admin/stats')) {
       data = {
         'users': 7,
@@ -203,10 +206,15 @@ void main() {
           .map((destination) => destination.label)
           .toList();
       final expected = switch (role) {
-        UserRole.admin => ['Xét duyệt', 'Trao đổi', 'Tài khoản'],
+        UserRole.admin => ['Xét duyệt', 'Tin nhắn', 'Tài khoản'],
         UserRole.producer ||
-        UserRole.trader => ['AI xoài', 'Kiến thức', 'Trao đổi', 'Tài khoản'],
-        UserRole.consumer => ['Học về xoài', 'Cộng đồng', 'Tài khoản'],
+        UserRole.trader => ['AI xoài', 'Kiến thức', 'Tin nhắn', 'Tài khoản'],
+        UserRole.consumer => [
+          'Học về xoài',
+          'Cộng đồng',
+          'Tin nhắn',
+          'Tài khoản',
+        ],
       };
       expect(labels, expected);
       if (role == UserRole.admin) {
@@ -218,6 +226,15 @@ void main() {
       }
       expect(find.text('Tạo tin dự kiến'), findsNothing);
       if (role == UserRole.producer || role == UserRole.trader) {
+        await tester.scrollUntilVisible(
+          find.text('Chọn ảnh'),
+          150,
+          scrollable: find.byType(Scrollable).first,
+        );
+        await tester.pumpAndSettle();
+        await tester.ensureVisible(find.text('Chọn ảnh'));
+        await tester.pumpAndSettle();
+        expect(find.text('Chọn ảnh').hitTestable(), findsOneWidget);
         expect(find.text('Chọn ảnh'), findsOneWidget);
         expect(find.text('Chọn video'), findsOneWidget);
         expect(find.text('Chụp ảnh'), findsOneWidget);

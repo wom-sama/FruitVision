@@ -16,12 +16,30 @@ namespace FruitVision.Tests;
 public sealed class CommunityMarketTests(ApiFixture fixture)
 {
     [Fact]
+    public async Task Only_admin_can_create_or_close_groups_including_legacy_nonadmin_owned_groups()
+    {
+        using var admin = fixture.CreateClient(); await NewAccount(admin, role: "Admin");
+        foreach (var role in new[] { "Consumer", "Producer", "Trader" })
+        {
+            using var member = fixture.CreateClient(); var memberId = await NewAccount(member, role: role);
+            using var create = await member.PostAsJsonAsync("/api/v1/community/groups", new { title = "Forbidden member creation", region = "Đồng Tháp", productCode = "mango" }); Assert.Equal(HttpStatusCode.Forbidden, create.StatusCode);
+            var legacyId = Guid.NewGuid();
+            using (var scope = fixture.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<AppDbContext>(); db.Conversations.Add(new Conversation { Id = legacyId, Kind = "Group", OwnerId = memberId, Title = "Existing legacy group", IsOpen = true }); db.Participants.Add(new Participant { ConversationId = legacyId, UserId = memberId }); await db.SaveChangesAsync();
+            }
+            using var close = await member.PostAsJsonAsync($"/api/v1/community/groups/{legacyId}/close", new { }); Assert.Equal(HttpStatusCode.Forbidden, close.StatusCode);
+            using var send = await member.PostAsJsonAsync($"/api/v1/conversations/{legacyId}/messages", new { clientMessageId = Guid.NewGuid().ToString("N"), text = "Existing member can still chat" }); Assert.Equal(HttpStatusCode.Created, send.StatusCode);
+            using var adminClose = await admin.PostAsJsonAsync($"/api/v1/community/groups/{legacyId}/close", new { }); Assert.Equal(HttpStatusCode.OK, adminClose.StatusCode);
+        }
+    }
+    [Fact]
     public async Task Committed_group_creation_survives_cancelled_realtime_notification()
     {
         using var app = fixture.WithWebHostBuilder(builder => builder.ConfigureServices(services =>
             services.AddSingleton<IHubContext<FruitHub>>(new UnavailableHub())));
         using var owner = app.CreateClient();
-        var uid = await NewAccount(owner);
+        var uid = await NewAccount(owner, role: "Admin");
         var group = await CreateGroup(owner, "Notify-" + Guid.NewGuid().ToString("N"));
         using var scope = fixture.Services.CreateScope(); var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         var id = group.GetProperty("id").GetGuid();
@@ -32,7 +50,7 @@ public sealed class CommunityMarketTests(ApiFixture fixture)
     public async Task Community_requires_approval_and_creates_owner_membership_with_newest_cursor()
     {
         using var owner = fixture.CreateClient(); using var pending = fixture.CreateClient(); using var anonymous = fixture.CreateClient();
-        var ownerId = await NewAccount(owner); await NewAccount(pending, approve: false);
+        var ownerId = await NewAccount(owner, role: "Admin"); await NewAccount(pending, approve: false);
         using var denied = await pending.GetAsync("/api/v1/community/groups"); Assert.Equal(HttpStatusCode.Forbidden, denied.StatusCode);
         using var unauthenticated = await anonymous.GetAsync("/api/v1/community/groups"); Assert.Equal(HttpStatusCode.Unauthorized, unauthenticated.StatusCode);
         var region = "Group-" + Guid.NewGuid().ToString("N");
@@ -52,7 +70,7 @@ public sealed class CommunityMarketTests(ApiFixture fixture)
     public async Task Join_is_atomic_idempotent_and_never_admits_an_arbitrary_user_or_direct_thread()
     {
         using var owner = fixture.CreateClient(); using var member = fixture.CreateClient();
-        var ownerId = await NewAccount(owner); var memberId = await NewAccount(member);
+        var ownerId = await NewAccount(owner, role: "Admin"); var memberId = await NewAccount(member);
         var id = (await CreateGroup(owner, "Join-" + Guid.NewGuid().ToString("N"))).GetProperty("id").GetGuid();
         var responses = await Task.WhenAll(Enumerable.Range(0, 6).Select(_ => member.PostAsJsonAsync($"/api/v1/community/groups/{id}/join", new { })));
         try { Assert.Single(responses, response => response.StatusCode == HttpStatusCode.Created); Assert.All(responses, response => Assert.True(response.StatusCode is HttpStatusCode.OK or HttpStatusCode.Created)); }
@@ -74,7 +92,7 @@ public sealed class CommunityMarketTests(ApiFixture fixture)
     public async Task Leave_and_close_enforce_current_membership_and_owner_authority()
     {
         using var owner = fixture.CreateClient(); using var member = fixture.CreateClient(); using var outsider = fixture.CreateClient();
-        await NewAccount(owner); await NewAccount(member); await NewAccount(outsider);
+        await NewAccount(owner, role: "Admin"); await NewAccount(member); await NewAccount(outsider);
         var id = (await CreateGroup(owner, "Leave-" + Guid.NewGuid().ToString("N"))).GetProperty("id").GetGuid();
         using var joined = await member.PostAsJsonAsync($"/api/v1/community/groups/{id}/join", new { }); Assert.Equal(HttpStatusCode.Created, joined.StatusCode);
         using var ownerLeave = await owner.PostAsJsonAsync($"/api/v1/community/groups/{id}/leave", new { }); Assert.Equal(HttpStatusCode.Conflict, ownerLeave.StatusCode);
@@ -93,7 +111,7 @@ public sealed class CommunityMarketTests(ApiFixture fixture)
     public async Task Concurrent_joins_respect_fifty_member_cap_and_creates_respect_ten_open_groups()
     {
         using var owner = fixture.CreateClient(); using var first = fixture.CreateClient(); using var second = fixture.CreateClient();
-        var ownerId = await NewAccount(owner); await NewAccount(first); await NewAccount(second);
+        var ownerId = await NewAccount(owner, role: "Admin"); await NewAccount(first); await NewAccount(second);
         var region = "Cap-" + Guid.NewGuid().ToString("N");
         var id = (await CreateGroup(owner, region)).GetProperty("id").GetGuid();
         using (var scope = fixture.Services.CreateScope())
@@ -164,9 +182,9 @@ public sealed class CommunityMarketTests(ApiFixture fixture)
 
     private static AppUser User(string region) => new() { Id = Guid.NewGuid(), DisplayName = "Market contributor", Region = region, Role = AccountRole.Consumer, ApprovalStatus = ApprovalState.Approved, IsActive = true, UserName = Guid.NewGuid().ToString("N") };
     private static Post Post(AppUser user, string purpose, decimal quantity, decimal? min, decimal? max) => new() { AuthorId = user.Id, Author = user, Title = "Published market estimate", Body = "An estimate without a stock or delivery commitment.", ProductCode = "mango", Status = "Published", Purpose = purpose, Region = "", EstimatedQuantityKg = quantity, PriceMinVndPerKg = min, PriceMaxVndPerKg = max };
-    private async Task<Guid> NewAccount(HttpClient client, bool approve = true)
+    private async Task<Guid> NewAccount(HttpClient client, bool approve = true, string role = "Consumer")
     {
-        var account = await TestAccounts.CreateAsync(fixture.Services,fixture.Password,"Consumer",approve,"Community test");
+        var account = await TestAccounts.CreateAsync(fixture.Services,fixture.Password,role,approve,"Community test");
         await Login(client, account.Email); return account.Id;
     }
     private async Task Login(HttpClient client, string email)

@@ -2,6 +2,8 @@
 
 # FruitVision 2.1 — Danh sách vai trò và phạm vi demo
 
+Các tệp ghi “không công bố” chỉ có trong bộ làm việc/bàn giao nội bộ; bản clone này không kèm các tệp đó.
+
 Đối chiếu mã và QA ngày 30/10/2026. **Có trong app** là có màn hình và API thật; **API-only** là backend có nhưng APK chưa có luồng thao tác; **chưa triển khai** là không giới thiệu như tính năng đã hoàn tất. Bằng chứng chạy từng phiên bản được tách ở mục 5.
 
 ## 1. Bốn vai trò trong app hôm nay
@@ -57,7 +59,7 @@ Nguồn thao tác: [forms.dart](../../mobile_client/lib/client/ui/forms.dart), [
 | SignalR WSS | Sự kiện chat/job khi app đang hoạt động; REST lấy lại dữ liệu khi mất kết nối |
 | Android Keystore / AES-GCM / HTTPS | Bảo vệ token lưu cục bộ và kết nối; không phải sinh trắc học |
 
-**Khác bản cũ:** `app/` có native detector và tài sản model để suy luận cục bộ. APK mới ở `mobile_client/` không chứa model/runtime AI, chỉ gửi tệp và nhận kết quả từ `server/` trên PC. Tái sử dụng model đã ghim không biến APK mới thành app offline. Nguồn: [NativeDetector cũ](../../app/android/app/src/main/kotlin/vn/mangodemo/mango_offline/NativeDetector.kt), [Program.cs](../src/FruitVision.Api/Program.cs), [AiJobWorker.cs](../src/FruitVision.Api/Ai/AiJobWorker.cs), kiểm APK cuối (`../../mobile_client/verification/2.1-polished/apk-verification-final.json` — biên nhận local).
+**Khác bản cũ:** `app/` có native detector và tài sản model để suy luận cục bộ. APK mới ở `mobile_client/` không chứa model/runtime AI, chỉ gửi tệp và nhận kết quả từ `server/` trên PC. Tái sử dụng model đã ghim không biến APK mới thành app offline. Nguồn: NativeDetector cũ (`../../app/android/app/src/main/kotlin/vn/mangodemo/mango_offline/NativeDetector.kt`; không công bố), [Program.cs](../src/FruitVision.Api/Program.cs), [AiJobWorker.cs](../src/FruitVision.Api/Ai/AiJobWorker.cs), kiểm APK cuối (`../../mobile_client/verification/2.1-polished/apk-verification-final.json` — biên nhận local).
 
 PC tự host, **không dùng Render**. Quick Tunnel HTTPS tạm có thể đổi hostname; PC/API/DB/tunnel phải chạy và điện thoại cần mạng. Chưa có vận hành 24/7, tên miền cố định, auto-start/Windows Service, backup/retention hoàn chỉnh hoặc signer phát hành Play Store. Chưa có push khi app đóng.
 

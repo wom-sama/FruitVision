@@ -31,6 +31,9 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityUser
         FaceIdentity.ConfigureModel(b);
         SecretMessagingModels.ConfigureModel(b);
         NormalMediaModels.ConfigureModel(b);
+        ArticleEngagementModels.ConfigureModel(b);
+        InboxModels.ConfigureModel(b);
+        ProfileModels.ConfigureModel(b);
         b.Entity<AppUser>(e => {
             e.Property(x => x.DisplayName).HasMaxLength(100);
             e.Property(x => x.Region).HasMaxLength(120);

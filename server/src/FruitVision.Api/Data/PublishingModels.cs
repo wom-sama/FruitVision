@@ -53,7 +53,7 @@ public static class PublishingModels
         {
             entity.ToTable("CommunityArticles", table =>
             {
-                table.HasCheckConstraint("CK_Article_Status", "\"Status\" IN ('AwaitingReview','Published','Rejected','Paused')");
+                table.HasCheckConstraint("CK_Article_Status", "\"Status\" IN ('AwaitingReview','Published','Rejected','Paused','Deleted')");
                 table.HasCheckConstraint("CK_Article_Revision", "\"Revision\" >= 1");
                 table.HasCheckConstraint("CK_Article_Lane", "(\"AudienceLane\"='Community' AND \"BranchId\" IS NULL) OR (\"AudienceLane\"='Professional' AND \"BranchId\" IS NOT NULL)");
             });
@@ -75,7 +75,7 @@ public static class PublishingModels
         {
             entity.ToTable("SellerBranches", table =>
             {
-                table.HasCheckConstraint("CK_Branch_Status", "\"Status\" IN ('Pending','Approved','Rejected','NeedsInformation')");
+                table.HasCheckConstraint("CK_Branch_Status", "\"Status\" IN ('Pending','Approved','Rejected','NeedsInformation','Deleted')");
                 table.HasCheckConstraint("CK_Branch_Revision", "\"Revision\" >= 1");
             });
             entity.Property(branch => branch.Name).HasMaxLength(160);

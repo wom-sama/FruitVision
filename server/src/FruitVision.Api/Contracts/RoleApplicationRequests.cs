@@ -23,8 +23,10 @@ public sealed record RoleApplicationReviewRequest(
 
 public sealed record RoleApplicationEvidenceView(Guid Id, string Category, string ContentType, long SizeBytes,
     DateTimeOffset CreatedAt, string DownloadPath);
+public sealed record RoleApplicationApplicantView(Guid Id, string DisplayName, string Role);
 public sealed record RoleApplicationView(Guid Id, Guid UserId, string RequestedRole, string Status, int Revision,
     string OrganisationName, string Address, string CountryCode, string ProvinceCode, string Region, string Phone, string[] Products,
     decimal? CultivatedAreaHa, string? TaxCode, string? BusinessRegistrationNumber,
     DateTimeOffset CreatedAt, DateTimeOffset UpdatedAt, DateTimeOffset? SubmittedAt,
-    DateTimeOffset? ReviewedAt, string? ReviewReason, IReadOnlyList<RoleApplicationEvidenceView> Evidence);
+    DateTimeOffset? ReviewedAt, string? ReviewReason, IReadOnlyList<RoleApplicationEvidenceView> Evidence,
+    RoleApplicationApplicantView Applicant);

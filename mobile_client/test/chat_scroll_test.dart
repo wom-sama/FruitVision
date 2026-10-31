@@ -23,6 +23,7 @@ Map<String, dynamic> message(int index, {String? text, bool own = false}) => {
 
 class ChatTransport implements ApiTransport {
   final latest = List.generate(20, (index) => message(index + 20));
+  final readCursors = <String>[];
   @override
   Future<ApiReply> send(
     String method,
@@ -30,6 +31,10 @@ class ChatTransport implements ApiTransport {
     Map<String, String> headers,
     String? body,
   ) async {
+    if (uri.path.endsWith('/read')) {
+      readCursors.add((jsonDecode(body!) as Map)['lastMessageId'] as String);
+      return const ApiReply(200, '{"unreadCount":0}');
+    }
     if (method == 'POST') {
       final draft = jsonDecode(body!) as Map<String, dynamic>;
       final sent = message(40, text: draft['text'] as String, own: true);
@@ -200,6 +205,7 @@ void main() {
     'incoming message preserves older reading position and offers a jump action',
     (tester) async {
       final (transport, hub) = await openChat(tester);
+      expect(transport.readCursors, [messageId(39)]);
       await tester.drag(chatList(), const Offset(0, 10000));
       await tester.pumpAndSettle();
       const anchor = 'Tin số 20\nNội dung trao đổi trong hội thoại.';
@@ -215,6 +221,9 @@ void main() {
       await tester.pump(const Duration(milliseconds: 300));
       await tester.pumpAndSettle();
       expect(tester.getTopLeft(find.text(anchor)).dy, closeTo(before, 1));
+      expect(transport.readCursors, [
+        messageId(39),
+      ], reason: 'Incoming newest is offscreen while reading older messages.');
       final jump = find.text('1 tin nhắn mới');
       expect(jump, findsOneWidget);
       expect(
@@ -228,6 +237,7 @@ void main() {
       await tester.tap(jump);
       await tester.pumpAndSettle();
       expectVisible(tester, 'Tin số 40\nNội dung trao đổi trong hội thoại.');
+      expect(transport.readCursors, [messageId(39), messageId(40)]);
       expect(find.text('1 tin nhắn mới'), findsNothing);
       expect(tester.takeException(), isNull);
     },

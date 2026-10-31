@@ -8,7 +8,8 @@ import 'role_applications.dart';
 import 'api_photo.dart';
 
 String applicationStatus(Object? status) => switch (status) {
-  'Draft' => 'Bản nháp',
+  'Draft' => 'Bản nháp · Chưa gửi',
+  'All' => 'Tất cả trạng thái',
   'Submitted' => 'Đã gửi xét duyệt',
   'Pending' || 'AwaitingReview' => 'Chờ xét duyệt',
   'Approved' => 'Đã chấp thuận',
@@ -26,8 +27,9 @@ enum ReviewKind {
     'Approved',
     'Rejected',
     'Draft',
+    'All',
   ]),
-  branches('branches', 'Duyệt chi nhánh', [
+  branches('branches', 'Duyệt cơ sở', [
     'Pending',
     'NeedsInformation',
     'Approved',
@@ -78,28 +80,45 @@ class _ReviewListPageState extends State<ReviewListPage> {
         listKey: _list,
         api: widget.controller.api,
         path:
-            '/admin/${widget.kind.path}?limit=20&status=$_status${widget.kind.laneQuery}',
+            '/admin/${widget.kind.path}?limit=20${_status == 'All' ? '' : '&status=$_status'}${widget.kind.laneQuery}',
         targets: const {
           'RoleApplicationChanged',
           'BranchChanged',
           'ArticleChanged',
         },
         empty: 'Không có hồ sơ trong trạng thái này.',
-        header: DropdownButtonFormField<String>(
-          initialValue: _status,
-          isExpanded: true,
-          decoration: const InputDecoration(labelText: 'Trạng thái'),
-          items: widget.kind.statuses
-              .map(
-                (s) => DropdownMenuItem(
-                  value: s,
-                  child: Text(applicationStatus(s)),
+        header: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            if (widget.kind == ReviewKind.roles)
+              const Padding(
+                padding: EdgeInsets.only(bottom: 12),
+                child: Text(
+                  'Danh sách chờ chỉ gồm hồ sơ đã bấm Gửi xét duyệt thành công. Lưu nháp hoặc thêm chứng từ chưa chuyển hồ sơ cho quản trị.',
                 ),
-              )
-              .toList(),
-          onChanged: (s) {
-            if (s != null) setState(() => _status = s);
-          },
+              ),
+            TextButton.icon(
+              onPressed: () => _list.currentState?.reload(),
+              icon: const Icon(Icons.refresh),
+              label: const Text('Tải lại danh sách'),
+            ),
+            DropdownButtonFormField<String>(
+              initialValue: _status,
+              isExpanded: true,
+              decoration: const InputDecoration(labelText: 'Trạng thái'),
+              items: widget.kind.statuses
+                  .map(
+                    (s) => DropdownMenuItem(
+                      value: s,
+                      child: Text(applicationStatus(s)),
+                    ),
+                  )
+                  .toList(),
+              onChanged: (s) {
+                if (s != null) setState(() => _status = s);
+              },
+            ),
+          ],
         ),
         itemBuilder: (row) => DataCard(
           onTap: () async {
@@ -121,6 +140,14 @@ class _ReviewListPageState extends State<ReviewListPage> {
             _list.currentState?.reload();
           },
           children: [
+            if (row['applicant'] is Map)
+              Text(
+                value(
+                  Map<String, dynamic>.from(row['applicant']),
+                  'displayName',
+                ),
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
             Text(
               widget.kind == ReviewKind.roles
                   ? roleName(row['requestedRole'])
@@ -130,7 +157,7 @@ class _ReviewListPageState extends State<ReviewListPage> {
             if (value(row, 'organisationName').isNotEmpty)
               Text(value(row, 'organisationName')),
             Text(applicationStatus(row['status'])),
-            Text(displayTime(row['createdAt'])),
+            Text(displayTime(row['submittedAt'] ?? row['createdAt'])),
           ],
         ),
       ),
@@ -262,6 +289,8 @@ class _ReviewDetailPageState extends State<ReviewDetailPage> {
   String? _error;
   String get path =>
       '/admin/${widget.kind.path}/${Uri.encodeComponent(widget.id)}';
+  String get detailPath =>
+      '/${widget.kind.path}/${Uri.encodeComponent(widget.id)}';
   @override
   void initState() {
     super.initState();
@@ -270,7 +299,7 @@ class _ReviewDetailPageState extends State<ReviewDetailPage> {
 
   Future<void> _load() async {
     try {
-      final data = await widget.controller.api.get(path);
+      final data = await widget.controller.api.get(detailPath);
       if (mounted) {
         setState(() {
           _data = data;

@@ -1,14 +1,16 @@
 # Phạm vi AI xoài 2.4
 
+Các tệp ghi “không công bố” chỉ có trong bộ làm việc/bàn giao nội bộ; bản clone này không kèm các tệp đó.
+
 Phạm vi chính là hỗ trợ Producer/Trader quan sát và đếm **xoài được mô hình dự đoán**. Consumer ưu tiên đọc kiến thức và trao đổi cộng đồng. Không có huấn luyện, đổi trọng số hay đổi lớp để mở rộng công dụng.
 
 ## Mô hình và ý nghĩa nhãn
 
-Đồ thị đang được ghim là [mango_detector.onnx](../../app/android/app/src/main/assets/mango_detector.onnx), YOLOX-Tiny FP32, 20.307.691 byte; SHA-256:
+Đồ thị đang được ghim là mango_detector.onnx (`../../app/android/app/src/main/assets/mango_detector.onnx`; không công bố), YOLOX-Tiny FP32, 20.307.691 byte; SHA-256:
 
 `8a69c66a9444c18c98a7e3e58a44f4dddda9eb4583dd4448f430ff9e8db27c41`
 
-Đầu vào `image` `[1,3,480,480]`. Năm đầu ra: `boxes [1,4725,4]`, `scores [1,4725]`, `species_ids [1,4725]`, `stage_ids [1,4725]`, `stage_scores [1,4725,2]`. [Metadata](../../app/android/app/src/main/assets/detector_metadata.json) vẫn mô tả đúng đồ thị có banana/mango/generic fruit. Serving 2.4 chỉ giữ `species_ids == 1` **trước NMS, theo dõi và đếm**, không sửa đồ thị hoặc đổi ánh xạ lớp.
+Đầu vào `image` `[1,3,480,480]`. Năm đầu ra: `boxes [1,4725,4]`, `scores [1,4725]`, `species_ids [1,4725]`, `stage_ids [1,4725]`, `stage_scores [1,4725,2]`. Metadata (`../../app/android/app/src/main/assets/detector_metadata.json`; không công bố) vẫn mô tả đúng đồ thị có banana/mango/generic fruit. Serving 2.4 chỉ giữ `species_ids == 1` **trước NMS, theo dõi và đếm**, không sửa đồ thị hoặc đổi ánh xạ lớp.
 
 Ngưỡng giữ nguyên: detection 0,35; NMS IoU 0,5; tối đa 64 đối tượng/khung; độ tin cậy giai đoạn tối thiểu 0,6. Nhãn đối tượng là `Xoài (dự đoán)`.
 
@@ -20,7 +22,7 @@ Ngưỡng giữ nguyên: detection 0,35; NMS IoU 0,5; tối đa 64 đối tượ
 
 Đây là **hai giai đoạn nguồn**, không xác nhận độ chín ngoài thực tế, vị ngọt, giống, hư hỏng, chất lượng bên trong hoặc an toàn thực phẩm. Lớp huấn luyện nội bộ số 4 của đồ thị này là `Fruit_grade_unknown`, không phải xoài hư và không phải đầu ra `stageCode=4`.
 
-Tài sản legacy `mango_student.onnx` SHA `819d023fa5f2ee624c63c630ec37e190548f1f793848ea17a86d1000acaf6be9` còn được giữ nhưng **không chạy** ở tuyến này. Năm lớp xoài của grader legacy, gồm lớp xoài hư, không phải khả năng hiện tại. Giữ nguyên [nguồn và giấy phép](../../app/android/app/src/main/assets/SOURCE_ATTRIBUTION.json): mô hình/dữ liệu chỉ dành cho bản trình diễn phi thương mại.
+Tài sản legacy `mango_student.onnx` SHA `819d023fa5f2ee624c63c630ec37e190548f1f793848ea17a86d1000acaf6be9` còn được giữ nhưng **không chạy** ở tuyến này. Năm lớp xoài của grader legacy, gồm lớp xoài hư, không phải khả năng hiện tại. Giữ nguyên nguồn và giấy phép (`../../app/android/app/src/main/assets/SOURCE_ATTRIBUTION.json`; không công bố): mô hình/dữ liệu chỉ dành cho bản trình diễn phi thương mại.
 
 ## Luồng API thực tế
 
@@ -53,6 +55,6 @@ Kết quả cũ có thể cùng SHA mô hình nhưng **thiếu `scope=predicted-
 & ./server/.tools/ai-venv/Scripts/python.exe -X utf8 -B ./server/scripts/mango_image_smoke_24.py --sessions ./server/.local/real-sessions.json --role Producer --fixture single --run
 ```
 
-`--run` tạo một tác vụ thật được lưu; mặc định ảnh [demo_mango.jpg](../../app/android/app/src/main/assets/demo_mango.jpg) đã được native `prepareDirect` dùng làm sample, SHA `0104a1e5e313f5c4082607b4cac73b2497f9a916d130e500c96616e05684b9f5`. Đây là ảnh demo có biến đổi/padding, không phải mẫu đánh giá độc lập. Có thể chọn `--fixture multiple` để dùng `demo_multi_mango.png`; script không tạo ảnh tổng hợp mới.
+`--run` tạo một tác vụ thật được lưu; mặc định ảnh demo_mango.jpg (`../../app/android/app/src/main/assets/demo_mango.jpg`; không công bố) đã được native `prepareDirect` dùng làm sample, SHA `0104a1e5e313f5c4082607b4cac73b2497f9a916d130e500c96616e05684b9f5`. Đây là ảnh demo có biến đổi/padding, không phải mẫu đánh giá độc lập. Có thể chọn `--fixture multiple` để dùng `demo_multi_mango.png`; script không tạo ảnh tổng hợp mới.
 
 Script kiểm HTTPS đúng tunnel đang được ghi riêng, không chuyển hướng, không tắt TLS; tối đa khoảng 75 giây, thêm tối đa 5 giây để yêu cầu hủy tác vụ của chính nó nếu chưa hoàn tất. Receipt mặc định `server/docs/mango-image-https-smoke-24.json` chỉ chứa ID/trạng thái/số liệu/hash, không chứa token hoặc ảnh. PASS chỉ chứng minh luồng thực thi và hợp đồng kết quả; kể cả ảnh demo có phát hiện xoài cũng không chứng minh chất lượng mô hình. Chỉ xem là đã chạy live khi có receipt thực tế; unit test và source không thay thế kiểm APK/điện thoại.

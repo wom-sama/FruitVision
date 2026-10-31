@@ -1,0 +1,894 @@
+{
+  "status": "PASS",
+  "startedUtc": "2026-10-30T21:01:01.111765+00:00",
+  "scope": "Four real supplied role sessions over owned public HTTPS; one Producer WSS receives Consumer normal messages on its automatic user group without JoinConversation. REST inbox/read representation, not four phones or Flutter/native UI proof.",
+  "sessionProvenance": "Existing separately verified Email OTP sessions; access checked against auth/me, expired access rotated only through the normal refresh endpoint with atomic private-file persistence. No token or freshness fabricated.",
+  "tlsVerificationDisabled": false,
+  "requests": [
+    {
+      "role": "Admin",
+      "method": "GET",
+      "status": 401,
+      "expectedStatus": [
+        200,
+        401
+      ],
+      "latencyMs": 969.0,
+      "routeTemplate": "/api/v1/auth/me"
+    },
+    {
+      "role": "anonymous",
+      "method": "POST",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 515.0,
+      "routeTemplate": "/api/v1/auth/refresh"
+    },
+    {
+      "role": "Admin",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 265.0,
+      "routeTemplate": "/api/v1/auth/me"
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "status": 401,
+      "expectedStatus": [
+        200,
+        401
+      ],
+      "latencyMs": 297.0,
+      "routeTemplate": "/api/v1/auth/me"
+    },
+    {
+      "role": "anonymous",
+      "method": "POST",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 297.0,
+      "routeTemplate": "/api/v1/auth/refresh"
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 328.0,
+      "routeTemplate": "/api/v1/auth/me"
+    },
+    {
+      "role": "Trader",
+      "method": "GET",
+      "status": 401,
+      "expectedStatus": [
+        200,
+        401
+      ],
+      "latencyMs": 297.0,
+      "routeTemplate": "/api/v1/auth/me"
+    },
+    {
+      "role": "anonymous",
+      "method": "POST",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 250.0,
+      "routeTemplate": "/api/v1/auth/refresh"
+    },
+    {
+      "role": "Trader",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 281.0,
+      "routeTemplate": "/api/v1/auth/me"
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "status": 401,
+      "expectedStatus": [
+        200,
+        401
+      ],
+      "latencyMs": 282.0,
+      "routeTemplate": "/api/v1/auth/me"
+    },
+    {
+      "role": "anonymous",
+      "method": "POST",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 297.0,
+      "routeTemplate": "/api/v1/auth/refresh"
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 265.0,
+      "routeTemplate": "/api/v1/auth/me"
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 360.0,
+      "routeTemplate": "/api/v1/articles"
+    },
+    {
+      "role": "Admin",
+      "method": "POST",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 297.0,
+      "routeTemplate": "/api/v1/admin/articles/{id}/review"
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 390.0,
+      "routeTemplate": "/api/v1/articles/{id}/conversations"
+    },
+    {
+      "role": "Trader",
+      "method": "POST",
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 282.0,
+      "routeTemplate": "/api/v1/articles/{id}/conversations"
+    },
+    {
+      "role": "Admin",
+      "method": "POST",
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 296.0,
+      "routeTemplate": "/api/v1/community/groups"
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 313.0,
+      "routeTemplate": "/api/v1/community/groups/{id}/join"
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 547.0,
+      "routeTemplate": "/api/v1/conversations",
+      "queryNames": [
+        "limit"
+      ]
+    },
+    {
+      "role": "Trader",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 250.0,
+      "routeTemplate": "/api/v1/conversations",
+      "queryNames": [
+        "limit"
+      ]
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 344.0,
+      "routeTemplate": "/api/v1/conversations/{id}/messages"
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 234.0,
+      "routeTemplate": "/api/v1/conversations/{id}/messages"
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 265.0,
+      "routeTemplate": "/api/v1/conversations",
+      "queryNames": [
+        "limit"
+      ]
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 578.0,
+      "routeTemplate": "/api/v1/conversations/{id}/messages",
+      "queryNames": [
+        "limit"
+      ]
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 266.0,
+      "routeTemplate": "/api/v1/conversations/{id}/messages"
+    },
+    {
+      "role": "Admin",
+      "method": "POST",
+      "status": 404,
+      "expectedStatus": 404,
+      "latencyMs": 265.0,
+      "routeTemplate": "/api/v1/conversations/{id}/read"
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "status": 400,
+      "expectedStatus": [
+        400,
+        404
+      ],
+      "latencyMs": 235.0,
+      "routeTemplate": "/api/v1/conversations/{id}/read"
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 343.0,
+      "routeTemplate": "/api/v1/conversations/{id}/read"
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 282.0,
+      "routeTemplate": "/api/v1/conversations",
+      "queryNames": [
+        "limit"
+      ]
+    },
+    {
+      "role": "Trader",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 281.0,
+      "routeTemplate": "/api/v1/conversations",
+      "queryNames": [
+        "limit"
+      ]
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 281.0,
+      "routeTemplate": "/api/v1/conversations/{id}/messages",
+      "queryNames": [
+        "limit"
+      ]
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 250.0,
+      "routeTemplate": "/api/v1/conversations/{id}/read"
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 297.0,
+      "routeTemplate": "/api/v1/conversations/{id}/read"
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 297.0,
+      "routeTemplate": "/api/v1/conversations",
+      "queryNames": [
+        "limit"
+      ]
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 516.0,
+      "routeTemplate": "/api/v1/conversations/summary"
+    },
+    {
+      "role": "Trader",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 296.0,
+      "routeTemplate": "/api/v1/conversations",
+      "queryNames": [
+        "limit"
+      ]
+    },
+    {
+      "role": "Admin",
+      "method": "POST",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 235.0,
+      "routeTemplate": "/api/v1/admin/articles/{id}/review"
+    },
+    {
+      "role": "Admin",
+      "method": "POST",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 265.0,
+      "routeTemplate": "/api/v1/community/groups/{id}/close"
+    }
+  ],
+  "checks": [
+    {
+      "name": "four supplied role sessions identify four distinct users",
+      "pass": true,
+      "atMs": 31
+    },
+    {
+      "name": "Admin GET /api/v1/auth/me returns expected status",
+      "pass": true,
+      "atMs": 1000
+    },
+    {
+      "name": "anonymous POST /api/v1/auth/refresh returns expected status",
+      "pass": true,
+      "atMs": 1515
+    },
+    {
+      "name": "rotated pair has opaque token shapes and same real user",
+      "pass": true,
+      "atMs": 1515
+    },
+    {
+      "name": "Admin GET /api/v1/auth/me returns expected status",
+      "pass": true,
+      "atMs": 1796
+    },
+    {
+      "name": "Admin is the current active verified approved supplied role",
+      "pass": true,
+      "atMs": 1796
+    },
+    {
+      "name": "Producer GET /api/v1/auth/me returns expected status",
+      "pass": true,
+      "atMs": 2093
+    },
+    {
+      "name": "anonymous POST /api/v1/auth/refresh returns expected status",
+      "pass": true,
+      "atMs": 2390
+    },
+    {
+      "name": "rotated pair has opaque token shapes and same real user",
+      "pass": true,
+      "atMs": 2390
+    },
+    {
+      "name": "Producer GET /api/v1/auth/me returns expected status",
+      "pass": true,
+      "atMs": 2718
+    },
+    {
+      "name": "Producer is the current active verified approved supplied role",
+      "pass": true,
+      "atMs": 2718
+    },
+    {
+      "name": "Trader GET /api/v1/auth/me returns expected status",
+      "pass": true,
+      "atMs": 3015
+    },
+    {
+      "name": "anonymous POST /api/v1/auth/refresh returns expected status",
+      "pass": true,
+      "atMs": 3265
+    },
+    {
+      "name": "rotated pair has opaque token shapes and same real user",
+      "pass": true,
+      "atMs": 3265
+    },
+    {
+      "name": "Trader GET /api/v1/auth/me returns expected status",
+      "pass": true,
+      "atMs": 3546
+    },
+    {
+      "name": "Trader is the current active verified approved supplied role",
+      "pass": true,
+      "atMs": 3546
+    },
+    {
+      "name": "Consumer GET /api/v1/auth/me returns expected status",
+      "pass": true,
+      "atMs": 3828
+    },
+    {
+      "name": "anonymous POST /api/v1/auth/refresh returns expected status",
+      "pass": true,
+      "atMs": 4125
+    },
+    {
+      "name": "rotated pair has opaque token shapes and same real user",
+      "pass": true,
+      "atMs": 4125
+    },
+    {
+      "name": "Consumer GET /api/v1/auth/me returns expected status",
+      "pass": true,
+      "atMs": 4390
+    },
+    {
+      "name": "Consumer is the current active verified approved supplied role",
+      "pass": true,
+      "atMs": 4390
+    },
+    {
+      "name": "Consumer POST /api/v1/articles returns expected status",
+      "pass": true,
+      "atMs": 4750
+    },
+    {
+      "name": "new Consumer article is in Community and AwaitingReview",
+      "pass": true,
+      "atMs": 4765
+    },
+    {
+      "name": "Admin POST /api/v1/admin/articles/{id}/review returns expected status",
+      "pass": true,
+      "atMs": 5062
+    },
+    {
+      "name": "Producer POST /api/v1/articles/{id}/conversations returns expected status",
+      "pass": true,
+      "atMs": 5468
+    },
+    {
+      "name": "Trader POST /api/v1/articles/{id}/conversations returns expected status",
+      "pass": true,
+      "atMs": 5750
+    },
+    {
+      "name": "Admin POST /api/v1/community/groups returns expected status",
+      "pass": true,
+      "atMs": 6046
+    },
+    {
+      "name": "Producer POST /api/v1/community/groups/{id}/join returns expected status",
+      "pass": true,
+      "atMs": 6359
+    },
+    {
+      "name": "Producer GET /api/v1/conversations returns expected status",
+      "pass": true,
+      "atMs": 6906
+    },
+    {
+      "name": "inbox summary has nonnegative unreadTotal",
+      "pass": true,
+      "atMs": 6906
+    },
+    {
+      "name": "inbox summary has nonnegative unreadConversations",
+      "pass": true,
+      "atMs": 6906
+    },
+    {
+      "name": "newer control conversation initially sorts above the older Direct",
+      "pass": true,
+      "atMs": 6906
+    },
+    {
+      "name": "Trader GET /api/v1/conversations returns expected status",
+      "pass": true,
+      "atMs": 7156
+    },
+    {
+      "name": "inbox summary has nonnegative unreadTotal",
+      "pass": true,
+      "atMs": 7156
+    },
+    {
+      "name": "inbox summary has nonnegative unreadConversations",
+      "pass": true,
+      "atMs": 7156
+    },
+    {
+      "name": "new Trader Direct initially has no unread messages",
+      "pass": true,
+      "atMs": 7156
+    },
+    {
+      "name": "Producer actual WSS handshake",
+      "pass": true,
+      "atMs": 7796
+    },
+    {
+      "name": "Consumer POST /api/v1/conversations/{id}/messages returns expected status",
+      "pass": true,
+      "atMs": 8140
+    },
+    {
+      "name": "actual persisted message has Consumer sender and requested body",
+      "pass": true,
+      "atMs": 8156
+    },
+    {
+      "name": "Consumer POST /api/v1/conversations/{id}/messages returns expected status",
+      "pass": true,
+      "atMs": 8390
+    },
+    {
+      "name": "actual persisted message has Consumer sender and requested body",
+      "pass": true,
+      "atMs": 8390
+    },
+    {
+      "name": "Producer receives the exact normal message without joining conversation",
+      "pass": true,
+      "atMs": 10078
+    },
+    {
+      "name": "Producer GET /api/v1/conversations returns expected status",
+      "pass": true,
+      "atMs": 10343
+    },
+    {
+      "name": "inbox summary has nonnegative unreadTotal",
+      "pass": true,
+      "atMs": 10343
+    },
+    {
+      "name": "inbox summary has nonnegative unreadConversations",
+      "pass": true,
+      "atMs": 10343
+    },
+    {
+      "name": "new incoming message moves the older Direct to receiver inbox top",
+      "pass": true,
+      "atMs": 10343
+    },
+    {
+      "name": "receiver inbox identifies the exact Consumer peer",
+      "pass": true,
+      "atMs": 10343
+    },
+    {
+      "name": "normal inbox preview matches real latest message and sender",
+      "pass": true,
+      "atMs": 10343
+    },
+    {
+      "name": "normal inbox has current activity and correct unread count",
+      "pass": true,
+      "atMs": 10343
+    },
+    {
+      "name": "Consumer Direct is normal with no secret preview or linked secret room",
+      "pass": true,
+      "atMs": 10343
+    },
+    {
+      "name": "receiver summary badge increments by one incoming message",
+      "pass": true,
+      "atMs": 10343
+    },
+    {
+      "name": "Producer GET /api/v1/conversations/{id}/messages returns expected status",
+      "pass": true,
+      "atMs": 10921
+    },
+    {
+      "name": "receiver fetches the exact first displayed message",
+      "pass": true,
+      "atMs": 10921
+    },
+    {
+      "name": "Consumer POST /api/v1/conversations/{id}/messages returns expected status",
+      "pass": true,
+      "atMs": 11187
+    },
+    {
+      "name": "actual persisted message has Consumer sender and requested body",
+      "pass": true,
+      "atMs": 11187
+    },
+    {
+      "name": "Producer receives the exact normal message without joining conversation",
+      "pass": true,
+      "atMs": 12078
+    },
+    {
+      "name": "Admin POST /api/v1/conversations/{id}/read returns expected status",
+      "pass": true,
+      "atMs": 12343
+    },
+    {
+      "name": "Producer POST /api/v1/conversations/{id}/read returns expected status",
+      "pass": true,
+      "atMs": 12578
+    },
+    {
+      "name": "outsider read and wrong-conversation cursor are rejected",
+      "pass": true,
+      "atMs": 12578
+    },
+    {
+      "name": "Producer POST /api/v1/conversations/{id}/read returns expected status",
+      "pass": true,
+      "atMs": 12921
+    },
+    {
+      "name": "exact displayed read cursor returns the expected remaining unread",
+      "pass": true,
+      "atMs": 12921
+    },
+    {
+      "name": "Producer GET /api/v1/conversations returns expected status",
+      "pass": true,
+      "atMs": 13203
+    },
+    {
+      "name": "inbox summary has nonnegative unreadTotal",
+      "pass": true,
+      "atMs": 13203
+    },
+    {
+      "name": "inbox summary has nonnegative unreadConversations",
+      "pass": true,
+      "atMs": 13203
+    },
+    {
+      "name": "receiver inbox identifies the exact Consumer peer",
+      "pass": true,
+      "atMs": 13203
+    },
+    {
+      "name": "normal inbox preview matches real latest message and sender",
+      "pass": true,
+      "atMs": 13203
+    },
+    {
+      "name": "normal inbox has current activity and correct unread count",
+      "pass": true,
+      "atMs": 13203
+    },
+    {
+      "name": "Consumer Direct is normal with no secret preview or linked secret room",
+      "pass": true,
+      "atMs": 13203
+    },
+    {
+      "name": "acknowledging displayed first message does not clear later message",
+      "pass": true,
+      "atMs": 13203
+    },
+    {
+      "name": "Trader GET /api/v1/conversations returns expected status",
+      "pass": true,
+      "atMs": 13484
+    },
+    {
+      "name": "inbox summary has nonnegative unreadTotal",
+      "pass": true,
+      "atMs": 13484
+    },
+    {
+      "name": "inbox summary has nonnegative unreadConversations",
+      "pass": true,
+      "atMs": 13484
+    },
+    {
+      "name": "receiver inbox identifies the exact Consumer peer",
+      "pass": true,
+      "atMs": 13484
+    },
+    {
+      "name": "normal inbox preview matches real latest message and sender",
+      "pass": true,
+      "atMs": 13484
+    },
+    {
+      "name": "normal inbox has current activity and correct unread count",
+      "pass": true,
+      "atMs": 13484
+    },
+    {
+      "name": "Consumer Direct is normal with no secret preview or linked secret room",
+      "pass": true,
+      "atMs": 13484
+    },
+    {
+      "name": "Producer read cursor does not clear another receiver unread",
+      "pass": true,
+      "atMs": 13484
+    },
+    {
+      "name": "Producer GET /api/v1/conversations/{id}/messages returns expected status",
+      "pass": true,
+      "atMs": 13765
+    },
+    {
+      "name": "receiver fetches the exact second displayed message",
+      "pass": true,
+      "atMs": 13765
+    },
+    {
+      "name": "Producer POST /api/v1/conversations/{id}/read returns expected status",
+      "pass": true,
+      "atMs": 14015
+    },
+    {
+      "name": "exact displayed read cursor returns the expected remaining unread",
+      "pass": true,
+      "atMs": 14015
+    },
+    {
+      "name": "Producer POST /api/v1/conversations/{id}/read returns expected status",
+      "pass": true,
+      "atMs": 14312
+    },
+    {
+      "name": "exact displayed read cursor returns the expected remaining unread",
+      "pass": true,
+      "atMs": 14312
+    },
+    {
+      "name": "Producer GET /api/v1/conversations returns expected status",
+      "pass": true,
+      "atMs": 14609
+    },
+    {
+      "name": "inbox summary has nonnegative unreadTotal",
+      "pass": true,
+      "atMs": 14609
+    },
+    {
+      "name": "inbox summary has nonnegative unreadConversations",
+      "pass": true,
+      "atMs": 14609
+    },
+    {
+      "name": "receiver inbox identifies the exact Consumer peer",
+      "pass": true,
+      "atMs": 14609
+    },
+    {
+      "name": "normal inbox preview matches real latest message and sender",
+      "pass": true,
+      "atMs": 14609
+    },
+    {
+      "name": "normal inbox has current activity and correct unread count",
+      "pass": true,
+      "atMs": 14609
+    },
+    {
+      "name": "Consumer Direct is normal with no secret preview or linked secret room",
+      "pass": true,
+      "atMs": 14609
+    },
+    {
+      "name": "final receiver badge returns to its original baseline",
+      "pass": true,
+      "atMs": 14609
+    },
+    {
+      "name": "Producer GET /api/v1/conversations/summary returns expected status",
+      "pass": true,
+      "atMs": 15125
+    },
+    {
+      "name": "standalone unread summary agrees with inbox summary",
+      "pass": true,
+      "atMs": 15125
+    },
+    {
+      "name": "Trader GET /api/v1/conversations returns expected status",
+      "pass": true,
+      "atMs": 15421
+    },
+    {
+      "name": "inbox summary has nonnegative unreadTotal",
+      "pass": true,
+      "atMs": 15421
+    },
+    {
+      "name": "inbox summary has nonnegative unreadConversations",
+      "pass": true,
+      "atMs": 15421
+    },
+    {
+      "name": "Trader unread remains pending after all Producer acknowledgements",
+      "pass": true,
+      "atMs": 15421
+    },
+    {
+      "name": "Admin POST /api/v1/admin/articles/{id}/review returns expected status",
+      "pass": true,
+      "atMs": 15656
+    },
+    {
+      "name": "Admin POST /api/v1/community/groups/{id}/close returns expected status",
+      "pass": true,
+      "atMs": 15921
+    }
+  ],
+  "phases": [],
+  "ordinaryImagesAreEndToEndEncrypted": false,
+  "secretCryptoAcceptance": "NOT_RUN: no secret endpoint, ciphertext, key, device or secret read cursor is mutated. API unit tests cover separate metadata/ACL behavior; this driver supplies no cryptographic proof.",
+  "aiInference": "NOT_RUN: this driver calls no AI endpoints for any role.",
+  "requestBudget": 50,
+  "intendedCleanup": "On PASS only the owned QA article is Paused and owned control group Closed. New Direct/messages/history remain labeled seed; Trader unread is deliberately not acknowledged. Legacy human records/read cursors are never mutated.",
+  "ordinaryPhotoAcceptance": "NOT_RUN: focus is text delivery, inbox ordering and exact read cursors; ordinary image ACL has a separate acceptance helper.",
+  "wssLibraryVersion": "16.0",
+  "conversationJoinInvocations": 0,
+  "observedReadState": {
+    "producerNewDirectUnread": [
+      0,
+      1,
+      1,
+      0
+    ],
+    "traderNewDirectUnreadAfterProducerRead": 1,
+    "producerGlobalUnreadBaseline": 77,
+    "producerGlobalUnreadAfter": 77
+  },
+  "messageCreatedEventsObservedWithoutJoin": 2,
+  "httpRequests": 38,
+  "sessionRotations": 4,
+  "ownedFixtureCounts": {
+    "articles": 1,
+    "producerDirect": 1,
+    "traderDirect": 1,
+    "controlGroups": 1,
+    "normalMessages": 3
+  },
+  "wssClients": {
+    "Producer": {
+      "bufferedFrames": 7,
+      "receiverFailureType": null,
+      "backgroundReceiverStarted": true,
+      "joinConversationInvocations": 0
+    }
+  },
+  "providedSessionsRetained": true,
+  "finishedUtc": "2026-10-30T21:01:17.128268+00:00",
+  "elapsedSeconds": 16.015,
+  "receiptMetadataCorrection": "Root clarified inherited provenance text; original request observations, result and sessionRotations retained unchanged."
+}

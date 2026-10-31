@@ -219,7 +219,7 @@ public sealed class PostWorkflowTests(ApiFixture fixture)
     public async Task A_departed_group_member_is_excluded_from_message_dispatch_even_with_stale_hub_group()
     {
         using var owner = fixture.CreateClient(); using var member = fixture.CreateClient();
-        await NewAccount(owner, "Producer"); await NewAccount(member, "Consumer");
+        await NewAccount(owner, "Admin"); await NewAccount(member, "Consumer");
         using var created = await owner.PostAsJsonAsync("/api/v1/community/groups", new { title = "Fresh membership dispatch", region = "Đồng Tháp", productCode = "mango" });
         Assert.Equal(HttpStatusCode.Created, created.StatusCode); var id = (await created.Content.ReadFromJsonAsync<JsonElement>()).GetProperty("id").GetGuid();
         using var joined = await member.PostAsJsonAsync($"/api/v1/community/groups/{id}/join", new { }); Assert.True(joined.IsSuccessStatusCode);
@@ -239,13 +239,15 @@ public sealed class PostWorkflowTests(ApiFixture fixture)
     [Fact]
     public async Task Authorized_group_messages_and_hub_events_identify_two_senders_without_private_profile_fields()
     {
-        using var producer = fixture.CreateClient(); using var trader = fixture.CreateClient(); using var outsider = fixture.CreateClient();
+        using var producer = fixture.CreateClient(); using var trader = fixture.CreateClient(); using var outsider = fixture.CreateClient(); using var groupAdmin = fixture.CreateClient();
         var producerId = await NewAccount(producer, "Producer", displayName: "Producer sender");
         var traderId = await NewAccount(trader, "Trader", displayName: "Trader sender");
         await NewAccount(outsider, "Consumer");
-        using var created = await producer.PostAsJsonAsync("/api/v1/community/groups", new { title = "Identifiable group speakers", region = "Đồng Tháp", productCode = "mango" });
+        await NewAccount(groupAdmin, "Admin");
+        using var created = await groupAdmin.PostAsJsonAsync("/api/v1/community/groups", new { title = "Identifiable group speakers", region = "Đồng Tháp", productCode = "mango" });
         Assert.Equal(HttpStatusCode.Created, created.StatusCode);
         var conversationId = (await created.Content.ReadFromJsonAsync<JsonElement>()).GetProperty("id").GetGuid();
+        using var producerJoined = await producer.PostAsJsonAsync($"/api/v1/community/groups/{conversationId}/join", new { }); Assert.True(producerJoined.IsSuccessStatusCode);
         using var joined = await trader.PostAsJsonAsync($"/api/v1/community/groups/{conversationId}/join", new { }); Assert.True(joined.IsSuccessStatusCode);
         using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(15)); using var hub = await OpenHub(producer, timeout.Token);
         var route = $"/api/v1/conversations/{conversationId}/messages";

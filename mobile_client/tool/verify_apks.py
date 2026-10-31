@@ -18,6 +18,7 @@ legal = {
     'libsodium-1.0.22-LICENSE.txt':'508a76d186356c0dd807a670ef510964f8724557024796a2c426c6c0e19ab683',
     'crypto-3.0.7-LICENSE.txt':'ad6a71997da90924b2cfb1fb47ec46537f70faf469efe016168794ae45ed6888',
     'NOTICE.txt':'487935c96f7691ce4cc13d244f46bc26db31541c39d63daa15eb0227a639a757',
+    'androidx-camera-1.6.2-LICENSE.txt':'809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0',
 }
 for abi in ('arm64-v8a', 'armeabi-v7a', 'x86_64'):
     apk = OUT / f'app-{abi}-release.apk'
@@ -29,10 +30,12 @@ for abi in ('arm64-v8a', 'armeabi-v7a', 'x86_64'):
     perms = [line for line in badge.splitlines() if line.startswith('uses-permission:')]
     # AndroidX Core adds the app's own signature-only receiver permission.
     assert perms == ["uses-permission: name='android.permission.INTERNET'",
+        "uses-permission: name='android.permission.CAMERA'",
         "uses-permission: name='android.permission.USE_BIOMETRIC'",
         "uses-permission: name='android.permission.USE_FINGERPRINT'",
         "uses-permission: name='android.permission.REQUEST_INSTALL_PACKAGES'",
-        "uses-permission: name='vn.mangodemo.mango_offline.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION'"]
+        "uses-permission: name='vn.mangodemo.mango_offline.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION'",
+        "uses-permission: name='android.permission.ACCESS_NETWORK_STATE'"]
     manifest = subprocess.check_output([str(SDK/'aapt.exe'),'dump','xmltree',str(apk),'AndroidManifest.xml'], text=True, encoding='utf8')
     assert 'usesCleartextTraffic' in manifest and 'allowBackup' in manifest
     assert 'protectionLevel' in manifest and '(type 0x11)0x2' in manifest
@@ -46,8 +49,14 @@ for abi in ('arm64-v8a', 'armeabi-v7a', 'x86_64'):
         names = z.namelist()
         assert not any(n.lower().endswith(('.onnx','.tflite','.pt','.pth','.ncnn','.param')) for n in names)
         libs = [n for n in names if n.startswith('lib/') and n.endswith('.so')]
-        assert sorted(n.split('/')[-1] for n in libs) == ['libapp.so','libflutter.so','libsodium.so'], libs
+        assert sorted(n.split('/')[-1] for n in libs) == ['libapp.so','libflutter.so','libimage_processing_util_jni.so','libsodium.so','libsurface_util_jni.so'], libs
         assert all(n.startswith(f'lib/{abi}/') for n in libs)
+        camera_libs={}
+        for filename in ('libimage_processing_util_jni.so','libsurface_util_jni.so'):
+            camera=z.read(f'lib/{abi}/{filename}')
+            assert camera[:6]==b'\x7fELF'+bytes([1 if abi=='armeabi-v7a' else 2,1]), 'Wrong CameraX ELF class'
+            assert struct.unpack_from('<H',camera,18)[0]=={'armeabi-v7a':40,'arm64-v8a':183,'x86_64':62}[abi], 'Wrong CameraX ABI'
+            camera_libs[filename]=hashlib.sha256(camera).hexdigest()
         sodium=z.read(f'lib/{abi}/libsodium.so')
         assert sodium[:6]==b'\x7fELF'+bytes([1 if abi=='armeabi-v7a' else 2,1]), 'Wrong ELF class or byte order'
         assert struct.unpack_from('<H',sodium,18)[0]=={'armeabi-v7a':40,'arm64-v8a':183,'x86_64':62}[abi], 'Wrong crypto ABI'
@@ -59,7 +68,8 @@ for abi in ('arm64-v8a', 'armeabi-v7a', 'x86_64'):
         assert 'classes.dex' in names and 'assets/flutter_assets/AssetManifest.bin' in names
     receipt.append({'abi':abi,'path':str(apk),'bytes':apk.stat().st_size,
         'sha256':hashlib.sha256(apk.read_bytes()).hexdigest(),'version':f'{args.version_name}+{args.version_code}',
-        'v2Signature':True,'signerSha256':fingerprint,'platformPermissions':['INTERNET','USE_BIOMETRIC','USE_FINGERPRINT','REQUEST_INSTALL_PACKAGES'],
+        'v2Signature':True,'signerSha256':fingerprint,'platformPermissions':['INTERNET','CAMERA','USE_BIOMETRIC','USE_FINGERPRINT','REQUEST_INSTALL_PACKAGES','ACCESS_NETWORK_STATE'],
+        'cameraX':{'version':'1.6.2','nativeLibraries':camera_libs,'elfAbiVerified':True},
         'appSignatureOnlyReceiverPermission':True,
         'noAiRuntimeOrWeights':True,'cleartextDisabled':True,'backupDisabled':True,
         'e2eeLibrary':{'name':'libsodium.so','upstreamVersion':'1.0.22-stable','sha256':hashlib.sha256(sodium).hexdigest(),'elfAbiVerified':True,'nativeAssetBindingVerified':True},

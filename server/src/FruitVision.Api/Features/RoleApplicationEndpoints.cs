@@ -4,6 +4,7 @@ using FruitVision.Api.Contracts;
 using FruitVision.Api.Data;
 using FruitVision.Api.Infrastructure;
 using FruitVision.Api.Realtime;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 namespace FruitVision.Api.Features;
@@ -57,6 +58,7 @@ public static class RoleApplicationEndpoints
         await db.SaveChangesAsync(ct);
         var view = await View(db, application, ct);
         await tx.CommitAsync(ct);
+        await Notify(http, application);
         return Results.Created($"/api/v1/role-applications/{application.Id}", view);
     }
 
@@ -65,18 +67,26 @@ public static class RoleApplicationEndpoints
         if (!Input.Page(limit, out var size)) return Input.Invalid("limit phải từ 1 đến 50.");
         if (status is not null && status is not ("Draft" or "Submitted" or "NeedsInformation" or "Approved" or "Rejected")) return Input.Invalid("Trạng thái hồ sơ không hợp lệ.");
         var query = db.Set<RoleApplication>().AsNoTracking();
+        var orderBySubmission = !userId.HasValue;
         if (userId.HasValue) query = query.Where(a => a.UserId == userId.Value);
         if (status is not null) query = query.Where(a => a.Status == status);
         if (after.HasValue)
         {
             var anchor = await query.SingleOrDefaultAsync(a => a.Id == after.Value, ct);
             if (anchor is null) return Input.Invalid("Mốc phân trang không hợp lệ.");
-            query = query.Where(a => a.CreatedAt < anchor.CreatedAt || (a.CreatedAt == anchor.CreatedAt && a.Id.CompareTo(anchor.Id) < 0));
+            if (orderBySubmission)
+            {
+                var time = anchor.SubmittedAt ?? anchor.CreatedAt;
+                query = query.Where(a => (a.SubmittedAt ?? a.CreatedAt) < time || ((a.SubmittedAt ?? a.CreatedAt) == time && a.Id.CompareTo(anchor.Id) < 0));
+            }
+            else query = query.Where(a => a.CreatedAt < anchor.CreatedAt || (a.CreatedAt == anchor.CreatedAt && a.Id.CompareTo(anchor.Id) < 0));
         }
-        var rows = await query.OrderByDescending(a => a.CreatedAt).ThenByDescending(a => a.Id).Take(size + 1).ToListAsync(ct);
+        var rows = await (orderBySubmission ? query.OrderByDescending(a => a.SubmittedAt ?? a.CreatedAt).ThenByDescending(a => a.Id) : query.OrderByDescending(a => a.CreatedAt).ThenByDescending(a => a.Id)).Take(size + 1).ToListAsync(ct);
         var ids = rows.Take(size).Select(a => a.Id).ToArray();
+        var ownerIds = rows.Take(size).Select(a => a.UserId).Distinct().ToArray();
+        var applicants = await db.Users.AsNoTracking().Where(u => ownerIds.Contains(u.Id)).ToDictionaryAsync(u => u.Id, ct);
         var evidence = await db.Set<RoleApplicationEvidence>().AsNoTracking().Where(e => ids.Contains(e.ApplicationId)).OrderBy(e => e.CreatedAt).ThenBy(e => e.Id).ToListAsync(ct);
-        return Results.Ok(new { items = rows.Take(size).Select(a => ToView(a, evidence.Where(e => e.ApplicationId == a.Id))), next = rows.Count > size ? rows[size - 1].Id : (Guid?)null });
+        return Results.Ok(new { items = rows.Take(size).Select(a => ToView(a, evidence.Where(e => e.ApplicationId == a.Id), applicants[a.UserId])), next = rows.Count > size ? rows[size - 1].Id : (Guid?)null });
     }
 
     private static async Task<IResult> Detail(Guid id, HttpContext http, AppDbContext db, CancellationToken ct)
@@ -110,6 +120,7 @@ public static class RoleApplicationEndpoints
         await db.SaveChangesAsync(ct);
         var view = await View(db, application, ct);
         await tx.CommitAsync(ct);
+        await Notify(http, application);
         return Results.Ok(view);
     }
 
@@ -153,6 +164,7 @@ public static class RoleApplicationEndpoints
         await db.SaveChangesAsync(ct);
         var view = await View(db, application, ct);
         await tx.CommitAsync(ct);
+        await Notify(http, application);
         return Results.Ok(view);
     }
 
@@ -188,6 +200,7 @@ public static class RoleApplicationEndpoints
             await db.SaveChangesAsync(ct);
             var view = await View(db, application, ct);
             await tx.CommitAsync(ct); committed = true;
+            await Notify(http, application);
             return Results.Created($"/api/v1/role-applications/{id}/evidence/{evidence.Id}", view);
         }
         catch (RoleEvidenceException exception) { return Results.Problem(statusCode: exception.Status, title: exception.Message); }
@@ -211,6 +224,7 @@ public static class RoleApplicationEndpoints
         var view = await View(db, application, ct);
         await tx.CommitAsync(ct);
         storage.Remove(evidence);
+        await Notify(http, application);
         return Results.Ok(view);
     }
 
@@ -251,13 +265,30 @@ public static class RoleApplicationEndpoints
         await db.SaveChangesAsync(ct);
         var view = await View(db, application, ct);
         await tx.CommitAsync(ct);
+        await Notify(http, application);
         if (request.Status == "Approved") connections.AbortUser(subject.Value);
         return Results.Ok(view);
     }
 
     private static async Task<RoleApplicationView> View(AppDbContext db, RoleApplication application, CancellationToken ct) =>
-        ToView(application, await db.Set<RoleApplicationEvidence>().AsNoTracking().Where(e => e.ApplicationId == application.Id).OrderBy(e => e.CreatedAt).ThenBy(e => e.Id).ToListAsync(ct));
-    private static RoleApplicationView ToView(RoleApplication a, IEnumerable<RoleApplicationEvidence> evidence) => new(a.Id, a.UserId, a.RequestedRole.ToString(), a.Status, a.Revision,
+        ToView(application, await db.Set<RoleApplicationEvidence>().AsNoTracking().Where(e => e.ApplicationId == application.Id).OrderBy(e => e.CreatedAt).ThenBy(e => e.Id).ToListAsync(ct),
+            await db.Users.AsNoTracking().SingleAsync(u => u.Id == application.UserId, ct));
+    private static RoleApplicationView ToView(RoleApplication a, IEnumerable<RoleApplicationEvidence> evidence, AppUser applicant) => new(a.Id, a.UserId, a.RequestedRole.ToString(), a.Status, a.Revision,
         a.OrganisationName, a.Address, a.CountryCode, a.ProvinceCode, a.Region, a.Phone, a.Products, a.CultivatedAreaHa, a.TaxCode, a.BusinessRegistrationNumber, a.CreatedAt, a.UpdatedAt, a.SubmittedAt, a.ReviewedAt, a.ReviewReason,
-        evidence.Select(e => new RoleApplicationEvidenceView(e.Id, e.Category, e.ContentType, e.SizeBytes, e.CreatedAt, $"/api/v1/role-applications/{a.Id}/evidence/{e.Id}")).ToArray());
+        evidence.Select(e => new RoleApplicationEvidenceView(e.Id, e.Category, e.ContentType, e.SizeBytes, e.CreatedAt, $"/api/v1/role-applications/{a.Id}/evidence/{e.Id}")).ToArray(),
+        new(applicant.Id, applicant.DisplayName, applicant.Role.ToString()));
+
+    private static async Task Notify(HttpContext http, RoleApplication application)
+    {
+        try
+        {
+            await http.RequestServices.GetRequiredService<IHubContext<FruitHub>>().Clients.Groups(new[] { $"user:{application.UserId}", "role:Admin" })
+                .SendAsync("RoleApplicationChanged", new { eventId = Guid.NewGuid(), id = application.Id, status = application.Status, revision = application.Revision });
+        }
+        catch (Exception exception)
+        {
+            http.RequestServices.GetRequiredService<ILoggerFactory>().CreateLogger("RoleApplications")
+                .LogWarning("Role application {ApplicationId} notification was not delivered ({FailureType}).", application.Id, exception.GetType().Name);
+        }
+    }
 }

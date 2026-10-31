@@ -60,7 +60,7 @@ class _CommunityPageState extends State<CommunityPage> {
           api: widget.controller.api,
           path: '/community/groups?$query',
           targets: const {'CommunityChanged', 'ConversationCreated'},
-          empty: 'Chưa có nhóm phù hợp. Thử bộ lọc khác hoặc tạo nhóm cho khu vực của bạn.',
+          empty: 'Chưa có nhóm phù hợp. Thử bộ lọc khác hoặc chờ quản trị mở nhóm cho cộng đồng.',
           header: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -79,19 +79,20 @@ class _CommunityPageState extends State<CommunityPage> {
                 ),
                 const SizedBox(height: 12),
               ],
-              FilledButton.icon(
-                onPressed: () async {
-                  await Navigator.of(context).push(
-                    MaterialPageRoute<void>(
-                      builder: (_) =>
-                          GroupCreatePage(controller: widget.controller),
-                    ),
-                  );
-                  if (mounted) _list.currentState?.reload();
-                },
-                icon: const Icon(Icons.group_add_outlined),
-                label: const Text('Tạo nhóm'),
-              ),
+              if (widget.controller.user!.isAdmin)
+                FilledButton.icon(
+                  onPressed: () async {
+                    await Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) =>
+                            GroupCreatePage(controller: widget.controller),
+                      ),
+                    );
+                    if (mounted) _list.currentState?.reload();
+                  },
+                  icon: const Icon(Icons.group_add_outlined),
+                  label: const Text('Tạo nhóm'),
+                ),
               const SizedBox(height: 16),
               const Text(
                 'Chọn quốc gia và tỉnh cho phạm vi nhóm. Đây là phạm vi do nhóm khai báo, không phải xác minh địa chỉ kinh doanh.',
@@ -300,6 +301,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> {
   }
 
   Future<void> _close() async {
+    if (widget.controller.user?.isAdmin != true) return;
     final confirm = await showDialog<bool>(
       context: context,
       builder: (dialogContext) => AlertDialog(
@@ -408,11 +410,11 @@ class _GroupDetailPageState extends State<GroupDetailPage> {
                     const Padding(
                       padding: EdgeInsets.only(top: 8),
                       child: Text(
-                        'Chủ nhóm cần đóng nhóm trước khi rời.',
+                        'Nhóm cần được quản trị đóng trước khi chủ nhóm rời.',
                         style: TextStyle(fontSize: 12),
                       ),
                     ),
-                  if (open && (owner || widget.controller.user!.isAdmin)) ...[
+                  if (open && widget.controller.user!.isAdmin) ...[
                     const SizedBox(height: 16),
                     TextButton.icon(
                       onPressed: _busy ? null : _close,
@@ -452,7 +454,7 @@ class _GroupCreatePageState extends State<GroupCreatePage> {
   @override
   void initState() {
     super.initState();
-    _catalog();
+    if (widget.controller.user?.isAdmin == true) _catalog();
   }
 
   @override
@@ -476,6 +478,7 @@ class _GroupCreatePageState extends State<GroupCreatePage> {
   }
 
   Future<void> _create() async {
+    if (widget.controller.user?.isAdmin != true) return;
     if (_busy || !_form.currentState!.validate() || _location == null) return;
     setState(() {
       _busy = true;
@@ -511,86 +514,97 @@ class _GroupCreatePageState extends State<GroupCreatePage> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('Tạo nhóm')),
-    body: SafeArea(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Form(
-          key: _form,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SectionTitle(
-                'Nhóm cộng đồng mới',
-                subtitle:
-                    'Kết nối tài khoản đã duyệt theo khu vực hoặc nông sản.',
+  Widget build(BuildContext context) => widget.controller.user?.isAdmin != true
+      ? Scaffold(
+          appBar: AppBar(title: const Text('Nhóm cộng đồng')),
+          body: const SafeArea(
+            child: Padding(
+              padding: EdgeInsets.all(24),
+              child: Text(
+                'Quản trị tạo nhóm. Bạn có thể tham gia và trò chuyện trong nhóm đang mở.',
               ),
-              if (_catalogError != null) ...[
-                MessageBox(
-                  'Chưa tải được danh mục nông sản: $_catalogError. Bạn vẫn có thể tạo nhóm không giới hạn nông sản.',
-                  child: TextButton(
-                    onPressed: _catalog,
-                    child: const Text('Tải lại danh mục'),
-                  ),
-                ),
-                const SizedBox(height: 12),
-              ],
-              if (_error != null) ...[
-                MessageBox(_error!, error: true),
-                const SizedBox(height: 16),
-              ],
-              TextFormField(
-                controller: _title,
-                enabled: !_busy,
-                maxLength: 160,
-                decoration: const InputDecoration(labelText: 'Tên nhóm'),
-                validator: (value) => requiredText(value, min: 5),
-              ),
-              const SizedBox(height: 16),
-              const SectionTitle(
-                'Phạm vi nhóm',
-                subtitle: 'Phạm vi do người tạo khai báo, không phải địa chỉ chi nhánh đã được xác minh.',
-              ),
-              CountryProvincePicker(
-                api: widget.controller.api,
-                enabled: !_busy,
-                onChanged: (location) => _location = location,
-              ),
-              const SizedBox(height: 16),
-              DropdownButtonFormField<String>(
-                initialValue: 'all',
-                isExpanded: true,
-                decoration: const InputDecoration(
-                  labelText: 'Nông sản (tùy chọn)',
-                ),
-                items: [
-                  const DropdownMenuItem(
-                    value: 'all',
-                    child: Text('Không giới hạn nông sản'),
-                  ),
-                  ..._products.map(
-                    (product) => DropdownMenuItem(
-                      value: value(product, 'code'),
-                      child: Text(value(product, 'name')),
-                    ),
-                  ),
-                ],
-                onChanged: _busy
-                    ? null
-                    : (value) => setState(
-                        () => _product = value == 'all' ? null : value,
-                      ),
-              ),
-              const SizedBox(height: 24),
-              FilledButton(
-                onPressed: _busy ? null : _create,
-                child: Text(_busy ? 'Đang tạo…' : 'Tạo nhóm cộng đồng'),
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
-    ),
-  );
+        )
+      : Scaffold(
+          appBar: AppBar(title: const Text('Tạo nhóm')),
+          body: SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Form(
+                key: _form,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const SectionTitle(
+                      'Nhóm cộng đồng mới',
+                      subtitle: 'Kết nối tài khoản đã duyệt theo khu vực hoặc nông sản.',
+                    ),
+                    if (_catalogError != null) ...[
+                      MessageBox(
+                        'Chưa tải được danh mục nông sản: $_catalogError. Bạn vẫn có thể tạo nhóm không giới hạn nông sản.',
+                        child: TextButton(
+                          onPressed: _catalog,
+                          child: const Text('Tải lại danh mục'),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                    ],
+                    if (_error != null) ...[
+                      MessageBox(_error!, error: true),
+                      const SizedBox(height: 16),
+                    ],
+                    TextFormField(
+                      controller: _title,
+                      enabled: !_busy,
+                      maxLength: 160,
+                      decoration: const InputDecoration(labelText: 'Tên nhóm'),
+                      validator: (value) => requiredText(value, min: 5),
+                    ),
+                    const SizedBox(height: 16),
+                    const SectionTitle(
+                      'Phạm vi nhóm',
+                      subtitle: 'Phạm vi do người tạo khai báo, không phải địa chỉ chi nhánh đã được xác minh.',
+                    ),
+                    CountryProvincePicker(
+                      api: widget.controller.api,
+                      enabled: !_busy,
+                      onChanged: (location) => _location = location,
+                    ),
+                    const SizedBox(height: 16),
+                    DropdownButtonFormField<String>(
+                      initialValue: 'all',
+                      isExpanded: true,
+                      decoration: const InputDecoration(
+                        labelText: 'Nông sản (tùy chọn)',
+                      ),
+                      items: [
+                        const DropdownMenuItem(
+                          value: 'all',
+                          child: Text('Không giới hạn nông sản'),
+                        ),
+                        ..._products.map(
+                          (product) => DropdownMenuItem(
+                            value: value(product, 'code'),
+                            child: Text(value(product, 'name')),
+                          ),
+                        ),
+                      ],
+                      onChanged: _busy
+                          ? null
+                          : (value) => setState(
+                              () => _product = value == 'all' ? null : value,
+                            ),
+                    ),
+                    const SizedBox(height: 24),
+                    FilledButton(
+                      onPressed: _busy ? null : _create,
+                      child: Text(_busy ? 'Đang tạo…' : 'Tạo nhóm cộng đồng'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
 }

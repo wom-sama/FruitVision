@@ -79,7 +79,7 @@ class _PhotoViewerPageState extends State<PhotoViewerPage>
             ? const Padding(
                 padding: EdgeInsets.all(24),
                 child: Text(
-                  'Ảnh bí mật đã đóng. Quay lại phòng và xác minh khóa để mở lại.',
+                  'Ảnh mã hóa đã đóng. Quay lại hội thoại và xác minh khóa để mở lại.',
                 ),
               )
             : InteractiveViewer(

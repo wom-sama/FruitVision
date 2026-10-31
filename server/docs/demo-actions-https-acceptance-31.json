@@ -1,0 +1,2137 @@
+{
+  "status": "PASS_AUTHORIZED_HTTP_SCOPE_WITH_EXCLUSIONS",
+  "startedUtc": "2026-10-30T21:48:28.468490+00:00",
+  "scope": "Fresh owned HTTPS API actions mapped to the 2.6 demo checklist. No native, four-phone, WSS, AI, crypto or public Admin promotion acceptance.",
+  "sessionProvenance": "Existing separately verified Email OTP sessions; access is checked against auth/me and an expired access token may rotate through the normal refresh endpoint with exclusive atomic private-file persistence. No token or authentication freshness is fabricated.",
+  "tlsVerificationDisabled": false,
+  "requests": [
+    {
+      "role": "Admin",
+      "method": "GET",
+      "routeTemplate": "/api/v1/auth/me",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": [
+        200,
+        401
+      ],
+      "latencyMs": 312.0
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "routeTemplate": "/api/v1/auth/me",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": [
+        200,
+        401
+      ],
+      "latencyMs": 266.0
+    },
+    {
+      "role": "Trader",
+      "method": "GET",
+      "routeTemplate": "/api/v1/auth/me",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": [
+        200,
+        401
+      ],
+      "latencyMs": 297.0
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "routeTemplate": "/api/v1/auth/me",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": [
+        200,
+        401
+      ],
+      "latencyMs": 266.0
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "routeTemplate": "/api/v1/role-applications",
+      "queryNames": [
+        "limit"
+      ],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 593.0
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "routeTemplate": "/api/v1/profile",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 469.0
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "routeTemplate": "/api/v1/profile/blocked",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 563.0
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "routeTemplate": "/api/v1/profile/blocked",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 296.0
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "routeTemplate": "/api/v1/learning/mango",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 485.0
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "routeTemplate": "/api/v1/role-applications",
+      "queryNames": [],
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 344.0
+    },
+    {
+      "role": "Consumer",
+      "method": "PUT",
+      "routeTemplate": "/api/v1/role-applications/{id}",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 266.0
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "routeTemplate": "/api/v1/role-applications/{id}/evidence",
+      "queryNames": [
+        "category",
+        "expectedRevision"
+      ],
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 375.0
+    },
+    {
+      "role": "Admin",
+      "method": "GET",
+      "routeTemplate": "/api/v1/admin/role-applications",
+      "queryNames": [
+        "limit",
+        "status"
+      ],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 484.0
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "routeTemplate": "/api/v1/role-applications/{id}/submit",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 281.0
+    },
+    {
+      "role": "Admin",
+      "method": "GET",
+      "routeTemplate": "/api/v1/admin/role-applications",
+      "queryNames": [
+        "limit",
+        "status"
+      ],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 266.0
+    },
+    {
+      "role": "Admin",
+      "method": "GET",
+      "routeTemplate": "/api/v1/admin/role-applications/{id}",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 500.0
+    },
+    {
+      "role": "Admin",
+      "method": "GET",
+      "routeTemplate": "/api/v1/admin/role-applications/{id}/evidence/{id}",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 515.0
+    },
+    {
+      "role": "Admin",
+      "method": "POST",
+      "routeTemplate": "/api/v1/admin/role-applications/{id}/review",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 282.0
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "routeTemplate": "/api/v1/role-applications/{id}",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 546.0
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "routeTemplate": "/api/v1/role-applications/{id}/submit",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 313.0
+    },
+    {
+      "role": "Admin",
+      "method": "POST",
+      "routeTemplate": "/api/v1/admin/role-applications/{id}/review",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 344.0
+    },
+    {
+      "role": "Consumer",
+      "method": "DELETE",
+      "routeTemplate": "/api/v1/role-applications/{id}/evidence/{id}",
+      "queryNames": [
+        "expectedRevision"
+      ],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 282.0
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "routeTemplate": "/api/v1/branches",
+      "queryNames": [],
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 265.0
+    },
+    {
+      "role": "Producer",
+      "method": "PUT",
+      "routeTemplate": "/api/v1/branches/{id}",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 281.0
+    },
+    {
+      "role": "Admin",
+      "method": "POST",
+      "routeTemplate": "/api/v1/admin/branches/{id}/review",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 250.0
+    },
+    {
+      "role": "Trader",
+      "method": "POST",
+      "routeTemplate": "/api/v1/branches",
+      "queryNames": [],
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 297.0
+    },
+    {
+      "role": "Trader",
+      "method": "PUT",
+      "routeTemplate": "/api/v1/branches/{id}",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 282.0
+    },
+    {
+      "role": "Admin",
+      "method": "POST",
+      "routeTemplate": "/api/v1/admin/branches/{id}/review",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 265.0
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "routeTemplate": "/api/v1/articles/images",
+      "queryNames": [],
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 735.0
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "routeTemplate": "/api/v1/articles",
+      "queryNames": [],
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 312.0
+    },
+    {
+      "role": "Admin",
+      "method": "POST",
+      "routeTemplate": "/api/v1/admin/articles/{id}/review",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 297.0
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "routeTemplate": "/api/v1/articles/{id}",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 422.0
+    },
+    {
+      "role": "anonymous",
+      "method": "GET",
+      "routeTemplate": "/api/v1/articles/{id}/image",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 500.0
+    },
+    {
+      "role": "Trader",
+      "method": "POST",
+      "routeTemplate": "/api/v1/articles/images",
+      "queryNames": [],
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 734.0
+    },
+    {
+      "role": "Trader",
+      "method": "POST",
+      "routeTemplate": "/api/v1/articles",
+      "queryNames": [],
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 266.0
+    },
+    {
+      "role": "Admin",
+      "method": "POST",
+      "routeTemplate": "/api/v1/admin/articles/{id}/review",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 250.0
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "routeTemplate": "/api/v1/articles/{id}",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 422.0
+    },
+    {
+      "role": "anonymous",
+      "method": "GET",
+      "routeTemplate": "/api/v1/articles/{id}/image",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 484.0
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "routeTemplate": "/api/v1/articles/images",
+      "queryNames": [],
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 672.0
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "routeTemplate": "/api/v1/articles",
+      "queryNames": [],
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 234.0
+    },
+    {
+      "role": "Admin",
+      "method": "POST",
+      "routeTemplate": "/api/v1/admin/articles/{id}/review",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 234.0
+    },
+    {
+      "role": "anonymous",
+      "method": "GET",
+      "routeTemplate": "/api/v1/articles/{id}/image",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 469.0
+    },
+    {
+      "role": "Producer",
+      "method": "PUT",
+      "routeTemplate": "/api/v1/articles/{id}/like",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 282.0
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "routeTemplate": "/api/v1/articles/{id}/comments",
+      "queryNames": [],
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 265.0
+    },
+    {
+      "role": "Trader",
+      "method": "PUT",
+      "routeTemplate": "/api/v1/articles/{id}/like",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 250.0
+    },
+    {
+      "role": "Trader",
+      "method": "POST",
+      "routeTemplate": "/api/v1/articles/{id}/comments",
+      "queryNames": [],
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 250.0
+    },
+    {
+      "role": "Consumer",
+      "method": "PUT",
+      "routeTemplate": "/api/v1/articles/{id}/like",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 250.0
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "routeTemplate": "/api/v1/articles/{id}/comments",
+      "queryNames": [],
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 281.0
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "routeTemplate": "/api/v1/articles/{id}/comments",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 266.0
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "routeTemplate": "/api/v1/articles/{id}/comments",
+      "queryNames": [],
+      "status": 409,
+      "expectedStatus": 409,
+      "latencyMs": 281.0
+    },
+    {
+      "role": "Producer",
+      "method": "PUT",
+      "routeTemplate": "/api/v1/articles/{id}/like",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 297.0
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "routeTemplate": "/api/v1/articles/{id}/likes",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 438.0
+    },
+    {
+      "role": "Admin",
+      "method": "GET",
+      "routeTemplate": "/api/v1/articles/{id}/comments",
+      "queryNames": [
+        "limit"
+      ],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 453.0
+    },
+    {
+      "role": "Consumer",
+      "method": "DELETE",
+      "routeTemplate": "/api/v1/articles/{id}/comments/{id}",
+      "queryNames": [],
+      "status": 204,
+      "expectedStatus": 204,
+      "latencyMs": 250.0
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "routeTemplate": "/api/v1/articles/{id}/comments",
+      "queryNames": [],
+      "status": 409,
+      "expectedStatus": 409,
+      "latencyMs": 250.0
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "routeTemplate": "/api/v1/articles/{id}/comments",
+      "queryNames": [
+        "limit"
+      ],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 312.0
+    },
+    {
+      "role": "Admin",
+      "method": "POST",
+      "routeTemplate": "/api/v1/community/groups",
+      "queryNames": [],
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 250.0
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "routeTemplate": "/api/v1/community/groups",
+      "queryNames": [],
+      "status": 403,
+      "expectedStatus": 403,
+      "latencyMs": 282.0
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "routeTemplate": "/api/v1/community/groups/{id}/join",
+      "queryNames": [],
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 296.0
+    },
+    {
+      "role": "Trader",
+      "method": "POST",
+      "routeTemplate": "/api/v1/community/groups",
+      "queryNames": [],
+      "status": 403,
+      "expectedStatus": 403,
+      "latencyMs": 282.0
+    },
+    {
+      "role": "Trader",
+      "method": "POST",
+      "routeTemplate": "/api/v1/community/groups/{id}/join",
+      "queryNames": [],
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 250.0
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "routeTemplate": "/api/v1/community/groups",
+      "queryNames": [],
+      "status": 403,
+      "expectedStatus": 403,
+      "latencyMs": 234.0
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "routeTemplate": "/api/v1/community/groups/{id}/join",
+      "queryNames": [],
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 281.0
+    },
+    {
+      "role": "Admin",
+      "method": "POST",
+      "routeTemplate": "/api/v1/conversations/{id}/messages",
+      "queryNames": [],
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 266.0
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "routeTemplate": "/api/v1/conversations/{id}/messages",
+      "queryNames": [],
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 297.0
+    },
+    {
+      "role": "Trader",
+      "method": "POST",
+      "routeTemplate": "/api/v1/conversations/{id}/messages",
+      "queryNames": [],
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 297.0
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "routeTemplate": "/api/v1/conversations/{id}/messages",
+      "queryNames": [],
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 265.0
+    },
+    {
+      "role": "Admin",
+      "method": "GET",
+      "routeTemplate": "/api/v1/conversations/{id}/messages",
+      "queryNames": [
+        "limit"
+      ],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 422.0
+    },
+    {
+      "role": "Trader",
+      "method": "POST",
+      "routeTemplate": "/api/v1/articles/{id}/conversations",
+      "queryNames": [],
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 250.0
+    },
+    {
+      "role": "Trader",
+      "method": "POST",
+      "routeTemplate": "/api/v1/articles/{id}/conversations",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 281.0
+    },
+    {
+      "role": "Trader",
+      "method": "POST",
+      "routeTemplate": "/api/v1/conversations/{id}/messages",
+      "queryNames": [],
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 234.0
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "routeTemplate": "/api/v1/conversations/{id}/messages",
+      "queryNames": [],
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 297.0
+    },
+    {
+      "role": "Trader",
+      "method": "POST",
+      "routeTemplate": "/api/v1/conversations/{id}/images",
+      "queryNames": [
+        "clientMessageId"
+      ],
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 782.0
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "routeTemplate": "/api/v1/conversations/{id}/images/{id}",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 610.0
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "routeTemplate": "/api/v1/conversations/{id}/messages",
+      "queryNames": [],
+      "status": 404,
+      "expectedStatus": 404,
+      "latencyMs": 484.0
+    },
+    {
+      "role": "Admin",
+      "method": "GET",
+      "routeTemplate": "/api/v1/conversations/{id}/images/{id}",
+      "queryNames": [],
+      "status": 404,
+      "expectedStatus": 404,
+      "latencyMs": 297.0
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "routeTemplate": "/api/v1/conversations/{id}/messages",
+      "queryNames": [
+        "limit"
+      ],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 531.0
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "routeTemplate": "/api/v1/conversations",
+      "queryNames": [
+        "limit"
+      ],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 266.0
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "routeTemplate": "/api/v1/conversations/{id}/read",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 297.0
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "routeTemplate": "/api/v1/conversations/{id}/read",
+      "queryNames": [],
+      "status": 404,
+      "expectedStatus": 404,
+      "latencyMs": 250.0
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "routeTemplate": "/api/v1/contacts",
+      "queryNames": [
+        "limit",
+        "search"
+      ],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 484.0
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "routeTemplate": "/api/v1/conversations/direct",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": [
+        200,
+        201
+      ],
+      "latencyMs": 266.0
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "routeTemplate": "/api/v1/articles/{id}/conversations",
+      "queryNames": [],
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 265.0
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "routeTemplate": "/api/v1/conversations",
+      "queryNames": [
+        "limit"
+      ],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 297.0
+    },
+    {
+      "role": "Consumer",
+      "method": "PUT",
+      "routeTemplate": "/api/v1/profile",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 250.0
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "routeTemplate": "/api/v1/profiles/{id}",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 469.0
+    },
+    {
+      "role": "Consumer",
+      "method": "PUT",
+      "routeTemplate": "/api/v1/profile",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 281.0
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "routeTemplate": "/api/v1/profiles/{id}",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 281.0
+    },
+    {
+      "role": "Consumer",
+      "method": "PUT",
+      "routeTemplate": "/api/v1/profiles/{id}/block",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 266.0
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "routeTemplate": "/api/v1/profiles/{id}",
+      "queryNames": [],
+      "status": 404,
+      "expectedStatus": 404,
+      "latencyMs": 250.0
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "routeTemplate": "/api/v1/conversations/{id}/messages",
+      "queryNames": [],
+      "status": 403,
+      "expectedStatus": 403,
+      "latencyMs": 250.0
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "routeTemplate": "/api/v1/conversations/{id}/images",
+      "queryNames": [
+        "clientMessageId"
+      ],
+      "status": 403,
+      "expectedStatus": 403,
+      "latencyMs": 437.0
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "routeTemplate": "/api/v1/conversations/{id}/messages",
+      "queryNames": [],
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 282.0
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "routeTemplate": "/api/v1/conversations/{id}/messages",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 437.0
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "routeTemplate": "/api/v1/conversations/direct",
+      "queryNames": [],
+      "status": 404,
+      "expectedStatus": 404,
+      "latencyMs": 250.0
+    },
+    {
+      "role": "Consumer",
+      "method": "DELETE",
+      "routeTemplate": "/api/v1/profiles/{id}/block",
+      "queryNames": [],
+      "status": 204,
+      "expectedStatus": 204,
+      "latencyMs": 235.0
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "routeTemplate": "/api/v1/profiles/{id}",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 250.0
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "routeTemplate": "/api/v1/profile",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 250.0
+    },
+    {
+      "role": "Consumer",
+      "method": "PUT",
+      "routeTemplate": "/api/v1/profile",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 235.0
+    },
+    {
+      "role": "Producer",
+      "method": "DELETE",
+      "routeTemplate": "/api/v1/branches/{id}",
+      "queryNames": [
+        "expectedRevision"
+      ],
+      "status": 409,
+      "expectedStatus": 409,
+      "latencyMs": 265.0
+    },
+    {
+      "role": "Producer",
+      "method": "DELETE",
+      "routeTemplate": "/api/v1/articles/{id}",
+      "queryNames": [
+        "expectedRevision"
+      ],
+      "status": 204,
+      "expectedStatus": 204,
+      "latencyMs": 469.0
+    },
+    {
+      "role": "Trader",
+      "method": "DELETE",
+      "routeTemplate": "/api/v1/articles/{id}",
+      "queryNames": [
+        "expectedRevision"
+      ],
+      "status": 204,
+      "expectedStatus": 204,
+      "latencyMs": 281.0
+    },
+    {
+      "role": "Consumer",
+      "method": "DELETE",
+      "routeTemplate": "/api/v1/articles/{id}",
+      "queryNames": [
+        "expectedRevision"
+      ],
+      "status": 204,
+      "expectedStatus": 204,
+      "latencyMs": 235.0
+    },
+    {
+      "role": "anonymous",
+      "method": "GET",
+      "routeTemplate": "/api/v1/articles/{id}",
+      "queryNames": [],
+      "status": 404,
+      "expectedStatus": 404,
+      "latencyMs": 437.0
+    },
+    {
+      "role": "Producer",
+      "method": "DELETE",
+      "routeTemplate": "/api/v1/branches/{id}",
+      "queryNames": [
+        "expectedRevision"
+      ],
+      "status": 204,
+      "expectedStatus": 204,
+      "latencyMs": 281.0
+    },
+    {
+      "role": "Trader",
+      "method": "DELETE",
+      "routeTemplate": "/api/v1/branches/{id}",
+      "queryNames": [
+        "expectedRevision"
+      ],
+      "status": 204,
+      "expectedStatus": 204,
+      "latencyMs": 282.0
+    },
+    {
+      "role": "Admin",
+      "method": "POST",
+      "routeTemplate": "/api/v1/community/groups/{id}/close",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 250.0
+    },
+    {
+      "role": "Trader",
+      "method": "POST",
+      "routeTemplate": "/api/v1/conversations/{id}/messages",
+      "queryNames": [],
+      "status": 409,
+      "expectedStatus": 409,
+      "latencyMs": 265.0
+    },
+    {
+      "role": "Admin",
+      "method": "GET",
+      "routeTemplate": "/api/v1/auth/me",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 563.0
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "routeTemplate": "/api/v1/auth/me",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 265.0
+    },
+    {
+      "role": "Trader",
+      "method": "GET",
+      "routeTemplate": "/api/v1/auth/me",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 297.0
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "routeTemplate": "/api/v1/auth/me",
+      "queryNames": [],
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 235.0
+    }
+  ],
+  "checks": [
+    {
+      "name": "four supplied role sessions identify four distinct users",
+      "pass": true,
+      "atMs": 0
+    },
+    {
+      "name": "Admin API expected status",
+      "pass": true,
+      "atMs": 312
+    },
+    {
+      "name": "Admin is the current active verified approved supplied role",
+      "pass": true,
+      "atMs": 312
+    },
+    {
+      "name": "Producer API expected status",
+      "pass": true,
+      "atMs": 578
+    },
+    {
+      "name": "Producer is the current active verified approved supplied role",
+      "pass": true,
+      "atMs": 578
+    },
+    {
+      "name": "Trader API expected status",
+      "pass": true,
+      "atMs": 875
+    },
+    {
+      "name": "Trader is the current active verified approved supplied role",
+      "pass": true,
+      "atMs": 875
+    },
+    {
+      "name": "Consumer API expected status",
+      "pass": true,
+      "atMs": 1141
+    },
+    {
+      "name": "Consumer is the current active verified approved supplied role",
+      "pass": true,
+      "atMs": 1141
+    },
+    {
+      "name": "Consumer API expected status",
+      "pass": true,
+      "atMs": 1734
+    },
+    {
+      "name": "no existing active/human application is mutated",
+      "pass": true,
+      "atMs": 1734
+    },
+    {
+      "name": "Consumer API expected status",
+      "pass": true,
+      "atMs": 2203
+    },
+    {
+      "name": "Consumer API expected status",
+      "pass": true,
+      "atMs": 2766
+    },
+    {
+      "name": "no pre-existing personal block may be removed",
+      "pass": true,
+      "atMs": 2766
+    },
+    {
+      "name": "Producer API expected status",
+      "pass": true,
+      "atMs": 3062
+    },
+    {
+      "name": "no pre-existing personal block may be removed",
+      "pass": true,
+      "atMs": 3062
+    },
+    {
+      "name": "Consumer API expected status",
+      "pass": true,
+      "atMs": 3547
+    },
+    {
+      "name": "Consumer has mango learning content without AI execution",
+      "pass": true,
+      "atMs": 3547
+    },
+    {
+      "name": "real Pillow JPEG fixture is within upload cap",
+      "pass": true,
+      "atMs": 3687
+    },
+    {
+      "name": "Consumer API expected status",
+      "pass": true,
+      "atMs": 4031
+    },
+    {
+      "name": "Consumer API expected status",
+      "pass": true,
+      "atMs": 4297
+    },
+    {
+      "name": "Consumer API expected status",
+      "pass": true,
+      "atMs": 4672
+    },
+    {
+      "name": "saving profile and proof remains Draft",
+      "pass": true,
+      "atMs": 4672
+    },
+    {
+      "name": "Admin API expected status",
+      "pass": true,
+      "atMs": 5156
+    },
+    {
+      "name": "Draft is absent from Submitted queue",
+      "pass": true,
+      "atMs": 5156
+    },
+    {
+      "name": "Consumer API expected status",
+      "pass": true,
+      "atMs": 5437
+    },
+    {
+      "name": "Admin API expected status",
+      "pass": true,
+      "atMs": 5719
+    },
+    {
+      "name": "Submitted queue has own applicant timestamp and proof",
+      "pass": true,
+      "atMs": 5719
+    },
+    {
+      "name": "Admin API expected status",
+      "pass": true,
+      "atMs": 6219
+    },
+    {
+      "name": "Admin API expected status",
+      "pass": true,
+      "atMs": 6734
+    },
+    {
+      "name": "Admin evidence download equals own synthetic JPEG",
+      "pass": true,
+      "atMs": 6734
+    },
+    {
+      "name": "Admin API expected status",
+      "pass": true,
+      "atMs": 7016
+    },
+    {
+      "name": "Consumer API expected status",
+      "pass": true,
+      "atMs": 7562
+    },
+    {
+      "name": "applicant sees NeedsInformation and technical reason",
+      "pass": true,
+      "atMs": 7562
+    },
+    {
+      "name": "Consumer API expected status",
+      "pass": true,
+      "atMs": 7875
+    },
+    {
+      "name": "Admin API expected status",
+      "pass": true,
+      "atMs": 8219
+    },
+    {
+      "name": "Consumer API expected status",
+      "pass": true,
+      "atMs": 8516
+    },
+    {
+      "name": "owned QA ends Rejected and own evidence removed",
+      "pass": true,
+      "atMs": 8516
+    },
+    {
+      "name": "Producer API expected status",
+      "pass": true,
+      "atMs": 8781
+    },
+    {
+      "name": "Producer API expected status",
+      "pass": true,
+      "atMs": 9062
+    },
+    {
+      "name": "Admin API expected status",
+      "pass": true,
+      "atMs": 9312
+    },
+    {
+      "name": "owned edited branch is Approved",
+      "pass": true,
+      "atMs": 9312
+    },
+    {
+      "name": "Trader API expected status",
+      "pass": true,
+      "atMs": 9609
+    },
+    {
+      "name": "Trader API expected status",
+      "pass": true,
+      "atMs": 9891
+    },
+    {
+      "name": "Admin API expected status",
+      "pass": true,
+      "atMs": 10156
+    },
+    {
+      "name": "owned edited branch is Approved",
+      "pass": true,
+      "atMs": 10156
+    },
+    {
+      "name": "Producer API expected status",
+      "pass": true,
+      "atMs": 10891
+    },
+    {
+      "name": "Producer API expected status",
+      "pass": true,
+      "atMs": 11203
+    },
+    {
+      "name": "Admin API expected status",
+      "pass": true,
+      "atMs": 11500
+    },
+    {
+      "name": "article lane matches actor role",
+      "pass": true,
+      "atMs": 11500
+    },
+    {
+      "name": "Consumer API expected status",
+      "pass": true,
+      "atMs": 11922
+    },
+    {
+      "name": "anonymous API expected status",
+      "pass": true,
+      "atMs": 12422
+    },
+    {
+      "name": "actual image response is JPEG",
+      "pass": true,
+      "atMs": 12422
+    },
+    {
+      "name": "actual canonical JPEG dimensions match server metadata",
+      "pass": true,
+      "atMs": 12422
+    },
+    {
+      "name": "actual server canonicalization removed EXIF and resized input",
+      "pass": true,
+      "atMs": 12422
+    },
+    {
+      "name": "actual image byte length matches stored metadata",
+      "pass": true,
+      "atMs": 12422
+    },
+    {
+      "name": "Trader API expected status",
+      "pass": true,
+      "atMs": 13156
+    },
+    {
+      "name": "Trader API expected status",
+      "pass": true,
+      "atMs": 13422
+    },
+    {
+      "name": "Admin API expected status",
+      "pass": true,
+      "atMs": 13672
+    },
+    {
+      "name": "article lane matches actor role",
+      "pass": true,
+      "atMs": 13672
+    },
+    {
+      "name": "Consumer API expected status",
+      "pass": true,
+      "atMs": 14094
+    },
+    {
+      "name": "anonymous API expected status",
+      "pass": true,
+      "atMs": 14578
+    },
+    {
+      "name": "actual image response is JPEG",
+      "pass": true,
+      "atMs": 14578
+    },
+    {
+      "name": "actual canonical JPEG dimensions match server metadata",
+      "pass": true,
+      "atMs": 14594
+    },
+    {
+      "name": "actual server canonicalization removed EXIF and resized input",
+      "pass": true,
+      "atMs": 14594
+    },
+    {
+      "name": "actual image byte length matches stored metadata",
+      "pass": true,
+      "atMs": 14594
+    },
+    {
+      "name": "Consumer API expected status",
+      "pass": true,
+      "atMs": 15266
+    },
+    {
+      "name": "Consumer API expected status",
+      "pass": true,
+      "atMs": 15500
+    },
+    {
+      "name": "Admin API expected status",
+      "pass": true,
+      "atMs": 15750
+    },
+    {
+      "name": "article lane matches actor role",
+      "pass": true,
+      "atMs": 15750
+    },
+    {
+      "name": "anonymous API expected status",
+      "pass": true,
+      "atMs": 16219
+    },
+    {
+      "name": "actual image response is JPEG",
+      "pass": true,
+      "atMs": 16219
+    },
+    {
+      "name": "actual canonical JPEG dimensions match server metadata",
+      "pass": true,
+      "atMs": 16234
+    },
+    {
+      "name": "actual server canonicalization removed EXIF and resized input",
+      "pass": true,
+      "atMs": 16234
+    },
+    {
+      "name": "actual image byte length matches stored metadata",
+      "pass": true,
+      "atMs": 16234
+    },
+    {
+      "name": "Producer API expected status",
+      "pass": true,
+      "atMs": 16516
+    },
+    {
+      "name": "Producer API expected status",
+      "pass": true,
+      "atMs": 16781
+    },
+    {
+      "name": "comment identifies exact public author",
+      "pass": true,
+      "atMs": 16781
+    },
+    {
+      "name": "Trader API expected status",
+      "pass": true,
+      "atMs": 17031
+    },
+    {
+      "name": "Trader API expected status",
+      "pass": true,
+      "atMs": 17281
+    },
+    {
+      "name": "comment identifies exact public author",
+      "pass": true,
+      "atMs": 17281
+    },
+    {
+      "name": "Consumer API expected status",
+      "pass": true,
+      "atMs": 17531
+    },
+    {
+      "name": "Consumer API expected status",
+      "pass": true,
+      "atMs": 17812
+    },
+    {
+      "name": "comment identifies exact public author",
+      "pass": true,
+      "atMs": 17812
+    },
+    {
+      "name": "Producer API expected status",
+      "pass": true,
+      "atMs": 18078
+    },
+    {
+      "name": "exact comment retry reuses record",
+      "pass": true,
+      "atMs": 18078
+    },
+    {
+      "name": "Producer API expected status",
+      "pass": true,
+      "atMs": 18359
+    },
+    {
+      "name": "Producer API expected status",
+      "pass": true,
+      "atMs": 18656
+    },
+    {
+      "name": "Consumer API expected status",
+      "pass": true,
+      "atMs": 19094
+    },
+    {
+      "name": "three durable likes and comments",
+      "pass": true,
+      "atMs": 19094
+    },
+    {
+      "name": "Admin API expected status",
+      "pass": true,
+      "atMs": 19547
+    },
+    {
+      "name": "Admin sees three moderatable comments",
+      "pass": true,
+      "atMs": 19547
+    },
+    {
+      "name": "Consumer API expected status",
+      "pass": true,
+      "atMs": 19797
+    },
+    {
+      "name": "Consumer API expected status",
+      "pass": true,
+      "atMs": 20047
+    },
+    {
+      "name": "Consumer API expected status",
+      "pass": true,
+      "atMs": 20359
+    },
+    {
+      "name": "deleted comment stays deleted",
+      "pass": true,
+      "atMs": 20359
+    },
+    {
+      "name": "Admin API expected status",
+      "pass": true,
+      "atMs": 20609
+    },
+    {
+      "name": "Producer API expected status",
+      "pass": true,
+      "atMs": 20891
+    },
+    {
+      "name": "Producer API expected status",
+      "pass": true,
+      "atMs": 21187
+    },
+    {
+      "name": "Trader API expected status",
+      "pass": true,
+      "atMs": 21469
+    },
+    {
+      "name": "Trader API expected status",
+      "pass": true,
+      "atMs": 21719
+    },
+    {
+      "name": "Consumer API expected status",
+      "pass": true,
+      "atMs": 21953
+    },
+    {
+      "name": "Consumer API expected status",
+      "pass": true,
+      "atMs": 22234
+    },
+    {
+      "name": "Admin API expected status",
+      "pass": true,
+      "atMs": 22500
+    },
+    {
+      "name": "normal image message sender is exact authorized public identity",
+      "pass": true,
+      "atMs": 22500
+    },
+    {
+      "name": "Producer API expected status",
+      "pass": true,
+      "atMs": 22797
+    },
+    {
+      "name": "normal image message sender is exact authorized public identity",
+      "pass": true,
+      "atMs": 22797
+    },
+    {
+      "name": "Trader API expected status",
+      "pass": true,
+      "atMs": 23094
+    },
+    {
+      "name": "normal image message sender is exact authorized public identity",
+      "pass": true,
+      "atMs": 23094
+    },
+    {
+      "name": "Consumer API expected status",
+      "pass": true,
+      "atMs": 23359
+    },
+    {
+      "name": "normal image message sender is exact authorized public identity",
+      "pass": true,
+      "atMs": 23359
+    },
+    {
+      "name": "Admin API expected status",
+      "pass": true,
+      "atMs": 23781
+    },
+    {
+      "name": "Admin retrieves all four persisted group messages",
+      "pass": true,
+      "atMs": 23781
+    },
+    {
+      "name": "Trader API expected status",
+      "pass": true,
+      "atMs": 24031
+    },
+    {
+      "name": "Trader API expected status",
+      "pass": true,
+      "atMs": 24328
+    },
+    {
+      "name": "article contact reuses exact Direct",
+      "pass": true,
+      "atMs": 24328
+    },
+    {
+      "name": "Trader API expected status",
+      "pass": true,
+      "atMs": 24562
+    },
+    {
+      "name": "Producer API expected status",
+      "pass": true,
+      "atMs": 24859
+    },
+    {
+      "name": "Trader API expected status",
+      "pass": true,
+      "atMs": 25641
+    },
+    {
+      "name": "Producer API expected status",
+      "pass": true,
+      "atMs": 26266
+    },
+    {
+      "name": "actual image response is JPEG",
+      "pass": true,
+      "atMs": 26266
+    },
+    {
+      "name": "actual canonical JPEG dimensions match server metadata",
+      "pass": true,
+      "atMs": 26266
+    },
+    {
+      "name": "actual server canonicalization removed EXIF and resized input",
+      "pass": true,
+      "atMs": 26266
+    },
+    {
+      "name": "actual image byte length matches stored metadata",
+      "pass": true,
+      "atMs": 26266
+    },
+    {
+      "name": "Consumer API expected status",
+      "pass": true,
+      "atMs": 26750
+    },
+    {
+      "name": "Admin API expected status",
+      "pass": true,
+      "atMs": 27047
+    },
+    {
+      "name": "Producer API expected status",
+      "pass": true,
+      "atMs": 27578
+    },
+    {
+      "name": "recipient actually fetched displayed image message",
+      "pass": true,
+      "atMs": 27578
+    },
+    {
+      "name": "Producer API expected status",
+      "pass": true,
+      "atMs": 27844
+    },
+    {
+      "name": "new incoming image raises Direct to top with exact peer and unread",
+      "pass": true,
+      "atMs": 27844
+    },
+    {
+      "name": "Producer API expected status",
+      "pass": true,
+      "atMs": 28141
+    },
+    {
+      "name": "displayed cursor clears only owned thread",
+      "pass": true,
+      "atMs": 28141
+    },
+    {
+      "name": "Consumer API expected status",
+      "pass": true,
+      "atMs": 28391
+    },
+    {
+      "name": "Consumer API expected status",
+      "pass": true,
+      "atMs": 28875
+    },
+    {
+      "name": "contact search contains intended Producer without email",
+      "pass": true,
+      "atMs": 28875
+    },
+    {
+      "name": "Consumer API expected status",
+      "pass": true,
+      "atMs": 29141
+    },
+    {
+      "name": "Producer API expected status",
+      "pass": true,
+      "atMs": 29406
+    },
+    {
+      "name": "Producer API expected status",
+      "pass": true,
+      "atMs": 29703
+    },
+    {
+      "name": "inbox distinguishes Consumer and Trader peers",
+      "pass": true,
+      "atMs": 29703
+    },
+    {
+      "name": "Consumer API expected status",
+      "pass": true,
+      "atMs": 29953
+    },
+    {
+      "name": "Producer API expected status",
+      "pass": true,
+      "atMs": 30422
+    },
+    {
+      "name": "private fields and email are hidden",
+      "pass": true,
+      "atMs": 30422
+    },
+    {
+      "name": "Consumer API expected status",
+      "pass": true,
+      "atMs": 30703
+    },
+    {
+      "name": "Producer API expected status",
+      "pass": true,
+      "atMs": 30984
+    },
+    {
+      "name": "opted-in synthetic fields are visible without email",
+      "pass": true,
+      "atMs": 30984
+    },
+    {
+      "name": "Consumer API expected status",
+      "pass": true,
+      "atMs": 31250
+    },
+    {
+      "name": "Producer API expected status",
+      "pass": true,
+      "atMs": 31500
+    },
+    {
+      "name": "Producer API expected status",
+      "pass": true,
+      "atMs": 31750
+    },
+    {
+      "name": "Producer API expected status",
+      "pass": true,
+      "atMs": 32187
+    },
+    {
+      "name": "Consumer API expected status",
+      "pass": true,
+      "atMs": 32469
+    },
+    {
+      "name": "Consumer API expected status",
+      "pass": true,
+      "atMs": 32906
+    },
+    {
+      "name": "Producer API expected status",
+      "pass": true,
+      "atMs": 33156
+    },
+    {
+      "name": "Consumer API expected status",
+      "pass": true,
+      "atMs": 33391
+    },
+    {
+      "name": "Producer API expected status",
+      "pass": true,
+      "atMs": 33656
+    },
+    {
+      "name": "Consumer API expected status",
+      "pass": true,
+      "atMs": 33906
+    },
+    {
+      "name": "self restore does not overwrite an unrelated concurrent profile edit",
+      "pass": true,
+      "atMs": 33906
+    },
+    {
+      "name": "Consumer API expected status",
+      "pass": true,
+      "atMs": 34141
+    },
+    {
+      "name": "own Consumer profile restored exactly",
+      "pass": true,
+      "atMs": 34141
+    },
+    {
+      "name": "Producer API expected status",
+      "pass": true,
+      "atMs": 34406
+    },
+    {
+      "name": "Producer API expected status",
+      "pass": true,
+      "atMs": 34875
+    },
+    {
+      "name": "Trader API expected status",
+      "pass": true,
+      "atMs": 35156
+    },
+    {
+      "name": "Consumer API expected status",
+      "pass": true,
+      "atMs": 35391
+    },
+    {
+      "name": "anonymous API expected status",
+      "pass": true,
+      "atMs": 35828
+    },
+    {
+      "name": "Producer API expected status",
+      "pass": true,
+      "atMs": 36109
+    },
+    {
+      "name": "Trader API expected status",
+      "pass": true,
+      "atMs": 36391
+    },
+    {
+      "name": "Admin API expected status",
+      "pass": true,
+      "atMs": 36641
+    },
+    {
+      "name": "Trader API expected status",
+      "pass": true,
+      "atMs": 36906
+    },
+    {
+      "name": "Admin API expected status",
+      "pass": true,
+      "atMs": 37469
+    },
+    {
+      "name": "original role remains intact",
+      "pass": true,
+      "atMs": 37469
+    },
+    {
+      "name": "Producer API expected status",
+      "pass": true,
+      "atMs": 37734
+    },
+    {
+      "name": "original role remains intact",
+      "pass": true,
+      "atMs": 37734
+    },
+    {
+      "name": "Trader API expected status",
+      "pass": true,
+      "atMs": 38031
+    },
+    {
+      "name": "original role remains intact",
+      "pass": true,
+      "atMs": 38031
+    },
+    {
+      "name": "Consumer API expected status",
+      "pass": true,
+      "atMs": 38266
+    },
+    {
+      "name": "original role remains intact",
+      "pass": true,
+      "atMs": 38266
+    }
+  ],
+  "phases": [
+    {
+      "name": "sessions_preconditions_learning",
+      "startMs": 0,
+      "status": "PASS",
+      "endMs": 3547
+    },
+    {
+      "name": "role_application_review",
+      "startMs": 3687,
+      "status": "PASS",
+      "endMs": 8516
+    },
+    {
+      "name": "branches_and_articles",
+      "startMs": 8516,
+      "status": "PASS",
+      "endMs": 16234
+    },
+    {
+      "name": "likes_comments",
+      "startMs": 16234,
+      "status": "PASS",
+      "endMs": 20359
+    },
+    {
+      "name": "admin_group_membership",
+      "startMs": 20359,
+      "status": "PASS",
+      "endMs": 23781
+    },
+    {
+      "name": "direct_photo_inbox_acl",
+      "startMs": 23781,
+      "status": "PASS",
+      "endMs": 29703
+    },
+    {
+      "name": "profile_privacy_block_restore",
+      "startMs": 29703,
+      "status": "PASS",
+      "endMs": 34141
+    },
+    {
+      "name": "owned_resource_deletion_group_close",
+      "startMs": 34141,
+      "status": "PASS",
+      "endMs": 36906
+    },
+    {
+      "name": "original_four_roles_preserved",
+      "startMs": 36906,
+      "status": "PASS",
+      "endMs": 38266
+    }
+  ],
+  "ordinaryImagesAreEndToEndEncrypted": false,
+  "secretCryptoAcceptance": "NOT_RUN/UNCHANGED: no secret endpoint, key, device, ciphertext or encrypted image is mutated. Separate real-Sodium/native evidence remains required.",
+  "aiInference": "NOT_RUN: this driver calls no AI endpoints for any role.",
+  "requestBudget": 120,
+  "formalRoleApplicationFlow": "Owned synthetic Producer application only: Draft/Submitted/NeedsInformation/resubmit/Rejected. Main Consumer is never approved or appointed Admin.",
+  "intendedCleanup": "Reject owned synthetic role application/remove its proof; soft-delete owned QA articles/branches; close own QA group; restore own privacy fields and remove only the block introduced here. Audit, chat history, Directs and private media may remain labeled QA.",
+  "deadlineSeconds": 240,
+  "coverage": {
+    "sessions_preconditions_learning": {
+      "status": "PASS_HTTP_ONLY",
+      "playbookRows": [
+        "M16",
+        "M19"
+      ],
+      "firstRequest": 1,
+      "lastRequest": 9
+    },
+    "role_application_review": {
+      "status": "PASS_HTTP_ONLY",
+      "playbookRows": [
+        "M01",
+        "M02",
+        "M18"
+      ],
+      "firstRequest": 10,
+      "lastRequest": 22
+    },
+    "branches_and_articles": {
+      "status": "PASS_HTTP_ONLY",
+      "playbookRows": [
+        "M03",
+        "M04",
+        "M06",
+        "M09",
+        "M11",
+        "M17"
+      ],
+      "firstRequest": 23,
+      "lastRequest": 42
+    },
+    "likes_comments": {
+      "status": "PASS_HTTP_ONLY",
+      "playbookRows": [
+        "M20"
+      ],
+      "firstRequest": 43,
+      "lastRequest": 56
+    },
+    "admin_group_membership": {
+      "status": "PASS_HTTP_ONLY",
+      "playbookRows": [
+        "M05",
+        "M21"
+      ],
+      "firstRequest": 57,
+      "lastRequest": 68
+    },
+    "direct_photo_inbox_acl": {
+      "status": "PASS_HTTP_ONLY",
+      "playbookRows": [
+        "M10",
+        "M13",
+        "M15",
+        "X02"
+      ],
+      "firstRequest": 69,
+      "lastRequest": 84
+    },
+    "profile_privacy_block_restore": {
+      "status": "PASS_HTTP_ONLY",
+      "playbookRows": [
+        "X03",
+        "X04"
+      ],
+      "firstRequest": 85,
+      "lastRequest": 99
+    },
+    "owned_resource_deletion_group_close": {
+      "status": "PASS_HTTP_ONLY",
+      "playbookRows": [
+        "M05",
+        "X05",
+        "X06"
+      ],
+      "firstRequest": 100,
+      "lastRequest": 108
+    },
+    "original_four_roles_preserved": {
+      "status": "PASS_HTTP_ONLY",
+      "playbookRows": [],
+      "firstRequest": 109,
+      "lastRequest": 112
+    }
+  },
+  "exclusions": {
+    "M07": "NOT_RUN: no AI calls granted",
+    "M08": "NOT_RUN: no AI/device lifecycle calls granted",
+    "M12": "NOT_RUN: no AI calls granted",
+    "M14": "NOT_RUN: no E2EE keys/cipher/device tests granted",
+    "M22": "NOT_RUN: no AI/video/history calls granted",
+    "X01_positive_appointment": "NOT_RUN_BY_THIS_DRIVER: isolated PostgreSQL tests and Root-controlled fifth genuine-OTP Consumer acceptance have separate receipts. Main Consumer never promoted here.",
+    "local_learning_quiz": "NOT_RUN: API content only; local read-progress/questions require actual app UI",
+    "M16": "PARTIAL_HTTP_CONTENT_ONLY: local read-progress/questions require actual app UI",
+    "M19": "PARTIAL: non-Admin group creation denied and four roles verified; no AI/secret calls or UI button visibility assertions.",
+    "native_four_devices_WSS": "NOT_RUN: HTTP clients do not prove rendering, zoom, foreground alerts or four-device realtime"
+  },
+  "criticalSelfRestoreComplete": true,
+  "ownedFixtureCounts": {
+    "roleApplications": 1,
+    "branches": 2,
+    "articleImages": 3,
+    "articles": 3,
+    "comments": 3,
+    "groups": 1,
+    "directConversations": 2,
+    "imageMessages": 1
+  },
+  "lastAcknowledgedStateCounts": {
+    "Closed": 1,
+    "Deleted": 5,
+    "Rejected": 1
+  },
+  "sessionRotations": 0,
+  "httpRequests": 112,
+  "wssClients": {},
+  "providedSessionsRetained": true,
+  "finishedUtc": "2026-10-30T21:49:06.733608+00:00",
+  "elapsedSeconds": 38.266
+}

@@ -140,11 +140,12 @@ public static class PostWorkflowEndpoints
         var post = await db.Posts.FromSqlInterpolated($"SELECT * FROM \"Posts\" WHERE \"Id\"={id} FOR SHARE").SingleOrDefaultAsync(cancellationToken);
         if (post is null || post.Status != "Published") return Results.NotFound();
         var ownerId = post.AuthorId;
-        var users = await db.Users.FromSqlInterpolated($"SELECT * FROM \"AspNetUsers\" WHERE \"Id\"={ownerId} OR \"Id\"={userId} FOR SHARE").ToListAsync(cancellationToken);
+        var users = await db.Users.FromSqlInterpolated($"SELECT * FROM \"AspNetUsers\" WHERE \"Id\"={ownerId} OR \"Id\"={userId} ORDER BY \"Id\" FOR SHARE").ToListAsync(cancellationToken);
         var author = users.Single(user => user.Id == ownerId); var initiator = users.Single(user => user.Id == userId);
         if (!author.IsActive || author.ApprovalStatus != ApprovalState.Approved) return Results.NotFound();
         if (!initiator.IsActive || initiator.ApprovalStatus != ApprovalState.Approved || initiator.Role == AccountRole.Admin) return Results.Forbid();
         if (ownerId == userId) return Results.Conflict(new { message = "Không tạo hội thoại với tin của chính mình." });
+        if (await ProfileBlocks.IsEitherBlockedAsync(db, userId, ownerId, cancellationToken)) return Results.NotFound();
         var thread = await db.Conversations.SingleOrDefaultAsync(conversation => conversation.PostId == id && conversation.InitiatorId == userId && conversation.Kind == "Direct", cancellationToken);
         if (thread is not null)
         {

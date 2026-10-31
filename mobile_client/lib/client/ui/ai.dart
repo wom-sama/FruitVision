@@ -11,6 +11,7 @@ import '../realtime.dart';
 import '../session.dart';
 import 'components.dart';
 import 'realtime_scope.dart';
+import 'live_ai.dart';
 import 'visuals.dart';
 import 'ai_usage.dart';
 
@@ -406,6 +407,18 @@ class _AiPageState extends State<AiPage> with WidgetsBindingObserver {
                     ),
                     icon: const Icon(Icons.insights_outlined),
                     label: const Text('Thống kê & hướng dẫn AI'),
+                  ),
+                  OutlinedButton.icon(
+                    onPressed: _choosing || _uploading
+                        ? null
+                        : () => Navigator.of(context).push(
+                            MaterialPageRoute<void>(
+                              builder: (_) =>
+                                  LiveAiPage(session: widget.controller),
+                            ),
+                          ),
+                    icon: const Icon(Icons.videocam_outlined),
+                    label: const Text('Camera nhận diện xoài'),
                   ),
                   const SizedBox(height: 12),
                   if (_error != null) ...[

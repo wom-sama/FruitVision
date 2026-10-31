@@ -30,6 +30,8 @@ class MainActivity : FlutterActivity() {
     private var requestedMediaType = "image"
     private val pickerRequest = 4101
     private val captureRequest = 4102
+    private val faceScanRequest = 4103
+    private var liveCamera: LiveCameraPlatform? = null
     private val uploadCache by lazy { File(cacheDir, "fv_uploads").apply { mkdirs() } }
     private val captureCache by lazy { File(cacheDir, "fv_capture").apply { mkdirs() } }
     private val evidenceCache by lazy { File(cacheDir, "fv_evidence").apply { mkdirs() } }
@@ -47,6 +49,7 @@ class MainActivity : FlutterActivity() {
     }
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
+        liveCamera = LiveCameraPlatform(this, flutterEngine)
         val updateChannel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "vn.fruitvision/updates")
         updater = AppUpdater(this, updateChannel).also { handler -> updateChannel.setMethodCallHandler(handler::handle) }
         biometrics = DeviceBiometrics(this)
@@ -62,7 +65,9 @@ class MainActivity : FlutterActivity() {
                             mediaResult = result
                             requestedMediaType = when(call.method) { "pickVideo" -> "video"; "pickEvidence" -> "evidence"; "captureFace" -> "face"; "captureChatImage","pickChatImage" -> "share"; else -> "image" }
                             try {
-                                if (call.method in setOf("captureImage","captureFace","captureChatImage")) {
+                                if (call.method == "captureFace") {
+                                    startActivityForResult(Intent(this,FVFaceScanActivity::class.java),faceScanRequest)
+                                } else if (call.method in setOf("captureImage","captureChatImage")) {
                                     val file = File.createTempFile("camera_", ".jpg", captureCache)
                                     captureFile = file
                                     val uri = FileProvider.getUriForFile(this, "$packageName.media", file)
@@ -164,18 +169,30 @@ class MainActivity : FlutterActivity() {
     @Deprecated("Activity result API retained to avoid an additional plugin dependency")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode != pickerRequest && requestCode != captureRequest) return
+        if (requestCode != pickerRequest && requestCode != captureRequest && requestCode != faceScanRequest) return
         val result = mediaResult ?: return
         mediaResult = null
-        val captured = captureFile; captureFile = null
-        if (resultCode != Activity.RESULT_OK) { captured?.delete(); result.success(null); return }
+        var captured = captureFile; captureFile = null
+        if (requestCode == faceScanRequest && resultCode == Activity.RESULT_OK) {
+            captured = try {
+                File(data?.getStringExtra("path") ?: error("Missing scan")).canonicalFile.also {
+                    require(it.parentFile == captureCache.canonicalFile && it.isFile)
+                }
+            } catch (_:Exception) { result.error("FACE_SCAN","Không lấy được ảnh quét trong bộ nhớ riêng.",null); return }
+        }
+        if (resultCode != Activity.RESULT_OK) {
+            captured?.delete()
+            val reason=if(requestCode==faceScanRequest)data?.getStringExtra("error")?.take(240) else null
+            if(reason!=null)result.error("FACE_SCAN",reason,null) else result.success(null)
+            return
+        }
         val mediaType = requestedMediaType
         mediaExecutor.execute {
             var local: File? = captured
             try {
                 var contentType: String
                 var name: String
-                if (requestCode == captureRequest) {
+                if (requestCode == captureRequest || requestCode == faceScanRequest) {
                     val capture = captured ?: error("Missing capture")
                     local = capture
                     contentType = "image/jpeg"; name = "camera.jpg"
@@ -227,7 +244,13 @@ class MainActivity : FlutterActivity() {
         }
     }
 
+    override fun onRequestPermissionsResult(requestCode:Int, permissions:Array<out String>, grantResults:IntArray) {
+        super.onRequestPermissionsResult(requestCode,permissions,grantResults)
+        liveCamera?.onPermissionResult(requestCode)
+    }
+
     override fun onDestroy() {
+        liveCamera?.close(); liveCamera=null
         updater?.close(); updater = null
         biometrics?.close(); biometrics = null
         captureFile?.delete(); captureFile = null

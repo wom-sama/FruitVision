@@ -15,11 +15,7 @@ public static class InteractionEndpoints
         app.MapCommunity();
         app.MapMarket();
         app.MapGet("/api/v1/catalog/products",async(AppDbContext db)=>Results.Ok(new{items=await db.Products.AsNoTracking().OrderBy(x=>x.Code).ToListAsync()}));
-        app.MapGet("/api/v1/conversations",async(HttpContext http,int? limit,AppDbContext db)=> {
-            if(!Input.Page(limit,out var size))return Input.Invalid("limit phải từ 1 đến 50.");
-            var uid=http.User.UserId();return Results.Ok(new{items=await db.Conversations.AsNoTracking().Where(c=>db.Participants.Any(p=>p.ConversationId==c.Id&&p.UserId==uid))
-                .OrderByDescending(c=>c.CreatedAt).ThenByDescending(c=>c.Id).Take(size).Select(c=>new{c.Id,c.Title,c.PostId,c.ArticleId,c.Kind,c.Region,c.ProductCode,c.IsOpen,c.OwnerId}).ToListAsync()});
-        }).RequireAuthorization("Approved");
+        app.MapGet("/api/v1/conversations", InboxEndpoints.List).RequireAuthorization("Approved");
         app.MapGet("/api/v1/conversations/{id:guid}/messages",async(Guid id,HttpContext http,int? limit,Guid? before,AppDbContext db)=> {
             if(!Input.Page(limit,out var size))return Input.Invalid("limit phải từ 1 đến 50.");
             var uid=http.User.UserId();
@@ -39,11 +35,12 @@ public static class InteractionEndpoints
         app.MapPost("/api/v1/conversations/{id:guid}/messages",async(Guid id,SendMessageRequest r,HttpContext http,AppDbContext db)=> {
             if(!Input.Safe(r.Text,true))return Input.Invalid("Tin nhắn chứa ký tự điều khiển.");
             await using var transaction=await db.Database.BeginTransactionAsync();
-            var conversation=await db.Conversations.FromSqlInterpolated($"SELECT * FROM \"Conversations\" WHERE \"Id\"={id} FOR UPDATE").SingleOrDefaultAsync();
-            if(conversation is null)return Results.NotFound();
             var uid=http.User.UserId();
-            if(!await db.Participants.AnyAsync(p=>p.ConversationId==id&&p.UserId==uid))return Results.NotFound();
-            var senderData=await db.Users.AsNoTracking().Where(user=>user.Id==uid).Select(user=>new{user.DisplayName,user.Role}).SingleAsync();
+            var access=await ProfileBlocks.LockNormalSendAsync(db,id,uid,http.RequestAborted);
+            var conversation=access.Conversation;
+            if(conversation is null)return Results.NotFound();
+            if(access.Blocked)return Results.Problem(statusCode:403,title:"Tài khoản đã chặn liên hệ riêng.");
+            var senderData=access.Sender;if(senderData is null)return Results.Forbid();
             var sender=new MessageSenderView(uid,senderData.DisplayName,senderData.Role.ToString());
             var text=Input.Text(r.Text);
             var old=await db.Messages.AsNoTracking().SingleOrDefaultAsync(x=>x.ConversationId==id&&x.SenderId==uid&&x.ClientMessageId==r.ClientMessageId);

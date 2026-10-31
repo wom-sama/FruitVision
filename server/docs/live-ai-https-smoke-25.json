@@ -1,0 +1,307 @@
+{
+  "status": "PASS",
+  "startedUtc": "2026-10-30T19:24:55.580432+00:00",
+  "scope": "Actual public HTTPS live-session PC inference, three identical frames from one existing bundled mango demo photo. Not continuous camera capture, mobile/native acceptance, field accuracy or FPS proof.",
+  "qualityEvaluation": "NOT_PERFORMED: no independent annotations or physical capture; zero detections is allowed.",
+  "tlsVerificationDisabled": false,
+  "requestBudget": 20,
+  "requests": [
+    {
+      "role": "Admin",
+      "method": "GET",
+      "route": "/api/v1/auth/me",
+      "status": 200,
+      "expectedStatus": 200,
+      "rttMs": 891.0
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "route": "/api/v1/auth/me",
+      "status": 200,
+      "expectedStatus": 200,
+      "rttMs": 312.0
+    },
+    {
+      "role": "Trader",
+      "method": "GET",
+      "route": "/api/v1/auth/me",
+      "status": 200,
+      "expectedStatus": 200,
+      "rttMs": 250.0
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "route": "/api/v1/auth/me",
+      "status": 200,
+      "expectedStatus": 200,
+      "rttMs": 266.0
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "route": "/api/v1/ai/jobs",
+      "status": 200,
+      "expectedStatus": 200,
+      "rttMs": 531.0
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "route": "/api/v1/ai/live/sessions",
+      "status": 403,
+      "expectedStatus": 403,
+      "rttMs": 250.0
+    },
+    {
+      "role": "Admin",
+      "method": "POST",
+      "route": "/api/v1/ai/live/sessions",
+      "status": 403,
+      "expectedStatus": 403,
+      "rttMs": 281.0
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "route": "/api/v1/ai/live/sessions",
+      "status": 201,
+      "expectedStatus": 201,
+      "rttMs": 1953.0
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "route": "/api/v1/ai/live/sessions/02e0160d-cd75-40a6-87c7-bd157fab1098/frames",
+      "status": 200,
+      "expectedStatus": 200,
+      "rttMs": 469.0
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "route": "/api/v1/ai/live/sessions/02e0160d-cd75-40a6-87c7-bd157fab1098/frames",
+      "status": 200,
+      "expectedStatus": 200,
+      "rttMs": 469.0
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "route": "/api/v1/ai/live/sessions/02e0160d-cd75-40a6-87c7-bd157fab1098/frames",
+      "status": 200,
+      "expectedStatus": 200,
+      "rttMs": 390.0
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "route": "/api/v1/ai/live/sessions/02e0160d-cd75-40a6-87c7-bd157fab1098/frames",
+      "status": 409,
+      "expectedStatus": 409,
+      "rttMs": 344.0
+    },
+    {
+      "role": "Producer",
+      "method": "DELETE",
+      "route": "/api/v1/ai/live/sessions/02e0160d-cd75-40a6-87c7-bd157fab1098",
+      "status": 204,
+      "expectedStatus": 204,
+      "rttMs": 328.0
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "route": "/api/v1/ai/live/sessions/02e0160d-cd75-40a6-87c7-bd157fab1098/frames",
+      "status": 404,
+      "expectedStatus": 404,
+      "rttMs": 359.0
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "route": "/api/v1/ai/jobs",
+      "status": 200,
+      "expectedStatus": 200,
+      "rttMs": 313.0
+    }
+  ],
+  "checks": [
+    {
+      "name": "Admin current verified approved identity",
+      "pass": true
+    },
+    {
+      "name": "Producer current verified approved identity",
+      "pass": true
+    },
+    {
+      "name": "Trader current verified approved identity",
+      "pass": true
+    },
+    {
+      "name": "Consumer current verified approved identity",
+      "pass": true
+    },
+    {
+      "name": "Consumer and Admin cannot start live inference",
+      "pass": true
+    },
+    {
+      "name": "Live start returns pinned mango scope and input bounds",
+      "pass": true
+    },
+    {
+      "name": "Identical JPEG repeat 2 has identical detections",
+      "pass": true
+    },
+    {
+      "name": "Identical JPEG repeat 3 has identical detections",
+      "pass": true
+    },
+    {
+      "name": "Three real live frame results satisfy the pinned contract",
+      "pass": true
+    },
+    {
+      "name": "Repeated sequence is rejected as stale",
+      "pass": true
+    },
+    {
+      "name": "Stop completes and late frames are rejected",
+      "pass": true
+    },
+    {
+      "name": "Live frames create no observable durable AiJob or job-frame updates",
+      "pass": true
+    }
+  ],
+  "frames": [
+    {
+      "sequence": 1,
+      "imageWidth": 640,
+      "imageHeight": 480,
+      "visibleCount": 1,
+      "stageCounts": {
+        "Xanh / chưa chín": 1,
+        "Chín": 0,
+        "Chưa xác định": 0
+      },
+      "objects": [
+        {
+          "box": [
+            0.3805665651957194,
+            0.4590967814127604,
+            0.6058305104573568,
+            0.6665359497070312
+          ],
+          "score": 0.9530392,
+          "fruitLabel": "Xoài (dự đoán)",
+          "stageCode": 0,
+          "stageLabel": "Xanh / chưa chín"
+        }
+      ],
+      "processingMs": 109,
+      "serverLatencyMs": 132.083,
+      "rttMs": 469.0
+    },
+    {
+      "sequence": 2,
+      "imageWidth": 640,
+      "imageHeight": 480,
+      "visibleCount": 1,
+      "stageCounts": {
+        "Xanh / chưa chín": 1,
+        "Chín": 0,
+        "Chưa xác định": 0
+      },
+      "objects": [
+        {
+          "box": [
+            0.3805665651957194,
+            0.4590967814127604,
+            0.6058305104573568,
+            0.6665359497070312
+          ],
+          "score": 0.9530392,
+          "fruitLabel": "Xoài (dự đoán)",
+          "stageCode": 0,
+          "stageLabel": "Xanh / chưa chín"
+        }
+      ],
+      "processingMs": 47,
+      "serverLatencyMs": 61.869,
+      "rttMs": 469.0
+    },
+    {
+      "sequence": 3,
+      "imageWidth": 640,
+      "imageHeight": 480,
+      "visibleCount": 1,
+      "stageCounts": {
+        "Xanh / chưa chín": 1,
+        "Chín": 0,
+        "Chưa xác định": 0
+      },
+      "objects": [
+        {
+          "box": [
+            0.3805665651957194,
+            0.4590967814127604,
+            0.6058305104573568,
+            0.6665359497070312
+          ],
+          "score": 0.9530392,
+          "fruitLabel": "Xoài (dự đoán)",
+          "stageCode": 0,
+          "stageLabel": "Xanh / chưa chín"
+        }
+      ],
+      "processingMs": 47,
+      "serverLatencyMs": 60.246,
+      "rttMs": 390.0
+    }
+  ],
+  "cacheEvidence": "Three frames in one API session. Process/session reuse follows the cached backend implementation; no remote process telemetry or cold-start claim.",
+  "storageInspection": "NOT_PERFORMED: no SQL or filesystem inspection. Own bounded AiJob metadata is compared before/after.",
+  "baseURL": "https://tips-differential-relating-validity.trycloudflare.com",
+  "actors": {
+    "Admin": "469ef088-fc54-4d53-b075-cc1b9d7763cd",
+    "Producer": "0973a2ff-981d-4598-82db-bf6c3eca83e8",
+    "Trader": "cce06044-4006-473e-beef-27c3f33637f4",
+    "Consumer": "a6508feb-fd18-4b83-9ad0-fb012bfe8224"
+  },
+  "sellerRole": "Producer",
+  "fixture": {
+    "path": "app/android/app/src/main/assets/demo_mango.jpg",
+    "sourceSha256": "0104a1e5e313f5c4082607b4cac73b2497f9a916d130e500c96616e05684b9f5",
+    "originalUprightDimensions": [
+      640,
+      480
+    ],
+    "frameDimensions": [
+      640,
+      480
+    ],
+    "frameSizeBytes": 96909,
+    "frameSha256": "99ea0770a569ee830923b4a3f4f456d63a2d6e4650dbb2fe30d111cf41429a2b",
+    "transform": "In-memory EXIF transpose/RGB, BILINEAR thumbnail<=960, JPEG quality80, metadata stripped; same bytes sent three times.",
+    "provenanceLimit": "Existing native demo sample may include padding/transformations; not independent ground truth. No synthetic scene generated by this driver."
+  },
+  "sessionId": "02e0160d-cd75-40a6-87c7-bd157fab1098",
+  "startRttMs": 1953.0,
+  "durability": {
+    "scope": "own bounded last20 AiJob metadata",
+    "jobCountBefore": 10,
+    "jobCountAfter": 10,
+    "observedNewJobIds": [],
+    "framesProcessedBefore": 3226,
+    "framesProcessedAfter": 3226,
+    "observedDurableJobFrameDelta": 0
+  },
+  "elapsedSeconds": 8.016,
+  "httpRequests": 15,
+  "privateErrors": ".local/test-results/live-ai-smoke-25-20261030T192455Z-bb56ef3d.errors.json",
+  "sessionStopped": true
+}

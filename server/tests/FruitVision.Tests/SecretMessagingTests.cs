@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.Json;
 using FruitVision.Api.Auth;
 using FruitVision.Api.Data;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -21,6 +22,53 @@ namespace FruitVision.Tests;
 public sealed class SecretMessagingTests(ApiFixture fixture)
 {
     private const string Base = "/api/v1/secret";
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task Person_blocks_deny_secret_creation_message_and_blob_writes_but_keep_existing_history(bool reverse)
+    {
+        using var app = App(); using var first = await User(app); using var second = await User(app, "Trader");
+        var (id, a, b) = await Thread(app, first, second);
+        using var oldMessage = await first.Http.PostAsJsonAsync(Path(id, "/messages"), Message(Guid.NewGuid(), a, b, Cipher(), Cipher())); Assert.Equal(HttpStatusCode.Created, oldMessage.StatusCode);
+        var bytes = RandomNumberGenerator.GetBytes(64); using var oldUpload = await Upload(first, id, a, b, bytes); Assert.Equal(HttpStatusCode.Created, oldUpload.StatusCode);
+        var oldFile = (await oldUpload.Content.ReadFromJsonAsync<JsonElement>()).GetProperty("id").GetGuid();
+        using (var scope = app.Services.CreateScope()) { var db = scope.ServiceProvider.GetRequiredService<AppDbContext>(); db.Add(new UserBlock { OwnerUserId = reverse ? second.Id : first.Id, BlockedUserId = reverse ? first.Id : second.Id }); await db.SaveChangesAsync(); }
+        var otherDirect = await Direct(app, first.Id, second.Id);
+        using var create = await first.Http.PostAsJsonAsync(Base + "/conversations", new { directConversationId = otherDirect });
+        using var send = await first.Http.PostAsJsonAsync(Path(id, "/messages"), Message(Guid.NewGuid(), a, b, Cipher(), Cipher()));
+        using var upload = await Upload(first, id, a, b, bytes);
+        Assert.All(new[] { create, send, upload }, response => Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode));
+        Assert.Single((await Get(second, Path(id, "/messages?deviceId=" + b))).GetProperty("items").EnumerateArray());
+        using var readable = await second.Http.GetAsync(Path(id, $"/attachments/{oldFile}?deviceId={b}")); Assert.Equal(HttpStatusCode.OK, readable.StatusCode);
+        var downloaded = await readable.Content.ReadAsByteArrayAsync(); Assert.True(bytes.SequenceEqual(downloaded));
+        using var savedScope = app.Services.CreateScope(); var saved = savedScope.ServiceProvider.GetRequiredService<AppDbContext>();
+        Assert.Equal(1, await saved.Set<SecretMessage>().CountAsync(m => m.ConversationId == id)); Assert.Equal(1, await saved.Set<SecretAttachment>().CountAsync(m => m.ConversationId == id));
+        var root = app.Services.GetRequiredService<IConfiguration>()["SecretMessages:RootPath"]!;
+        Assert.Single(Directory.EnumerateFiles(root, "*.bin", SearchOption.AllDirectories));
+    }
+
+    [Fact]
+    public async Task Secret_upload_rechecks_person_block_after_streaming_and_leaves_no_blob_or_metadata()
+    {
+        var gate = new UploadReadGate(); using var configured = App();
+        using var app = configured.WithWebHostBuilder(builder => builder.ConfigureServices(services => services.AddSingleton<IStartupFilter>(new UploadReadFilter(gate))));
+        using var first = await User(app); using var second = await User(app, "Trader"); var (id, a, b) = await Thread(app, first, second);
+        var uploading = Upload(first, id, a, b, RandomNumberGenerator.GetBytes(64));
+        try
+        {
+            await gate.Started.Task.WaitAsync(TimeSpan.FromSeconds(5));
+            using var scope = app.Services.CreateScope(); var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            await using var tx = await db.Database.BeginTransactionAsync(); var left = first.Id; var right = second.Id;
+            await db.Users.FromSqlInterpolated($"SELECT * FROM \"AspNetUsers\" WHERE \"Id\"={left} OR \"Id\"={right} ORDER BY \"Id\" FOR UPDATE").ToListAsync();
+            db.Add(new UserBlock { OwnerUserId = second.Id, BlockedUserId = first.Id }); await db.SaveChangesAsync(); await tx.CommitAsync();
+        }
+        finally { gate.Resume.TrySetResult(); }
+        using var response = await uploading; Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
+        using var savedScope = app.Services.CreateScope(); Assert.False(await savedScope.ServiceProvider.GetRequiredService<AppDbContext>().Set<SecretAttachment>().AnyAsync(m => m.ConversationId == id));
+        var root = app.Services.GetRequiredService<IConfiguration>()["SecretMessages:RootPath"]!;
+        Assert.Empty(Directory.EnumerateFiles(root, "*.bin", SearchOption.AllDirectories));
+    }
 
     [Theory]
     [InlineData("Producer", "Producer")]
@@ -210,6 +258,34 @@ public sealed class SecretMessagingTests(ApiFixture fixture)
     {
         settings ??= new(); settings["SecretMessages:RootPath"] = System.IO.Path.GetFullPath(System.IO.Path.Combine(AppContext.BaseDirectory, "../../../../../.local/secret-tests", Guid.NewGuid().ToString("N")));
         return fixture.WithWebHostBuilder(builder => builder.ConfigureAppConfiguration((_, c) => c.AddInMemoryCollection(settings)));
+    }
+    private sealed class UploadReadGate
+    {
+        public TaskCompletionSource Started { get; } = new(TaskCreationOptions.RunContinuationsAsynchronously);
+        public TaskCompletionSource Resume { get; } = new(TaskCreationOptions.RunContinuationsAsynchronously);
+    }
+    private sealed class UploadReadFilter(UploadReadGate gate) : IStartupFilter
+    {
+        public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> next) => app =>
+        {
+            app.Use(async (context, following) => { if (context.Request.Path.StartsWithSegments("/api/v1/secret") && context.Request.Path.Value!.EndsWith("/attachments", StringComparison.Ordinal)) context.Request.Body = new GatedReadStream(context.Request.Body, gate); await following(); });
+            next(app);
+        };
+    }
+    private sealed class GatedReadStream(Stream inner, UploadReadGate gate) : Stream
+    {
+        public override bool CanRead => true;
+        public override bool CanSeek => false;
+        public override bool CanWrite => false;
+        public override long Length => throw new NotSupportedException();
+        public override long Position { get => throw new NotSupportedException(); set => throw new NotSupportedException(); }
+        public override async ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken ct = default) { gate.Started.TrySetResult(); await gate.Resume.Task.WaitAsync(ct); return await inner.ReadAsync(buffer, ct); }
+        public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken ct) => ReadAsync(buffer.AsMemory(offset, count), ct).AsTask();
+        public override int Read(byte[] buffer, int offset, int count) => throw new NotSupportedException();
+        public override void Flush() { }
+        public override long Seek(long offset, SeekOrigin origin) => throw new NotSupportedException();
+        public override void SetLength(long value) => throw new NotSupportedException();
+        public override void Write(byte[] buffer, int offset, int count) => throw new NotSupportedException();
     }
     private async Task<Identity> User(WebApplicationFactory<Program> app, string role = "Producer", string method = "password_email_otp", int age = 0, bool verified = true)
     {

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../models.dart';
 import '../session.dart';
+import '../inbox.dart';
+import '../realtime.dart';
 import 'admin.dart';
 import 'ai.dart';
 import 'chat.dart';
@@ -16,6 +18,8 @@ import 'update_page.dart';
 import 'role_applications.dart';
 import 'publishing.dart';
 import 'security.dart';
+import 'inbox_notifications.dart';
+import 'profile.dart';
 export 'posts.dart' show PostCard;
 
 class Workspace extends StatefulWidget {
@@ -26,11 +30,89 @@ class Workspace extends StatefulWidget {
 }
 
 class _WorkspaceState extends State<Workspace> {
+  final _notificationMessenger = GlobalKey<ScaffoldMessengerState>();
   int _tab = 0;
   UserRole? _lastRole;
+  InboxController? _inbox;
+  RealtimeClient? _inboxHub;
+  String? _inboxIdentity;
+  int _lastUnread = 0;
+  bool _hadInbox = false;
+
+  void _configureInbox() {
+    final c = widget.controller;
+    final hub = RealtimeScope.maybeOf(context);
+    final identity = '${c.api.baseUrl}:${c.user?.id}:${c.user?.role.wire}';
+    if (_inbox != null && identity == _inboxIdentity && hub == _inboxHub) {
+      return;
+    }
+    _inbox?.removeListener(_inboxChanged);
+    _inbox?.dispose();
+    _inboxIdentity = identity;
+    _inboxHub = hub;
+    _lastUnread = 0;
+    _hadInbox = false;
+    _inbox = InboxController(session: c, realtime: hub)
+      ..addListener(_inboxChanged);
+  }
+
+  void _inboxChanged() {
+    if (!mounted) return;
+    final inbox = _inbox!;
+    final newMessage =
+        _hadInbox &&
+        !inbox.loading &&
+        inbox.error == null &&
+        inbox.unreadTotal > _lastUnread;
+    if (!inbox.loading && inbox.error == null) {
+      _hadInbox = true;
+      _lastUnread = inbox.unreadTotal;
+    }
+    setState(() {});
+    if (newMessage && ModalRoute.of(context)?.isCurrent == true) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted || ModalRoute.of(context)?.isCurrent != true) return;
+        final messenger = _notificationMessenger.currentState;
+        if (messenger == null) return;
+        messenger.hideCurrentSnackBar();
+        messenger.showSnackBar(
+          SnackBar(
+            showCloseIcon: true,
+            content: const Text('Bạn có tin nhắn mới'),
+            action: SnackBarAction(
+              label: 'Xem',
+              onPressed: () {
+                if (mounted) {
+                  setState(
+                    () =>
+                        _tab = widget.controller.user?.isAdmin == true ? 1 : 2,
+                  );
+                }
+              },
+            ),
+          ),
+        );
+      });
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _configureInbox();
+  }
+
+  @override
+  void dispose() {
+    _inbox?.removeListener(_inboxChanged);
+    _inbox?.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final c = widget.controller, user = c.user!;
+    _configureInbox();
     final seller =
         user.role == UserRole.producer || user.role == UserRole.trader;
     final admin = user.isAdmin;
@@ -46,16 +128,18 @@ class _WorkspaceState extends State<Workspace> {
       else
         ('Học về xoài', Icons.menu_book_outlined),
       if (seller) ('Kiến thức', Icons.menu_book_outlined),
-      (
-        user.role == UserRole.consumer ? 'Cộng đồng' : 'Trao đổi',
-        Icons.forum_outlined,
-      ),
+      if (user.role == UserRole.consumer) ('Cộng đồng', Icons.groups_outlined),
+      ('Tin nhắn', Icons.chat_bubble_outline),
       ('Tài khoản', Icons.person_outline),
     ];
     final tab = _tab.clamp(0, entries.length - 1);
     final status = ProfileBanner(controller: c);
     final conversations = user.isApproved
-        ? ConversationList(controller: c, header: status)
+        ? ConversationList(
+            controller: c,
+            header: const SizedBox.shrink(),
+            inbox: _inbox,
+          )
         : ListView(
             padding: const EdgeInsets.all(16),
             children: [
@@ -74,65 +158,76 @@ class _WorkspaceState extends State<Workspace> {
         MangoLearningPage(controller: c, header: status),
       if (seller) MangoLearningPage(controller: c, header: status),
       if (user.role == UserRole.consumer)
-        ArticlesPage(
-          controller: c,
-          embedded: true,
-          header: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              status,
-              OutlinedButton.icon(
-                onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute<void>(
-                    builder: (_) => Scaffold(
-                      appBar: AppBar(title: const Text('Hội thoại & nhóm')),
-                      body: SafeArea(
-                        child: ConversationList(
-                          controller: c,
-                          header: const SizedBox.shrink(),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                icon: const Icon(Icons.forum_outlined),
-                label: const Text('Hội thoại & nhóm'),
-              ),
-              const SizedBox(height: 12),
-            ],
-          ),
-        )
-      else
-        conversations,
+        ArticlesPage(controller: c, embedded: true, header: status),
+      conversations,
       AccountPage(controller: c, header: status),
     ];
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('FruitVision · Xoài'),
-        actions: [
-          IconButton(
-            tooltip: 'Làm mới hồ sơ',
-            onPressed: c.busy ? null : c.refreshProfile,
-            icon: const Icon(Icons.sync),
-          ),
-        ],
-      ),
-      body: SafeArea(
-        child: KeyedSubtree(
-          key: ValueKey('${user.role.wire}:${user.isApproved}'),
-          child: IndexedStack(index: tab, children: pages),
+    return ScaffoldMessenger(
+      key: _notificationMessenger,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('FruitVision · Xoài'),
+          actions: [
+            if (user.isApproved)
+              IconButton(
+                tooltip: 'Tin nhắn chưa đọc',
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (_) =>
+                        InboxNotificationsPage(controller: c, inbox: _inbox!),
+                  ),
+                ),
+                icon: Badge.count(
+                  count: _inbox?.unreadTotal ?? 0,
+                  isLabelVisible: (_inbox?.unreadTotal ?? 0) > 0,
+                  child: const Icon(Icons.notifications_none),
+                ),
+              ),
+            if (!user.isAdmin && user.isApproved)
+              IconButton(
+                tooltip: user.canSell
+                    ? 'Viết bài chuyên môn'
+                    : 'Viết bài cộng đồng',
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (_) =>
+                        PublicationEditor(controller: c, article: true),
+                  ),
+                ),
+                icon: const Icon(Icons.edit_square),
+              ),
+            IconButton(
+              tooltip: 'Làm mới hồ sơ',
+              onPressed: c.busy ? null : c.refreshProfile,
+              icon: const Icon(Icons.sync),
+            ),
+          ],
         ),
-      ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: tab,
-        labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-        onDestinationSelected: (index) => setState(() => _tab = index),
-        destinations: entries
-            .map(
-              (entry) =>
-                  NavigationDestination(icon: Icon(entry.$2), label: entry.$1),
-            )
-            .toList(),
+        body: SafeArea(
+          child: KeyedSubtree(
+            key: ValueKey('${user.role.wire}:${user.isApproved}'),
+            child: IndexedStack(index: tab, children: pages),
+          ),
+        ),
+        bottomNavigationBar: NavigationBar(
+          selectedIndex: tab,
+          labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+          onDestinationSelected: (index) => setState(() => _tab = index),
+          destinations: entries
+              .map(
+                (entry) => NavigationDestination(
+                  icon: entry.$1 == 'Tin nhắn'
+                      ? Badge.count(
+                          count: _inbox?.unreadTotal ?? 0,
+                          isLabelVisible: (_inbox?.unreadTotal ?? 0) > 0,
+                          child: Icon(entry.$2),
+                        )
+                      : Icon(entry.$2),
+                  label: entry.$1,
+                ),
+              )
+              .toList(),
+        ),
       ),
     );
   }
@@ -275,6 +370,15 @@ class AccountPage extends StatelessWidget {
       children: [
         header,
         const SectionTitle('Tài khoản'),
+        OutlinedButton.icon(
+          onPressed: () => Navigator.of(context).push(
+            MaterialPageRoute<void>(
+              builder: (_) => OwnProfilePage(controller: controller),
+            ),
+          ),
+          icon: const Icon(Icons.manage_accounts_outlined),
+          label: const Text('Hồ sơ & quyền riêng tư'),
+        ),
         DataCard(
           children: [
             Text(
@@ -305,7 +409,7 @@ class AccountPage extends StatelessWidget {
           label: const Text('Bảo mật tài khoản'),
         ),
         const SizedBox(height: 8),
-        if (!user.isAdmin) ...[
+        if (user.role == UserRole.consumer && user.isApproved) ...[
           OutlinedButton.icon(
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute<void>(
@@ -329,7 +433,7 @@ class AccountPage extends StatelessWidget {
               ),
             ),
             icon: const Icon(Icons.storefront_outlined),
-            label: const Text('Chi nhánh kinh doanh'),
+            label: Text(businessPlaceLabel(user.role)),
           ),
           const SizedBox(height: 8),
           ExpansionTile(
@@ -374,13 +478,14 @@ class AccountPage extends StatelessWidget {
           label: const Text('Kiểm tra cập nhật'),
         ),
         const SizedBox(height: 8),
-        OutlinedButton.icon(
-          onPressed: controller.busy
-              ? null
-              : () => openServerSettings(context, controller),
-          icon: const Icon(Icons.dns_outlined),
-          label: const Text('Cài đặt máy chủ'),
-        ),
+        if (user.isAdmin)
+          OutlinedButton.icon(
+            onPressed: controller.busy
+                ? null
+                : () => openServerSettings(context, controller),
+            icon: const Icon(Icons.dns_outlined),
+            label: const Text('Cài đặt máy chủ'),
+          ),
         const SizedBox(height: 16),
         FilledButton.icon(
           onPressed: controller.busy ? null : controller.logout,

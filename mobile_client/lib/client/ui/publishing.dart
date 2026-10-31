@@ -13,6 +13,10 @@ import 'location_picker.dart';
 import 'moderation.dart';
 import 'api_photo.dart';
 import 'chat.dart';
+import 'article_engagement.dart';
+
+String businessPlaceLabel(UserRole role) =>
+    role == UserRole.producer ? 'Cơ sở sản xuất' : 'Cơ sở kinh doanh';
 
 class ArticlesPage extends StatefulWidget {
   const ArticlesPage({
@@ -72,7 +76,7 @@ class _ArticlesPageState extends State<ArticlesPage> {
                   ? 'Chuyên môn về xoài'
                   : 'Chia sẻ cùng cộng đồng',
               subtitle: widget.lane == 'Professional'
-                  ? 'Kinh nghiệm từ Nhà sản xuất và Thương lái đã duyệt. Bài viết có chi nhánh và cần được kiểm duyệt.'
+                  ? 'Kinh nghiệm từ Nhà sản xuất và Thương lái đã duyệt. Bài viết gắn với cơ sở đã duyệt và cần được kiểm duyệt.'
                   : 'Kinh nghiệm và câu chuyện về xoài. Bài viết và ảnh cần được quản trị xét duyệt trước khi công bố.',
             ),
             if (!widget.controller.user!.isAdmin) ...[
@@ -180,6 +184,7 @@ class _ArticlePageState extends State<ArticlePage> {
   Json? _data;
   String? _error;
   bool _busy = false;
+  int _loadGeneration = 0;
   String get path => '/articles/${Uri.encodeComponent(widget.id)}';
   @override
   void initState() {
@@ -188,16 +193,19 @@ class _ArticlePageState extends State<ArticlePage> {
   }
 
   Future<void> _load() async {
+    final generation = ++_loadGeneration;
     try {
       final data = await widget.controller.api.get(path);
-      if (mounted) {
+      if (mounted && generation == _loadGeneration) {
         setState(() {
           _data = data;
           _error = null;
         });
       }
     } catch (e) {
-      if (mounted) setState(() => _error = errorText(e));
+      if (mounted && generation == _loadGeneration) {
+        setState(() => _error = errorText(e));
+      }
     }
   }
 
@@ -252,81 +260,101 @@ class _ArticlePageState extends State<ArticlePage> {
             ? Map<String, dynamic>.from(data!['author'])
             : <String, dynamic>{};
     final own = author['id'] == widget.controller.user!.id;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          data?['audienceLane'] == 'Professional'
-              ? 'Bài chuyên môn'
-              : 'Bài viết cộng đồng',
+    return EventRefresh(
+      targets: const {'ArticleChanged', 'PublishedArticleChanged'},
+      matches: (event) => event.data['id'] == widget.id,
+      onRefresh: _load,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            data?['audienceLane'] == 'Professional'
+                ? 'Bài chuyên môn'
+                : 'Bài viết cộng đồng',
+          ),
         ),
-      ),
-      body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
-            if (_error != null) MessageBox(_error!, error: true),
-            if (data == null && _error == null) const LinearProgressIndicator(),
-            if (data != null) ...[
-              SectionTitle(value(data, 'title')),
-              Text(
-                '${value(author, 'displayName')} · ${displayTime(data['createdAt'])}',
-              ),
-              const SizedBox(height: 20),
-              Text(value(data, 'body')),
-              if (data['image'] is Map)
-                ApiPhoto(
-                  key: ValueKey(
-                    '${data['id']}:${(data['image'] as Map)['id']}',
+        body: SafeArea(
+          child: ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
+              if (_error != null) MessageBox(_error!, error: true),
+              if (data == null && _error == null)
+                const LinearProgressIndicator(),
+              if (data != null) ...[
+                SectionTitle(value(data, 'title')),
+                Text(
+                  '${value(author, 'displayName')} · ${displayTime(data['createdAt'])}',
+                ),
+                const SizedBox(height: 20),
+                Text(value(data, 'body')),
+                if (data['image'] is Map)
+                  ApiPhoto(
+                    key: ValueKey(
+                      '${data['id']}:${(data['image'] as Map)['id']}',
+                    ),
+                    load: () =>
+                        widget.controller.api.articleImageBytes(widget.id),
                   ),
-                  load: () =>
-                      widget.controller.api.articleImageBytes(widget.id),
-                ),
-              const SizedBox(height: 16),
-              Text(applicationStatus(data['status'])),
-              if (value(data, 'reviewReason').isNotEmpty)
-                MessageBox(value(data, 'reviewReason')),
-              if (!own &&
-                  !widget.controller.user!.isAdmin &&
-                  widget.controller.user!.isApproved &&
-                  data['status'] == 'Published')
-                FilledButton.icon(
-                  onPressed: _busy ? null : _contact,
-                  icon: const Icon(Icons.forum_outlined),
-                  label: const Text('Trao đổi với tác giả'),
-                ),
-              if (own && !widget.controller.user!.isAdmin) ...[
                 const SizedBox(height: 16),
-                OutlinedButton.icon(
-                  onPressed: _busy
-                      ? null
-                      : () async {
-                          await Navigator.of(context).push(
-                            MaterialPageRoute<void>(
-                              builder: (_) => PublicationEditor(
-                                controller: widget.controller,
-                                article: true,
-                                initial: data,
-                              ),
-                            ),
-                          );
-                          if (mounted) _load();
-                        },
-                  icon: const Icon(Icons.edit_outlined),
-                  label: const Text('Sửa và gửi xét duyệt lại'),
-                ),
+                Text(applicationStatus(data['status'])),
+                if (value(data, 'reviewReason').isNotEmpty)
+                  MessageBox(value(data, 'reviewReason')),
                 if (data['status'] == 'Published')
-                  OutlinedButton(
-                    onPressed: _busy ? null : _withdraw,
-                    child: const Text('Tạm dừng bài viết'),
+                  ArticleEngagement(
+                    controller: widget.controller,
+                    articleId: widget.id,
                   ),
+                if (!own &&
+                    !widget.controller.user!.isAdmin &&
+                    widget.controller.user!.isApproved &&
+                    data['status'] == 'Published')
+                  FilledButton.icon(
+                    onPressed: _busy ? null : _contact,
+                    icon: const Icon(Icons.forum_outlined),
+                    label: const Text('Trao đổi với tác giả'),
+                  ),
+                if (own && !widget.controller.user!.isAdmin) ...[
+                  const SizedBox(height: 16),
+                  OutlinedButton.icon(
+                    onPressed: _busy
+                        ? null
+                        : () async {
+                            await Navigator.of(context).push(
+                              MaterialPageRoute<void>(
+                                builder: (_) => PublicationEditor(
+                                  controller: widget.controller,
+                                  article: true,
+                                  initial: data,
+                                ),
+                              ),
+                            );
+                            if (mounted) _load();
+                          },
+                    icon: const Icon(Icons.edit_outlined),
+                    label: const Text('Sửa và gửi xét duyệt lại'),
+                  ),
+                  if (data['status'] == 'Published')
+                    OutlinedButton(
+                      onPressed: _busy ? null : _withdraw,
+                      child: const Text('Tạm dừng bài viết'),
+                    ),
+                  OwnPublicationDelete(
+                    controller: widget.controller,
+                    article: true,
+                    data: data,
+                    reload: _load,
+                    onDeleted: () async {
+                      if (mounted) Navigator.of(context).pop(true);
+                    },
+                  ),
+                ],
               ],
+              TextButton.icon(
+                onPressed: _busy ? null : _load,
+                icon: const Icon(Icons.refresh),
+                label: const Text('Cập nhật bài viết'),
+              ),
             ],
-            TextButton.icon(
-              onPressed: _busy ? null : _load,
-              icon: const Icon(Icons.refresh),
-              label: const Text('Cập nhật bài viết'),
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -357,25 +385,29 @@ class _BranchesPageState extends State<BranchesPage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('Chi nhánh kinh doanh')),
+    appBar: AppBar(
+      title: Text(businessPlaceLabel(widget.controller.user!.role)),
+    ),
     body: SafeArea(
       child: LiveApiList(
         listKey: _list,
         api: widget.controller.api,
         path: '/branches/mine?limit=20',
         targets: const {'BranchChanged', 'ApprovedBranchChanged'},
-        empty: 'Bạn chưa đăng ký chi nhánh.',
+        empty: 'Bạn chưa đăng ký cơ sở.',
         header: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SectionTitle(
-              'Chi nhánh của tôi',
-              subtitle: 'Tin kinh doanh mới cần gắn với một chi nhánh đã được quản trị chấp thuận. Sửa thông tin sẽ gửi chi nhánh xét duyệt lại.',
+            SectionTitle(
+              businessPlaceLabel(widget.controller.user!.role),
+              subtitle: 'Đăng ký địa điểm hoạt động của bạn để quản trị xét duyệt. Thay đổi thông tin sẽ cần xét duyệt lại.',
             ),
             FilledButton.icon(
               onPressed: _edit,
               icon: const Icon(Icons.add_business_outlined),
-              label: const Text('Đăng ký chi nhánh'),
+              label: Text(
+                'Đăng ký ${businessPlaceLabel(widget.controller.user!.role).toLowerCase()}',
+              ),
             ),
             const SizedBox(height: 16),
           ],
@@ -396,13 +428,133 @@ class _BranchesPageState extends State<BranchesPage> {
             OutlinedButton.icon(
               onPressed: () => _edit(row),
               icon: const Icon(Icons.edit_outlined),
-              label: const Text('Sửa chi nhánh'),
+              label: const Text('Sửa thông tin cơ sở'),
+            ),
+            OwnPublicationDelete(
+              controller: widget.controller,
+              article: false,
+              data: row,
+              reload: () async {
+                await _list.currentState?.reload();
+              },
+              onDeleted: () async {
+                await _list.currentState?.reload();
+              },
             ),
           ],
         ),
       ),
     ),
   );
+}
+
+class OwnPublicationDelete extends StatefulWidget {
+  const OwnPublicationDelete({
+    super.key,
+    required this.controller,
+    required this.article,
+    required this.data,
+    required this.reload,
+    required this.onDeleted,
+  });
+  final SessionController controller;
+  final bool article;
+  final Json data;
+  final Future<void> Function() reload, onDeleted;
+  @override
+  State<OwnPublicationDelete> createState() => _OwnPublicationDeleteState();
+}
+
+class _OwnPublicationDeleteState extends State<OwnPublicationDelete> {
+  bool _busy = false, _deleting = false;
+  String? _error;
+  bool get _own {
+    final owner = widget.data[widget.article ? 'author' : 'owner'];
+    return owner is Map &&
+        owner['id'] == widget.controller.user?.id &&
+        widget.controller.user?.isAdmin == false &&
+        !widget.controller.endingSession;
+  }
+
+  Future<void> _delete() async {
+    if (!_own || _busy || widget.data['revision'] is! int) return;
+    final revision = widget.data['revision'],
+        origin = widget.controller.api.baseUrl,
+        ownerId = widget.controller.user?.id;
+    setState(() {
+      _busy = true;
+      _error = null;
+    });
+    try {
+      final confirmed = await showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(widget.article ? 'Xóa bài viết?' : 'Xóa cơ sở?'),
+          content: Text(
+            widget.article
+                ? 'Bài viết này sẽ được gỡ khỏi ứng dụng. Bạn có muốn tiếp tục?'
+                : 'Cơ sở này sẽ được gỡ khỏi ứng dụng. Máy chủ sẽ từ chối nếu còn tin kinh doanh liên kết chưa xóa.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('Giữ lại'),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('Xác nhận xóa'),
+            ),
+          ],
+        ),
+      );
+      if (!mounted ||
+          confirmed != true ||
+          !_own ||
+          origin != widget.controller.api.baseUrl ||
+          ownerId != widget.controller.user?.id) {
+        return;
+      }
+      setState(() => _deleting = true);
+      await widget.controller.api.delete(
+        '/${widget.article ? 'articles' : 'branches'}/${Uri.encodeComponent(value(widget.data, 'id'))}?expectedRevision=$revision',
+      );
+      if (mounted) await widget.onDeleted();
+    } catch (error) {
+      if (error is ApiException && error.status == 409) {
+        await widget.reload();
+      }
+      if (mounted) {
+        setState(
+          () => _error = error is ApiException && error.status == 409
+              ? 'Chưa thể xóa. Đã tải lại dữ liệu; hãy kiểm tra phiên bản mới hoặc các tin đang liên kết trước khi thử lại.'
+              : errorText(error),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _busy = false;
+          _deleting = false;
+        });
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) => !_own
+      ? const SizedBox.shrink()
+      : Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            if (_error != null) MessageBox(_error!, error: true),
+            TextButton.icon(
+              onPressed: _busy ? null : _delete,
+              icon: const Icon(Icons.delete_outline),
+              label: Text(widget.article ? 'Xóa bài viết' : 'Xóa cơ sở'),
+            ),
+            if (_deleting) const LinearProgressIndicator(),
+          ],
+        );
 }
 
 class PublicationEditor extends StatefulWidget {
@@ -607,7 +759,7 @@ class _PublicationEditorState extends State<PublicationEditor> {
             ? _professional
                   ? 'Viết bài chuyên môn'
                   : 'Viết bài cộng đồng'
-            : 'Đăng ký chi nhánh',
+            : 'Đăng ký ${businessPlaceLabel(widget.controller.user!.role).toLowerCase()}',
       ),
     ),
     body: SafeArea(
@@ -621,9 +773,9 @@ class _PublicationEditorState extends State<PublicationEditor> {
               MessageBox(
                 widget.article
                     ? _professional
-                          ? 'Chia sẻ kiến thức về xoài từ chi nhánh đã được duyệt. Nội dung và ảnh cần được quản trị xét duyệt trước khi công bố.'
+                          ? 'Chia sẻ kiến thức về xoài từ cơ sở đã được duyệt. Nội dung và ảnh cần được quản trị xét duyệt trước khi công bố.'
                           : 'Chia sẻ về xoài cùng cộng đồng. Nội dung và ảnh cần được duyệt trước khi công bố.'
-                    : 'Chọn địa giới từ danh mục. Quản trị xét duyệt chi nhánh trước khi bạn dùng cho tin kinh doanh.',
+                    : 'Chọn địa chỉ cơ sở từ danh mục. Quản trị xét duyệt trước khi cơ sở được dùng trong bài chuyên môn.',
               ),
               const SizedBox(height: 16),
               if (_error != null) MessageBox(_error!, error: true),
@@ -634,7 +786,7 @@ class _PublicationEditorState extends State<PublicationEditor> {
                   initialValue: _branchId,
                   isExpanded: true,
                   decoration: const InputDecoration(
-                    labelText: 'Chi nhánh đã duyệt',
+                    labelText: 'Cơ sở đã duyệt',
                   ),
                   items: _branches
                       .map(
@@ -650,8 +802,7 @@ class _PublicationEditorState extends State<PublicationEditor> {
                   onChanged: _busy
                       ? null
                       : (id) => setState(() => _branchId = id),
-                  validator: (id) =>
-                      id == null ? 'Chọn chi nhánh đã duyệt.' : null,
+                  validator: (id) => id == null ? 'Chọn cơ sở đã duyệt.' : null,
                 ),
                 TextButton.icon(
                   onPressed: _busy
@@ -666,7 +817,7 @@ class _PublicationEditorState extends State<PublicationEditor> {
                           if (mounted) _loadBranches();
                         },
                   icon: const Icon(Icons.storefront_outlined),
-                  label: const Text('Quản lý hồ sơ chi nhánh'),
+                  label: const Text('Quản lý cơ sở'),
                 ),
               ],
               TextFormField(
@@ -674,9 +825,7 @@ class _PublicationEditorState extends State<PublicationEditor> {
                 enabled: !_busy,
                 maxLength: 160,
                 decoration: InputDecoration(
-                  labelText: widget.article
-                      ? 'Tiêu đề bài viết'
-                      : 'Tên chi nhánh',
+                  labelText: widget.article ? 'Tiêu đề bài viết' : 'Tên cơ sở',
                 ),
                 validator: (v) => requiredText(v, min: widget.article ? 5 : 2),
               ),
@@ -712,7 +861,7 @@ class _PublicationEditorState extends State<PublicationEditor> {
                   keyboardType: TextInputType.phone,
                   maxLength: 30,
                   decoration: const InputDecoration(
-                    labelText: 'Số điện thoại chi nhánh',
+                    labelText: 'Số điện thoại liên hệ',
                   ),
                   validator: (v) => requiredText(v, min: 7),
                 ),

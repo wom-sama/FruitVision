@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../media.dart';
 import '../session.dart';
@@ -85,7 +85,9 @@ class _FacePhotoPageState extends State<FacePhotoPage> {
         setState(
           () => _error = e is FormatException
               ? e.message
-              : 'Không mở được ảnh. Hãy chụp lại hoặc chọn ảnh khác.',
+              : e is PlatformException && e.code == 'FACE_SCAN'
+              ? safeErrorMessage(e.message ?? 'Không quét được khuôn mặt. Kiểm tra quyền camera và thử lại.')
+              : 'Không quét được khuôn mặt. Kiểm tra quyền camera và thử lại.',
         );
       }
     } finally {
@@ -197,16 +199,13 @@ class _FacePhotoPageState extends State<FacePhotoPage> {
                   ),
                 ],
                 const SizedBox(height: 16),
+                const Text(
+                  'Đặt khuôn mặt trong khung hướng dẫn. Camera trong ứng dụng tự lấy ảnh; bạn xem trước rồi chủ động gửi để đối chiếu và nhận mã email.',
+                ),
                 OutlinedButton.icon(
                   onPressed: canSend ? () => _choose('captureFace') : null,
                   icon: const Icon(Icons.camera_alt_outlined),
-                  label: const Text('Chụp ảnh khuôn mặt'),
-                ),
-                const SizedBox(height: 8),
-                OutlinedButton.icon(
-                  onPressed: canSend ? () => _choose('pickImage') : null,
-                  icon: const Icon(Icons.photo_library_outlined),
-                  label: const Text('Chọn ảnh JPEG/PNG ≤ 2 MiB'),
+                  label: const Text('Quét khuôn mặt'),
                 ),
                 const SizedBox(height: 20),
                 FilledButton.icon(

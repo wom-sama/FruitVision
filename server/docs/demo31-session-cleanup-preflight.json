@@ -1,0 +1,40 @@
+{
+  "scope": "Normal canonical-session rotation and owned extra-session cleanup only; no role/domain/key changes.",
+  "startedUtc": "2026-10-30T22:09:21.903975+00:00",
+  "canonicalRoles": {
+    "Admin": {
+      "currentRole": "Admin",
+      "activeApprovedVerified": true
+    },
+    "Producer": {
+      "currentRole": "Producer",
+      "activeApprovedVerified": true
+    },
+    "Trader": {
+      "currentRole": "Trader",
+      "activeApprovedVerified": true
+    },
+    "Consumer": {
+      "currentRole": "Consumer",
+      "activeApprovedVerified": true
+    }
+  },
+  "ownedQaAdmin": {
+    "status": "current_owned_session_logged_out_verified401",
+    "roleChanged": false
+  },
+  "ownedQaProducer": {
+    "status": "valid_Producer_session",
+    "normalRefreshPerformed": false,
+    "strongAuthenticationReset": false,
+    "keysTouched": false
+  },
+  "ui3AccessOnlySnapshotReady": true,
+  "canonicalRotations": 4,
+  "status": "COMPLETE",
+  "httpRequests": 13,
+  "finishedUtc": "2026-10-30T22:09:25.769181+00:00",
+  "roleChanges": 0,
+  "keysReset": false,
+  "canonicalLockReleased": true
+}

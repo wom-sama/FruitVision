@@ -1,0 +1,1254 @@
+{
+  "status": "PASS",
+  "startedUtc": "2026-10-30T19:21:57.557769+00:00",
+  "scope": "HTTPS 2.5 REST with four real supplied OTP sessions: synthetic role-application submission/review, article image/likes/comments, normal Direct and Admin-owned group. Not native/WSS/E2EE cryptography acceptance.",
+  "sessionProvenance": "Login/email OTP performed separately by operator; this driver confirms actual current API identities and never fabricates or refreshes tokens.",
+  "tlsVerificationDisabled": false,
+  "requests": [
+    {
+      "role": "Admin",
+      "method": "GET",
+      "status": 401,
+      "expectedStatus": [
+        200,
+        401
+      ],
+      "latencyMs": 1110.0,
+      "routeTemplate": "/api/v1/auth/me"
+    },
+    {
+      "role": "anonymous",
+      "method": "POST",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 578.0,
+      "routeTemplate": "/api/v1/auth/refresh"
+    },
+    {
+      "role": "Admin",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 297.0,
+      "routeTemplate": "/api/v1/auth/me"
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "status": 401,
+      "expectedStatus": [
+        200,
+        401
+      ],
+      "latencyMs": 281.0,
+      "routeTemplate": "/api/v1/auth/me"
+    },
+    {
+      "role": "anonymous",
+      "method": "POST",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 281.0,
+      "routeTemplate": "/api/v1/auth/refresh"
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 265.0,
+      "routeTemplate": "/api/v1/auth/me"
+    },
+    {
+      "role": "Trader",
+      "method": "GET",
+      "status": 401,
+      "expectedStatus": [
+        200,
+        401
+      ],
+      "latencyMs": 266.0,
+      "routeTemplate": "/api/v1/auth/me"
+    },
+    {
+      "role": "anonymous",
+      "method": "POST",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 297.0,
+      "routeTemplate": "/api/v1/auth/refresh"
+    },
+    {
+      "role": "Trader",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 328.0,
+      "routeTemplate": "/api/v1/auth/me"
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "status": 401,
+      "expectedStatus": [
+        200,
+        401
+      ],
+      "latencyMs": 312.0,
+      "routeTemplate": "/api/v1/auth/me"
+    },
+    {
+      "role": "anonymous",
+      "method": "POST",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 297.0,
+      "routeTemplate": "/api/v1/auth/refresh"
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 266.0,
+      "routeTemplate": "/api/v1/auth/me"
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 500.0,
+      "routeTemplate": "/api/v1/role-applications",
+      "queryNames": [
+        "limit"
+      ]
+    },
+    {
+      "role": "anonymous",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 2953.0,
+      "routeTemplate": "/api/v1/locations/provinces",
+      "queryNames": [
+        "country"
+      ]
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 391.0,
+      "routeTemplate": "/api/v1/role-applications"
+    },
+    {
+      "role": "Consumer",
+      "method": "PUT",
+      "status": 400,
+      "expectedStatus": 400,
+      "latencyMs": 328.0,
+      "routeTemplate": "/api/v1/role-applications/{id}"
+    },
+    {
+      "role": "Consumer",
+      "method": "PUT",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 281.0,
+      "routeTemplate": "/api/v1/role-applications/{id}"
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 531.0,
+      "routeTemplate": "/api/v1/role-applications/{id}/evidence",
+      "queryNames": [
+        "category",
+        "expectedRevision"
+      ]
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 375.0,
+      "routeTemplate": "/api/v1/role-applications/{id}/submit"
+    },
+    {
+      "role": "Admin",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 531.0,
+      "routeTemplate": "/api/v1/admin/role-applications",
+      "queryNames": [
+        "limit",
+        "status"
+      ]
+    },
+    {
+      "role": "Admin",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 625.0,
+      "routeTemplate": "/api/v1/admin/role-applications/{id}"
+    },
+    {
+      "role": "Admin",
+      "method": "POST",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 313.0,
+      "routeTemplate": "/api/v1/admin/role-applications/{id}/review"
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 281.0,
+      "routeTemplate": "/api/v1/role-applications"
+    },
+    {
+      "role": "Consumer",
+      "method": "PUT",
+      "status": 400,
+      "expectedStatus": 400,
+      "latencyMs": 297.0,
+      "routeTemplate": "/api/v1/role-applications/{id}"
+    },
+    {
+      "role": "Consumer",
+      "method": "PUT",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 281.0,
+      "routeTemplate": "/api/v1/role-applications/{id}"
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 453.0,
+      "routeTemplate": "/api/v1/role-applications/{id}/evidence",
+      "queryNames": [
+        "category",
+        "expectedRevision"
+      ]
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 313.0,
+      "routeTemplate": "/api/v1/role-applications/{id}/submit"
+    },
+    {
+      "role": "Admin",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 312.0,
+      "routeTemplate": "/api/v1/admin/role-applications",
+      "queryNames": [
+        "limit",
+        "status"
+      ]
+    },
+    {
+      "role": "Admin",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 469.0,
+      "routeTemplate": "/api/v1/admin/role-applications/{id}"
+    },
+    {
+      "role": "Admin",
+      "method": "POST",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 297.0,
+      "routeTemplate": "/api/v1/admin/role-applications/{id}/review"
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 250.0,
+      "routeTemplate": "/api/v1/auth/me"
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 844.0,
+      "routeTemplate": "/api/v1/articles/images"
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 328.0,
+      "routeTemplate": "/api/v1/articles"
+    },
+    {
+      "role": "anonymous",
+      "method": "GET",
+      "status": 404,
+      "expectedStatus": 404,
+      "latencyMs": 484.0,
+      "routeTemplate": "/api/v1/articles/{id}/image"
+    },
+    {
+      "role": "Admin",
+      "method": "POST",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 359.0,
+      "routeTemplate": "/api/v1/admin/articles/{id}/review"
+    },
+    {
+      "role": "anonymous",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 391.0,
+      "routeTemplate": "/api/v1/articles/{id}/image"
+    },
+    {
+      "role": "Producer",
+      "method": "PUT",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 375.0,
+      "routeTemplate": "/api/v1/articles/{id}/like"
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 328.0,
+      "routeTemplate": "/api/v1/articles/{id}/comments"
+    },
+    {
+      "role": "Trader",
+      "method": "PUT",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 297.0,
+      "routeTemplate": "/api/v1/articles/{id}/like"
+    },
+    {
+      "role": "Trader",
+      "method": "POST",
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 281.0,
+      "routeTemplate": "/api/v1/articles/{id}/comments"
+    },
+    {
+      "role": "Consumer",
+      "method": "PUT",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 297.0,
+      "routeTemplate": "/api/v1/articles/{id}/like"
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 297.0,
+      "routeTemplate": "/api/v1/articles/{id}/comments"
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 282.0,
+      "routeTemplate": "/api/v1/articles/{id}/comments"
+    },
+    {
+      "role": "Producer",
+      "method": "PUT",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 266.0,
+      "routeTemplate": "/api/v1/articles/{id}/like"
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "status": 409,
+      "expectedStatus": 409,
+      "latencyMs": 265.0,
+      "routeTemplate": "/api/v1/articles/{id}/comments"
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 469.0,
+      "routeTemplate": "/api/v1/articles/{id}/likes"
+    },
+    {
+      "role": "Admin",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 500.0,
+      "routeTemplate": "/api/v1/articles/{id}/comments",
+      "queryNames": [
+        "limit"
+      ]
+    },
+    {
+      "role": "Consumer",
+      "method": "DELETE",
+      "status": 204,
+      "expectedStatus": 204,
+      "latencyMs": 281.0,
+      "routeTemplate": "/api/v1/articles/{id}/comments/{id}"
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "status": 409,
+      "expectedStatus": 409,
+      "latencyMs": 282.0,
+      "routeTemplate": "/api/v1/articles/{id}/comments"
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 390.0,
+      "routeTemplate": "/api/v1/articles/{id}/comments",
+      "queryNames": [
+        "limit"
+      ]
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 313.0,
+      "routeTemplate": "/api/v1/articles/{id}/conversations"
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 312.0,
+      "routeTemplate": "/api/v1/articles/{id}/conversations"
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 532.0,
+      "routeTemplate": "/api/v1/conversations/{id}/messages"
+    },
+    {
+      "role": "Trader",
+      "method": "GET",
+      "status": 404,
+      "expectedStatus": 404,
+      "latencyMs": 265.0,
+      "routeTemplate": "/api/v1/conversations/{id}/messages"
+    },
+    {
+      "role": "Admin",
+      "method": "POST",
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 328.0,
+      "routeTemplate": "/api/v1/community/groups"
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "status": 403,
+      "expectedStatus": 403,
+      "latencyMs": 312.0,
+      "routeTemplate": "/api/v1/community/groups"
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 360.0,
+      "routeTemplate": "/api/v1/community/groups/{id}/join"
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 344.0,
+      "routeTemplate": "/api/v1/conversations/{id}/messages"
+    },
+    {
+      "role": "Trader",
+      "method": "POST",
+      "status": 403,
+      "expectedStatus": 403,
+      "latencyMs": 281.0,
+      "routeTemplate": "/api/v1/community/groups"
+    },
+    {
+      "role": "Trader",
+      "method": "POST",
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 281.0,
+      "routeTemplate": "/api/v1/community/groups/{id}/join"
+    },
+    {
+      "role": "Trader",
+      "method": "POST",
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 266.0,
+      "routeTemplate": "/api/v1/conversations/{id}/messages"
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "status": 403,
+      "expectedStatus": 403,
+      "latencyMs": 281.0,
+      "routeTemplate": "/api/v1/community/groups"
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 344.0,
+      "routeTemplate": "/api/v1/community/groups/{id}/join"
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 312.0,
+      "routeTemplate": "/api/v1/conversations/{id}/messages"
+    },
+    {
+      "role": "Admin",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 453.0,
+      "routeTemplate": "/api/v1/conversations/{id}/messages",
+      "queryNames": [
+        "limit"
+      ]
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "status": 403,
+      "expectedStatus": 403,
+      "latencyMs": 328.0,
+      "routeTemplate": "/api/v1/community/groups/{id}/close"
+    },
+    {
+      "role": "Admin",
+      "method": "POST",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 313.0,
+      "routeTemplate": "/api/v1/community/groups/{id}/close"
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 312.0,
+      "routeTemplate": "/api/v1/articles/{id}/withdraw"
+    }
+  ],
+  "checks": [
+    {
+      "name": "four supplied role sessions identify four distinct users",
+      "pass": true,
+      "atMs": 15
+    },
+    {
+      "name": "Admin GET /api/v1/auth/me returns expected status",
+      "pass": true,
+      "atMs": 1125
+    },
+    {
+      "name": "anonymous POST /api/v1/auth/refresh returns expected status",
+      "pass": true,
+      "atMs": 1703
+    },
+    {
+      "name": "rotated pair has opaque token shapes and same real user",
+      "pass": true,
+      "atMs": 1703
+    },
+    {
+      "name": "Admin GET /api/v1/auth/me returns expected status",
+      "pass": true,
+      "atMs": 2000
+    },
+    {
+      "name": "Admin is the current active verified approved supplied role",
+      "pass": true,
+      "atMs": 2000
+    },
+    {
+      "name": "Producer GET /api/v1/auth/me returns expected status",
+      "pass": true,
+      "atMs": 2281
+    },
+    {
+      "name": "anonymous POST /api/v1/auth/refresh returns expected status",
+      "pass": true,
+      "atMs": 2578
+    },
+    {
+      "name": "rotated pair has opaque token shapes and same real user",
+      "pass": true,
+      "atMs": 2578
+    },
+    {
+      "name": "Producer GET /api/v1/auth/me returns expected status",
+      "pass": true,
+      "atMs": 2843
+    },
+    {
+      "name": "Producer is the current active verified approved supplied role",
+      "pass": true,
+      "atMs": 2843
+    },
+    {
+      "name": "Trader GET /api/v1/auth/me returns expected status",
+      "pass": true,
+      "atMs": 3109
+    },
+    {
+      "name": "anonymous POST /api/v1/auth/refresh returns expected status",
+      "pass": true,
+      "atMs": 3422
+    },
+    {
+      "name": "rotated pair has opaque token shapes and same real user",
+      "pass": true,
+      "atMs": 3422
+    },
+    {
+      "name": "Trader GET /api/v1/auth/me returns expected status",
+      "pass": true,
+      "atMs": 3750
+    },
+    {
+      "name": "Trader is the current active verified approved supplied role",
+      "pass": true,
+      "atMs": 3750
+    },
+    {
+      "name": "Consumer GET /api/v1/auth/me returns expected status",
+      "pass": true,
+      "atMs": 4062
+    },
+    {
+      "name": "anonymous POST /api/v1/auth/refresh returns expected status",
+      "pass": true,
+      "atMs": 4359
+    },
+    {
+      "name": "rotated pair has opaque token shapes and same real user",
+      "pass": true,
+      "atMs": 4359
+    },
+    {
+      "name": "Consumer GET /api/v1/auth/me returns expected status",
+      "pass": true,
+      "atMs": 4625
+    },
+    {
+      "name": "Consumer is the current active verified approved supplied role",
+      "pass": true,
+      "atMs": 4625
+    },
+    {
+      "name": "Consumer GET /api/v1/role-applications returns expected status",
+      "pass": true,
+      "atMs": 5125
+    },
+    {
+      "name": "no existing active Consumer application may be touched",
+      "pass": true,
+      "atMs": 5125
+    },
+    {
+      "name": "bounded application history is complete before creating a QA application",
+      "pass": true,
+      "atMs": 5125
+    },
+    {
+      "name": "anonymous GET /api/v1/locations/provinces returns expected status",
+      "pass": true,
+      "atMs": 8078
+    },
+    {
+      "name": "trusted location API contains selected VN province",
+      "pass": true,
+      "atMs": 8078
+    },
+    {
+      "name": "real Pillow JPEG fixture is within upload cap",
+      "pass": true,
+      "atMs": 8234
+    },
+    {
+      "name": "Consumer POST /api/v1/role-applications returns expected status",
+      "pass": true,
+      "atMs": 8625
+    },
+    {
+      "name": "new owned role application begins Draft",
+      "pass": true,
+      "atMs": 8625
+    },
+    {
+      "name": "Consumer PUT /api/v1/role-applications/{id} returns expected status",
+      "pass": true,
+      "atMs": 8953
+    },
+    {
+      "name": "Consumer PUT /api/v1/role-applications/{id} returns expected status",
+      "pass": true,
+      "atMs": 9234
+    },
+    {
+      "name": "Consumer POST /api/v1/role-applications/{id}/evidence returns expected status",
+      "pass": true,
+      "atMs": 9765
+    },
+    {
+      "name": "real private JPEG proof is retained with correct role category",
+      "pass": true,
+      "atMs": 9765
+    },
+    {
+      "name": "Consumer POST /api/v1/role-applications/{id}/submit returns expected status",
+      "pass": true,
+      "atMs": 10140
+    },
+    {
+      "name": "explicit Submit commits Submitted with timestamp",
+      "pass": true,
+      "atMs": 10156
+    },
+    {
+      "name": "Admin GET /api/v1/admin/role-applications returns expected status",
+      "pass": true,
+      "atMs": 10687
+    },
+    {
+      "name": "correct Admin Submitted queue contains owned application with public applicant identity and proof",
+      "pass": true,
+      "atMs": 10687
+    },
+    {
+      "name": "Admin GET /api/v1/admin/role-applications/{id} returns expected status",
+      "pass": true,
+      "atMs": 11312
+    },
+    {
+      "name": "Admin can inspect own synthetic submitted profile with distinct role fields",
+      "pass": true,
+      "atMs": 11312
+    },
+    {
+      "name": "Admin POST /api/v1/admin/role-applications/{id}/review returns expected status",
+      "pass": true,
+      "atMs": 11625
+    },
+    {
+      "name": "technical rejection releases active application without granting role",
+      "pass": true,
+      "atMs": 11625
+    },
+    {
+      "name": "Consumer POST /api/v1/role-applications returns expected status",
+      "pass": true,
+      "atMs": 11906
+    },
+    {
+      "name": "new owned role application begins Draft",
+      "pass": true,
+      "atMs": 11906
+    },
+    {
+      "name": "Consumer PUT /api/v1/role-applications/{id} returns expected status",
+      "pass": true,
+      "atMs": 12203
+    },
+    {
+      "name": "Consumer PUT /api/v1/role-applications/{id} returns expected status",
+      "pass": true,
+      "atMs": 12484
+    },
+    {
+      "name": "Consumer POST /api/v1/role-applications/{id}/evidence returns expected status",
+      "pass": true,
+      "atMs": 12937
+    },
+    {
+      "name": "real private JPEG proof is retained with correct role category",
+      "pass": true,
+      "atMs": 12937
+    },
+    {
+      "name": "Consumer POST /api/v1/role-applications/{id}/submit returns expected status",
+      "pass": true,
+      "atMs": 13250
+    },
+    {
+      "name": "explicit Submit commits Submitted with timestamp",
+      "pass": true,
+      "atMs": 13250
+    },
+    {
+      "name": "Admin GET /api/v1/admin/role-applications returns expected status",
+      "pass": true,
+      "atMs": 13562
+    },
+    {
+      "name": "correct Admin Submitted queue contains owned application with public applicant identity and proof",
+      "pass": true,
+      "atMs": 13562
+    },
+    {
+      "name": "Admin GET /api/v1/admin/role-applications/{id} returns expected status",
+      "pass": true,
+      "atMs": 14031
+    },
+    {
+      "name": "Admin can inspect own synthetic submitted profile with distinct role fields",
+      "pass": true,
+      "atMs": 14031
+    },
+    {
+      "name": "Admin POST /api/v1/admin/role-applications/{id}/review returns expected status",
+      "pass": true,
+      "atMs": 14328
+    },
+    {
+      "name": "technical rejection releases active application without granting role",
+      "pass": true,
+      "atMs": 14328
+    },
+    {
+      "name": "Consumer GET /api/v1/auth/me returns expected status",
+      "pass": true,
+      "atMs": 14578
+    },
+    {
+      "name": "main Consumer role remains unchanged",
+      "pass": true,
+      "atMs": 14578
+    },
+    {
+      "name": "Consumer POST /api/v1/articles/images returns expected status",
+      "pass": true,
+      "atMs": 15422
+    },
+    {
+      "name": "Consumer POST /api/v1/articles returns expected status",
+      "pass": true,
+      "atMs": 15750
+    },
+    {
+      "name": "anonymous GET /api/v1/articles/{id}/image returns expected status",
+      "pass": true,
+      "atMs": 16234
+    },
+    {
+      "name": "Admin POST /api/v1/admin/articles/{id}/review returns expected status",
+      "pass": true,
+      "atMs": 16593
+    },
+    {
+      "name": "anonymous GET /api/v1/articles/{id}/image returns expected status",
+      "pass": true,
+      "atMs": 16984
+    },
+    {
+      "name": "actual image response is JPEG",
+      "pass": true,
+      "atMs": 16984
+    },
+    {
+      "name": "actual canonical JPEG dimensions match server metadata",
+      "pass": true,
+      "atMs": 16984
+    },
+    {
+      "name": "actual server canonicalization removed EXIF and resized input",
+      "pass": true,
+      "atMs": 16984
+    },
+    {
+      "name": "actual image byte length matches stored metadata",
+      "pass": true,
+      "atMs": 16984
+    },
+    {
+      "name": "Producer PUT /api/v1/articles/{id}/like returns expected status",
+      "pass": true,
+      "atMs": 17359
+    },
+    {
+      "name": "explicit like is true",
+      "pass": true,
+      "atMs": 17359
+    },
+    {
+      "name": "Producer POST /api/v1/articles/{id}/comments returns expected status",
+      "pass": true,
+      "atMs": 17687
+    },
+    {
+      "name": "comment author exposes exact authorized public identity",
+      "pass": true,
+      "atMs": 17703
+    },
+    {
+      "name": "Trader PUT /api/v1/articles/{id}/like returns expected status",
+      "pass": true,
+      "atMs": 18000
+    },
+    {
+      "name": "explicit like is true",
+      "pass": true,
+      "atMs": 18000
+    },
+    {
+      "name": "Trader POST /api/v1/articles/{id}/comments returns expected status",
+      "pass": true,
+      "atMs": 18281
+    },
+    {
+      "name": "comment author exposes exact authorized public identity",
+      "pass": true,
+      "atMs": 18281
+    },
+    {
+      "name": "Consumer PUT /api/v1/articles/{id}/like returns expected status",
+      "pass": true,
+      "atMs": 18578
+    },
+    {
+      "name": "explicit like is true",
+      "pass": true,
+      "atMs": 18578
+    },
+    {
+      "name": "Consumer POST /api/v1/articles/{id}/comments returns expected status",
+      "pass": true,
+      "atMs": 18875
+    },
+    {
+      "name": "comment author exposes exact authorized public identity",
+      "pass": true,
+      "atMs": 18890
+    },
+    {
+      "name": "Producer POST /api/v1/articles/{id}/comments returns expected status",
+      "pass": true,
+      "atMs": 19172
+    },
+    {
+      "name": "exact comment retry uses original record",
+      "pass": true,
+      "atMs": 19187
+    },
+    {
+      "name": "Producer PUT /api/v1/articles/{id}/like returns expected status",
+      "pass": true,
+      "atMs": 19453
+    },
+    {
+      "name": "Producer POST /api/v1/articles/{id}/comments returns expected status",
+      "pass": true,
+      "atMs": 19718
+    },
+    {
+      "name": "Consumer GET /api/v1/articles/{id}/likes returns expected status",
+      "pass": true,
+      "atMs": 20187
+    },
+    {
+      "name": "durable engagement counts are three likes and three comments",
+      "pass": true,
+      "atMs": 20187
+    },
+    {
+      "name": "Admin GET /api/v1/articles/{id}/comments returns expected status",
+      "pass": true,
+      "atMs": 20687
+    },
+    {
+      "name": "Admin sees all three public comments with moderation permission",
+      "pass": true,
+      "atMs": 20687
+    },
+    {
+      "name": "Consumer DELETE /api/v1/articles/{id}/comments/{id} returns expected status",
+      "pass": true,
+      "atMs": 20968
+    },
+    {
+      "name": "Consumer POST /api/v1/articles/{id}/comments returns expected status",
+      "pass": true,
+      "atMs": 21250
+    },
+    {
+      "name": "Consumer GET /api/v1/articles/{id}/comments returns expected status",
+      "pass": true,
+      "atMs": 21640
+    },
+    {
+      "name": "deleted comment is excluded from durable counts and list",
+      "pass": true,
+      "atMs": 21640
+    },
+    {
+      "name": "Producer POST /api/v1/articles/{id}/conversations returns expected status",
+      "pass": true,
+      "atMs": 21953
+    },
+    {
+      "name": "Producer POST /api/v1/articles/{id}/conversations returns expected status",
+      "pass": true,
+      "atMs": 22265
+    },
+    {
+      "name": "normal article contact reuses one exact Direct",
+      "pass": true,
+      "atMs": 22265
+    },
+    {
+      "name": "Consumer GET /api/v1/conversations/{id}/messages returns expected status",
+      "pass": true,
+      "atMs": 22797
+    },
+    {
+      "name": "Trader GET /api/v1/conversations/{id}/messages returns expected status",
+      "pass": true,
+      "atMs": 23062
+    },
+    {
+      "name": "Admin POST /api/v1/community/groups returns expected status",
+      "pass": true,
+      "atMs": 23390
+    },
+    {
+      "name": "new group is owned by Admin with creator membership",
+      "pass": true,
+      "atMs": 23406
+    },
+    {
+      "name": "Producer POST /api/v1/community/groups returns expected status",
+      "pass": true,
+      "atMs": 23718
+    },
+    {
+      "name": "Producer POST /api/v1/community/groups/{id}/join returns expected status",
+      "pass": true,
+      "atMs": 24078
+    },
+    {
+      "name": "Producer POST /api/v1/conversations/{id}/messages returns expected status",
+      "pass": true,
+      "atMs": 24422
+    },
+    {
+      "name": "normal image message sender is exact authorized public identity",
+      "pass": true,
+      "atMs": 24422
+    },
+    {
+      "name": "Trader POST /api/v1/community/groups returns expected status",
+      "pass": true,
+      "atMs": 24703
+    },
+    {
+      "name": "Trader POST /api/v1/community/groups/{id}/join returns expected status",
+      "pass": true,
+      "atMs": 24984
+    },
+    {
+      "name": "Trader POST /api/v1/conversations/{id}/messages returns expected status",
+      "pass": true,
+      "atMs": 25250
+    },
+    {
+      "name": "normal image message sender is exact authorized public identity",
+      "pass": true,
+      "atMs": 25250
+    },
+    {
+      "name": "Consumer POST /api/v1/community/groups returns expected status",
+      "pass": true,
+      "atMs": 25531
+    },
+    {
+      "name": "Consumer POST /api/v1/community/groups/{id}/join returns expected status",
+      "pass": true,
+      "atMs": 25875
+    },
+    {
+      "name": "Consumer POST /api/v1/conversations/{id}/messages returns expected status",
+      "pass": true,
+      "atMs": 26187
+    },
+    {
+      "name": "normal image message sender is exact authorized public identity",
+      "pass": true,
+      "atMs": 26187
+    },
+    {
+      "name": "Admin GET /api/v1/conversations/{id}/messages returns expected status",
+      "pass": true,
+      "atMs": 26640
+    },
+    {
+      "name": "Admin reads three persisted member messages",
+      "pass": true,
+      "atMs": 26640
+    },
+    {
+      "name": "Consumer POST /api/v1/community/groups/{id}/close returns expected status",
+      "pass": true,
+      "atMs": 26968
+    },
+    {
+      "name": "Admin POST /api/v1/community/groups/{id}/close returns expected status",
+      "pass": true,
+      "atMs": 27281
+    },
+    {
+      "name": "Consumer POST /api/v1/articles/{id}/withdraw returns expected status",
+      "pass": true,
+      "atMs": 27593
+    },
+    {
+      "name": "owned demo article is Paused after cleanup",
+      "pass": true,
+      "atMs": 27593
+    }
+  ],
+  "phases": [
+    {
+      "name": "real supplied sessions; refresh only expired access once with private atomic persistence",
+      "startMs": 0,
+      "status": "PASS",
+      "endMs": 4625
+    },
+    {
+      "name": "protect human drafts before domain writes; trusted API location; real JPEG",
+      "startMs": 4625,
+      "status": "PASS",
+      "endMs": 8234
+    },
+    {
+      "name": "two real owned applications: distinct Producer/Trader fields; submit visible to Admin; technical rejection",
+      "startMs": 8234,
+      "status": "PASS",
+      "endMs": 14578
+    },
+    {
+      "name": "new Consumer article and real canonical thumbnail after Admin publication",
+      "startMs": 14578,
+      "status": "PASS",
+      "endMs": 16984
+    },
+    {
+      "name": "Producer Trader Consumer explicit likes and comments; retry and deletion cannot duplicate or resurrect",
+      "startMs": 16984,
+      "status": "PASS",
+      "endMs": 21640
+    },
+    {
+      "name": "ordinary article Direct remains private and reused; E2EE endpoints untouched",
+      "startMs": 21640,
+      "status": "PASS",
+      "endMs": 23062
+    },
+    {
+      "name": "only Admin creates groups; all three Approved business/community users can join and chat",
+      "startMs": 23062,
+      "status": "PASS",
+      "endMs": 27281
+    },
+    {
+      "name": "leave only labeled owned operator seed; hide QA article and preserve main roles",
+      "startMs": 27281,
+      "status": "PASS",
+      "endMs": 27593
+    }
+  ],
+  "ordinaryImagesAreEndToEndEncrypted": false,
+  "secretCryptoAcceptance": "NOT_RUN/UNCHANGED: no secret endpoint, key, device, ciphertext or encrypted image is mutated. Separate real-Sodium/native evidence remains required.",
+  "aiInference": "NOT_RUN: this driver calls no AI endpoints for any role.",
+  "requestBudget": 72,
+  "formalRoleApplicationFlow": "Synthetic technical evidence only; PASS requires both requested roles end Rejected and Consumer stays Consumer. No legal verification or role grant.",
+  "intendedCleanup": "On PASS: owned technical applications Rejected, article Paused, group Closed. Likes/comments, ordinary image, Direct/history and audits remain labeled operator seed. On FAIL: inspect private owned references; do not retry mutations or delete foreign records.",
+  "canonicalThumbnail": {
+    "width": 2048,
+    "height": 1365,
+    "sizeBytes": 94765,
+    "exifRemoved": true
+  },
+  "ownedFixtureCounts": {
+    "roleApplications": 2,
+    "articleImages": 1,
+    "articles": 1,
+    "comments": 3,
+    "directConversations": 1,
+    "groups": 1
+  },
+  "lastAcknowledgedStateCounts": {
+    "Closed": 1,
+    "Paused": 1,
+    "Rejected": 2
+  },
+  "sessionRotations": 4,
+  "httpRequests": 68,
+  "wssClients": {},
+  "providedSessionsRetained": true,
+  "finishedUtc": "2026-10-30T19:22:25.164669+00:00",
+  "elapsedSeconds": 27.593
+}

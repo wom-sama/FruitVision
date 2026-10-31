@@ -5,9 +5,11 @@ using System.Text.Json;
 using FruitVision.Api.Data;
 using FruitVision.Api.Infrastructure;
 using FruitVision.Api.Auth;
+using FruitVision.Api.Realtime;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +21,51 @@ namespace FruitVision.Tests;
 public sealed class RoleApplicationTests(ApiFixture fixture)
 {
     private static readonly byte[] Png = Convert.FromBase64String("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII=");
+
+    [Fact]
+    public async Task Submission_notifies_owner_and_admin_only_after_the_submitted_state_is_committed()
+    {
+        var notifications = new ApplicationNotifications();
+        using var configured = CreateApp(); using var app = configured.WithWebHostBuilder(builder => builder.ConfigureServices(services => services.AddSingleton<IHubContext<FruitHub>>(notifications)));
+        using var owner = await Account(app);
+        notifications.OnEvent = async (method, payload) =>
+        {
+            if (method != "RoleApplicationChanged") return;
+            var view = JsonSerializer.SerializeToElement(payload, new JsonSerializerOptions(JsonSerializerDefaults.Web));
+            if (view.GetProperty("status").GetString() != "Submitted") return;
+            using var scope = app.Services.CreateScope(); var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            var saved = await db.Set<RoleApplication>().AsNoTracking().SingleAsync(a => a.Id == view.GetProperty("id").GetGuid());
+            Assert.Equal("Submitted", saved.Status); Assert.NotNull(saved.SubmittedAt); Assert.Equal(saved.Revision, view.GetProperty("revision").GetInt32());
+            Assert.Equal(new[] { "eventId", "id", "revision", "status" }, view.EnumerateObject().Select(p => p.Name).Order().ToArray());
+            notifications.SubmittedDelivered = true;
+        };
+        await Submitted(owner);
+        Assert.True(notifications.SubmittedDelivered); Assert.Contains("role:Admin", notifications.Audiences); Assert.Contains($"user:{owner.UserId}", notifications.Audiences);
+    }
+
+    [Fact]
+    public async Task Admin_submitted_queue_is_not_the_legacy_signup_queue_and_orders_submission_with_public_applicant_identity()
+    {
+        using var app = CreateApp(); using var first = await Account(app); using var second = await Account(app); using var admin = await Account(app, "Admin");
+        var firstId = await Submitted(first); var secondId = await Submitted(second);
+        using (var scope = app.Services.CreateScope())
+        {
+            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            var firstRow = await db.Set<RoleApplication>().SingleAsync(a => a.Id == firstId); var secondRow = await db.Set<RoleApplication>().SingleAsync(a => a.Id == secondId);
+            var future = DateTimeOffset.UtcNow.AddDays(100);
+            firstRow.CreatedAt = future.AddDays(-20); firstRow.SubmittedAt = future;
+            secondRow.CreatedAt = future.AddDays(-10); secondRow.SubmittedAt = future.AddDays(-1);
+            await db.SaveChangesAsync();
+        }
+        var list = await Get(admin, "/api/v1/admin/role-applications?status=Submitted&limit=1");
+        var item = Assert.Single(list.GetProperty("items").EnumerateArray()); Assert.Equal(firstId, item.GetProperty("id").GetGuid());
+        var applicant = item.GetProperty("applicant"); Assert.Equal(first.UserId, applicant.GetProperty("id").GetGuid()); Assert.Equal("Role applicant", applicant.GetProperty("displayName").GetString()); Assert.Equal("Consumer", applicant.GetProperty("role").GetString());
+        Assert.Equal(new[] { "displayName", "id", "role" }, applicant.EnumerateObject().Select(p => p.Name).Order().ToArray());
+        var next = await Get(admin, "/api/v1/admin/role-applications?status=Submitted&limit=1&after=" + list.GetProperty("next").GetGuid()); Assert.Equal(secondId, next.GetProperty("items")[0].GetProperty("id").GetGuid());
+        using var draftOwner = await Account(app); var draftId = await Draft(draftOwner);
+        var submitted = await Get(admin, "/api/v1/admin/role-applications?status=Submitted&limit=50"); Assert.DoesNotContain(submitted.GetProperty("items").EnumerateArray(), row => row.GetProperty("id").GetGuid() == draftId);
+        Assert.Equal("Draft", (await Get(admin, $"/api/v1/admin/role-applications/{draftId}")).GetProperty("status").GetString());
+    }
 
     [Fact]
     public async Task Consumers_create_one_active_application_under_concurrency_and_others_cannot_read_it()
@@ -309,6 +356,25 @@ public sealed class RoleApplicationTests(ApiFixture fixture)
         public Task<HttpResponseMessage> PostAsJsonAsync<T>(string path, T body) => Inner.PostAsJsonAsync(path, body);
         public Task<HttpResponseMessage> PutAsJsonAsync<T>(string path, T body) => Inner.PutAsJsonAsync(path, body);
         public void Dispose() => Inner.Dispose();
+    }
+
+    private sealed class ApplicationNotifications : IHubContext<FruitHub>, IHubClients, IClientProxy
+    {
+        public Func<string, object?, Task>? OnEvent { get; set; }
+        public bool SubmittedDelivered { get; set; }
+        public List<string> Audiences { get; } = [];
+        IHubClients IHubContext<FruitHub>.Clients => this;
+        IGroupManager IHubContext<FruitHub>.Groups => throw new NotSupportedException();
+        public IClientProxy Group(string name) { Audiences.Add(name); return this; }
+        public IClientProxy Groups(IReadOnlyList<string> names) { Audiences.AddRange(names); return this; }
+        public IClientProxy All => throw new NotSupportedException();
+        public IClientProxy AllExcept(IReadOnlyList<string> ids) => throw new NotSupportedException();
+        public IClientProxy Client(string id) => throw new NotSupportedException();
+        public IClientProxy Clients(IReadOnlyList<string> ids) => throw new NotSupportedException();
+        public IClientProxy GroupExcept(string name, IReadOnlyList<string> ids) => throw new NotSupportedException();
+        public IClientProxy User(string id) => throw new NotSupportedException();
+        public IClientProxy Users(IReadOnlyList<string> ids) => throw new NotSupportedException();
+        public Task SendCoreAsync(string method, object?[] args, CancellationToken ct = default) => OnEvent?.Invoke(method, args[0]) ?? Task.CompletedTask;
     }
 
     // The real LocationDirectory validates these bounded provider responses; tests never contact

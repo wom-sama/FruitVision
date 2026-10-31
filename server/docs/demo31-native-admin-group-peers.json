@@ -1,0 +1,209 @@
+{
+  "status": "PASS_HTTP_PEER_JOIN_AND_ADMIN_RETRIEVAL",
+  "startedUtc": "2026-10-30T22:42:20.898843+00:00",
+  "scope": "Normal HTTPS peer joins and three messages in the exact Admin-APK-created group. Not four-device rendering or WSS acceptance.",
+  "groupTitle": "DEMO QA31 APK Admin Group",
+  "groupCreatedByThisOperation": false,
+  "groupClosedByThisOperation": false,
+  "apiAdminReviewsPerformed": 0,
+  "uniqueTitleAndAdminOwnerVerified": true,
+  "peerJoins": 3,
+  "peerMessages": 3,
+  "memberCount": 4,
+  "adminRetrievedAllThree": true,
+  "isOpenAtFinish": true,
+  "httpRequests": 21,
+  "sessionRotations": 4,
+  "finishedUtc": "2026-10-30T22:42:33.191145+00:00",
+  "requests": [
+    {
+      "role": "Admin",
+      "method": "GET",
+      "status": 401,
+      "expectedStatus": [
+        200,
+        401
+      ],
+      "latencyMs": 610.0,
+      "routeTemplate": "/api/v1/auth/me"
+    },
+    {
+      "role": "anonymous",
+      "method": "POST",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 1578.0,
+      "routeTemplate": "/api/v1/auth/refresh"
+    },
+    {
+      "role": "Admin",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 281.0,
+      "routeTemplate": "/api/v1/auth/me"
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "status": 401,
+      "expectedStatus": [
+        200,
+        401
+      ],
+      "latencyMs": 281.0,
+      "routeTemplate": "/api/v1/auth/me"
+    },
+    {
+      "role": "anonymous",
+      "method": "POST",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 328.0,
+      "routeTemplate": "/api/v1/auth/refresh"
+    },
+    {
+      "role": "Producer",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 266.0,
+      "routeTemplate": "/api/v1/auth/me"
+    },
+    {
+      "role": "Trader",
+      "method": "GET",
+      "status": 401,
+      "expectedStatus": [
+        200,
+        401
+      ],
+      "latencyMs": 281.0,
+      "routeTemplate": "/api/v1/auth/me"
+    },
+    {
+      "role": "anonymous",
+      "method": "POST",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 266.0,
+      "routeTemplate": "/api/v1/auth/refresh"
+    },
+    {
+      "role": "Trader",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 234.0,
+      "routeTemplate": "/api/v1/auth/me"
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "status": 401,
+      "expectedStatus": [
+        200,
+        401
+      ],
+      "latencyMs": 266.0,
+      "routeTemplate": "/api/v1/auth/me"
+    },
+    {
+      "role": "anonymous",
+      "method": "POST",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 375.0,
+      "routeTemplate": "/api/v1/auth/refresh"
+    },
+    {
+      "role": "Consumer",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 312.0,
+      "routeTemplate": "/api/v1/auth/me"
+    },
+    {
+      "role": "Admin",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 1141.0,
+      "routeTemplate": "/api/v1/community/groups",
+      "queryNames": [
+        "limit"
+      ]
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 641.0,
+      "routeTemplate": "/api/v1/community/groups/{id}/join"
+    },
+    {
+      "role": "Producer",
+      "method": "POST",
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 453.0,
+      "routeTemplate": "/api/v1/conversations/{id}/messages"
+    },
+    {
+      "role": "Trader",
+      "method": "POST",
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 328.0,
+      "routeTemplate": "/api/v1/community/groups/{id}/join"
+    },
+    {
+      "role": "Trader",
+      "method": "POST",
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 312.0,
+      "routeTemplate": "/api/v1/conversations/{id}/messages"
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 328.0,
+      "routeTemplate": "/api/v1/community/groups/{id}/join"
+    },
+    {
+      "role": "Consumer",
+      "method": "POST",
+      "status": 201,
+      "expectedStatus": 201,
+      "latencyMs": 328.0,
+      "routeTemplate": "/api/v1/conversations/{id}/messages"
+    },
+    {
+      "role": "Admin",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 421.0,
+      "routeTemplate": "/api/v1/community/groups/{id}"
+    },
+    {
+      "role": "Admin",
+      "method": "GET",
+      "status": 200,
+      "expectedStatus": 200,
+      "latencyMs": 485.0,
+      "routeTemplate": "/api/v1/conversations/{id}/messages",
+      "queryNames": [
+        "limit"
+      ]
+    }
+  ],
+  "checksPassed": 43,
+  "checksFailed": 0,
+  "canonicalLockReleased": true
+}

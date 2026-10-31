@@ -5,114 +5,367 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import '../session.dart';
+import '../inbox.dart';
 import '../realtime.dart';
 import 'components.dart';
-import 'realtime_scope.dart';
-import 'event_refresh.dart';
-import 'community.dart';
-import 'posts.dart';
 import 'visuals.dart';
+import 'realtime_scope.dart';
+import 'community.dart';
 import 'secret_chat.dart';
 import 'secret_scope.dart';
 import '../api.dart';
 import '../media.dart';
-import 'photo_viewer.dart';
+import 'api_photo.dart';
+import 'new_message.dart';
+import 'profile.dart';
 
-class ConversationList extends StatelessWidget {
+String inboxTitle(Json row) {
+  final peer = row['peer'];
+  return row['kind'] != 'Group' &&
+          peer is Map &&
+          (peer['displayName']?.toString().trim().isNotEmpty ?? false)
+      ? peer['displayName'].toString()
+      : value(row, 'title', 'Hội thoại');
+}
+
+String inboxPreview(Json row) {
+  if (row['lastMessageEncrypted'] == true) return 'Tin nhắn mã hóa';
+  final message = row['lastMessage'];
+  if (message is! Map) return 'Chưa có tin nhắn';
+  if (message['kind'] == 'image') return 'Hình ảnh';
+  if (message['kind'] == 'encrypted') return 'Tin nhắn mã hóa';
+  final text = message['text']?.toString() ?? '';
+  final sender = message['senderName']?.toString() ?? '';
+  return sender.isEmpty ? text : '$sender: $text';
+}
+
+String inboxContext(Json row) {
+  if (row['kind'] == 'Group') return '';
+  if (value(row, 'articleId').isNotEmpty) {
+    return 'Bài viết · ${value(row, 'title')}';
+  }
+  if (value(row, 'postId').isNotEmpty) {
+    return 'Tin nông sản · ${value(row, 'title')}';
+  }
+  return 'Nhắn tin riêng';
+}
+
+Future<void> openInboxConversation(
+  BuildContext context, {
+  required SessionController controller,
+  required InboxController inbox,
+  required Json row,
+}) async {
+  if (row['lastMessageEncrypted'] == true) {
+    final messaging = SecretScope.maybeOf(context);
+    final secretId = value(row, 'secretConversationId');
+    if (messaging == null ||
+        controller.user?.canSell != true ||
+        secretId.isEmpty) {
+      await showDialog<void>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Tin nhắn mã hóa đầu cuối'),
+          content: const Text(
+            'Chưa mở được khóa của hội thoại trên thiết bị này. Không thể chuyển nội dung mã hóa sang chat thường. Kiểm tra khóa thiết bị trong Tài khoản.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Đóng'),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+    if (!context.mounted) return;
+    await Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => SecretChatPage(
+          messaging: messaging,
+          id: secretId,
+          title: inboxTitle(row),
+          inbox: inbox,
+          directConversationId: value(row, 'id'),
+        ),
+      ),
+    );
+  } else {
+    await Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => ChatPage(
+          controller: controller,
+          id: value(row, 'id'),
+          title: value(row, 'title'),
+          group: row['kind'] == 'Group',
+          readOnly: row['kind'] == 'Group' && row['isOpen'] == false,
+          inbox: inbox,
+        ),
+      ),
+    );
+  }
+  if (context.mounted) unawaited(inbox.refresh());
+}
+
+class InboxConversationTile extends StatelessWidget {
+  const InboxConversationTile({
+    super.key,
+    required this.row,
+    required this.onTap,
+    this.onProfile,
+  });
+  final Json row;
+  final VoidCallback onTap;
+  final VoidCallback? onProfile;
+  @override
+  Widget build(BuildContext context) {
+    final count = (row['unreadCount'] as num?)?.toInt() ?? 0;
+    final name = inboxTitle(row), peer = row['peer'];
+    final role = peer is Map
+        ? UserRole.values
+              .where((role) => role.wire == peer['role'])
+              .firstOrNull
+              ?.label
+        : null;
+    final theme = Theme.of(context);
+    return Semantics(
+      label: '$name${count > 0 ? ', $count tin chưa đọc' : ''}',
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              IconButton.filledTonal(
+                tooltip: onProfile == null ? null : 'Xem hồ sơ $name',
+                onPressed: onProfile,
+                icon: Icon(
+                  row['kind'] == 'Group'
+                      ? Icons.groups_outlined
+                      : Icons.person_outline,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            name,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: theme.textTheme.titleSmall?.copyWith(
+                              fontWeight: count > 0
+                                  ? FontWeight.w700
+                                  : FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        if (count > 0) ...[
+                          const SizedBox(width: 8),
+                          Badge(label: Text(count > 99 ? '99+' : '$count')),
+                        ],
+                      ],
+                    ),
+                    if (role != null || row['kind'] == 'Group')
+                      Text(
+                        role ?? 'Nhóm cộng đồng',
+                        style: theme.textTheme.labelSmall,
+                      ),
+                    if (inboxContext(row).isNotEmpty)
+                      Text(
+                        inboxContext(row),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: theme.colorScheme.primary,
+                        ),
+                      ),
+                    const SizedBox(height: 4),
+                    Row(
+                      children: [
+                        if (row['lastMessageEncrypted'] == true) ...[
+                          const Icon(Icons.lock_outline, size: 14),
+                          const SizedBox(width: 4),
+                        ],
+                        Expanded(
+                          child: Text(
+                            inboxPreview(row),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: theme.textTheme.bodyMedium,
+                          ),
+                        ),
+                      ],
+                    ),
+                    if (value(row, 'lastActivityAt').isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4),
+                        child: Text(
+                          displayTime(row['lastActivityAt']),
+                          style: theme.textTheme.labelSmall,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ConversationList extends StatefulWidget {
   const ConversationList({
     super.key,
     required this.controller,
     required this.header,
+    this.inbox,
   });
   final SessionController controller;
   final Widget header;
+  final InboxController? inbox;
   @override
-  Widget build(BuildContext context) => LiveApiList(
-    api: controller.api,
-    path: '/conversations?limit=20',
-    targets: const {
-      'ConversationCreated',
-      'CommunityChanged',
-      'MessageCreated',
-    },
-    header: Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        header,
-        const SectionTitle(
-          'Trao đổi',
-          subtitle: 'Hội thoại trực tiếp và nhóm chia sẻ về xoài.',
-        ),
-        if (controller.user?.canSell == true &&
-            SecretScope.maybeOf(context) != null) ...[
-          OutlinedButton.icon(
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute<void>(
-                builder: (_) =>
-                    SecretInboxPage(messaging: SecretScope.maybeOf(context)!),
-              ),
-            ),
-            icon: const Icon(Icons.enhanced_encryption_outlined),
-            label: const Text('Phòng bí mật'),
-          ),
-          const SizedBox(height: 8),
-        ],
-        OutlinedButton.icon(
-          onPressed: () => Navigator.of(context).push(
-            MaterialPageRoute<void>(
-              builder: (_) => CommunityPage(controller: controller),
-            ),
-          ),
-          icon: const Icon(Icons.groups_outlined),
-          label: const Text('Nhóm cộng đồng'),
-        ),
-        const SizedBox(height: 16),
-      ],
-    ),
-    empty: 'Chưa có hội thoại. Tham gia nhóm cộng đồng để trao đổi về xoài.',
-    itemBuilder: (row) => DataCard(
-      onTap: () => Navigator.of(context).push(
-        MaterialPageRoute<void>(
-          builder: (_) => ChatPage(
-            controller: controller,
-            id: value(row, 'id'),
-            title: value(row, 'title'),
-            group: row['kind'] == 'Group',
-            readOnly: row['kind'] == 'Group' && row['isOpen'] == false,
-          ),
-        ),
-      ),
-      children: [
-        IconBadge(
-          row['kind'] == 'Group' ? Icons.groups_outlined : Icons.forum_outlined,
-          color: blue,
-        ),
-        const SizedBox(height: 8),
-        Text(
-          value(row, 'title'),
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
-        const SizedBox(height: 8),
-        Text(
-          row['kind'] == 'Group'
-              ? 'Nhóm cộng đồng${value(row, 'region').isEmpty ? '' : ' · ${row['region']}'}'
-              : 'Hội thoại trực tiếp',
-        ),
-        if (value(row, 'postId').isNotEmpty)
-          TextButton.icon(
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute<void>(
-                builder: (_) => PostDetailPage(
-                  controller: controller,
-                  id: value(row, 'postId'),
+  State<ConversationList> createState() => _ConversationListState();
+}
+
+class _ConversationListState extends State<ConversationList> {
+  InboxController? _owned;
+  RealtimeClient? _hub;
+  InboxController get _inbox => widget.inbox ?? _owned!;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final hub = RealtimeScope.maybeOf(context);
+    if (widget.inbox == null && (_owned == null || hub != _hub)) {
+      _owned?.dispose();
+      _hub = hub;
+      _owned = InboxController(session: widget.controller, realtime: hub);
+    }
+  }
+
+  @override
+  void didUpdateWidget(ConversationList oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.controller != widget.controller ||
+        oldWidget.inbox != widget.inbox) {
+      _owned?.dispose();
+      _owned = widget.inbox == null
+          ? InboxController(session: widget.controller, realtime: _hub)
+          : null;
+    }
+  }
+
+  @override
+  void dispose() {
+    _owned?.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => AnimatedBuilder(
+    animation: _inbox,
+    builder: (context, _) => RefreshIndicator(
+      onRefresh: _inbox.refresh,
+      child: ListView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                widget.header,
+                const SectionTitle(
+                  'Tin nhắn',
+                  subtitle: 'Hội thoại trực tiếp và nhóm chia sẻ về xoài.',
                 ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: IconButton.filledTonal(
+                    tooltip: 'Tin nhắn mới',
+                    icon: const Icon(Icons.edit_square),
+                    onPressed: () => Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => NewMessagePage(
+                          controller: widget.controller,
+                          inbox: _inbox,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                OutlinedButton.icon(
+                  onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (_) =>
+                          CommunityPage(controller: widget.controller),
+                    ),
+                  ),
+                  icon: const Icon(Icons.groups_outlined),
+                  label: const Text('Nhóm cộng đồng'),
+                ),
+                if (_inbox.error != null)
+                  MessageBox(
+                    _inbox.error!,
+                    error: true,
+                    child: TextButton(
+                      onPressed: _inbox.refresh,
+                      child: const Text('Thử lại'),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          if (_inbox.loading) const LinearProgressIndicator(),
+          if (!_inbox.loading && _inbox.entries.isEmpty && _inbox.error == null)
+            const Padding(
+              padding: EdgeInsets.all(24),
+              child: Text(
+                'Chưa có hội thoại. Mở bài chia sẻ để liên hệ tác giả hoặc tham gia nhóm cộng đồng.',
               ),
             ),
-            icon: const Icon(Icons.article_outlined),
-            label: const Text('Xem tin liên quan'),
-          ),
-        const Text('Mở hội thoại →'),
-      ],
+          for (final row in _inbox.entries) ...[
+            InboxConversationTile(
+              row: row,
+              onProfile:
+                  row['peer'] is Map &&
+                      value(
+                        Map<String, dynamic>.from(row['peer']),
+                        'id',
+                      ).isNotEmpty
+                  ? () async {
+                      await Navigator.of(context).push(
+                        MaterialPageRoute<bool>(
+                          builder: (_) => UserProfilePage(
+                            controller: widget.controller,
+                            userId: (row['peer'] as Map)['id'].toString(),
+                            inbox: _inbox,
+                          ),
+                        ),
+                      );
+                      if (mounted) await _inbox.refresh();
+                    }
+                  : null,
+              onTap: () => openInboxConversation(
+                context,
+                controller: widget.controller,
+                inbox: _inbox,
+                row: row,
+              ),
+            ),
+            const Divider(height: 1, indent: 68),
+          ],
+        ],
+      ),
     ),
   );
 }
@@ -125,10 +378,12 @@ class ChatPage extends StatefulWidget {
     required this.title,
     this.readOnly = false,
     this.group = false,
+    this.inbox,
   });
   final SessionController controller;
   final String id, title;
   final bool readOnly, group;
+  final InboxController? inbox;
   @override
   State<ChatPage> createState() => _ChatPageState();
 }
@@ -144,16 +399,20 @@ class _ChatPageState extends State<ChatPage> {
   PickedMedia? _imageDraft;
   String? _imageKey;
   UploadCancellation? _imageCancel;
-  bool _openingImage = false;
   bool _requestInFlight = false, _refreshPending = false;
   int _generation = 0;
   int _newMessages = 0;
   bool _openedLatest = false;
+  String? _lastReadId, _readingId;
   late bool _readOnly = widget.readOnly;
   late String? _contextNotice = widget.readOnly
       ? 'Nhóm đã đóng; chỉ xem lịch sử'
       : null;
   bool _contextLoading = false, _contextPending = false;
+  Json? _directPeer;
+  bool _secretEligible = false, _directContextLoading = false;
+  String? _directContextError;
+  int _directContextGeneration = 0;
   RealtimeClient? _hub;
   StreamSubscription<HubEvent>? _events;
   Timer? _eventDebounce, _contextDebounce;
@@ -163,6 +422,7 @@ class _ChatPageState extends State<ChatPage> {
   void initState() {
     super.initState();
     _scroll.addListener(_readLatest);
+    if (!widget.group) unawaited(_refreshDirectContext());
     _load();
   }
 
@@ -206,6 +466,7 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   void dispose() {
+    _directContextGeneration++;
     _eventDebounce?.cancel();
     _contextDebounce?.cancel();
     unawaited(_events?.cancel());
@@ -258,12 +519,109 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
+  Future<void> _refreshDirectContext() async {
+    if (widget.group || _directContextLoading) return;
+    final generation = ++_directContextGeneration,
+        origin = widget.controller.api.baseUrl,
+        userId = widget.controller.user?.id;
+    _directContextLoading = true;
+    setState(() {
+      _secretEligible = false;
+      _directContextError = null;
+    });
+    try {
+      final data = await widget.controller.api.get(
+        '/conversations/${Uri.encodeComponent(widget.id)}/context',
+      );
+      if (!mounted ||
+          generation != _directContextGeneration ||
+          origin != widget.controller.api.baseUrl ||
+          userId != widget.controller.user?.id) {
+        return;
+      }
+      final peer = data['peer'];
+      if (data['kind'] != 'Direct' ||
+          peer is! Map ||
+          peer['id'] is! String ||
+          peer['displayName'] is! String ||
+          peer['role'] is! String) {
+        throw const FormatException('Chưa xác minh được thông tin hội thoại.');
+      }
+      final role = UserRole.values
+          .where((role) => role.wire == peer['role'])
+          .firstOrNull;
+      final follow = _nearBottom;
+      setState(() {
+        _directPeer = {
+          'id': peer['id'],
+          'displayName': peer['displayName'],
+          'role': peer['role'],
+        };
+        _secretEligible =
+            data['secretEligible'] == true &&
+            (role == UserRole.producer || role == UserRole.trader);
+      });
+      if (follow) unawaited(_positionMessages(latest: true));
+    } catch (_) {
+      if (mounted && generation == _directContextGeneration) {
+        setState(() {
+          _directPeer = null;
+          _secretEligible = false;
+          _directContextError = 'Chưa xác minh được người trao đổi. Chat thường vẫn dùng được; chat mã hóa đang ẩn.';
+        });
+      }
+    } finally {
+      _directContextLoading = false;
+    }
+  }
+
   bool get _nearBottom =>
       !_scroll.hasClients || _scroll.position.extentAfter <= 96;
 
   void _readLatest() {
+    if (_openedLatest && !_loading && _nearBottom) {
+      unawaited(_acknowledgeLatest());
+    }
     if (_newMessages > 0 && _nearBottom) {
       setState(() => _newMessages = 0);
+    }
+  }
+
+  Future<void> _acknowledgeLatest() async {
+    if (!mounted ||
+        !_scroll.hasClients ||
+        !_nearBottom ||
+        ModalRoute.of(context)?.isCurrent != true ||
+        WidgetsBinding.instance.lifecycleState != null &&
+            WidgetsBinding.instance.lifecycleState !=
+                AppLifecycleState.resumed ||
+        widget.controller.endingSession ||
+        _messages.isEmpty) {
+      return;
+    }
+    final id = value(_messages.last, 'id');
+    if (id.isEmpty || id == _lastReadId || _readingId != null) return;
+    _readingId = id;
+    final origin = widget.controller.api.baseUrl,
+        userId = widget.controller.user?.id;
+    try {
+      if (widget.inbox != null) {
+        await widget.inbox!.markRead(widget.id, lastMessageId: id);
+      } else {
+        await widget.controller.api.post(
+          '/conversations/${Uri.encodeComponent(widget.id)}/read',
+          {'lastMessageId': id},
+        );
+      }
+      if (mounted &&
+          origin == widget.controller.api.baseUrl &&
+          userId == widget.controller.user?.id) {
+        _lastReadId = id;
+      }
+    } catch (_) {
+      // Failed receipts never hide messages or invent local unread totals.
+    } finally {
+      _readingId = null;
     }
   }
 
@@ -280,6 +638,7 @@ class _ChatPageState extends State<ChatPage> {
     } else if (latest) {
       _scroll.jumpTo(max);
     }
+    if (latest && mounted) await _acknowledgeLatest();
   }
 
   void _showLatest() {
@@ -498,37 +857,75 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-  Future<void> _openImage(Json image) async {
-    if (_openingImage) return;
-    setState(() => _openingImage = true);
-    try {
-      final bytes = await widget.controller.api.chatImageBytes(
-        widget.id,
-        value(image, 'id'),
-      );
-      if (mounted) {
-        await Navigator.of(context).push(
-          MaterialPageRoute<void>(
-            builder: (_) =>
-                PhotoViewerPage(bytes: bytes, title: 'Ảnh hội thoại'),
-          ),
-        );
-      }
-    } catch (error) {
-      if (mounted) setState(() => _error = errorText(error));
-    } finally {
-      if (mounted) setState(() => _openingImage = false);
-    }
-  }
-
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(
-      title: Text(widget.title, maxLines: 1, overflow: TextOverflow.ellipsis),
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            _directPeer == null
+                ? widget.title
+                : value(_directPeer!, 'displayName'),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          if (_directPeer != null)
+            Text(
+              '${UserRole.values.where((role) => role.wire == _directPeer!['role']).firstOrNull?.label ?? 'Thành viên'} · ${widget.title}',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          if (_directPeer == null && _directContextError != null)
+            Text(
+              'Chưa tải được thông tin người trao đổi',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+        ],
+      ),
       actions: [
+        if (_directPeer != null)
+          IconButton(
+            tooltip: 'Xem hồ sơ người trao đổi',
+            icon: const Icon(Icons.account_circle_outlined),
+            onPressed: _sending
+                ? null
+                : () async {
+                    final blocked = await Navigator.of(context).push<bool>(
+                      MaterialPageRoute<bool>(
+                        builder: (_) => UserProfilePage(
+                          controller: widget.controller,
+                          userId: value(_directPeer!, 'id'),
+                          inbox: widget.inbox,
+                        ),
+                      ),
+                    );
+                    if (mounted && blocked == true) {
+                      setState(() {
+                        _readOnly = true;
+                        _secretEligible = false;
+                        _contextNotice = 'Bạn đã chặn người này. Bỏ chặn trong Hồ sơ & quyền riêng tư để liên hệ lại.';
+                      });
+                    }
+                  },
+          ),
+        if (_directContextError != null)
+          IconButton(
+            tooltip: 'Tải lại thông tin hội thoại',
+            onPressed: _directContextLoading ? null : _refreshDirectContext,
+            icon: const Icon(Icons.person_search_outlined),
+          ),
         IconButton(
           tooltip: 'Cập nhật tin nhắn',
-          onPressed: _loading || _sending ? null : _load,
+          onPressed: _loading || _sending
+              ? null
+              : () {
+                  unawaited(_load());
+                  if (!widget.group) unawaited(_refreshDirectContext());
+                },
           icon: const Icon(Icons.refresh),
         ),
       ],
@@ -549,10 +946,11 @@ class _ChatPageState extends State<ChatPage> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      if (!widget.group)
+                      if (!widget.group && _secretEligible)
                         OpenSecretRoomButton(
                           directId: widget.id,
                           title: widget.title,
+                          inbox: widget.inbox,
                         ),
                       const RealtimeStatus(),
                       const SizedBox(height: 8),
@@ -606,8 +1004,10 @@ class _ChatPageState extends State<ChatPage> {
                         ),
                       if (!_loading && _messages.isEmpty && _error == null)
                         MessageBox(
-                          _readOnly
+                          _readOnly && widget.group
                               ? 'Nhóm đã đóng và chưa có tin nhắn.'
+                              : _readOnly
+                              ? 'Liên hệ trực tiếp đã bị chặn. Lịch sử đã có vẫn được giữ lại.'
                               : 'Chưa có tin nhắn. Gửi lời chào đầu tiên.',
                         ),
                       ..._messages.map((message) {
@@ -669,18 +1069,30 @@ class _ChatPageState extends State<ChatPage> {
                                     ),
                                   ),
                                 const SizedBox(height: 4),
-                                Text(value(message, 'text')),
+                                if (message['image'] is! Map)
+                                  Text(value(message, 'text')),
                                 if (message['image'] is Map)
-                                  OutlinedButton.icon(
-                                    onPressed: _openingImage
-                                        ? null
-                                        : () => _openImage(
-                                            Map<String, dynamic>.from(
-                                              message['image'],
+                                  ConstrainedBox(
+                                    constraints: const BoxConstraints(
+                                      maxWidth: 256,
+                                    ),
+                                    child: ApiPhoto(
+                                      key: ValueKey(
+                                        'chat-image:${widget.id}:${(message['image'] as Map)['id']}',
+                                      ),
+                                      title: 'Ảnh hội thoại',
+                                      viewportBound: true,
+                                      load: () =>
+                                          widget.controller.api.chatImageBytes(
+                                            widget.id,
+                                            value(
+                                              Map<String, dynamic>.from(
+                                                message['image'],
+                                              ),
+                                              'id',
                                             ),
                                           ),
-                                    icon: const Icon(Icons.image_outlined),
-                                    label: const Text('Mở và phóng to ảnh'),
+                                    ),
                                   ),
                                 const SizedBox(height: 8),
                                 Text(

@@ -1,7 +1,7 @@
 name: fruitvision_client
 description: FruitVision client gọi API máy chủ cho nhận diện xoài, kiến thức và cộng đồng theo vai trò.
 publish_to: none
-version: 2.4.0+6010
+version: 2.6.2+6014
 environment:
   sdk: ^3.13.4
 dependencies:

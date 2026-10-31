@@ -1,0 +1,30 @@
+{
+  "status": "PASS",
+  "version": "2.6.2+6014",
+  "baseUrl": "https://vip-certainly-broke-lease.trycloudflare.com",
+  "anonymousGetRequests": 9,
+  "artifacts": [
+    {
+      "abi": "arm64-v8a",
+      "metadataHashAndSizeMatched": true,
+      "range206First1024BytesMatched": true,
+      "fullDownloadVerified": true
+    },
+    {
+      "abi": "armeabi-v7a",
+      "metadataHashAndSizeMatched": true,
+      "range206First1024BytesMatched": true,
+      "fullDownloadVerified": false
+    },
+    {
+      "abi": "x86_64",
+      "metadataHashAndSizeMatched": true,
+      "range206First1024BytesMatched": true,
+      "fullDownloadVerified": false
+    }
+  ],
+  "currentVersionNoUpdate": true,
+  "ready": true,
+  "aiReady": true,
+  "elapsedSeconds": 7.703
+}

@@ -1,0 +1,145 @@
+{
+  "status": "PASS",
+  "startedUtc": "2026-10-31T00:16:39.466743+00:00",
+  "scope": "Post-restart public HTTPS technical smoke: one existing mango JPEG, one Producer job, bounded polling and preview. No video/live rerun, native, FPS or quality/accuracy proof.",
+  "tlsVerificationDisabled": false,
+  "role": "Producer",
+  "checks": [
+    {
+      "name": "One real post-restart image job succeeded",
+      "pass": true
+    },
+    {
+      "name": "Pinned mango technical result and image-count semantics are valid",
+      "pass": true
+    }
+  ],
+  "requests": [
+    {
+      "method": "GET",
+      "route": "/api/v1/auth/me",
+      "status": 401,
+      "actor": "Producer",
+      "latencyMs": 1187.0
+    },
+    {
+      "method": "POST",
+      "route": "/api/v1/auth/refresh",
+      "status": 200,
+      "actor": "anonymous",
+      "latencyMs": 610.0
+    },
+    {
+      "method": "GET",
+      "route": "/api/v1/auth/me",
+      "status": 200,
+      "actor": "Producer",
+      "latencyMs": 297.0
+    },
+    {
+      "method": "GET",
+      "route": "/api/v1/ai/capabilities",
+      "status": 200,
+      "actor": "Producer",
+      "latencyMs": 562.0
+    },
+    {
+      "method": "GET",
+      "route": "/api/v1/ai/jobs",
+      "status": 200,
+      "actor": "Producer",
+      "latencyMs": 2844.0
+    },
+    {
+      "method": "POST",
+      "route": "/api/v1/ai/jobs?mediaType=image",
+      "status": 202,
+      "actor": "Producer",
+      "latencyMs": 516.0
+    },
+    {
+      "method": "GET",
+      "route": "/api/v1/ai/jobs/79b629ab-a771-401c-b045-3645df390d89",
+      "status": 200,
+      "actor": "Producer",
+      "latencyMs": 484.0
+    },
+    {
+      "method": "GET",
+      "route": "/api/v1/ai/jobs/79b629ab-a771-401c-b045-3645df390d89",
+      "status": 200,
+      "actor": "Producer",
+      "latencyMs": 1187.0
+    },
+    {
+      "method": "GET",
+      "route": "/api/v1/ai/jobs/79b629ab-a771-401c-b045-3645df390d89/preview",
+      "status": 200,
+      "actor": "Producer",
+      "latencyMs": 547.0
+    }
+  ],
+  "qualityEvaluation": "NOT_PERFORMED: bundled demo fixture, no independent annotations; zero detections is a valid execution outcome.",
+  "maximumSubmissions": 1,
+  "baseURL": "https://vip-certainly-broke-lease.trycloudflare.com",
+  "userId": "0973a2ff-981d-4598-82db-bf6c3eca83e8",
+  "normalRefreshPerformed": true,
+  "canonicalOriginMigrated": true,
+  "freshStrongAuthenticationClaimed": false,
+  "fixture": {
+    "path": "app/android/app/src/main/assets/demo_mango.jpg",
+    "sha256": "0104a1e5e313f5c4082607b4cac73b2497f9a916d130e500c96616e05684b9f5",
+    "sizeBytes": 182213,
+    "limitation": "Existing transformed demo photo; not independent field-quality ground truth."
+  },
+  "jobId": "79b629ab-a771-401c-b045-3645df390d89",
+  "result": {
+    "scope": "predicted-mango-only",
+    "schema": "fruitvision-ai-v1",
+    "objects": [
+      {
+        "box": [
+          0.3808964729309082,
+          0.45881830851236977,
+          0.6059965133666992,
+          0.6663844638400608
+        ],
+        "score": 0.9532796,
+        "trackId": null,
+        "stageCode": 0,
+        "fruitLabel": "Xoài (dự đoán)",
+        "stageLabel": "Xanh / chưa chín"
+      }
+    ],
+    "summary": "Phát hiện xoài dự đoán đạt ngưỡng",
+    "modelName": "YOLOX-Tiny reviewed partial-visibility fruit geometry and source stages",
+    "gradeCounts": {
+      "Chín": 0,
+      "Chưa xác định": 0,
+      "Xanh / chưa chín": 1
+    },
+    "limitations": [
+      "Chỉ dùng cho bản trình diễn phi thương mại; giấy phép nguồn dữ liệu/model còn hạn chế.",
+      "Chỉ giữ đối tượng được mô hình dự đoán là xoài; bộ lọc có thể bỏ sót hoặc nhận nhầm loài khác.",
+      "Hai nhãn giai đoạn từ dữ liệu nguồn không xác nhận độ chín ngoài thực tế; độ tin cậy thấp được ghi Chưa xác định.",
+      "Không phát hiện xoài đạt ngưỡng không chứng minh ảnh hoặc video không có xoài.",
+      "Màu vỏ bên ngoài không xác nhận giống xoài, chất lượng bên trong, hư hỏng hoặc an toàn thực phẩm.",
+      "Video chưa đạt tiêu chí chất lượng khoa học; có thể bỏ sót, trùng khung hoặc sai giai đoạn.",
+      "Theo dõi bằng hình học không tái nhận dạng vật thể: che khuất lâu, quay lại và camera chuyển động có thể làm sai số đếm.",
+      "Số qua vạch y=0.5 đếm mỗi ID một lần theo cả hai hướng; không phải bảo đảm số quả vật lý duy nhất.",
+      "Ảnh đơn không theo dõi ID; xem số quả đang thấy (maxVisibleCount)."
+    ],
+    "modelSha256": "8a69c66a9444c18c98a7e3e58a44f4dddda9eb4583dd4448f430ff9e8db27c41",
+    "framesProcessed": 1,
+    "maxVisibleCount": 1,
+    "lineCrossingCount": 0,
+    "processingSeconds": 0.797,
+    "confirmedTrackCount": 0
+  },
+  "preview": {
+    "sizeBytes": 128782,
+    "sha256": "3d2ecfe6aa232fa63ee89d5cb9c69983d7f92ef58781ff2f2d427eb53af97242"
+  },
+  "elapsedSeconds": 9.234,
+  "requestCount": 9
+}

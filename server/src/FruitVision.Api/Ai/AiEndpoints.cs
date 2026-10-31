@@ -72,7 +72,7 @@ public static class AiEndpoints
     }
 
     private static async Task<IResult> UploadAsync(HttpContext http, AppDbContext db, AiStorage storage,
-        AiJobControl control, AiJobEvents events, AiRuntimeStatus runtime)
+        AiJobControl control, AiJobEvents events, AiRuntimeStatus runtime, LiveAiRuntime live)
     {
         var mediaType = http.Request.Query["mediaType"].ToString();
         if (mediaType is not ("image" or "video") || http.Request.Query.Count != 1)
@@ -116,6 +116,8 @@ public static class AiEndpoints
                     return Invalid(409, "Mã yêu cầu đã được dùng cho nội dung tệp khác. Hãy tạo mã yêu cầu mới.");
                 return Results.Ok(AiJobView.From(prior));
             }
+            // Same advisory lock as live-session admission: do not load a second model worker.
+            if (live.HasActiveSessions) return Busy(http);
             var active = db.Set<AiJob>().Where(item => item.Status == AiJobStatus.Queued || item.Status == AiJobStatus.Running);
             if (await active.AnyAsync(item => item.UserId == userId, cancellationToken) ||
                 await active.CountAsync(cancellationToken) >= 4) return Busy(http);

@@ -3,17 +3,20 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../api.dart';
+import '../inbox.dart';
 import '../media.dart';
 import '../secret_messaging.dart';
 import '../secret_protocol.dart';
 import 'components.dart';
 import 'event_refresh.dart';
-import 'photo_viewer.dart';
+import 'api_photo.dart';
 import 'secret_scope.dart';
 
 String secretError(Object error) => error is ApiException
-    ? error.message
-    : 'Không xác minh được dữ liệu hoặc kho khóa bí mật. Phòng đang khóa.';
+    ? safeErrorMessage(error.message)
+          .replaceAll('Phòng', 'Hội thoại')
+          .replaceAll('phòng', 'hội thoại')
+    : 'Không xác minh được dữ liệu hoặc kho khóa bí mật. Hội thoại đang khóa.';
 String fullSafetyCode(String fingerprint) => [
   for (var i = 0; i < fingerprint.length; i += 8)
     fingerprint.substring(
@@ -148,7 +151,7 @@ class _SecretDevicesPageState extends State<SecretDevicesPage> {
   Widget build(BuildContext context) {
     final fresh = widget.messaging.session.canEnrollBiometric;
     return Scaffold(
-      appBar: AppBar(title: const Text('Khóa nhắn tin bí mật')),
+      appBar: AppBar(title: const Text('Khóa chat riêng mã hóa đầu cuối')),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.all(16),
@@ -223,8 +226,10 @@ class OpenSecretRoomButton extends StatefulWidget {
     super.key,
     required this.directId,
     required this.title,
+    this.inbox,
   });
   final String directId, title;
+  final InboxController? inbox;
   @override
   State<OpenSecretRoomButton> createState() => _OpenSecretRoomButtonState();
 }
@@ -246,6 +251,8 @@ class _OpenSecretRoomButtonState extends State<OpenSecretRoomButton> {
               messaging: messaging,
               id: id,
               title: widget.title,
+              inbox: widget.inbox,
+              directConversationId: widget.directId,
             ),
           ),
         );
@@ -269,7 +276,15 @@ class _OpenSecretRoomButtonState extends State<OpenSecretRoomButton> {
         OutlinedButton.icon(
           onPressed: _busy ? null : () => _open(messaging),
           icon: const Icon(Icons.enhanced_encryption_outlined),
-          label: Text(_busy ? 'Đang kiểm tra khóa…' : 'Mở phòng bí mật riêng'),
+          label: Text(
+            _busy ? 'Đang kiểm tra khóa…' : 'Chat riêng mã hóa đầu cuối',
+          ),
+        ),
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Text(
+            'Phần chat này được mã hóa cho hai thiết bị. Lịch sử chat thường trước đây vẫn nằm ở luồng thường.',
+          ),
         ),
         if (_error != null)
           MessageBox(
@@ -294,7 +309,7 @@ class SecretInboxPage extends StatelessWidget {
   final SecretMessaging messaging;
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('Phòng bí mật')),
+    appBar: AppBar(title: const Text('Chat riêng mã hóa đầu cuối')),
     body: SafeArea(
       child: LiveApiList(
         api: messaging.api,
@@ -309,7 +324,7 @@ class SecretInboxPage extends StatelessWidget {
           children: [
             const SectionTitle(
               'Tin và ảnh mã hóa đầu cuối',
-              subtitle: 'Nội dung hội thoại thường trước đây không tự chuyển sang phòng bí mật.',
+              subtitle: 'Mở chat riêng từ một hội thoại trực tiếp. Lịch sử chat thường không tự chuyển sang mã hóa đầu cuối.',
             ),
             OutlinedButton.icon(
               onPressed: () => Navigator.of(context).push(
@@ -322,14 +337,14 @@ class SecretInboxPage extends StatelessWidget {
             ),
           ],
         ),
-        empty: 'Chưa có phòng bí mật. Mở một hội thoại trực tiếp giữa hai vai trò bán hàng để tạo phòng riêng.',
+        empty: 'Chưa có chat riêng mã hóa đầu cuối. Mở hội thoại trực tiếp với một Nhà sản xuất hoặc Thương lái đủ điều kiện để bắt đầu.',
         itemBuilder: (row) => DataCard(
           onTap: () => Navigator.of(context).push(
             MaterialPageRoute<void>(
               builder: (_) => SecretChatPage(
                 messaging: messaging,
                 id: value(row, 'id'),
-                title: 'Trò chuyện bí mật',
+                title: 'Chat riêng mã hóa đầu cuối',
               ),
             ),
           ),
@@ -337,7 +352,7 @@ class SecretInboxPage extends StatelessWidget {
             const Icon(Icons.enhanced_encryption_outlined),
             const SizedBox(height: 8),
             Text(
-              'Phòng ${value(row, 'id').length > 8 ? value(row, 'id').substring(0, 8) : value(row, 'id')}',
+              'Chat riêng ${value(row, 'id').length > 8 ? value(row, 'id').substring(0, 8) : value(row, 'id')}',
             ),
             Text('Cập nhật ${displayTime(row['lastActivityAt'])}'),
           ],
@@ -354,10 +369,14 @@ class SecretChatPage extends StatefulWidget {
     required this.id,
     required this.title,
     this.picker,
+    this.inbox,
+    this.directConversationId,
   });
   final SecretMessaging messaging;
   final String id, title;
   final NativeMediaPicker? picker;
+  final InboxController? inbox;
+  final String? directConversationId;
   @override
   State<SecretChatPage> createState() => _SecretChatPageState();
 }
@@ -374,12 +393,66 @@ class _SecretChatPageState extends State<SecretChatPage>
   String? _error;
   PickedMedia? _photo;
   PreparedSecretMessage? _prepared;
+  final _verifiedImages = <String>{};
+  int _lastReadSequence = 0;
+  bool _acknowledging = false;
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     widget.messaging.addListener(_locked);
+    _scroll.addListener(_readVisibleLatest);
     _load();
+  }
+
+  void _readVisibleLatest() {
+    if (!_loading && _scroll.hasClients && _scroll.position.pixels < 80) {
+      unawaited(_acknowledgeLatest());
+    }
+  }
+
+  Future<void> _acknowledgeLatest() async {
+    final directId = widget.directConversationId;
+    if (!mounted ||
+        directId == null ||
+        _acknowledging ||
+        _room?.verified != true ||
+        !_scroll.hasClients ||
+        _scroll.position.pixels >= 80 ||
+        ModalRoute.of(context)?.isCurrent != true ||
+        WidgetsBinding.instance.lifecycleState != null &&
+            WidgetsBinding.instance.lifecycleState !=
+                AppLifecycleState.resumed ||
+        _messages.isEmpty) {
+      return;
+    }
+    final newest = _messages.last;
+    final sequence = newest.metadata['sequence'];
+    if (_messages.any(
+          (message) => message.packet == null || message.error != null,
+        ) ||
+        newest.packet?.image != null &&
+            !_verifiedImages.contains(newest.packet!.image!.attachmentId) ||
+        sequence is! int ||
+        sequence <= _lastReadSequence) {
+      return;
+    }
+    _acknowledging = true;
+    try {
+      if (widget.inbox != null) {
+        await widget.inbox!.markRead(directId, lastSecretSequence: sequence);
+      } else {
+        await widget.messaging.api.post(
+          '/conversations/${Uri.encodeComponent(directId)}/read',
+          {'lastSecretSequence': sequence},
+        );
+      }
+      if (mounted && _room?.verified == true) _lastReadSequence = sequence;
+    } catch (_) {
+      // A receipt failure never changes verified content or local key state.
+    } finally {
+      _acknowledging = false;
+    }
   }
 
   void _locked() {
@@ -393,6 +466,7 @@ class _SecretChatPageState extends State<SecretChatPage>
         _prepared = null;
         _photo = null;
         _newMessages = 0;
+        _verifiedImages.clear();
       });
       if (photo != null) unawaited(_picker.delete(photo));
     }
@@ -471,6 +545,7 @@ class _SecretChatPageState extends State<SecretChatPage>
         if (!mounted || !_scroll.hasClients) return;
         if (!older && near) {
           _scroll.jumpTo(0);
+          unawaited(_acknowledgeLatest());
         } else if (!older) {
           _scroll.jumpTo(
             (oldPixels + _scroll.position.maxScrollExtent - oldExtent).clamp(
@@ -566,31 +641,6 @@ class _SecretChatPageState extends State<SecretChatPage>
     }
   }
 
-  Future<void> _image(SecretImageMetadata image) async {
-    if (_busy) return;
-    setState(() => _busy = true);
-    try {
-      final bytes = await widget.messaging.image(widget.id, image);
-      if (mounted) {
-        await Navigator.of(context).push(
-          MaterialPageRoute<void>(
-            builder: (_) => PhotoViewerPage(
-              bytes: bytes,
-              title: 'Ảnh bí mật',
-              secret: true,
-            ),
-          ),
-        );
-      } else {
-        bytes.fillRange(0, bytes.length, 0);
-      }
-    } catch (error) {
-      if (mounted) setState(() => _error = secretError(error));
-    } finally {
-      if (mounted) setState(() => _busy = false);
-    }
-  }
-
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
@@ -617,7 +667,7 @@ class _SecretChatPageState extends State<SecretChatPage>
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Trò chuyện bí mật'),
+              const Text('Chat riêng · Mã hóa đầu cuối'),
               Text(
                 widget.title,
                 maxLines: 1,
@@ -628,7 +678,7 @@ class _SecretChatPageState extends State<SecretChatPage>
           ),
           actions: [
             IconButton(
-              tooltip: 'Cập nhật phòng bí mật',
+              tooltip: 'Cập nhật chat riêng',
               onPressed: _loading ? null : _load,
               icon: const Icon(Icons.refresh),
             ),
@@ -646,7 +696,7 @@ class _SecretChatPageState extends State<SecretChatPage>
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       const MessageBox(
-                        'Mã hóa đầu cuối cho phòng riêng này. Máy chủ vẫn thấy người tham gia, thời gian và dung lượng. Không có khôi phục khóa, nhiều thiết bị hoặc forward secrecy.',
+                        'Mã hóa đầu cuối cho hội thoại riêng này. Máy chủ vẫn thấy người tham gia, thời gian và dung lượng. Không có khôi phục khóa, nhiều thiết bị hoặc forward secrecy.',
                       ),
                       if (room != null)
                         DataCard(
@@ -713,10 +763,12 @@ class _SecretChatPageState extends State<SecretChatPage>
                       if (verified && _before != null && _messages.length < 200)
                         OutlinedButton(
                           onPressed: _loading ? null : () => _load(older: true),
-                          child: const Text('Xem tin bí mật cũ hơn'),
+                          child: const Text('Xem tin mã hóa cũ hơn'),
                         ),
                       if (verified && !_loading && _messages.isEmpty)
-                        const Text('Phòng đã xác minh, chưa có tin bí mật.'),
+                        const Text(
+                          'Đã xác minh hai thiết bị. Chưa có tin nhắn mã hóa trong cuộc trò chuyện này.',
+                        ),
                       ..._messages.map(
                         (message) => Align(
                           alignment:
@@ -752,14 +804,39 @@ class _SecretChatPageState extends State<SecretChatPage>
                                   Text(message.packet!.text),
                                 if (message.error != null) Text(message.error!),
                                 if (message.packet?.image case final image?)
-                                  OutlinedButton.icon(
-                                    onPressed: _busy
-                                        ? null
-                                        : () => _image(image),
-                                    icon: const Icon(
-                                      Icons.enhanced_encryption_outlined,
+                                  ConstrainedBox(
+                                    constraints: const BoxConstraints(
+                                      maxWidth: 256,
                                     ),
-                                    label: const Text('Mở ảnh bí mật'),
+                                    child: ApiPhoto(
+                                      key: ValueKey(
+                                        'secret-photo:${image.attachmentId}:${image.cipherHash}',
+                                      ),
+                                      title: 'Ảnh mã hóa đầu cuối',
+                                      viewportBound: true,
+                                      secret: true,
+                                      load: () async {
+                                        final fingerprint = _room?.fingerprint;
+                                        final bytes = await widget.messaging
+                                            .image(widget.id, image);
+                                        if (mounted &&
+                                            _room?.verified == true &&
+                                            _room?.fingerprint == fingerprint) {
+                                          _verifiedImages.add(
+                                            image.attachmentId,
+                                          );
+                                          WidgetsBinding.instance
+                                              .addPostFrameCallback((_) {
+                                                if (mounted) {
+                                                  unawaited(
+                                                    _acknowledgeLatest(),
+                                                  );
+                                                }
+                                              });
+                                        }
+                                        return bytes;
+                                      },
+                                    ),
                                   ),
                                 const SizedBox(height: 6),
                                 Text(
@@ -786,7 +863,7 @@ class _SecretChatPageState extends State<SecretChatPage>
                     setState(() => _newMessages = 0);
                   },
                   icon: const Icon(Icons.arrow_downward),
-                  label: Text('$_newMessages tin bí mật mới'),
+                  label: Text('$_newMessages tin nhắn mã hóa mới'),
                 ),
               if (_prepared != null)
                 Padding(
@@ -860,13 +937,13 @@ class _SecretChatPageState extends State<SecretChatPage>
                         maxLines: 4,
                         maxLength: 2000,
                         decoration: const InputDecoration(
-                          labelText: 'Tin bí mật',
+                          labelText: 'Tin nhắn mã hóa đầu cuối',
                           counterText: '',
                         ),
                       ),
                     ),
                     IconButton(
-                      tooltip: 'Gửi tin bí mật',
+                      tooltip: 'Gửi tin nhắn mã hóa đầu cuối',
                       onPressed: _busy || !verified ? null : _send,
                       icon: const Icon(Icons.send),
                     ),

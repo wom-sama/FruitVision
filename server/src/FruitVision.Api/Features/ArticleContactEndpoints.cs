@@ -36,6 +36,7 @@ public static class ArticleContactEndpoints
             article.Branch = await db.Set<SellerBranch>().FromSqlInterpolated($"SELECT * FROM \"SellerBranches\" WHERE \"Id\"={article.BranchId.Value} AND \"OwnerId\"={ownerId} FOR SHARE").SingleOrDefaultAsync(ct);
         if (!PublishingEndpoints.IsArticlePublic(article)) return Results.NotFound();
         if (ownerId == uid) return Results.Conflict(new { message = "Không tạo hội thoại với bài viết của chính mình." });
+        if (await ProfileBlocks.IsEitherBlockedAsync(db, uid, ownerId, ct)) return Results.NotFound();
 
         var thread = await db.Conversations.FromSqlInterpolated($"SELECT * FROM \"Conversations\" WHERE \"ArticleId\"={id} AND \"InitiatorId\"={uid} FOR UPDATE").SingleOrDefaultAsync(ct);
         if (thread is not null)
